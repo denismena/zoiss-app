@@ -1,0 +1,55 @@
+<h2>Agauga Produse</h2>
+<button type="button" routerLink="/produse/create" >New</button>   
+
+<app-generic-list [list]="produse">
+    <ng-container content>
+    <table mat-table *ngIf="produse.length > 0" [dataSource]="produse" class="mat-elevation-z8 table-index">
+        <!-- <ng-container matColumnDef="poza">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">
+                <img [src]="element.poza" width="35" height="30">
+            </td>
+        </ng-container> -->
+        <ng-container matColumnDef="cod">
+            <th mat-header-cell *matHeaderCellDef>Cod</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.cod}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="nume">
+            <th mat-header-cell *matHeaderCellDef>Nume</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.nume}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="um">
+            <th mat-header-cell *matHeaderCellDef>Um</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.um}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element">
+                <a
+                    routerLink="/produse/edit/{{element.id}}"
+                    mat-flat-button color="primary"
+                >
+                Edit
+                </a>
+                <button mat-flat-button color="warn" 
+                [swal]="{
+                    title: 'Confirmare',
+                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
+                    showCancelButton: true
+                }"
+                (confirm)="delete(element.id)">
+                    Delete
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+</ng-container>
+</app-generic-list>

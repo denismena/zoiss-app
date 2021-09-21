@@ -1,0 +1,4 @@
+<h2>Editeaza Oferta</h2>
+<app-oferte-item *ngIf="model" 
+[selectedProdus] = "selectedProdus"
+[model]="model" (onSaveChanges)="saveChanges($event)"></app-oferte-item>

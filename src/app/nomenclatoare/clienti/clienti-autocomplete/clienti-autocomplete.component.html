@@ -1,0 +1,15 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Client</mat-label>
+      <input matInput
+             aria-label="Client"
+             [matAutocomplete]="auto"
+             [formControl]="clientCtrl">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
+        <mat-option *ngFor="let client of selectedClient | async" [value]="client">
+            {{client.nume}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  

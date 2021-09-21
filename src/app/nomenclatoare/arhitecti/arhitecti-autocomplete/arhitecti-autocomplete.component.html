@@ -1,0 +1,15 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Arhitect</mat-label>
+      <input matInput
+             aria-label="Arhitect"
+             [matAutocomplete]="auto"
+             [formControl]="arhitectCtrl">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
+        <mat-option *ngFor="let arhitect of selectedArhitect | async" [value]="arhitect">
+            {{arhitect.nume}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  

@@ -1,0 +1,15 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Furnizori</mat-label>
+      <input matInput
+             aria-label="Furnizori"
+             [matAutocomplete]="auto"
+             [formControl]="furnizorCtrl">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
+        <mat-option *ngFor="let furn of selectedFurnizor | async" [value]="furn">
+            {{furn.nume}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  
