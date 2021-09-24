@@ -1,4 +1,4 @@
 <h2>Adauga Oferta</h2>
-<app-oferte-item 
+<app-oferte-item *ngIf="nextNumber"
 [nextNumber] = "nextNumber"
 (onSaveChanges)="saveChanges($event)"></app-oferte-item>

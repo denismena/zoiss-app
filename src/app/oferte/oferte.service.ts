@@ -58,11 +58,11 @@ export class OferteService {
     if (oferta.avans){
       formData.append('avans', oferta.avans.toString());
     }
-    if (oferta.conditii_plata){
-      formData.append('conditii_plata', oferta.conditii_plata);
+    if (oferta.conditiiPlata){
+      formData.append('conditiiPlata', oferta.conditiiPlata);
     }
-    if (oferta.termen_livrare){
-      formData.append('termen_livrare', oferta.termen_livrare);
+    if (oferta.termenLivrare){
+      formData.append('termenLivrare', formatDateFormData(oferta.termenLivrare));
     }
     console.log('formData produse:', oferta.produse);
     formData.append('produse', JSON.stringify(oferta.produse));

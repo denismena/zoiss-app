@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {Observable} from 'rxjs';
@@ -29,6 +29,9 @@ export class ClientiAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
+  @Input()
+  preselectClient: clientiDTO | undefined;
+  
   ngOnInit(): void {
     this.loadClientList();
   }
@@ -36,7 +39,8 @@ export class ClientiAutocompleteComponent implements OnInit {
   loadClientList(){
     this.clientiService.getAll().subscribe(clienti=>{
       this.clienti = clienti;
-      console.log(this.clienti);
+      console.log('load clienti', this.clienti);
+      this.clientCtrl.setValue(this.preselectClient);
     });    
   }
 
@@ -54,6 +58,7 @@ export class ClientiAutocompleteComponent implements OnInit {
   }
 
   displayFn(user: clientiDTO): string {
+    console.log('am trigeruit ceva la load?', user);
     return user && user.nume ? user.nume : '';
   }
 }

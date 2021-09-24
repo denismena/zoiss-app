@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
@@ -26,6 +26,10 @@ export class ArhitectiAutocompleteComponent implements OnInit {
   }
   arhitectCtrl: FormControl = new FormControl();
   selectedArhitect: any;
+
+  @Input()
+  preselectArhitect: arhitectiDTO | undefined;
+
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
@@ -37,6 +41,7 @@ export class ArhitectiAutocompleteComponent implements OnInit {
     this.arhitectiService.getAll().subscribe(arhitecti=>{
       this.arhitecti = arhitecti;
       console.log(this.arhitecti);
+      this.arhitectCtrl.setValue(this.preselectArhitect);
     });    
   }
 

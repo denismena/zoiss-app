@@ -1,3 +1,5 @@
+import { arhitectiDTO } from "src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model";
+import { clientiDTO } from "src/app/nomenclatoare/clienti/clienti-item/clienti.model";
 import { produseOfertaDTO } from "src/app/nomenclatoare/produse/produse-item/produse.model";
 
 export interface oferteDTO{
@@ -5,14 +7,14 @@ export interface oferteDTO{
     numar: number;
     data: Date;
     clientId: number;
-    client: string;
+    preselectClient: clientiDTO;
     arhitectId: number;
-    arhitect: string;
+    preselectArhitect: arhitectiDTO;
     utilizatorId: number;
     utilizator: string;
     avans: number;
-    conditii_plata: string;
-    termen_livrare: string;
+    conditiiPlata: string;
+    termenLivrare: Date;
     produse: produseOfertaDTO[];
 }
 
@@ -23,8 +25,8 @@ export interface oferteCreationDTO{
     arhitectId: number;    
     utilizatorId: number;    
     avans: number;
-    conditii_plata: string;
-    termen_livrare: string;
+    conditiiPlata: string;
+    termenLivrare: Date;
     produse: produseOfertaDTO[];
 }
 

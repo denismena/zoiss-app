@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {Observable} from 'rxjs';
@@ -27,6 +27,11 @@ export class FurnizoriAutocompleteComponent implements OnInit {
 
   furnizorCtrl: FormControl = new FormControl();
   selectedFurnizor: any;
+  
+  @Input()
+  preselectFurnizor: number = 0;
+
+
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
@@ -38,7 +43,14 @@ export class FurnizoriAutocompleteComponent implements OnInit {
   loadFurnizorList(){
     this.furnizorService.getAll().subscribe(furnizori=>{
       this.furnizori = furnizori;
-      console.log(this.furnizori);
+      console.log('preselectFurnizor', this.preselectFurnizor);
+      
+      if(this.preselectFurnizor !=0){
+        this.furnizorService.getById(this.preselectFurnizor).subscribe(fur=>{
+          this.furnizorCtrl.setValue(fur);
+        })
+      }     
+      
     });    
   }
 
@@ -53,6 +65,7 @@ export class FurnizoriAutocompleteComponent implements OnInit {
   }
 
   displayFn(furn: furnizoriDTO): string {
+    console.log('am trigeruit ceva la load furnizor?', furn);
     return furn && furn.nume ? furn.nume : '';
   }
 }
