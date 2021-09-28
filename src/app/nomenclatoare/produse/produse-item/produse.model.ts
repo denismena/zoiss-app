@@ -26,8 +26,10 @@ export interface produseCreationDTO{
 export interface produseOfertaDTO{    
     poza: string;
     id: number;
+    produsId: number;
     produsNume: string;
     furnizorId: string;
+    furnizorNume: string;
     um: string;
     cantitate : number
     cutii: number;

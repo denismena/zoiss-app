@@ -1,4 +1,8 @@
 <form (submit)="saveChanges()" [formGroup]="form">
+<div class="container">    
+    <div class="row">
+        <div class="col-md-6">          
+    <h4>Oferta</h4>    
     <mat-form-field appearance="outline">
         <mat-label>Numar</mat-label>
         <input formControlName="numar" matInput>
@@ -36,11 +40,14 @@
         <mat-datepicker #dataPickerTL></mat-datepicker>
         <mat-error>Completati data!</mat-error>
     </mat-form-field>
-
-    <app-produse-autocomplete [selectedProdus]="selectedProdus" ></app-produse-autocomplete>    
-    
+</div>
+<div class="col-6 col-md-6">
+    <app-oferte-produse-autocomplete [selectedProdus]="selectedProdus" ></app-oferte-produse-autocomplete>    
+</div>
     <div>
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button routerLink="/oferte">Renunta</a>
     </div>
+</div>
+</div>
 </form>

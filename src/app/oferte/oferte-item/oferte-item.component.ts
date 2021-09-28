@@ -49,7 +49,7 @@ export class OferteItemComponent implements OnInit {
       clientId:[null, {validators:[Validators.required]}],
       arhitectId: null,
       utilizatorId:[1, {validators:[Validators.required]}],
-      avans: 0,
+      avans: null,
       conditiiPlata: '',
       termenLivrare: new Date(),
       produse: ''
@@ -64,7 +64,7 @@ export class OferteItemComponent implements OnInit {
     //console.log('click oferta', this.selectedProdus);
 
     const produse = this.selectedProdus.map(val => {
-      return {id: val.id, cantitate: val.cantitate, furnizorId: val.furnizorId, 
+      return {id: val.id, cantitate: val.cantitate, furnizorId: val.furnizorId, produsId: val.produsId,
         um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare}
     });
     console.log('set produse', produse);

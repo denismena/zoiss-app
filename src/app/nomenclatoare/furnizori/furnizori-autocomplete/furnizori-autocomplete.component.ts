@@ -54,9 +54,8 @@ export class FurnizoriAutocompleteComponent implements OnInit {
     });    
   }
 
-  optionSelected(event: MatAutocompleteSelectedEvent){
-    console.log(event.option.value.id);
-    this.onOptionSelected.emit(event.option.value.id);
+  optionSelected(event: MatAutocompleteSelectedEvent){    
+    this.onOptionSelected.emit(event.option.value);
   }
 
   private _filterStates(value: string): furnizoriDTO[] {
