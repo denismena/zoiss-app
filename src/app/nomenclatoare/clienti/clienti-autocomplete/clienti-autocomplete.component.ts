@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import {Observable} from 'rxjs';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
@@ -11,7 +11,7 @@ import { ClientiService } from '../clienti.service';
   templateUrl: './clienti-autocomplete.component.html',
   styleUrls: ['./clienti-autocomplete.component.scss']
 })
-export class ClientiAutocompleteComponent implements OnInit {
+export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   clienti: clientiDTO[];
   constructor(private clientiService: ClientiService) { 
@@ -24,6 +24,9 @@ export class ClientiAutocompleteComponent implements OnInit {
         map(c => c ? this._filterStates(c) : this.clienti.slice())
       );
   }
+  @ViewChild(MatAutocompleteTrigger) 
+  trigger!: MatAutocompleteTrigger;
+  
   clientCtrl: FormControl = new FormControl();
   selectedClient: any;
   @Output()
@@ -32,6 +35,7 @@ export class ClientiAutocompleteComponent implements OnInit {
   @Input()
   preselectClient: clientiDTO | undefined;
   
+  subscription: Subscription | undefined;
   ngOnInit(): void {
     this.loadClientList();
   }
@@ -60,5 +64,31 @@ export class ClientiAutocompleteComponent implements OnInit {
   displayFn(user: clientiDTO): string {
     console.log('am trigeruit ceva la load?', user);
     return user && user.nume ? user.nume : '';
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private _subscribeToClosingActions(): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.trigger.panelClosingActions
+      .subscribe(e => {
+        if (!e || !e.source) {
+          this.clientCtrl.setValue(null);
+          this.onOptionSelected.emit(undefined);
+        }
+      },
+      err => this._subscribeToClosingActions(),
+      () => this._subscribeToClosingActions());
   }
 }

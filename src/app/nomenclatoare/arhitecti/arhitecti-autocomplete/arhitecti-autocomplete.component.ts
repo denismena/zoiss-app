@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
@@ -11,7 +11,7 @@ import { ArhitectiService } from '../arhitecti.service';
   templateUrl: './arhitecti-autocomplete.component.html',
   styleUrls: ['./arhitecti-autocomplete.component.scss']
 })
-export class ArhitectiAutocompleteComponent implements OnInit {
+export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   arhitecti: arhitectiDTO[];
   constructor(private arhitectiService: ArhitectiService) { 
@@ -24,6 +24,10 @@ export class ArhitectiAutocompleteComponent implements OnInit {
         map(c => c ? this._filterStates(c) : this.arhitecti.slice())
       );
   }
+
+  @ViewChild(MatAutocompleteTrigger) 
+  trigger!: MatAutocompleteTrigger;
+
   arhitectCtrl: FormControl = new FormControl();
   selectedArhitect: any;
 
@@ -32,6 +36,8 @@ export class ArhitectiAutocompleteComponent implements OnInit {
 
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
+  
+  subscription: Subscription | undefined;
   
   ngOnInit(): void {
     this.loadArhitectList();
@@ -49,14 +55,41 @@ export class ArhitectiAutocompleteComponent implements OnInit {
      console.log(event.option.value.id);
     this.onOptionSelected.emit(event.option.value.id);
   }
-
+  
   private _filterStates(value: string): arhitectiDTO[] {
     const filterValue = value;
+    //console.log('value:', value);
     return this.arhitecti.filter(p => p.nume.includes(filterValue));
   }
 
   displayFn(arhitect: arhitectiDTO): string {
     return arhitect && arhitect.nume ? arhitect.nume : '';
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private _subscribeToClosingActions(): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.trigger.panelClosingActions
+      .subscribe(e => {
+        if (!e || !e.source) {
+          this.arhitectCtrl.setValue(null);
+          this.onOptionSelected.emit(undefined);
+        }
+      },
+      err => this._subscribeToClosingActions(),
+      () => this._subscribeToClosingActions());
   }
 
 }

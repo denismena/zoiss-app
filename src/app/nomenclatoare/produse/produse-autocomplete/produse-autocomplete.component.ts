@@ -1,10 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { produseDTO, produseOfertaDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
@@ -14,7 +14,7 @@ import { ProduseService } from '../produse.service';
   templateUrl: './produse-autocomplete.component.html',
   styleUrls: ['./produse-autocomplete.component.scss']
 })
-export class ProduseAutocompleteComponent implements OnInit {
+export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   produse: produseDTO[]
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService) { 
@@ -28,6 +28,9 @@ export class ProduseAutocompleteComponent implements OnInit {
       );    
   }
 
+  @ViewChild(MatAutocompleteTrigger) 
+  trigger!: MatAutocompleteTrigger;
+  
   produsCtrl: FormControl = new FormControl();
 
   selectedProdus: any;
@@ -36,6 +39,8 @@ export class ProduseAutocompleteComponent implements OnInit {
 
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
+  
+  subscription: Subscription | undefined;
   
   ngOnInit(): void {    
     this.loadProduseList();    
@@ -60,5 +65,31 @@ export class ProduseAutocompleteComponent implements OnInit {
 
   displayFn(produs: produseDTO): string {
     return produs && produs.nume ? produs.nume : '';
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private _subscribeToClosingActions(): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.trigger.panelClosingActions
+      .subscribe(e => {
+        if (!e || !e.source) {
+          this.produsCtrl.setValue(null);
+          this.onOptionSelected.emit(undefined);
+        }
+      },
+      err => this._subscribeToClosingActions(),
+      () => this._subscribeToClosingActions());
   }
 }

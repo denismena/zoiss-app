@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import {Observable} from 'rxjs';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
@@ -11,7 +11,7 @@ import { FurnizoriService } from '../furnizori.service';
   templateUrl: './furnizori-autocomplete.component.html',
   styleUrls: ['./furnizori-autocomplete.component.scss']
 })
-export class FurnizoriAutocompleteComponent implements OnInit {
+export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   furnizori: furnizoriDTO[];
   constructor(private furnizorService: FurnizoriService ) { 
@@ -24,6 +24,8 @@ export class FurnizoriAutocompleteComponent implements OnInit {
         map(c => c ? this._filterStates(c) : this.furnizori.slice())
       );
   }
+  @ViewChild(MatAutocompleteTrigger) 
+  trigger!: MatAutocompleteTrigger;
 
   furnizorCtrl: FormControl = new FormControl();
   selectedFurnizor: any;
@@ -35,6 +37,7 @@ export class FurnizoriAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
+  subscription: Subscription | undefined;
   
   ngOnInit(): void {
   this.loadFurnizorList();
@@ -66,5 +69,31 @@ export class FurnizoriAutocompleteComponent implements OnInit {
   displayFn(furn: furnizoriDTO): string {
     console.log('am trigeruit ceva la load furnizor?', furn);
     return furn && furn.nume ? furn.nume : '';
+  }
+
+  ngAfterViewInit() {
+    this._subscribeToClosingActions();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private _subscribeToClosingActions(): void {
+    if (this.subscription && !this.subscription.closed) {
+      this.subscription.unsubscribe();
+    }
+
+    this.subscription = this.trigger.panelClosingActions
+      .subscribe(e => {
+        if (!e || !e.source) {
+          this.furnizorCtrl.setValue(null);
+          this.onOptionSelected.emit(undefined);
+        }
+      },
+      err => this._subscribeToClosingActions(),
+      () => this._subscribeToClosingActions());
   }
 }

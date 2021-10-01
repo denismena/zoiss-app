@@ -15,10 +15,7 @@ export class OferteCreateComponent implements OnInit {
   constructor(private router:Router, private oferteService: OferteService) { }
 
   nextNumber: number = 1;
-  ngOnInit(): void {
-    this.oferteService.getNextNumber().subscribe(data=>{
-      this.nextNumber = data;
-    });
+  ngOnInit(): void {    
   }
 
   saveChanges(oferteDTO:oferteDTO){

@@ -26,7 +26,7 @@ export class ArhitectiItemComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       nume:['', {validators:[Validators.required]}],
-      comision: 0,
+      comision: [null, {validators:[Validators.required]}],
       adresa: '',
       tel: '',
       email: '',

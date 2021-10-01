@@ -20,9 +20,6 @@ export class OferteItemComponent implements OnInit {
   public form!: FormGroup;
 
   @Input()
-  nextNumber: number | undefined;
-
-  @Input()
   selectedProdus: produseOfertaDTO[] = [];
   
   @Input()
@@ -41,28 +38,34 @@ export class OferteItemComponent implements OnInit {
       //alert(params.id);
     });
 
-    console.log('this.nextNumber', this.nextNumber);
-
     this.form = this.formBuilder.group({
-      numar:[this.nextNumber, {validators:[Validators.required]}],
+      numar:[null, {validators:[Validators.required]}],
       data:[new Date(), {validators:[Validators.required]}],
       clientId:[null, {validators:[Validators.required]}],
       arhitectId: null,
       utilizatorId:[1, {validators:[Validators.required]}],
       avans: null,
       conditiiPlata: '',
-      termenLivrare: new Date(),
+      termenLivrare: null,
       produse: ''
     });    
     
     if(this.model !== undefined)
     {
-      this.form.patchValue(this.model);
+      //on edit form
+      this.form.patchValue(this.model);      
     }    
+    else 
+    {      
+      //on add form get the next contract number
+      this.oferteService.getNextNumber().subscribe(data=>{
+        this.form.get('numar')?.setValue(data);
+        console.log('next number assigne', data);
+      });
+    }
   }
-  saveChanges(){
-    //console.log('click oferta', this.selectedProdus);
 
+  saveChanges(){
     const produse = this.selectedProdus.map(val => {
       return {id: val.id, cantitate: val.cantitate, furnizorId: val.furnizorId, produsId: val.produsId,
         um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare}
