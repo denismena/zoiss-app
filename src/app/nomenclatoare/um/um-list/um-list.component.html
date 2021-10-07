@@ -1,0 +1,38 @@
+<h2>Lista UM
+    <button type="button" routerLink="/um/create" mat-flat-button color="primary">
+        <mat-icon>add</mat-icon> Adauga
+    </button> 
+</h2>
+  
+
+<app-generic-list [list]="um">
+    <ng-container content>
+    <table mat-table *ngIf="um.length > 0" [dataSource]="um" class="mat-elevation-z8 table-index">        
+        <ng-container matColumnDef="nume">
+            <th mat-header-cell *matHeaderCellDef>Nume</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.nume}}
+            </td>
+        </ng-container>        
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element">
+                <a routerLink="/um/edit/{{element.id}}" title="Edit">
+                <mat-icon color="primary">edit</mat-icon>
+                </a>                
+                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" [swal]="{
+                    title: 'Confirmare',
+                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
+                    showCancelButton: true
+                }" title="Delete"
+                (confirm)="delete(element.id)">
+                    close
+                </mat-icon>
+                <!-- </button> -->
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+</ng-container>
+</app-generic-list>

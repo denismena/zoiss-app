@@ -28,8 +28,9 @@ export interface produseOfertaDTO{
     id: number;
     produsId: number;
     produsNume: string;
-    furnizorId: string;
+    furnizorId: number;
     furnizorNume: string;
+    umId: number;
     um: string;
     cantitate : number
     cutii: number;

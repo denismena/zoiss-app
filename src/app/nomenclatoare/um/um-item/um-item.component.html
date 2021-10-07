@@ -1,0 +1,12 @@
+<div class="container">
+    <form (submit) = "saveProduse()" [formGroup]="form">        
+        <mat-form-field appearance="outline">
+            <mat-label>Nume</mat-label>
+            <input formControlName="nume" matInput>
+        </mat-form-field>        
+        <div>
+            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+            <a mat-stroke-button routerLink="/um" mat-flat-button color="primary">Renunta</a>
+        </div>
+    </form>
+    </div>

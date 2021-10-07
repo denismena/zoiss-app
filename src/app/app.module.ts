@@ -51,6 +51,10 @@ import { InputImgComponent } from './utilities/input-img/input-img.component';
 import {CustomDateTimePipe, CustomDatePipe} from './utilities/custom.datepipe';
 import { OferteProduseAutocompleteComponent } from './oferte/oferte-produse-autocomplete/oferte-produse-autocomplete.component';
 import { ClientiAdresaComponent } from './nomenclatoare/clienti/clienti-adresa/clienti-adresa.component';
+import { UmListComponent } from './nomenclatoare/um/um-list/um-list.component';
+import { UmItemComponent } from './nomenclatoare/um/um-item/um-item.component';
+import { UmCreateComponent } from './nomenclatoare/um/um-item/um-create/um-create.component';
+import { UmEditComponent } from './nomenclatoare/um/um-item/um-edit/um-edit.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +96,11 @@ import { ClientiAdresaComponent } from './nomenclatoare/clienti/clienti-adresa/c
     ArhitectiAutocompleteComponent,
     InputImgComponent,
     OferteProduseAutocompleteComponent,
-    ClientiAdresaComponent
+    ClientiAdresaComponent,
+    UmListComponent,
+    UmItemComponent,
+    UmCreateComponent,
+    UmEditComponent
   ],
   imports: [
     BrowserModule,

@@ -11,10 +11,13 @@
     <!-- </div> -->
     <mat-form-field appearance="outline">
         <mat-label>um</mat-label>                
-        <mat-select formControlName="um">                    
-            <mat-option value="buc">Buc</mat-option>
+        <mat-select formControlName="umId">
+            <mat-option *ngFor="let um of umList" [value]="um.id">
+                {{um.nume}}
+              </mat-option>
+            <!-- <mat-option value="buc">Buc</mat-option>
             <mat-option value="kg">Kg</mat-option>
-            <mat-option value="cutie">Cutie</mat-option>
+            <mat-option value="cutie">Cutie</mat-option> -->
           </mat-select>
     </mat-form-field>
 

@@ -8,6 +8,8 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
+import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
+import { UMService } from 'src/app/nomenclatoare/um/um.service';
 
 @Component({
   selector: 'app-oferte-produse-autocomplete',
@@ -17,7 +19,8 @@ import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 export class OferteProduseAutocompleteComponent implements OnInit {
 
   // produse: produseDTO[]
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService) { 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+    private produseService: ProduseService, private umService: UMService) { 
     // this.produse = [];
     this.selectedProdus = [];
     this.produsToDisplay = [];
@@ -36,6 +39,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   @Input()
   selectedProdus: produseOfertaDTO[];
   produsToDisplay: produseOfertaDTO[];
+  umList: umDTO[]=[];
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
@@ -57,7 +61,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       produsNume:'',
       furnizorId:[null],
       furnizorNume:'',
-      um: ['', {validators:[Validators.required]}],
+      umId: ['', {validators:[Validators.required]}],
       cantitate: [null, {validators:[Validators.required]}],
       cutii: [null, {validators:[Validators.required]}],
       pretUm: [null, {validators:[Validators.required]}],
@@ -78,7 +82,12 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.produseService.searchByName(value).subscribe(produs => {
         this.produsToDisplay = produs;
       });
-    })    
+    })
+
+    this.umService.getAll().subscribe(um=>{
+      this.umList=um;
+    })
+
   }
 
   loadProduseList(){
@@ -91,9 +100,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   //   this.form.get('id')?.setValue(event.option.value);
   // }
 
-  selectFurnizor(furnizor: any){    
+  selectFurnizor(furnizor: any){
+    if(furnizor!==undefined){
      this.form.get('furnizorId')?.setValue(furnizor.id);
      this.form.get('furnizorNume')?.setValue(furnizor.nume);
+    }
   }
 
   selectProdus(produs: any){    

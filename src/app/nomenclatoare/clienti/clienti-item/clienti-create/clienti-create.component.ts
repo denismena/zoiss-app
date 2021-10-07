@@ -17,8 +17,7 @@ export class ClientiCreateComponent implements OnInit {
   ngOnInit(): void {
   }
   saveChanges(clientiDTO:clientiDTO){
-    console.log(clientiDTO);
-    this.router.navigate(['/clienti'])
+    console.log(clientiDTO);    
     this.clientiService.create(clientiDTO).subscribe(()=>{
       this.router.navigate(['/clienti'])
     }, 
