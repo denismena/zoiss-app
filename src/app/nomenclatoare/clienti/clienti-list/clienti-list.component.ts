@@ -13,7 +13,7 @@ export class ClientiListComponent implements OnInit {
   constructor(private clientiService: ClientiService) { 
     this.clienti = [];
   }
-  columnsToDisplay= ['nume', 'pfpj', 'cuicnp', 'registruComert', 'action'];
+  columnsToDisplay= ['nume', 'pfPj', 'cuicnp', 'registruComert', 'action'];
   ngOnInit(): void {
     this.loadList();
   }

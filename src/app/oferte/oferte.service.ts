@@ -18,9 +18,6 @@ export class OferteService {
   }
 
   create(oferte: oferteCreationDTO){
-    const formData = this.BuildFormData(oferte);
-    console.log('formData:', formData);
-    //return this.http.post(this.apiUrl, formData)
     return this.http.post(this.apiUrl, oferte);
   }
 

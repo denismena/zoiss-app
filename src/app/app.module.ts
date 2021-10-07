@@ -50,6 +50,7 @@ import { ArhitectiAutocompleteComponent } from './nomenclatoare/arhitecti/arhite
 import { InputImgComponent } from './utilities/input-img/input-img.component';
 import {CustomDateTimePipe, CustomDatePipe} from './utilities/custom.datepipe';
 import { OferteProduseAutocompleteComponent } from './oferte/oferte-produse-autocomplete/oferte-produse-autocomplete.component';
+import { ClientiAdresaComponent } from './nomenclatoare/clienti/clienti-adresa/clienti-adresa.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { OferteProduseAutocompleteComponent } from './oferte/oferte-produse-auto
     ArhitectiEditComponent,
     ArhitectiAutocompleteComponent,
     InputImgComponent,
-    OferteProduseAutocompleteComponent
+    OferteProduseAutocompleteComponent,
+    ClientiAdresaComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { clientiDTO, clientiListDTO, clientiCreationDTO} from './clienti-item/clienti.model'
+import { clientiDTO, clientiCreationDTO, clientiAdresaPutGetDTO} from './clienti-item/clienti.model'
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,10 @@ export class ClientiService {
   getById(id: number): Observable<clientiDTO>{
     return this.http.get<clientiDTO>(`${this.apiUrl}/${id}`);
   } 
+
+  public putGet(id: number): Observable<clientiAdresaPutGetDTO>{
+    return this.http.get<clientiAdresaPutGetDTO>(`${this.apiUrl}/putget/${id}`);
+  }
 
   edit(id: number, client: clientiCreationDTO){
     console.log('edit to service:', client);

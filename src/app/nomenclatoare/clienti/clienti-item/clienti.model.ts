@@ -1,24 +1,36 @@
 export interface clientiDTO{
     id: number;
     nume: string;
-    pfpj: number;
+    pfPj: string;
     cuicnp: string;
     registruComert: string;
+    persoanaContact: string;
+    persoanaContactTel: string;
     active: boolean;
+    adrese: clientiAdresaDTO[];
 }
 
 export interface clientiCreationDTO{
     nume: string;
-    pfpj: number;
+    pfPj: string;
     cuicnp: string;
     registruComert: string;
+    persoanaContact: string;
+    persoanaContactTel: string;
     active: boolean;
+    adrese: clientiAdresaDTO[];
 }
-export interface clientiListDTO{
+export interface clientiAdresaDTO{
     id: number;
-    nume: string;
-    pfpj: string;
-    cuicnp: string;
-    registruComert: string;
-    active: boolean;
+    adresa: string;
+    oras: string;
+    tara: string;
+    tel: string;
+    email: string;
+    sediu: boolean;
+    livrare: boolean;
+}
+export interface clientiAdresaPutGetDTO{
+    client: clientiDTO;
+    adrese: clientiAdresaDTO[];
 }
