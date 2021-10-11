@@ -15,6 +15,7 @@ export interface oferteDTO{
     avans: number;
     conditiiPlata: string;
     termenLivrare: Date;
+    allComandate: boolean;
     produse: produseOfertaDTO[];
 }
 

@@ -36,4 +36,5 @@ export interface produseOfertaDTO{
     cutii: number;
     pretUm: number;
     valoare: number;
+    isInComanda: boolean;
 }

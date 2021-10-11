@@ -1,12 +1,13 @@
 <h2>Lista Oferte</h2>
 <button type="button" routerLink="/oferte/create" mat-flat-button color="primary">Oferta noua</button>
+<button mat-flat-button color="primary" (click)="genereazaComanda()">Genereaza comanda din oferta</button>
 
 <app-generic-list [list]="oferte">
     <ng-container content>
-    <table mat-table *ngIf="oferte.length > 0" [dataSource]="oferte" class="mat-elevation-z8 table-index">
+    <table mat-table *ngIf="oferte.length > 0" [dataSource]="oferte" multiTemplateDataRows class="mat-elevation-z8 table-index">
         <ng-container matColumnDef="numar">
             <th mat-header-cell *matHeaderCellDef>Numar</th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element" (click)="expand(element)">
                 {{element.numar}}
             </td>
         </ng-container>
@@ -32,6 +33,13 @@
             <th mat-header-cell *matHeaderCellDef>Utilizator</th>
             <td mat-cell *matCellDef="let element">
                 {{element.utilizator}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="select">            
+            <th mat-header-cell *matHeaderCellDef>Select</th>
+            <td *matCellDef="let element">
+              <mat-checkbox #checkBox [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox>
+              <!-- <mat-checkbox #checkBox></mat-checkbox> -->
             </td>
         </ng-container>
         <ng-container matColumnDef="avans">
@@ -60,8 +68,55 @@
                 </button>
             </td>
         </ng-container>
+        
+        
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
+                <table class="table" *ngIf="element.produse.length > 0">
+                    <thead>
+                      <tr>
+                        <th scope="col">Produs</th>
+                        <th scope="col">Furnizor</th>
+                        <th scope="col">UM</th>
+                        <th scope="col">Cant</th>
+                        <th scope="col">Cutii</th>
+                        <th scope="col">Pret um</th>
+                        <th scope="col">Valoare</th>
+                        <th scope="col">#</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let prod of element.produse">                        
+                        <td>{{prod.produsNume}}</td>
+                        <td>{{prod.furnizorNume}}</td>
+                        <td>{{prod.um}}</td>
+                        <td>{{prod.cantitate}}</td>
+                        <td>{{prod.cutii}}</td>
+                        <td>{{prod.pretUm}}</td>
+                        <td>{{prod.valoare}}</td>
+                        <td>
+                            <!-- <input type="checkbox" id={{prod.id}} > -->
+                            <input type="checkbox" [(ngModel)]="prod.isInComanda" name="list_name" value="{{prod.id}}"
+                                (change)="isAllSelected(element)" />
+                        </td>
+                      </tr>                      
+                    </tbody>
+                  </table>
+            </div>
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+            class="example-element-row"
+            >
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
 </ng-container>
 </app-generic-list>
+
+<!-- https://www.freakyjolly.com/check-uncheck-all-checkbox-list-in-angular/ -->
