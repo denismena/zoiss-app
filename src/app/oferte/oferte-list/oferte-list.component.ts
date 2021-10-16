@@ -33,7 +33,7 @@ export class OferteListComponent implements OnInit {
     this.oferte = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'select', 'action'];
+  columnsToDisplay= ['numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'comandate', 'select', 'action'];
   
   
   ngOnInit(): void {
@@ -63,13 +63,13 @@ export class OferteListComponent implements OnInit {
   getCheckbox(checkbox: any, row: oferteDTO){
     this.checked = [];
     console.log(row);
-    row.produse.forEach(p=>p.isInComanda = checkbox.checked
+    row.produse.forEach(p=>p.addToComanda = checkbox.checked
     );    
   }
 
   isAllSelected(row: oferteDTO) {    
     row.allComandate = row.produse.every(function(item:any) {
-          return item.isInComanda == true;
+          return item.addToComanda == true;
         })
       console.log('row.allComandate', row.allComandate);
   }
@@ -79,18 +79,23 @@ export class OferteListComponent implements OnInit {
     var selectedProd: produseOfertaDTO[] = [];
     this.oferte.forEach(element => {
       element.produse.forEach(prod=>{
-        if(prod.isInComanda)
+        if(prod.addToComanda)
           {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComanda);
+            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.addToComanda);
             selectedProd.push(prod);
           }
       })
     });
+    this.errors = [];
 
-    this.comenziService.fromOferta(selectedProd).subscribe(()=>{
-      this.router.navigate(['/oferte'])
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));
+    if(selectedProd.length > 0){
+      this.comenziService.fromOferta(selectedProd).subscribe(id=>{
+        console.log('comanda new id', id);
+        this.router.navigate(['/comenzi/edit/' + id])
+      }, 
+      error=> this.errors = parseWebAPIErrors(error));
+    }
+    else this.errors.push("Nu ati selectat nici o oferta!");
   }
 
 }

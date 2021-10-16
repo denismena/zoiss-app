@@ -35,11 +35,19 @@
                 {{element.utilizator}}
             </td>
         </ng-container>
+        <ng-container matColumnDef="comandate">            
+            <th mat-header-cell *matHeaderCellDef>Comandate</th>
+            <td *matCellDef="let element">
+              {{element.produseProc}} / {{element.produseAll}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="select">            
             <th mat-header-cell *matHeaderCellDef>Select</th>
             <td *matCellDef="let element">
-              <mat-checkbox #checkBox [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox>
-              <!-- <mat-checkbox #checkBox></mat-checkbox> -->
+              <!-- <mat-checkbox #checkBox *ngIf="element.produseProc!=element.produseAll"
+                    [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox>-->
+            <input type="checkbox" *ngIf="element.produseProc!=element.produseAll"
+                [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
             </td>
         </ng-container>
         <ng-container matColumnDef="avans">
@@ -98,8 +106,8 @@
                         <td>{{prod.valoare}}</td>
                         <td>
                             <!-- <input type="checkbox" id={{prod.id}} > -->
-                            <input type="checkbox" [(ngModel)]="prod.isInComanda" name="list_name" value="{{prod.id}}"
-                                (change)="isAllSelected(element)" />
+                            <input type="checkbox" [(ngModel)]="prod.addToComanda" *ngIf="!prod.isInComanda" 
+                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
                         </td>
                       </tr>                      
                     </tbody>

@@ -15,7 +15,9 @@ export interface oferteDTO{
     avans: number;
     conditiiPlata: string;
     termenLivrare: Date;
-    allComandate: boolean;
+    produseAll: number;
+    produseProc: number;
+    allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
     produse: produseOfertaDTO[];
 }
 

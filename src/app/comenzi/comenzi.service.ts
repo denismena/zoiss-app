@@ -19,7 +19,7 @@ export class ComenziService{
   }
 
   create(oferte: comenziCreationDTO){
-    return this.http.post(this.apiUrl, oferte);
+    return this.http.post<number>(this.apiUrl, oferte);
   }
 
   getById(id: number): Observable<comenziDTO>{
