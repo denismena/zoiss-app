@@ -1,0 +1,121 @@
+<h2>Lista Comenzi</h2>
+<button type="button" routerLink="/comenzi/create" mat-flat-button color="primary">Comanda noua</button>
+<!-- <button mat-flat-button color="primary" (click)="genereazaComanda()">Genereaza comanda din oferta</button> -->
+
+<app-generic-list [list]="comenzi">
+    <ng-container content>
+    <table mat-table *ngIf="comenzi.length > 0" [dataSource]="comenzi" multiTemplateDataRows class="mat-elevation-z8 table-index">
+        <ng-container matColumnDef="numar">
+            <th mat-header-cell *matHeaderCellDef>Numar</th>
+            <td mat-cell *matCellDef="let element" (click)="expand(element)">
+                {{element.numar}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>Data</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.data|customDate}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="client">
+            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.client}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="arhitect">
+            <th mat-header-cell *matHeaderCellDef>Arhitect</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.arhitect}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="utilizator">
+            <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.utilizator}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="select">            
+            <th mat-header-cell *matHeaderCellDef>Select</th>
+            <td *matCellDef="let element">
+              <mat-checkbox #checkBox [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox>
+              <!-- <mat-checkbox #checkBox></mat-checkbox> -->
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="avans">
+            <th mat-header-cell *matHeaderCellDef>Avans</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.avans}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element">
+                <a
+                    routerLink="/comenzi/edit/{{element.id}}"
+                    mat-flat-button color="primary"
+                >
+                Edit
+                </a>
+                <button mat-flat-button color="warn" 
+                [swal]="{
+                    title: 'Confirmare',
+                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
+                    showCancelButton: true
+                }"
+                (confirm)="delete(element.id)">
+                    Delete
+                </button>
+            </td>
+        </ng-container>
+        
+        
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <!-- <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
+                <table class="table" *ngIf="element.produse.length > 0">
+                    <thead>
+                      <tr>
+                        <th scope="col">Produs</th>
+                        <th scope="col">Furnizor</th>
+                        <th scope="col">UM</th>
+                        <th scope="col">Cant</th>
+                        <th scope="col">Cutii</th>
+                        <th scope="col">Pret um</th>
+                        <th scope="col">Valoare</th>
+                        <th scope="col">#</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let prod of element.produse">                        
+                        <td>{{prod.produsNume}}</td>
+                        <td>{{prod.furnizorNume}}</td>
+                        <td>{{prod.um}}</td>
+                        <td>{{prod.cantitate}}</td>
+                        <td>{{prod.cutii}}</td>
+                        <td>{{prod.pretUm}}</td>
+                        <td>{{prod.valoare}}</td>
+                        <td>
+                            <input type="checkbox" [(ngModel)]="prod.isInComanda" name="list_name" value="{{prod.id}}"
+                                (change)="isAllSelected(element)" />
+                        </td>
+                      </tr>                      
+                    </tbody>
+                  </table>
+            </div>
+            </td>
+        </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+            class="example-element-row"
+            >
+        </tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+    </table>
+</ng-container>
+</app-generic-list>
+
+<!-- https://www.freakyjolly.com/check-uncheck-all-checkbox-list-in-angular/ -->

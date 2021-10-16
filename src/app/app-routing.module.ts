@@ -21,6 +21,9 @@ import { ArhitectiEditComponent } from './nomenclatoare/arhitecti/arhitecti-item
 import { UmListComponent } from './nomenclatoare/um/um-list/um-list.component';
 import { UmCreateComponent } from './nomenclatoare/um/um-item/um-create/um-create.component';
 import { UmEditComponent } from './nomenclatoare/um/um-item/um-edit/um-edit.component';
+import { ComenziListComponent } from './comenzi/comenzi-list/comenzi-list.component';
+import { ComenziCreateComponent } from './comenzi/comenzi-item/comenzi-create/comenzi-create.component';
+import { ComenziEditComponent } from './comenzi/comenzi-item/comenzi-edit/comenzi-edit.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -47,6 +50,10 @@ const routes: Routes = [
   {path: "oferte/create", component: OferteCreateComponent},
   {path: "oferte/edit/:id", component: OferteEditComponent},
   {path: "oferte/filter", component: OferteFilterComponent},
+
+  {path: "comenzi", component: ComenziListComponent} ,
+  {path: "comenzi/create", component: ComenziCreateComponent},
+  {path: "comenzi/edit/:id", component: ComenziEditComponent},
 
   {path: "um", component:UmListComponent},
   {path: "um/create", component: UmCreateComponent},

@@ -1,0 +1,6 @@
+<h2>Editeaza Comanda</h2>
+<app-comenzi-item *ngIf="model" 
+[selectedProdus] = "selectedProdus"
+[preselectClient] = "preselectClient"
+[preselectArhitect] = "preselectArhitect"
+[model]="model" (onSaveChanges)="saveChanges($event)"></app-comenzi-item>

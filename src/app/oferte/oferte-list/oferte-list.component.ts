@@ -1,7 +1,10 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatRow } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { oferteDTO } from '../oferte-item/oferte.model';
 import { OferteService } from '../oferte.service';
 
@@ -24,8 +27,9 @@ export class OferteListComponent implements OnInit {
   checked = [];
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
+  errors: string[] = [];
 
-  constructor(private oferteService: OferteService) { 
+  constructor(private oferteService: OferteService, private comenziService: ComenziService, private router:Router) { 
     this.oferte = [];
     this.expandedElement = [];
   }
@@ -53,10 +57,9 @@ export class OferteListComponent implements OnInit {
     var index = this.expandedElement.findIndex(f=>f.id == element.id);
     if(index == -1)
       this.expandedElement.push(element);
-    else this.expandedElement.splice(index,1);
-    //expandedElement = expandedElement === element ? expandedElement.push(element) : expandedElement.splice(1,1)
-    //this.expandedElement = (this.expandedElement.findIndex(f=>f.id == element.id) === -1 ? this.expandedElement.push(element) : this.expandedElement.splice(1,1));
+    else this.expandedElement.splice(index,1);    
   }
+
   getCheckbox(checkbox: any, row: oferteDTO){
     this.checked = [];
     console.log(row);
@@ -73,14 +76,21 @@ export class OferteListComponent implements OnInit {
 
   genereazaComanda()
   {
+    var selectedProd: produseOfertaDTO[] = [];
     this.oferte.forEach(element => {
       element.produse.forEach(prod=>{
         if(prod.isInComanda)
           {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComanda);      
+            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComanda);
+            selectedProd.push(prod);
           }
       })
     });
+
+    this.comenziService.fromOferta(selectedProd).subscribe(()=>{
+      this.router.navigate(['/oferte'])
+    }, 
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
 }
