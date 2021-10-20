@@ -23,7 +23,7 @@ export class ComenziListComponent implements OnInit {
     this.comenzi = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'select', 'action'];
+  columnsToDisplay= ['numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'action'];
 
   ngOnInit(): void {
     this.loadList();
