@@ -4,30 +4,38 @@
         <mat-form-field appearance="outline">
             <mat-label>Adresa</mat-label>
             <input matInput formControlName="adresa" />
+            <mat-error>{{form.get("adresa")?.getError("required")?.message}}</mat-error>
+            <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Oras</mat-label>
             <input matInput formControlName="oras" />
+            <mat-error>{{form.get("oras")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Tara</mat-label>
             <input matInput formControlName="tara" />
+            <mat-error>{{form.get("tara")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Tel</mat-label>
             <input matInput formControlName="tel" />
+            <mat-error>{{form.get("tel")?.getError("required")?.message}}</mat-error>
+            <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" />
+            <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+            <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
     </div>
     <div>

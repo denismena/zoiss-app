@@ -3,22 +3,29 @@
     <mat-form-field appearance="outline">
         <mat-label>Nume</mat-label>
         <input formControlName="nume" matInput>
+        <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Tara</mat-label>
         <input formControlName="tara" matInput>
+        <mat-error>{{form.get("tara")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Adresa</mat-label>
         <input formControlName="adresa" matInput>
+        <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Telefon</mat-label>
         <input formControlName="tel" matInput>
+        <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput>
+        <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+        <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <div><mat-checkbox class="example-margin" formControlName="active">Active</mat-checkbox></div>
     <div>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { produseCreationDTO, produseDTO } from './produse.model';
 
 @Component({
@@ -24,13 +25,13 @@ export class ProduseItemComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      cod:['', {validators:[Validators.required]}],
-      nume:['', {validators:[Validators.required]}],
-      um: '',
-      perCutie: 1,
-      pret: 0,
-      greutatePerUm: 1,
-      codVamal: '',
+      cod:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
+      nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:255 })]}],
+      um: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      perCutie: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pret: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      greutatePerUm: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      codVamal: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
       active: true
     });
     if(this.model !== undefined)

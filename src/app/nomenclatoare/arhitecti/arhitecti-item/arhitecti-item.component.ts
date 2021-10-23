@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from './arhitecti.model';
 
 @Component({
@@ -25,11 +26,11 @@ export class ArhitectiItemComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      nume:['', {validators:[Validators.required]}],
-      comision: [null, {validators:[Validators.required]}],
-      adresa: '',
-      tel: '',
-      email: '',
+      nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
+      comision: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      adresa: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
+      tel: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      email: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:50 })]}],
       active: true
     });
     if(this.model !== undefined)

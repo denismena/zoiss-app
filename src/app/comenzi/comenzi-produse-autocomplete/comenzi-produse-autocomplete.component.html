@@ -19,21 +19,29 @@
     <mat-form-field appearance="outline">
         <mat-label>cantitate</mat-label>
         <input matInput formControlName="cantitate"/>
+        <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>cutii</mat-label>
         <input matInput formControlName="cutii"/>
+        <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>pretUm</mat-label>
         <input matInput formControlName="pretUm"/>
+        <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>valoare</mat-label>
         <input matInput formControlName="valoare"/>
+        <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
 
     <button mat-flat-button color="primary" [disabled]="form.invalid">Adauga</button>
@@ -73,6 +81,8 @@
             <mat-form-field appearance="outline">
                 <mat-label>cantitate</mat-label>
                 <input matInput [(ngModel)]="element.cantitate"/>
+                <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
+                <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
             </mat-form-field>
         </td>
     </ng-container>
@@ -83,6 +93,8 @@
             <mat-form-field appearance="outline">
                 <mat-label>cutii</mat-label>
                 <input matInput [(ngModel)]="element.cutii"/>
+                <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
+                <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
             </mat-form-field>  
         </td>
     </ng-container>
@@ -93,6 +105,8 @@
             <mat-form-field appearance="outline" style="margin-top: 10px;">
                 <mat-label>pretUm</mat-label>
                 <input matInput [(ngModel)]="element.pretUm" />
+                <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
+                <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
             </mat-form-field>
         </td>
     </ng-container>
@@ -103,6 +117,8 @@
             <mat-form-field appearance="outline" style="margin-top: 10px;">
                 <mat-label>valoare</mat-label>
                 <input matInput [(ngModel)]="element.valoare" />
+                <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
+                <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
             </mat-form-field>
         </td>
     </ng-container>

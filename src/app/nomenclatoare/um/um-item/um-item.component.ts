@@ -24,7 +24,7 @@ export class UmItemComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      nume:['', {validators:[Validators.required]}],      
+      nume:['', {validators:[Validators.required, Validators.maxLength(50)]}],      
     });
     if(this.model !== undefined)
     {
@@ -36,5 +36,14 @@ export class UmItemComponent implements OnInit {
     //this.router.navigate(['/um'])
     this.onSaveChanges.emit(this.form.value);
   }
-
+  getErrorMessageFieldName(){
+    const field = this.form.get('nume');
+    if(field?.hasError('required')){
+      return 'Campul este necesar!'
+    }
+    if(field?.hasError('maxlength')){
+      return 'Numarul maxim de caractere este 50!'
+    }
+    return '';
+  }
 }

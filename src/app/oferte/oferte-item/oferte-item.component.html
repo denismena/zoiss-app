@@ -6,7 +6,8 @@
     <mat-form-field appearance="outline">
         <mat-label>Numar</mat-label>
         <input formControlName="numar" matInput>
-        <mat-error>Completati numarul!</mat-error>
+        <mat-error>{{form.get("numar")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("numar")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -26,11 +27,13 @@
     <mat-form-field appearance="outline">
         <mat-label>Avans</mat-label>
         <input formControlName="avans" matInput>
+        <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
         <mat-label>Conditii plata</mat-label>
         <input formControlName="conditiiPlata" matInput>
+        <mat-error>{{form.get("conditiiPlata")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     
     <mat-form-field appearance="outline">

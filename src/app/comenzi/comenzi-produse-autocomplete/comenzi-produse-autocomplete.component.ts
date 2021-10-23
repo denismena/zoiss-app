@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
@@ -47,10 +48,10 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       furnizorId:[null],
       furnizorNume:'',
       umId: ['', {validators:[Validators.required]}],
-      cantitate: [null, {validators:[Validators.required]}],
-      cutii: [null, {validators:[Validators.required]}],
-      pretUm: [null, {validators:[Validators.required]}],
-      valoare: [null, {validators:[Validators.required]}],
+      cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
     });    
     
     this.loadProduseList();

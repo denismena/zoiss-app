@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'; 
 import { SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2'
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -120,7 +121,8 @@ import { ComenziProduseAutocompleteComponent } from './comenzi/comenzi-produse-a
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    RxReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

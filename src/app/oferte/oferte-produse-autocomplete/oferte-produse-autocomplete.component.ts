@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
@@ -62,10 +63,10 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       furnizorId:[null],
       furnizorNume:'',
       umId: ['', {validators:[Validators.required]}],
-      cantitate: [null, {validators:[Validators.required]}],
-      cutii: [null, {validators:[Validators.required]}],
-      pretUm: [null, {validators:[Validators.required]}],
-      valoare: [null, {validators:[Validators.required]}],
+      cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
     });    
     
     // if(this.model !== undefined)

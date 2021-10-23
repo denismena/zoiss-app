@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { furnizoriDTO } from './furnizori.model';
 
 @Component({
@@ -24,11 +25,11 @@ export class FurnizoriItemComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      nume:['', {validators:[Validators.required]}],
-      tara: '',
-      adresa: '',
-      tel: '',
-      email: '',
+      nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:150 })]}],
+      tara: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      adresa: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
+      tel: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      email: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       active: true
     });
     if(this.model !== undefined)

@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { clientiAdresaDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
 
@@ -29,11 +30,11 @@ export class ClientiAdresaComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.formBuilder.group({
-      adresa:[null, {validators:[Validators.required]}],
-      oras:'',
-      tara:'',
-      tel:[null, {validators:[Validators.required]}],
-      email:'',
+      adresa:[null, {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:255 })]}],
+      oras:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
+      tara:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
+      tel:[null, {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
+      email:[null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       sediu: true,
       livrare: true
     });    

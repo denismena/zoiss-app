@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
 import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
@@ -39,13 +40,13 @@ export class OferteItemComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      numar:[null, {validators:[Validators.required]}],
+      numar:[null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:false })]}],
       data:[new Date(), {validators:[Validators.required]}],
       clientId:[null, {validators:[Validators.required]}],
       arhitectId: null,
       utilizatorId:[1, {validators:[Validators.required]}],
-      avans: null,
-      conditiiPlata: '',
+      avans: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
+      conditiiPlata: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
       termenLivrare: null,
       produse: ''
     });    

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { clientiAdresaDTO, clientiDTO } from './clienti.model';
 
 @Component({
@@ -26,12 +27,12 @@ export class ClientiItemComponent implements OnInit {
       //alert(params.id);
     });
     this.form = this.formBuilder.group({
-      nume:['', {validators:[Validators.required]}],
+      nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:150 })]}],
       pfPj: 'PJ',
       cuiCnp:'',
-      registruComert:'',
-      persoanaContact: null,
-      persoanaContactTel: null,
+      registruComert:['', {validators:[RxwebValidators.maxLength({value:150 })]}],
+      persoanaContact: [null, {validators:[RxwebValidators.maxLength({value:50 })]}],
+      persoanaContactTel: [null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       active: true,
       adrese: null
     });
@@ -62,10 +63,8 @@ export class ClientiItemComponent implements OnInit {
       return {id: val.id, adresa: val.adresa, oras: val.oras, tara: val.tara,
         tel: val.tel, email: val.email, sediu: val.sediu, livrare: val.livrare}
     });
-    console.log('set adrese', adrese);
     this.form.get('adrese')?.setValue(adrese);
 
-    console.log('click done',this.form.value);
     this.onSaveChanges.emit(this.form.value);
   }
 }
