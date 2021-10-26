@@ -1,5 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import Swal from 'sweetalert2';
 import { produseDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
 
@@ -11,6 +13,7 @@ import { ProduseService } from '../produse.service';
 export class ProduseListComponent implements OnInit {
 
   produse: produseDTO[];
+  errors: string[] = [];
   constructor(private produseService: ProduseService) {  
     this.produse = [];
   }
@@ -31,6 +34,9 @@ export class ProduseListComponent implements OnInit {
     this.produseService.delete(id)
     .subscribe(() => {
       this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
 

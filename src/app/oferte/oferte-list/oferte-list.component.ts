@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import Swal from 'sweetalert2';
 import { oferteDTO } from '../oferte-item/oferte.model';
 import { OferteService } from '../oferte.service';
 
@@ -50,6 +51,9 @@ export class OferteListComponent implements OnInit {
     this.oferteService.delete(id)
     .subscribe(() => {
       this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
 

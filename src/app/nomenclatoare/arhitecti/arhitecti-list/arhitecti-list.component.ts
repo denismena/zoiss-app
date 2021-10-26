@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import Swal from 'sweetalert2';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
 
@@ -10,6 +12,7 @@ import { ArhitectiService } from '../arhitecti.service';
 export class ArhitectiListComponent implements OnInit {
 
   arhitecti: arhitectiDTO[];
+  errors: string[] = [];
   constructor(private arhitectiService: ArhitectiService) { 
     this.arhitecti = [];
   }
@@ -29,6 +32,9 @@ export class ArhitectiListComponent implements OnInit {
     this.arhitectiService.delete(id)
     .subscribe(() => {
       this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import Swal from 'sweetalert2';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
 
@@ -10,6 +12,7 @@ import { FurnizoriService } from '../furnizori.service';
 export class FurnizoriListComponent implements OnInit {
 
   furnizori: furnizoriDTO[];
+  errors: string[] = [];
   constructor(private furnizoriService: FurnizoriService) { 
     this.furnizori = [];
   }
@@ -29,6 +32,9 @@ export class FurnizoriListComponent implements OnInit {
     this.furnizoriService.delete(id)
     .subscribe(() => {
       this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
 }

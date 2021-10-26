@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import Swal from 'sweetalert2';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
 
@@ -10,6 +12,7 @@ import { ClientiService } from '../clienti.service';
 export class ClientiListComponent implements OnInit {
 
   clienti: clientiDTO[];
+  errors: string[] = [];
   constructor(private clientiService: ClientiService) { 
     this.clienti = [];
   }
@@ -28,6 +31,9 @@ export class ClientiListComponent implements OnInit {
     this.clientiService.delete(id)
     .subscribe(() => {
       this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
 }

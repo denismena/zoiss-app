@@ -87,7 +87,7 @@
         <td mat-cell *matCellDef="let element">
             <mat-form-field appearance="outline">
                 <mat-label>cantitate</mat-label>
-                <input matInput [(ngModel)]="element.cantitate" required />                
+                <input matInput [(ngModel)]="element.cantitate" required [rxnumeric]='{acceptValue:1, allowDecimal:true}'/>                
             </mat-form-field>      
         </td>
     </ng-container>
@@ -97,7 +97,7 @@
         <td mat-cell *matCellDef="let element">
             <mat-form-field appearance="outline">
                 <mat-label>cutii</mat-label>
-                <input matInput [(ngModel)]="element.cutii" required />                
+                <input matInput [(ngModel)]="element.cutii" required [rxnumeric]='{acceptValue:1, allowDecimal:true}'/>                
             </mat-form-field>  
         </td>
     </ng-container>
@@ -107,7 +107,7 @@
         <td mat-cell *matCellDef="let element">
             <mat-form-field appearance="outline" style="margin-top: 10px;">
                 <mat-label>pretUm</mat-label>
-                <input matInput [(ngModel)]="element.pretUm" required />                
+                <input matInput [(ngModel)]="element.pretUm" required [rxnumeric]='{acceptValue:1, allowDecimal:true}' />
             </mat-form-field>
         </td>
     </ng-container>
@@ -117,7 +117,7 @@
         <td mat-cell *matCellDef="let element">
             <mat-form-field appearance="outline" style="margin-top: 10px;">
                 <mat-label>valoare</mat-label>
-                <input matInput [(ngModel)]="element.valoare" required />
+                <input matInput [(ngModel)]="element.valoare" required [rxnumeric]='{acceptValue:1, allowDecimal:true}'/>
             </mat-form-field>
         </td>
     </ng-container>

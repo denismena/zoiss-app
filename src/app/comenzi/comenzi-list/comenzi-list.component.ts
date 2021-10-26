@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { comenziDTO } from '../comenzi-item/comenzi.model';
 import { ComenziService } from '../comenzi.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -39,6 +40,9 @@ export class ComenziListComponent implements OnInit {
     this.comenziService.delete(id)
     .subscribe(() => {
       this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
 
