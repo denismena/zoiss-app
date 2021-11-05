@@ -24,12 +24,15 @@ import { UmEditComponent } from './nomenclatoare/um/um-item/um-edit/um-edit.comp
 import { ComenziListComponent } from './comenzi/comenzi-list/comenzi-list.component';
 import { ComenziCreateComponent } from './comenzi/comenzi-item/comenzi-create/comenzi-create.component';
 import { ComenziEditComponent } from './comenzi/comenzi-item/comenzi-edit/comenzi-edit.component';
+import { IsAdminGuard } from './is-admin.guard';
+import { LoginComponent } from './security/login/login.component';
+import { RegisterComponent } from './security/register/register.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
   {path: "home", component: HomeComponent},
 
-  {path: "produse", component: ProduseListComponent},
+  {path: "produse", component: ProduseListComponent, canActivate:[IsAdminGuard]},
   {path: "produse/create", component: ProduseCreateComponent},
   {path: "produse/edit/:id", component: ProduseEditComponent},
   
@@ -59,6 +62,8 @@ const routes: Routes = [
   {path: "um/create", component: UmCreateComponent},
   {path: "um/edit/:id", component: UmEditComponent},
 
+  {path: "login", component: LoginComponent},
+  {path: "register", component: RegisterComponent},
   {path: '**', redirectTo:''}
 ];
 

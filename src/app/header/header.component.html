@@ -36,7 +36,20 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form> -->
     </div>
-  </div>
+    <div class="space">
+    </div>
+    <app-authorize-view>
+      <ng-container authorize>
+        <span>{{securityService.getFieldFromJwt('email')}}</span>
+        <a mat-button (click)="securityService.logout()">Logout</a>
+      </ng-container>
+      <ng-container notAuthorize>
+        <!-- <button routerLink="login">Login</button> -->
+        <a routerLink="login">Login</a>&nbsp;&nbsp;
+        <a routerLink="register">Inregistrare</a>
+      </ng-container>
+    </app-authorize-view>
+  </div>  
 </nav>
 <!-- <mat-toolbar color="primary">
   <span>

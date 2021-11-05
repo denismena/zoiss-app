@@ -1,0 +1,19 @@
+<h3>{{action}}</h3>
+<form (submit)="onSaveChanges.emit(form.value)" [formGroup]="form" >
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput>
+        <mat-error>{{form.get("email")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Parola</mat-label>
+        <input formControlName="password" matInput type="password">
+        <mat-error>{{form.get("password")?.getError("required")?.message}}</mat-error>
+    </mat-form-field>
+    <div>
+        <button mat-flat-button color="primary" [disabled]="form.invalid">{{action}}</button>        
+        <a mat-stroke-button routerLink="/" mat-flat-button color="primary">Renunta</a>
+    </div>
+</form>

@@ -61,6 +61,10 @@ import { ComenziListComponent } from './comenzi/comenzi-list/comenzi-list.compon
 import { ComenziCreateComponent } from './comenzi/comenzi-item/comenzi-create/comenzi-create.component';
 import { ComenziEditComponent } from './comenzi/comenzi-item/comenzi-edit/comenzi-edit.component';
 import { ComenziProduseAutocompleteComponent } from './comenzi/comenzi-produse-autocomplete/comenzi-produse-autocomplete.component';
+import { AuthorizeViewComponent } from './security/authorize-view/authorize-view.component';
+import { LoginComponent } from './security/login/login.component';
+import { RegisterComponent } from './security/register/register.component';
+import { AuthenticationFormComponent } from './security/authentication-form/authentication-form.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +115,11 @@ import { ComenziProduseAutocompleteComponent } from './comenzi/comenzi-produse-a
     ComenziListComponent,
     ComenziCreateComponent,
     ComenziEditComponent,
-    ComenziProduseAutocompleteComponent
+    ComenziProduseAutocompleteComponent,
+    AuthorizeViewComponent,
+    LoginComponent,
+    RegisterComponent,
+    AuthenticationFormComponent
   ],
   imports: [
     BrowserModule,
