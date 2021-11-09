@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
         "maxLength":"Numarul maxim de caractere este {{1}}!",
         "numeric": "Format incorect!",
         "email": "Email invalid",
+        "compare": "Confirmare parola incorecta",
         "alpha": "Caracterele speciale sunt interzise.",
       }
   });

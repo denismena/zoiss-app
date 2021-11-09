@@ -27,6 +27,8 @@ import { ComenziEditComponent } from './comenzi/comenzi-item/comenzi-edit/comenz
 import { IsAdminGuard } from './is-admin.guard';
 import { LoginComponent } from './security/login/login.component';
 import { RegisterComponent } from './security/register/register.component';
+import { UtilizatoriListComponent } from './nomenclatoare/utilizatori/utilizatori-list/utilizatori-list.component';
+import { UtilizatoriEditComponent } from './nomenclatoare/utilizatori/utilizatori-edit/utilizatori-edit.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -64,6 +66,8 @@ const routes: Routes = [
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
+  {path: "utilizatori", component: UtilizatoriListComponent},
+  {path: "utilizatori/edit/:id", component: UtilizatoriEditComponent},
   {path: '**', redirectTo:''}
 ];
 

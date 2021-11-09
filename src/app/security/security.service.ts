@@ -1,19 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { authentificationResponse, userCredentials } from './security.models';
+import { authentificationResponse, userCredentials, UtilizatoriDTO } from './security.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityService {
 
-  constructor(private http: HttpClient ) {}  
+  constructor(private http: HttpClient, private router: Router ) {}  
 
   private apiUrl = environment.apiUrl + "/utilizatori";
-  private tokenKey: string = 'token';
-  private expirationTokenKey: string = 'token-expiration';
+  private readonly tokenKey: string = 'token';
+  private readonly expirationTokenKey: string = 'token-expiration';
+  private readonly roleField = "role";
 
   isAuthenticated():boolean{
     const token = localStorage.getItem(this.tokenKey);
@@ -31,7 +33,7 @@ export class SecurityService {
   }
 
   getRole():string{
-    return ''; 
+    return this.getFieldFromJwt(this.roleField);
   }
 
   getFieldFromJwt(field: string): string{
@@ -44,6 +46,14 @@ export class SecurityService {
     return this.http.post<authentificationResponse>(this.apiUrl+"/create", userCredentials);
   }
 
+  edit(id:string, utilizatoriDTO: UtilizatoriDTO):Observable<authentificationResponse>{
+    console.log('id', id);
+    console.log('utilizatoriDTO', utilizatoriDTO);
+    //return this.http.post<authentificationResponse>(this.apiUrl+"/edit", utilizatoriDTO);
+    return this.http.put<authentificationResponse>(`${this.apiUrl}/${id}`, utilizatoriDTO);
+    //return this.http.put(`${this.apiUrl}/${id}`, utilizatoriDTO);
+  }
+
   login(userCredentials: userCredentials):Observable<authentificationResponse>{
     return this.http.post<authentificationResponse>(this.apiUrl+"/login", userCredentials);
   }
@@ -51,10 +61,27 @@ export class SecurityService {
   logout(){
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.expirationTokenKey);
+    this.router.navigate(['/']);
   }
 
   saveToke(authenticationResponse: authentificationResponse){
     localStorage.setItem(this.tokenKey, authenticationResponse.token);
     localStorage.setItem(this.expirationTokenKey, authenticationResponse.expiration.toString());
+  }
+
+  getToken(){
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  getUsers(): Observable<UtilizatoriDTO[]>{
+    return this.http.get<UtilizatoriDTO[]>(this.apiUrl);
+  }
+
+  getById(id: string): Observable<UtilizatoriDTO>{
+    return this.http.get<UtilizatoriDTO>(`${this.apiUrl}/${id}`);
+  } 
+
+  markAsInactive(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

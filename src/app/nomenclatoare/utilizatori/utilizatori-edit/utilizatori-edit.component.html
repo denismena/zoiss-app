@@ -1,0 +1,26 @@
+<!-- <app-authentication-form (onSaveChanges)="register($event)" [action]="'Register'"></app-authentication-form> -->
+<h3>Edit</h3>
+<form (submit)="edit(form.value)" [formGroup]="form" >
+    <mat-form-field appearance="outline">
+        <mat-label>Nume</mat-label>
+        <input formControlName="name" matInput>
+        <mat-error>{{form.get("name")?.getError("required")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput [readonly]="true" [disabled]="true">
+        <mat-error>{{form.get("email")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+    </mat-form-field>    
+    <mat-form-field appearance="outline">
+        <mat-label>Telefon</mat-label>
+        <input formControlName="phoneNumber" matInput>
+        <mat-error>{{form.get("phoneNumber")?.getError("required")?.message}}</mat-error>
+    </mat-form-field>
+    
+    <div>
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Salveaza</button>        
+        <a mat-stroke-button routerLink="/utilizatori" mat-flat-button color="primary">Renunta</a>
+    </div>
+</form>
+<app-display-errors [errors]="errors"></app-display-errors>
