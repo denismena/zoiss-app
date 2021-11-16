@@ -30,7 +30,7 @@ export class ArhitectiItemComponent implements OnInit {
       comision: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       adresa: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
       tel: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
-      email: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:50 })]}],
+      email: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       active: true
     });
     if(this.model !== undefined)

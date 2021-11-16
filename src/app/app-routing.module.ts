@@ -34,7 +34,8 @@ const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
   {path: "home", component: HomeComponent},
 
-  {path: "produse", component: ProduseListComponent, canActivate:[IsAdminGuard]},
+  //{path: "produse", component: ProduseListComponent, canActivate:[IsAdminGuard]},
+  {path: "produse", component: ProduseListComponent},
   {path: "produse/create", component: ProduseCreateComponent},
   {path: "produse/edit/:id", component: ProduseEditComponent},
   

@@ -13,9 +13,12 @@
         <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>UM</mat-label>
-        <input formControlName="um" matInput>
-        <mat-error>{{form.get("um")?.getError("maxLength")?.message}}</mat-error>
+        <mat-label>um</mat-label>                
+        <mat-select formControlName="umId">
+            <mat-option *ngFor="let um of umList" [value]="um.id">
+                {{um.nume}}
+              </mat-option>            
+          </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Cantitate per cutie</mat-label>

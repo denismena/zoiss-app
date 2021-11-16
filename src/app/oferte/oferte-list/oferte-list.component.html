@@ -45,8 +45,8 @@
             <th mat-header-cell *matHeaderCellDef>Select</th>
             <td *matCellDef="let element">
               <!-- <mat-checkbox #checkBox *ngIf="element.produseProc!=element.produseAll"
-                    [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox>-->
-            <input type="checkbox" *ngIf="element.produseProc!=element.produseAll"
+                    [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox> -->
+            <input #checkBox type="checkbox" *ngIf="element.produseProc!=element.produseAll"
                 [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
             </td>
         </ng-container>

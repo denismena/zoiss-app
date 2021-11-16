@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { umCreationDTO } from './um.model';
 
 @Component({
@@ -24,8 +25,8 @@ export class UmItemComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      nume:['', {validators:[Validators.required, Validators.maxLength(50)]}],      
-    });
+      nume:[null, {validators:[RxwebValidators.required(), , RxwebValidators.maxLength({value:50 })]}],      
+    });    
     if(this.model !== undefined)
     {
       this.form.patchValue(this.model);

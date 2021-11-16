@@ -2,6 +2,7 @@ export interface produseDTO{
     id: number;
     nume: string;
     cod: string;
+    umId: number;
     um: string;
     perCutie: number;
     pret: number;

@@ -10,7 +10,7 @@ export interface oferteDTO{
     preselectClient: clientiDTO;
     arhitectId: number;
     preselectArhitect: arhitectiDTO;
-    utilizatorId: number;
+    utilizatorId: string;
     utilizator: string;
     avans: number;
     conditiiPlata: string;
@@ -26,7 +26,7 @@ export interface oferteCreationDTO{
     data: Date;
     clientId: number;
     arhitectId: number;    
-    utilizatorId: number;    
+    utilizatorId: string;    
     avans: number;
     conditiiPlata: string;
     termenLivrare: Date;

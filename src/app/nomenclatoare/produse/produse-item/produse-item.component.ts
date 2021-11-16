@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { umDTO } from '../../um/um-item/um.model';
+import { UMService } from '../../um/um.service';
 import { produseCreationDTO, produseDTO } from './produse.model';
 
 @Component({
@@ -11,11 +13,11 @@ import { produseCreationDTO, produseDTO } from './produse.model';
 })
 export class ProduseItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder) { }
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private umService: UMService) { }
   public form!: FormGroup;
   @Input()
   model!:produseCreationDTO;
-  
+  umList: umDTO[]=[];
    @Output()
    onSaveChanges: EventEmitter<produseCreationDTO> = new EventEmitter<produseCreationDTO>();
   
@@ -27,7 +29,7 @@ export class ProduseItemComponent implements OnInit {
     this.form = this.formBuilder.group({
       cod:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:255 })]}],
-      um: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      umId: ['', {validators:[RxwebValidators.required()]}],
       perCutie: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pret: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       greutatePerUm: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
@@ -37,7 +39,11 @@ export class ProduseItemComponent implements OnInit {
     if(this.model !== undefined)
     {
       this.form.patchValue(this.model);
-    }    
+    }
+
+    this.umService.getAll().subscribe(um=>{
+      this.umList=um;
+    })
   }
 
   saveProduse(){
