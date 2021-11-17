@@ -34,7 +34,7 @@ export class OferteListComponent implements OnInit {
     this.oferte = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'comandate', 'select', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'comandate', 'select', 'action'];
   
   
   ngOnInit(): void {

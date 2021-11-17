@@ -37,6 +37,7 @@ export interface produseOfertaDTO{
     cutii: number;
     pretUm: number;
     valoare: number;
+    codProdus: string;
     isInComanda: boolean;
     addToComanda: boolean;
 }

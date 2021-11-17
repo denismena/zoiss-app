@@ -41,6 +41,7 @@ export interface produseComandaDTO{
     cutii: number;
     pretUm: number;
     valoare: number;
+    codProdus: string;
 }
 export interface comenziPutGetDTO{
     comanda: comenziDTO;

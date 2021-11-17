@@ -9,7 +9,14 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-comenzi-list',
   templateUrl: './comenzi-list.component.html',
-  styleUrls: ['./comenzi-list.component.scss']
+  styleUrls: ['./comenzi-list.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ComenziListComponent implements OnInit {
 
@@ -24,7 +31,7 @@ export class ComenziListComponent implements OnInit {
     this.comenzi = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'action'];
 
   ngOnInit(): void {
     this.loadList();
