@@ -32,10 +32,11 @@ export class ComenziEditComponent implements OnInit {
         this.clientiService.getById(comanda.comanda.clientId).subscribe(client=>{
           this.preselectClient = client;
         });
-
-        this.arhitectService.getById(comanda.comanda.arhitectId).subscribe(arhitect=>{
-          this.preselectArhitect = arhitect;
-        });
+        if(comanda.comanda.arhitectId != null){
+          this.arhitectService.getById(comanda.comanda.arhitectId).subscribe(arhitect=>{
+            this.preselectArhitect = arhitect;
+          });
+        }
       })
     });
   }

@@ -25,7 +25,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       .pipe(
         startWith(''),
         map(state => state ? this._filterStates(state) : this.produse.slice())
-      );    
+      );
   }
 
   @ViewChild(MatAutocompleteTrigger) 
@@ -43,7 +43,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   subscription: Subscription | undefined;
   
   ngOnInit(): void {    
-    this.loadProduseList();    
+    this.loadProduseList();
   }
 
   loadProduseList(){    
@@ -91,5 +91,9 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());
+  }
+
+  public clearSelection(){
+    this.produsCtrl.setValue(null);
   }
 }

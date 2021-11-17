@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
+import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
@@ -22,15 +24,8 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   // produse: produseDTO[]
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
     private produseService: ProduseService, private umService: UMService) { 
-    // this.produse = [];
     this.selectedProdus = [];
-    this.produsToDisplay = [];
-
-    // this.selectedProdus = this.produsCtrl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(state => state ? this._filterStates(state) : this.produse.slice())
-    //   );    
+    this.produsToDisplay = [];    
   }
   public form!: FormGroup;
 
@@ -41,6 +36,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   selectedProdus: produseOfertaDTO[];
   produsToDisplay: produseOfertaDTO[];
   umList: umDTO[]=[];
+
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
@@ -48,6 +44,12 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
+  
+  @ViewChild(ProduseAutocompleteComponent)
+  produsAuto!: ProduseAutocompleteComponent;
+
+  @ViewChild(FurnizoriAutocompleteComponent)
+  furnizoriAuto!: FurnizoriAutocompleteComponent;
 
   
   ngOnInit(): void {
@@ -125,6 +127,8 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.table.renderRows();
     }
     this.form.reset();
+    this.produsAuto.clearSelection();
+    this.furnizoriAuto.clearSelection();
   }
 
   remove(produs:any){

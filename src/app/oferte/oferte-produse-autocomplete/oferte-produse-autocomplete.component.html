@@ -2,10 +2,10 @@
 <form (submit)="saveChanges()" [formGroup]="form">
     <table>
         <tr><td>
-    <app-produse-autocomplete (onOptionSelected)="selectProdus($event)"></app-produse-autocomplete>
+    <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsAuto></app-produse-autocomplete>
     <input type="hidden" formControlName="produsId" #produsId>
     
-    <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)"></app-furnizori-autocomplete>            
+    <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizoriAuto></app-furnizori-autocomplete>            
         <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF">
     <mat-form-field appearance="outline">
         <mat-label>um</mat-label>                

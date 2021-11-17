@@ -34,9 +34,11 @@ export class OferteEditComponent implements OnInit {
           this.preselectClient = client;
         });
 
-        this.arhitectService.getById(oferta.oferta.arhitectId).subscribe(arhitect=>{
-          this.preselectArhitect = arhitect;
-        });
+        if(oferta.oferta.arhitectId != null){
+          this.arhitectService.getById(oferta.oferta.arhitectId).subscribe(arhitect=>{
+            this.preselectArhitect = arhitect;
+          });
+        }
       })
     });
   }

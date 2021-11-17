@@ -96,4 +96,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());
   }
+  public clearSelection(){
+    this.furnizorCtrl.setValue(null);
+  }
 }

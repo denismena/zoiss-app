@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
+import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
@@ -36,6 +38,11 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
+  @ViewChild(ProduseAutocompleteComponent)
+  produsAuto!: ProduseAutocompleteComponent;
+
+  @ViewChild(FurnizoriAutocompleteComponent)
+  furnizoriAuto!: FurnizoriAutocompleteComponent;
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
@@ -101,6 +108,8 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.table.renderRows();
     }
     this.form.reset();
+    this.produsAuto.clearSelection();
+    this.furnizoriAuto.clearSelection();
   }
 
   remove(produs:any){
