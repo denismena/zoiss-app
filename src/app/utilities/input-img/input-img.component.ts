@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { toBase64 } from '../utils';
 
 @Component({
@@ -13,21 +14,22 @@ export class InputImgComponent implements OnInit {
   imageBase64!: string;
 
   @Input()
-  urlCurrentImage: string = '';
+  urlCurrentImage: any | undefined;
 
   @Output()
   onImageSelected = new EventEmitter<File>();
 
   ngOnInit(): void {
+    if(this.urlCurrentImage != undefined)
+      this.urlCurrentImage = environment.pozeProduseUrl + this.urlCurrentImage;
   }
 
   change(event: any){
     if (event.target.files.length > 0){
       const file: File = event.target.files[0];
-      //toBase64(file).then((retValue: string) => this.imageBase64 = retValue);
-      toBase64(file);
+      toBase64(file).then((retValue: any) => this.imageBase64 = retValue);      
       this.onImageSelected.emit(file);
-      this.urlCurrentImage = '';
+      this.urlCurrentImage = null;
     }
   }
 

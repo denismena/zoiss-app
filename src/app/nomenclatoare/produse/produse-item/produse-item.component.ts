@@ -34,6 +34,7 @@ export class ProduseItemComponent implements OnInit {
       pret: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       greutatePerUm: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       codVamal: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      poza: '',
       active: true
     });
     if(this.model !== undefined)
@@ -49,6 +50,10 @@ export class ProduseItemComponent implements OnInit {
   saveProduse(){
     //this.router.navigate(['/clienti'])
     this.onSaveChanges.emit(this.form.value);
+  }
+
+  onImageSelected(image: any){
+    this.form.get('poza')?.setValue(image);
   }
 
 }

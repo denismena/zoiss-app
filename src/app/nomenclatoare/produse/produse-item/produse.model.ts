@@ -8,19 +8,20 @@ export interface produseDTO{
     pret: number;
     greutatePerUm: number;
     codVamal: string;
-    poza: string;
+    poza: any;
     active: boolean;    
 }
 
 export interface produseCreationDTO{    
     nume: string;
     cod: string;
+    umId: number;
     um: string;
     perCutie: number;
     pret: number;
     greutatePerUm: number;
     codVamal: string;
-    poza: string;
+    poza: any;
     active: boolean; 
 }
 

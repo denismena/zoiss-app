@@ -27,15 +27,18 @@ export class ProduseService {
   }
 
   create(produse: produseCreationDTO){
-    return this.http.post(this.apiUrl, produse);
+    const formData = this.buildFormData(produse);
+    return this.http.post(this.apiUrl, formData);
   }
 
   getById(id: number): Observable<produseDTO>{
     return this.http.get<produseDTO>(`${this.apiUrl}/${id}`);
   } 
 
-  edit(id: number, genre: produseCreationDTO){
-    return this.http.put(`${this.apiUrl}/${id}`, genre);
+  edit(id: number, produs: produseCreationDTO){
+    const formData = this.buildFormData(produs);
+    return this.http.put(`${this.apiUrl}/${id}`, formData);
+    //return this.http.put(`${this.apiUrl}/${id}`, genre);
   }
 
   delete(id: number) {
@@ -48,8 +51,8 @@ export class ProduseService {
     formData.append('nume', produs.nume);
     formData.append('cod', produs.cod);
 
-    if (produs.um){
-      formData.append('um', produs.um);
+    if (produs.umId){
+      formData.append('umId', produs.umId.toString());
     }
     if (produs.perCutie){
       formData.append('perCutie', produs.perCutie.toString());
