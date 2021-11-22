@@ -67,7 +67,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       furnizorId: new FormControl()
     });
     this.produsCtrl.valueChanges.subscribe(value => {
-      this.produseService.searchByName(value).subscribe(produs => {
+      this.produseService.searchByNameComanda(value).subscribe(produs => {
         this.produsToDisplay = produs;
       });
     })
@@ -79,7 +79,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   }
 
   loadProduseList(){
-    this.produseService.getProduseAutocomplete().subscribe(produse=>{
+    this.produseService.getProduseAutocompleteComanda().subscribe(produse=>{
       this.produsToDisplay = produse;
     });    
   }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { produseComandaDTO } from 'src/app/comenzi/comenzi-item/comenzi.model';
 import { environment } from 'src/environments/environment';
 import { produseCreationDTO, produseDTO, produseOfertaDTO } from './produse-item/produse.model';
 
@@ -20,9 +21,19 @@ export class ProduseService {
     return this.http.get<produseOfertaDTO[]>(this.apiUrl);
   }
 
+  getProduseAutocompleteComanda(): Observable<produseComandaDTO[]>{
+    return this.http.get<produseComandaDTO[]>(this.apiUrl);
+  }
+
   searchByName(name: string): Observable<produseOfertaDTO[]>{
     const headers = new HttpHeaders('Content-Type: application/json');
     return this.http.post<produseOfertaDTO[]>(this.apiUrl+'/searchByName', 
+    JSON.stringify(name), {headers});
+  }
+
+  searchByNameComanda(name: string): Observable<produseComandaDTO[]>{
+    const headers = new HttpHeaders('Content-Type: application/json');
+    return this.http.post<produseComandaDTO[]>(this.apiUrl+'/searchByNameComanda', 
     JSON.stringify(name), {headers});
   }
 

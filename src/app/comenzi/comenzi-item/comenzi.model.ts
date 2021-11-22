@@ -31,6 +31,7 @@ export interface comenziCreationDTO{
 export interface produseComandaDTO{    
     poza: string;
     id: number;
+    oferteProdusId: number;
     produsId: number;
     produsNume: string;
     furnizorId: number;
