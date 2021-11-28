@@ -1,10 +1,10 @@
-<h2>Lista Comenzi</h2>
-<button type="button" routerLink="/comenzi/create" mat-flat-button color="primary">Comanda noua</button>
-<button mat-flat-button color="primary" (click)="genereazaComandaFurnizor()">Genereaza comanda furnizor</button>
+<h2>Lista Comenzi Furnizori</h2>
+<!-- <button type="button" routerLink="/comenzi/create" mat-flat-button color="primary">Comanda furnizor noua</button> -->
+<button mat-flat-button color="primary" (click)="genereazaTransport()">Genereaza transport</button>
 
-<app-generic-list [list]="comenzi">
+<app-generic-list [list]="comenziFurnizor">
     <ng-container content>
-    <table mat-table *ngIf="comenzi.length > 0" [dataSource]="comenzi" multiTemplateDataRows class="mat-elevation-z8 table-index">
+    <table mat-table *ngIf="comenziFurnizor.length > 0" [dataSource]="comenziFurnizor" multiTemplateDataRows class="mat-elevation-z8 table-index">
         <ng-container matColumnDef="expand">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element" (click)="expand(element)">
@@ -25,49 +25,43 @@
                 {{element.data|customDate}}
             </td>
         </ng-container>
-        <ng-container matColumnDef="client">
-            <th mat-header-cell *matHeaderCellDef>Client</th>
+        <ng-container matColumnDef="furnizor">
+            <th mat-header-cell *matHeaderCellDef>Furnizor</th>
             <td mat-cell *matCellDef="let element">
-                {{element.client}}
+                {{element.furnizor}}
             </td>
-        </ng-container>
-        <ng-container matColumnDef="arhitect">
-            <th mat-header-cell *matHeaderCellDef>Arhitect</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.arhitect}}
-            </td>
-        </ng-container>
+        </ng-container>        
         <ng-container matColumnDef="utilizator">
             <th mat-header-cell *matHeaderCellDef>Utilizator</th>
             <td mat-cell *matCellDef="let element">
                 {{element.utilizator}}
             </td>
         </ng-container>
-        <ng-container matColumnDef="comandate">            
-            <th mat-header-cell *matHeaderCellDef>Comandate</th>
+        <ng-container matColumnDef="platit">            
+            <th mat-header-cell *matHeaderCellDef>Platit</th>
+            <td *matCellDef="let element">              
+              <!-- <input #checkBox type="checkbox" *ngIf="element.produseComenziProc!=element.produseComenziAll"
+                [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/> -->
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="transportate">            
+            <th mat-header-cell *matHeaderCellDef>Transportate</th>
             <td *matCellDef="let element">
               {{element.produseComenziProc}} / {{element.produseComenziAll}}
             </td>
         </ng-container>
         <ng-container matColumnDef="select">            
             <th mat-header-cell *matHeaderCellDef>Select</th>
-            <td *matCellDef="let element">
-              <!-- <mat-checkbox #checkBox [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox> -->
+            <td *matCellDef="let element">              
               <input #checkBox type="checkbox" *ngIf="element.produseComenziProc!=element.produseComenziAll"
                 [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="avans">
-            <th mat-header-cell *matHeaderCellDef>Avans</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.avans}}
             </td>
         </ng-container>
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element">
                 <a
-                    routerLink="/comenzi/edit/{{element.id}}"
+                    routerLink="/comenziFurnizor/edit/{{element.id}}"
                     mat-flat-button color="primary"
                 >
                 Edit
@@ -89,12 +83,11 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
             <div class="example-element-detail" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
-                <table class="table" *ngIf="element.comenziProduses.length > 0">
+                <table class="table" *ngIf="element.comenziFurnizoriProduse.length > 0">
                     <thead>
                       <tr>
                         <th scope="col">Produs</th>
                         <th scope="col">Cod</th>
-                        <th scope="col">Furnizor</th>
                         <th scope="col">UM</th>
                         <th scope="col">Cant</th>
                         <th scope="col">Cutii</th>
@@ -104,20 +97,17 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let prod of element.comenziProduses">                        
+                      <tr *ngFor="let prod of element.comenziFurnizoriProduse">                        
                         <td>{{prod.produsNume}}</td>
                         <td>{{prod.codProdus}}</td>
-                        <td>{{prod.furnizorNume}}</td>
                         <td>{{prod.um}}</td>
                         <td>{{prod.cantitate}}</td>
                         <td>{{prod.cutii}}</td>
                         <td>{{prod.pretUm}}</td>
                         <td>{{prod.valoare}}</td>
-                        <td>
-                            <!-- <input type="checkbox" [(ngModel)]="prod.isInComandaFurnizor" name="list_name" value="{{prod.id}}"
-                                (change)="isAllSelected(element)" /> -->
-                            <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor" 
-                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
+                        <td>                            
+                            <!-- <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor" 
+                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" /> -->
                         </td>
                       </tr>                      
                     </tbody>
@@ -136,5 +126,3 @@
     </table>
 </ng-container>
 </app-generic-list>
-
-<!-- https://www.freakyjolly.com/check-uncheck-all-checkbox-list-in-angular/ -->

@@ -62,8 +62,8 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   }
 
   private _filterStates(value: string): furnizoriDTO[] {
-    const filterValue = value;
-    return this.furnizori.filter(p => p.nume.includes(filterValue));
+    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
+    return this.furnizori.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(furn: furnizoriDTO): string {

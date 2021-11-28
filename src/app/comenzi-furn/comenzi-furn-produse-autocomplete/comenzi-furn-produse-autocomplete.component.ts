@@ -3,58 +3,54 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
-import { produseComandaDTO } from '../comenzi-item/comenzi.model';
+import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 
 @Component({
-  selector: 'app-comenzi-produse-autocomplete',
-  templateUrl: './comenzi-produse-autocomplete.component.html',
-  styleUrls: ['./comenzi-produse-autocomplete.component.scss']
+  selector: 'app-comenzi-furn-produse-autocomplete',
+  templateUrl: './comenzi-furn-produse-autocomplete.component.html',
+  styleUrls: ['./comenzi-furn-produse-autocomplete.component.scss']
 })
-export class ComenziProduseAutocompleteComponent implements OnInit {
+export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
     private produseService: ProduseService, private umService: UMService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
   }
+
   public form!: FormGroup;
 
   produsCtrl: FormControl = new FormControl();
   public furnizorFormGroup!: FormGroup;
 
   @Input()
-  selectedProdus: produseComandaDTO[];
-  produsToDisplay: produseComandaDTO[];
+  selectedProdus: produseComandaFurnizorDTO[];
+  produsToDisplay: produseComandaFurnizorDTO[];
   umList: umDTO[]=[];
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
+  columnsToDisplay = ['produsNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
   @ViewChild(ProduseAutocompleteComponent)
   produsAuto!: ProduseAutocompleteComponent;
-
-  @ViewChild(FurnizoriAutocompleteComponent)
-  furnizoriAuto!: FurnizoriAutocompleteComponent;
-
+  
   ngOnInit(): void {
     console.log('selectedProdus in autocomplete:', this.selectedProdus);
     this.activatedRoute.params.subscribe(params=>{
       //alert(params.id);
+      console.log('selectedProdus in autocomplete2:', this.selectedProdus);
     });
-    console.log('lista produse', this.selectProdus);
+    //console.log('lista produse', this.selectProdus);
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
-      produsNume:'',
-      furnizorId:[null],
-      furnizorNume:'',
+      produsNume:'',      
       umId: ['', {validators:[Validators.required]}],
       cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
@@ -63,12 +59,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     });    
     
     this.loadProduseList();
-    
-    this.furnizorFormGroup = new FormGroup({
-      furnizorId: new FormControl()
-    });
+        
     this.produsCtrl.valueChanges.subscribe(value => {
-      this.produseService.searchByNameComanda(value).subscribe(produs => {
+      this.produseService.searchByNameComandaFurnizor(value).subscribe(produs => {
         this.produsToDisplay = produs;
       });
     })
@@ -76,20 +69,12 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.umService.getAll().subscribe(um=>{
       this.umList=um;
     })
-
   }
 
   loadProduseList(){
-    this.produseService.getProduseAutocompleteComanda().subscribe(produse=>{
+    this.produseService.getProduseAutocompleteComandaFurnizor().subscribe(produse=>{
       this.produsToDisplay = produse;
     });    
-  }
-    
-  selectFurnizor(furnizor: any){
-    if(furnizor!==undefined){
-     this.form.get('furnizorId')?.setValue(furnizor.id);
-     this.form.get('furnizorNume')?.setValue(furnizor.nume);
-    }
   }
 
   selectProdus(produs: any){    
@@ -97,7 +82,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.form.get('produsNume')?.setValue(produs.nume);
  }
 
-  private _filterStates(value: string): produseComandaDTO[] {
+  private _filterStates(value: string): produseComandaFurnizorDTO[] {
     const filterValue = value.toLowerCase();
     return this.produsToDisplay.filter(p => p.produsNume.toLowerCase().includes(filterValue));
   }
@@ -110,7 +95,6 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     }
     this.form.reset();
     this.produsAuto.clearSelection();
-    this.furnizoriAuto.clearSelection();
   }
 
   remove(produs:any){
@@ -119,11 +103,5 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.selectedProdus.splice(index, 1);
     this.table.renderRows();
   }
-
-  // dropped(event: CdkDragDrop<any[]>){
-  //   const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
-  //   moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
-  //   this.table.renderRows();
-  // }
 
 }

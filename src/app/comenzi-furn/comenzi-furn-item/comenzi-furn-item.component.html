@@ -1,0 +1,40 @@
+<form (submit)="saveChanges()" [formGroup]="form">
+    <div class="container">    
+        <div class="row">
+            <div class="col-md-6">          
+        <h4>Comanda furnizor</h4>    
+        <mat-form-field appearance="outline">
+            <mat-label>Numar</mat-label>
+            <input formControlName="numar" matInput>
+            <mat-error>Completati numarul!</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field appearance="outline">
+            <mat-label>Data</mat-label>
+            <input formControlName="data" matInput [matDatepicker]="dataPicker">
+            <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dataPicker></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>  
+            
+        <div><mat-checkbox class="example-margin" formControlName="platit">Platit</mat-checkbox></div>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Termen de livrare</mat-label>
+            <input formControlName="termenLivrare" matInput [matDatepicker]="dataPickerTL">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerTL"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerTL></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="col-md-6">
+        <!-- <app-comenzi-produse-autocomplete [selectedProdus]="selectedProdus"></app-comenzi-produse-autocomplete>     -->
+        <app-comenzi-furn-produse-autocomplete *ngIf="selectedProdus" [selectedProdus]="selectedProdus"></app-comenzi-furn-produse-autocomplete>
+    </div>
+        <div>
+            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+            <a mat-stroke-button routerLink="/comenziFurnizor" mat-flat-button color="primary">Renunta</a>
+        </div>
+    </div>
+    </div>
+    </form>

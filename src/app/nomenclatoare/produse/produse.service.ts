@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { produseComandaFurnizorDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
 import { produseComandaDTO } from 'src/app/comenzi/comenzi-item/comenzi.model';
 import { environment } from 'src/environments/environment';
 import { produseCreationDTO, produseDTO, produseOfertaDTO } from './produse-item/produse.model';
@@ -25,6 +26,10 @@ export class ProduseService {
     return this.http.get<produseComandaDTO[]>(this.apiUrl);
   }
 
+  getProduseAutocompleteComandaFurnizor(): Observable<produseComandaFurnizorDTO[]>{
+    return this.http.get<produseComandaFurnizorDTO[]>(this.apiUrl);
+  }
+
   searchByName(name: string): Observable<produseOfertaDTO[]>{
     const headers = new HttpHeaders('Content-Type: application/json');
     return this.http.post<produseOfertaDTO[]>(this.apiUrl+'/searchByName', 
@@ -34,6 +39,12 @@ export class ProduseService {
   searchByNameComanda(name: string): Observable<produseComandaDTO[]>{
     const headers = new HttpHeaders('Content-Type: application/json');
     return this.http.post<produseComandaDTO[]>(this.apiUrl+'/searchByNameComanda', 
+    JSON.stringify(name), {headers});
+  }
+
+  searchByNameComandaFurnizor(name: string): Observable<produseComandaFurnizorDTO[]>{
+    const headers = new HttpHeaders('Content-Type: application/json');
+    return this.http.post<produseComandaFurnizorDTO[]>(this.apiUrl+'/searchByNameComandaFurnizor', 
     JSON.stringify(name), {headers});
   }
 

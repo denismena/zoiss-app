@@ -1,0 +1,5 @@
+<h2>Editeaza Comanda Furnizor</h2>
+<app-comenzi-furn-item *ngIf="model"
+[selectedProdus]="selectedProdus"
+[model]="model" 
+(onSaveChanges)="saveChanges($event)"></app-comenzi-furn-item>

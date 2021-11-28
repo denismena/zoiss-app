@@ -33,6 +33,7 @@ export class ClientiItemComponent implements OnInit {
       registruComert:['', {validators:[RxwebValidators.maxLength({value:150 })]}],
       persoanaContact: [null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       persoanaContactTel: [null, {validators:[RxwebValidators.maxLength({value:50 })]}],
+      persoanaContactEmail: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       active: true,
       adrese: null
     });

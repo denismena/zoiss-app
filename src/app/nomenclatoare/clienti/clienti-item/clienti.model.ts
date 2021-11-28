@@ -6,6 +6,7 @@ export interface clientiDTO{
     registruComert: string;
     persoanaContact: string;
     persoanaContactTel: string;
+    persoanaContactEmail: string;
     active: boolean;
     adrese: clientiAdresaDTO[];
 }
@@ -17,6 +18,7 @@ export interface clientiCreationDTO{
     registruComert: string;
     persoanaContact: string;
     persoanaContactTel: string;
+    persoanaContactEmail: string;
     active: boolean;
     adrese: clientiAdresaDTO[];
 }

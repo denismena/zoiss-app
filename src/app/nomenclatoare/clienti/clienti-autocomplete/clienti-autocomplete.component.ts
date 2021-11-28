@@ -57,8 +57,8 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private _filterStates(value: string): clientiDTO[] {
-    const filterValue = value;
-    return this.clienti.filter(p => p.nume.includes(filterValue));
+    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
+    return this.clienti.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(user: clientiDTO): string {

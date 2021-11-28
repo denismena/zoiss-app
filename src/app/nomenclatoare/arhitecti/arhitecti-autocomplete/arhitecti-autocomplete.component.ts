@@ -57,9 +57,8 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   }
   
   private _filterStates(value: string): arhitectiDTO[] {
-    const filterValue = value;
-    //console.log('value:', value);
-    return this.arhitecti.filter(p => p.nume.includes(filterValue));
+    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
+    return this.arhitecti.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(arhitect: arhitectiDTO): string {

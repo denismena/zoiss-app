@@ -2,9 +2,10 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import { comenziDTO } from '../comenzi-item/comenzi.model';
+import { comenziDTO, produseComandaDTO } from '../comenzi-item/comenzi.model';
 import { ComenziService } from '../comenzi.service';
 import Swal from 'sweetalert2';
+import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.service';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -27,11 +28,11 @@ export class ComenziListComponent implements OnInit {
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];
 
-  constructor(private comenziService: ComenziService, private router:Router) { 
+  constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, private router:Router) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'comandate', 'select', 'action'];
 
   ngOnInit(): void {
     this.loadList();
@@ -61,35 +62,45 @@ export class ComenziListComponent implements OnInit {
   }
 
   getCheckbox(checkbox: any, row: comenziDTO){
-    // this.checked = [];
-    // console.log(row);
-    // row.produse.forEach(p=>p.isInComanda = checkbox.checked
-    // );    
+    this.checked = [];
+    console.log(row);
+    row.comenziProduses.forEach(p=>p.addToComandaFurnizor = checkbox.checked
+    );    
   }
 
-  isAllSelected(row: comenziDTO) {    
-    // row.allComandate = row.produse.every(function(item:any) {
-    //       return item.isInComanda == true;
-    //     })
-    //   console.log('row.allComandate', row.allComandate);
+  isAllSelected(row: comenziDTO) {   
+    row.allComandate = row.comenziProduses.every(function(item:any) {
+          return item.addToComandaFurnizor == true;
+    })
   }
 
-  genereazaComanda()
+  genereazaComandaFurnizor()
   {
-    // var selectedProd: produseOfertaDTO[] = [];
-    // this.comenzi.forEach(element => {
-    //   element.produse.forEach(prod=>{
-    //     if(prod.isInComanda)
-    //       {
-    //         console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComanda);
-    //         selectedProd.push(prod);
-    //       }
-    //   })
-    // });
+    console.log('in');
+    var selectedProd: produseComandaDTO[] = [];
+    this.comenzi.forEach(element => {
+      element.comenziProduses.forEach(prod=>{
+        console.log('prod', prod);
+        if(prod.addToComandaFurnizor)
+          {
+            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComandaFurnizor);
+            selectedProd.push(prod);
+          }
+      })
+    });
 
     // this.comenziService.fromOferta(selectedProd).subscribe(()=>{
     //   this.router.navigate(['/comenzi'])
     // }, 
     // error=> this.errors = parseWebAPIErrors(error));
+
+    if(selectedProd.length > 0){
+      this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
+        console.log('comanda new id', id);
+        this.router.navigate(['/comenziFurnizor/edit/' + id])
+      }, 
+      error=> this.errors = parseWebAPIErrors(error));
+    }
+    else this.errors.push("Nu ati selectat nici o oferta!");
   }
 }

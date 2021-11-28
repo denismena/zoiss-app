@@ -59,8 +59,8 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private _filterStates(value: string): produseDTO[] {
-    const filterValue = value;
-    return this.produse.filter(p => p.nume.includes(filterValue));
+    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
+    return this.produse.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(produs: produseDTO): string {

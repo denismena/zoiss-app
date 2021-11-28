@@ -68,6 +68,11 @@ import { AuthenticationFormComponent } from './security/authentication-form/auth
 import { JwtInterceptorService } from './security/jwt-interceptor.service';
 import { UtilizatoriListComponent } from './nomenclatoare/utilizatori/utilizatori-list/utilizatori-list.component';
 import { UtilizatoriEditComponent } from './nomenclatoare/utilizatori/utilizatori-edit/utilizatori-edit.component';
+import { ComenziFurnListComponent } from './comenzi-furn/comenzi-furn-list/comenzi-furn-list.component';
+import { ComenziFurnProduseAutocompleteComponent } from './comenzi-furn/comenzi-furn-produse-autocomplete/comenzi-furn-produse-autocomplete.component';
+import { ComenziFurnEditComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-edit/comenzi-furn-edit.component';
+import { ComenziFurnCreateComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-create/comenzi-furn-create.component';
+import { ComenziFurnItemComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-item.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +129,12 @@ import { UtilizatoriEditComponent } from './nomenclatoare/utilizatori/utilizator
     RegisterComponent,
     AuthenticationFormComponent,
     UtilizatoriListComponent,
-    UtilizatoriEditComponent
+    UtilizatoriEditComponent,
+    ComenziFurnListComponent,
+    ComenziFurnProduseAutocompleteComponent,
+    ComenziFurnEditComponent,
+    ComenziFurnCreateComponent,
+    ComenziFurnItemComponent
   ],
   imports: [
     BrowserModule,

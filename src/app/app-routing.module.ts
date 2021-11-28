@@ -29,6 +29,9 @@ import { LoginComponent } from './security/login/login.component';
 import { RegisterComponent } from './security/register/register.component';
 import { UtilizatoriListComponent } from './nomenclatoare/utilizatori/utilizatori-list/utilizatori-list.component';
 import { UtilizatoriEditComponent } from './nomenclatoare/utilizatori/utilizatori-edit/utilizatori-edit.component';
+import { ComenziFurnListComponent } from './comenzi-furn/comenzi-furn-list/comenzi-furn-list.component';
+import { ComenziFurnCreateComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-create/comenzi-furn-create.component';
+import { ComenziFurnEditComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-edit/comenzi-furn-edit.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -60,6 +63,10 @@ const routes: Routes = [
   {path: "comenzi", component: ComenziListComponent} ,
   {path: "comenzi/create", component: ComenziCreateComponent},
   {path: "comenzi/edit/:id", component: ComenziEditComponent},
+
+  {path: "comenziFurnizor", component: ComenziFurnListComponent} ,
+  {path: "comenziFurnizor/create", component: ComenziFurnCreateComponent},
+  {path: "comenziFurnizor/edit/:id", component: ComenziFurnEditComponent},
 
   {path: "um", component:UmListComponent},
   {path: "um/create", component: UmCreateComponent},
