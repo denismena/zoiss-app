@@ -39,7 +39,8 @@
         </ng-container>
         <ng-container matColumnDef="platit">            
             <th mat-header-cell *matHeaderCellDef>Platit</th>
-            <td *matCellDef="let element">              
+            <td *matCellDef="let element">  
+                {{element.platit|daNu}}            
               <!-- <input #checkBox type="checkbox" *ngIf="element.produseComenziProc!=element.produseComenziAll"
                 [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/> -->
             </td>

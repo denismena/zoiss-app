@@ -49,7 +49,7 @@ import { ArhitectiEditComponent } from './nomenclatoare/arhitecti/arhitecti-item
 import { ArhitectiAutocompleteComponent } from './nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
 
 import { InputImgComponent } from './utilities/input-img/input-img.component';
-import {CustomDateTimePipe, CustomDatePipe} from './utilities/custom.datepipe';
+import {CustomDateTimePipe, CustomDatePipe, DaNuPipe} from './utilities/custom.datepipe';
 import { OferteProduseAutocompleteComponent } from './oferte/oferte-produse-autocomplete/oferte-produse-autocomplete.component';
 import { ClientiAdresaComponent } from './nomenclatoare/clienti/clienti-adresa/clienti-adresa.component';
 import { UmListComponent } from './nomenclatoare/um/um-list/um-list.component';
@@ -81,6 +81,7 @@ import { ComenziFurnItemComponent } from './comenzi-furn/comenzi-furn-item/comen
 
     CustomDateTimePipe,
     CustomDatePipe,
+    DaNuPipe,
 
     ProduseListComponent,
     ProduseItemComponent,

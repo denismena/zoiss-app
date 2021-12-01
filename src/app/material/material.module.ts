@@ -14,6 +14,7 @@ import {MatTableModule} from '@angular/material/table'
 import {MatIconModule} from '@angular/material/icon'
 import {DragDropModule} from '@angular/cdk/drag-drop'
 import {MatTabsModule} from '@angular/material/tabs'
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'
 
 @NgModule({
   declarations: [],
@@ -30,7 +31,8 @@ import {MatTabsModule} from '@angular/material/tabs'
     MatTableModule,
     MatIconModule,
     DragDropModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSlideToggleModule
   ],
   imports: [
     CommonModule

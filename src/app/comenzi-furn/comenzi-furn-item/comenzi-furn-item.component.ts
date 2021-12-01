@@ -55,7 +55,8 @@ export class ComenziFurnItemComponent implements OnInit {
     const produse = this.selectedProdus.map(val => {
       console.log('saveChanges: ', val);
       return {id: val.id, cantitate: val.cantitate, produsId: val.produsId, comenziProdusId: val.comenziProdusId,
-        umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare}
+        umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare, 
+        disponibilitate:val.disponibilitate, discount: val.discount, detalii:val.detalii}
     });
     console.log('set produse', produse);
     this.form.get('comenziFurnizoriProduse')?.setValue(produse);

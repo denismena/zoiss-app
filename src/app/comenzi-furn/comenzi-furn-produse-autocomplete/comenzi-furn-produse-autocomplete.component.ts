@@ -34,7 +34,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['produsNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
+  columnsToDisplay = ['produsNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'disponibilitate', 'discount', 'detalii', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -50,12 +50,15 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     //console.log('lista produse', this.selectProdus);
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
-      produsNume:'',      
+      produsNume:'',
       umId: ['', {validators:[Validators.required]}],
       cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      disponibilitate:[new Date(), {validators:[RxwebValidators.required()]}],
+      detalii:'',
     });    
     
     this.loadProduseList();

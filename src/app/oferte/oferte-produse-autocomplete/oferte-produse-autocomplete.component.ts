@@ -64,6 +64,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       produsNume:'',
       furnizorId:[null],
       furnizorNume:'',
+      um: '',
       umId: ['', {validators:[Validators.required]}],
       cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
@@ -114,6 +115,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
  }
+
+  selectUM(um: any){   
+    //console.log('select um', um.source.triggerValue);
+    this.form.get('um')?.setValue(um.source.triggerValue);
+  }
 
   private _filterStates(value: string): produseOfertaDTO[] {
     const filterValue = value.toLowerCase();

@@ -20,3 +20,12 @@ import { DatePipe } from '@angular/common';
       return super.transform(value, "dd MMM y");
     }
   }
+
+  @Pipe({
+    name: 'daNu'
+  })
+  export class DaNuPipe implements PipeTransform {
+    transform(value: any): any {
+      return value ? 'Da' : 'Nu';;
+    }
+  }
