@@ -32,6 +32,12 @@ import { UtilizatoriEditComponent } from './nomenclatoare/utilizatori/utilizator
 import { ComenziFurnListComponent } from './comenzi-furn/comenzi-furn-list/comenzi-furn-list.component';
 import { ComenziFurnCreateComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-create/comenzi-furn-create.component';
 import { ComenziFurnEditComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-edit/comenzi-furn-edit.component';
+import { TransportatorListComponent } from './nomenclatoare/transportator/transportator-list/transportator-list.component';
+import { TransportatorCreateComponent } from './nomenclatoare/transportator/transportator-item/transportator-create/transportator-create.component';
+import { TransportatorEditComponent } from './nomenclatoare/transportator/transportator-item/transportator-edit/transportator-edit.component';
+import { DepoziteListComponent } from './nomenclatoare/depozite/depozite-list/depozite-list.component';
+import { DepoziteCreateComponent } from './nomenclatoare/depozite/depozite-item/depozite-create/depozite-create.component';
+import { DepoziteEditComponent } from './nomenclatoare/depozite/depozite-item/depozite-edit/depozite-edit.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -71,6 +77,14 @@ const routes: Routes = [
   {path: "um", component:UmListComponent},
   {path: "um/create", component: UmCreateComponent},
   {path: "um/edit/:id", component: UmEditComponent},
+
+  {path: "transportator", component:TransportatorListComponent},
+  {path: "transportator/create", component: TransportatorCreateComponent},
+  {path: "transportator/edit/:id", component: TransportatorEditComponent},
+
+  {path: "depozite", component:DepoziteListComponent},
+  {path: "depozite/create", component: DepoziteCreateComponent},
+  {path: "depozite/edit/:id", component: DepoziteEditComponent},
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},

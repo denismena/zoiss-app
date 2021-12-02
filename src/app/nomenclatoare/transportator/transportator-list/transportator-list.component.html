@@ -1,0 +1,67 @@
+<h2>Lista Transportatori</h2>
+<button type="button" routerLink="/transportator/create" mat-flat-button color="primary">Adauga</button>
+
+<app-generic-list [list]="transportator">
+    <ng-container content>
+    <table mat-table *ngIf="transportator.length > 0" [dataSource]="transportator" class="mat-elevation-z8 table-index">        
+        <ng-container matColumnDef="nume">
+            <th mat-header-cell *matHeaderCellDef>Nume</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.nume}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="nrInmatriculare">
+            <th mat-header-cell *matHeaderCellDef>Nr Inmatriculare</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.nrInmatriculare}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="adresa">
+            <th mat-header-cell *matHeaderCellDef>Adresa</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.adresa}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="tel">
+            <th mat-header-cell *matHeaderCellDef>Telefon</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.tel}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.email}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="active">            
+            <th mat-header-cell *matHeaderCellDef>Active</th>
+            <td *matCellDef="let element">  
+                {{element.active|daNu}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element">
+                <a
+                    routerLink="/transportator/edit/{{element.id}}"
+                    mat-flat-button color="primary"
+                >
+                Edit
+                </a>
+                <button mat-flat-button color="warn" 
+                [swal]="{
+                    title: 'Confirmare',
+                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
+                    showCancelButton: true
+                }"
+                (confirm)="delete(element.id)">
+                    Delete
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+</ng-container>
+</app-generic-list>

@@ -74,6 +74,15 @@ import { ComenziFurnEditComponent } from './comenzi-furn/comenzi-furn-item/comen
 import { ComenziFurnCreateComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-create/comenzi-furn-create.component';
 import { ComenziFurnItemComponent } from './comenzi-furn/comenzi-furn-item/comenzi-furn-item.component';
 
+import { TransportatorListComponent } from './nomenclatoare/transportator/transportator-list/transportator-list.component';
+import { TransportatorCreateComponent } from './nomenclatoare/transportator/transportator-item/transportator-create/transportator-create.component';
+import { TransportatorEditComponent } from './nomenclatoare/transportator/transportator-item/transportator-edit/transportator-edit.component';
+import { TransportatorItemComponent } from './nomenclatoare/transportator/transportator-item/transportator-item.component';
+import { DepoziteItemComponent } from './nomenclatoare/depozite/depozite-item/depozite-item.component';
+import { DepoziteCreateComponent } from './nomenclatoare/depozite/depozite-item/depozite-create/depozite-create.component';
+import { DepoziteEditComponent } from './nomenclatoare/depozite/depozite-item/depozite-edit/depozite-edit.component';
+import { DepoziteListComponent } from './nomenclatoare/depozite/depozite-list/depozite-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -135,7 +144,15 @@ import { ComenziFurnItemComponent } from './comenzi-furn/comenzi-furn-item/comen
     ComenziFurnProduseAutocompleteComponent,
     ComenziFurnEditComponent,
     ComenziFurnCreateComponent,
-    ComenziFurnItemComponent
+    ComenziFurnItemComponent,
+    TransportatorListComponent,
+    TransportatorCreateComponent,
+    TransportatorEditComponent,
+    TransportatorItemComponent,
+    DepoziteItemComponent,
+    DepoziteCreateComponent,
+    DepoziteEditComponent,
+    DepoziteListComponent
   ],
   imports: [
     BrowserModule,
