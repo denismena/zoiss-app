@@ -50,14 +50,13 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
   @ViewChild(FurnizoriAutocompleteComponent)
   furnizoriAuto!: FurnizoriAutocompleteComponent;
-
+  
+  perCutieSet!: number;
+  pretSet!: number;
   
   ngOnInit(): void {
-
     this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
     });
-
 
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
@@ -70,12 +69,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-    });    
-    
-    // if(this.model !== undefined)
-    // {
-    //   this.form.patchValue(this.model);
-    // }    
+    });
     
     this.loadProduseList();
     
@@ -100,10 +94,6 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     });    
   }
 
-  // optionSelected(event: MatAutocompleteSelectedEvent){    
-  //   this.form.get('id')?.setValue(event.option.value);
-  // }
-
   selectFurnizor(furnizor: any){
     if(furnizor!==undefined){
      this.form.get('furnizorId')?.setValue(furnizor.id);
@@ -114,6 +104,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
+    this.form.controls['pretUm']?.setValue(produs.pret);
+    this.form.controls['umId']?.setValue(produs.umId);
+    this.form.controls['um']?.setValue(produs.um);
+    this.perCutieSet = produs.perCutie;
+    this.pretSet = produs.pret;
  }
 
   selectUM(um: any){   
@@ -135,6 +130,12 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.form.reset();
     this.produsAuto.clearSelection();
     this.furnizoriAuto.clearSelection();
+  }
+
+  onCantitateChange(event: any){
+    const cant = event.target.value;
+    this.form.controls['cutii']?.setValue(cant * this.perCutieSet??0);
+    this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
   }
 
   remove(produs:any){

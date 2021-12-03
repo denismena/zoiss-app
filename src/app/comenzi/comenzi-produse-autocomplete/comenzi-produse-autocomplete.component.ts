@@ -44,6 +44,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent)
   furnizoriAuto!: FurnizoriAutocompleteComponent;
 
+  perCutieSet!: number;
+  pretSet!: number;
+
   ngOnInit(): void {
     console.log('selectedProdus in autocomplete:', this.selectedProdus);
     this.activatedRoute.params.subscribe(params=>{
@@ -55,6 +58,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       produsNume:'',
       furnizorId:[null],
       furnizorNume:'',
+      um: '',
       umId: ['', {validators:[Validators.required]}],
       cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
@@ -95,6 +99,11 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
+    this.form.controls['pretUm']?.setValue(produs.pret);
+    this.form.controls['umId']?.setValue(produs.umId);
+    this.form.controls['um']?.setValue(produs.um);
+    this.perCutieSet = produs.perCutie;
+    this.pretSet = produs.pret;
  }
 
   private _filterStates(value: string): produseComandaDTO[] {
@@ -113,6 +122,12 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.furnizoriAuto.clearSelection();
   }
 
+  onCantitateChange(event: any){
+    const cant = event.target.value;
+    this.form.controls['cutii']?.setValue(cant * this.perCutieSet??0);
+    this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
+  }
+
   remove(produs:any){
     console.log('delete produs', produs);
     const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
@@ -120,6 +135,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.table.renderRows();
   }
 
+  selectUM(um: any){       
+    this.form.get('um')?.setValue(um.source.triggerValue);
+  }
   // dropped(event: CdkDragDrop<any[]>){
   //   const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
   //   moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);

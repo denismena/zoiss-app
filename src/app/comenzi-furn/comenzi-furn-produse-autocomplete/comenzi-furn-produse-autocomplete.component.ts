@@ -41,16 +41,15 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent)
   produsAuto!: ProduseAutocompleteComponent;
   
+  perCutieSet!: number;
+  pretSet!: number;
   ngOnInit(): void {
-    console.log('selectedProdus in autocomplete:', this.selectedProdus);
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-      console.log('selectedProdus in autocomplete2:', this.selectedProdus);
+    this.activatedRoute.params.subscribe(params=>{      
     });
-    //console.log('lista produse', this.selectProdus);
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',
+      um: '',
       umId: ['', {validators:[Validators.required]}],
       cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
@@ -83,6 +82,11 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
+    this.form.controls['pretUm']?.setValue(produs.pret);
+    this.form.controls['umId']?.setValue(produs.umId);
+    this.form.controls['um']?.setValue(produs.um);
+    this.perCutieSet = produs.perCutie;
+    this.pretSet = produs.pret;
  }
 
   private _filterStates(value: string): produseComandaFurnizorDTO[] {
@@ -98,6 +102,16 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     }
     this.form.reset();
     this.produsAuto.clearSelection();
+  }
+
+  onCantitateChange(event: any){
+    const cant = event.target.value;
+    this.form.controls['cutii']?.setValue(cant * this.perCutieSet??0);
+    this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
+  }
+
+  selectUM(um: any){       
+    this.form.get('um')?.setValue(um.source.triggerValue);
   }
 
   remove(produs:any){

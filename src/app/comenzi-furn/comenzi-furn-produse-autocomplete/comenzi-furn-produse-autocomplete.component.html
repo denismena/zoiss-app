@@ -6,8 +6,8 @@
     <input type="hidden" formControlName="produsId" #produsId>
         
     <mat-form-field appearance="outline">
-        <mat-label>um</mat-label>                
-        <mat-select formControlName="umId">
+        <mat-label>um</mat-label>          
+        <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
             <mat-option *ngFor="let um of umList" [value]="um.id">
                 {{um.nume}}
               </mat-option>            
@@ -16,7 +16,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>cantitate</mat-label>
-        <input matInput formControlName="cantitate"/>
+        <input matInput formControlName="cantitate" (change)="onCantitateChange($event)"/>
         <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
         <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
