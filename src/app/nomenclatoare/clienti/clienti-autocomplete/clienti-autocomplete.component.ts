@@ -91,4 +91,8 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());
   }
+
+  public clearSelection(){
+    this.clientCtrl.setValue(null);
+  }
 }

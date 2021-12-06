@@ -15,7 +15,8 @@ import {MatIconModule} from '@angular/material/icon'
 import {DragDropModule} from '@angular/cdk/drag-drop'
 import {MatTabsModule} from '@angular/material/tabs'
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatExpansionModule} from '@angular/material/expansion'
 @NgModule({
   declarations: [],
   exports:[
@@ -32,7 +33,9 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle'
     MatIconModule,
     DragDropModule,
     MatTabsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatPaginatorModule,
+    MatExpansionModule
   ],
   imports: [
     CommonModule

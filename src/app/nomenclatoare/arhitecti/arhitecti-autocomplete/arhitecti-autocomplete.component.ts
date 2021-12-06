@@ -91,4 +91,8 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
       () => this._subscribeToClosingActions());
   }
 
+  public clearSelection(){
+    this.arhitectCtrl.setValue(null);
+  }
+
 }
