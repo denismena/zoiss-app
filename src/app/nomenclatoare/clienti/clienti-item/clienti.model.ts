@@ -31,6 +31,8 @@ export interface clientiAdresaDTO{
     email: string;
     sediu: boolean;
     livrare: boolean;
+    depozitId: number;
+    depozit: string;
 }
 export interface clientiAdresaPutGetDTO{
     client: clientiDTO;

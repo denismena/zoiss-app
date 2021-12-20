@@ -23,6 +23,10 @@ export class DepoziteService {
 
   getById(id: number): Observable<depoziteDTO>{
     return this.http.get<depoziteDTO>(`${this.apiUrl}/${id}`);
+  }
+
+  getByClient(clientId: number): Observable<depoziteDTO[]>{
+    return this.http.get<depoziteDTO[]>(`${this.apiUrl}/getByClient/${clientId}`);
   } 
 
   edit(id: number, depozit: depoziteCreationDTO){

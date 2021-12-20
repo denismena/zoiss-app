@@ -40,6 +40,24 @@
             <mat-datepicker #dataPickerTL></mat-datepicker>
             <mat-error>Completati data!</mat-error>
         </mat-form-field>
+        <!-- <mat-form-field appearance="outline">       
+            <mat-label>Adresa</mat-label>     
+            <select matNativeControl formControlName="depozitId">
+                <option value="" selected></option>
+                <option *ngFor="let adresa of adresa" [value]="adresa.id">
+                    {{adresa.depozit}}
+                </option>
+            </select>            
+        </mat-form-field> -->
+        <label id="example-radio-group-label">Adresa livrare</label>
+        <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group"formControlName="clientiAdresaId">
+            <mat-radio-button class="example-radio-button" *ngFor="let adresa of adresa" [value]="adresa.id">
+                <b>Depozit: </b>{{adresa.depozit}}   <b>Adresa: </b>{{adresa.adresa}}   <b>Oras: </b>{{adresa.oras}}
+            </mat-radio-button>
+        </mat-radio-group>
+        <mat-error>{{form.get("clientiAdresaId")?.getError("required")?.message}}</mat-error>
     </div>
     <div class="col-md-6">
         <app-comenzi-produse-autocomplete [selectedProdus]="selectedProdus"></app-comenzi-produse-autocomplete>    

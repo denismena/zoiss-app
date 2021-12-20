@@ -14,6 +14,7 @@ export interface comenziDTO{
     avans: number;
     conditiiPlata: string;
     termenLivrare: Date;
+    clientAdresaId: number;
     produseComenziAll: number;
     produseComenziProc: number;
     allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
@@ -29,6 +30,7 @@ export interface comenziCreationDTO{
     avans: number;
     conditiiPlata: string;
     termenLivrare: Date;
+    clientAdresaId: number;
     comenziProduses: produseComandaDTO[];
 }
 export interface produseComandaDTO{    
