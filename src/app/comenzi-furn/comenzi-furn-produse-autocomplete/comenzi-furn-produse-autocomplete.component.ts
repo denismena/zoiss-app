@@ -121,4 +121,8 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.table.renderRows();
   }
 
+  changeDiscountAll(discoutAll: HTMLInputElement){
+    console.log('discoutAll:', discoutAll.value);
+    this.selectedProdus.forEach(p=>p.discount = Number(discoutAll.value));    
+  }
 }

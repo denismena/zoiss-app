@@ -31,7 +31,7 @@ export class ComenziFurnListComponent implements OnInit {
     this.expandedElement = [];
   }
 
-  columnsToDisplay= ['expand', 'numar', 'data', 'furnizor', 'utilizator', 'platit', 'transportate', 'select', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'furnizor', 'utilizator', 'platit', 'termen', 'transportate', 'select', 'action'];
 
   ngOnInit(): void {
     this.loadList();
