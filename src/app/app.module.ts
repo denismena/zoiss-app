@@ -82,6 +82,11 @@ import { DepoziteItemComponent } from './nomenclatoare/depozite/depozite-item/de
 import { DepoziteCreateComponent } from './nomenclatoare/depozite/depozite-item/depozite-create/depozite-create.component';
 import { DepoziteEditComponent } from './nomenclatoare/depozite/depozite-item/depozite-edit/depozite-edit.component';
 import { DepoziteListComponent } from './nomenclatoare/depozite/depozite-list/depozite-list.component';
+import { TransportListComponent } from './transport/transport-list/transport-list.component';
+import { TransportEditComponent } from './transport/transport-item/transport-edit/transport-edit.component';
+import { TransportItemComponent } from './transport/transport-item/transport-item.component';
+import { TransportProduseComponent } from './transport/transport-produse/transport-produse.component';
+import { DepoziteDialogComponent } from './transport/depozite-dialog/depozite-dialog.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +157,12 @@ import { DepoziteListComponent } from './nomenclatoare/depozite/depozite-list/de
     DepoziteItemComponent,
     DepoziteCreateComponent,
     DepoziteEditComponent,
-    DepoziteListComponent
+    DepoziteListComponent,
+    TransportListComponent,
+    TransportEditComponent,
+    TransportItemComponent,
+    TransportProduseComponent,
+    DepoziteDialogComponent
   ],
   imports: [
     BrowserModule,

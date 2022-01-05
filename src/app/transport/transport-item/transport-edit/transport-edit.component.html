@@ -1,0 +1,6 @@
+<h2>Editeaza Transport</h2>
+<app-transport-item *ngIf="model"
+[selectedProdus]="selectedProdus"
+[depoziteLista]="depoziteLista"
+[model]="model" 
+(onSaveChanges)="saveChanges($event)"></app-transport-item>

@@ -17,7 +17,7 @@ export class DepoziteListComponent implements OnInit {
     this.depozite = [];
   }
 
-  columnsToDisplay= ['nume', 'adresa', 'persoanaContact', 'persoanaContactTel', 'persoanaContactEmail', 'active', 'action'];
+  columnsToDisplay= ['nume', 'adresa', 'persoanaContact', 'persoanaContactTel', 'persoanaContactEmail', 'parent', 'active', 'action'];
 
   ngOnInit(): void {
     this.loadList();

@@ -1,9 +1,10 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
+import { TransportService } from 'src/app/transport/transport.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
-import { comenziFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
+import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
 
 @Component({
@@ -26,7 +27,8 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];
-  constructor(private comenziFurnizorService: ComenziFurnizorService, private router:Router) { 
+  constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
+    private router:Router) { 
     this.comenziFurnizor = [];
     this.expandedElement = [];
   }
@@ -64,41 +66,41 @@ export class ComenziFurnListComponent implements OnInit {
   getCheckbox(checkbox: any, row: comenziFurnizorDTO){
     this.checked = [];
     console.log(row);
-    // row.comenziFurnizoriProduse.forEach(p=>p.addToComandaFurnizor = checkbox.checked
-    // );    
+    row.comenziFurnizoriProduse.forEach(p=>p.addToTransport = checkbox.checked
+    );    
   }
 
   isAllSelected(row: comenziFurnizorDTO) {   
     console.log('in isAllSelected', row); 
-    // row.allComandate = row.comenziProduses.every(function(item:any) {
-    //       console.log('in isAllSelected row', item); 
-    //       return item.addToComandaFurnizor == true;
-    //     })
-    //   console.log('row.allComandate', row.allComandate);
+    row.allComandate = row.comenziFurnizoriProduse.every(function(item:any) {
+          console.log('in isAllSelected row', item); 
+          return item.addToTransport == true;
+        })
+      console.log('row.allComandate', row.allComandate);
   }
 
   genereazaTransport()
   {
-    // console.log('in');
-    // var selectedProd: produseComandaDTO[] = [];
-    // this.comenzi.forEach(element => {
-    //   element.comenziProduses.forEach(prod=>{
-    //     console.log('prod', prod);
-    //     if(prod.addToComandaFurnizor)
-    //       {
-    //         console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComandaFurnizor);
-    //         selectedProd.push(prod);
-    //       }
-    //   })
-    // });
+    console.log('in');
+    var selectedProd: produseComandaFurnizorDTO[] = [];
+    this.comenziFurnizor.forEach(element => {
+      element.comenziFurnizoriProduse.forEach(prod=>{
+        console.log('prod', prod);
+        if(prod.addToTransport)
+          {
+            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInTransport);
+            selectedProd.push(prod);
+          }
+      })
+    });
     
-    // if(selectedProd.length > 0){
-    //   this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
-    //     console.log('comanda new id', id);
-    //     this.router.navigate(['/comenziFurnizor/edit/' + id])
-    //   }, 
-    //   error=> this.errors = parseWebAPIErrors(error));
-    // }
-    // else this.errors.push("Nu ati selectat nici o oferta!");
+    if(selectedProd.length > 0){
+      this.transportService.fromComandaFurnizor(selectedProd).subscribe(id=>{
+        console.log('comanda new id', id);
+        this.router.navigate(['/transport/edit/' + id])
+      }, 
+      error=> this.errors = parseWebAPIErrors(error));
+    }
+    else this.errors.push("Nu ati selectat nici o comanda!");
   }
 }

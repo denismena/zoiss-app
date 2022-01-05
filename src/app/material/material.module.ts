@@ -17,6 +17,9 @@ import {MatTabsModule} from '@angular/material/tabs'
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion'
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatDialogModule} from '@angular/material/dialog';
+
 @NgModule({
   declarations: [],
   exports:[
@@ -35,7 +38,9 @@ import {MatExpansionModule} from '@angular/material/expansion'
     MatTabsModule,
     MatSlideToggleModule,
     MatPaginatorModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule,
+    MatDialogModule
   ],
   imports: [
     CommonModule

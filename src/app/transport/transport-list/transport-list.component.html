@@ -1,0 +1,98 @@
+<h2>Lista Transporturi</h2>
+
+<app-generic-list [list]="transport">
+    <ng-container content>
+        <table mat-table *ngIf="transport.length > 0" [dataSource]="transport" multiTemplateDataRows class="mat-elevation-z8 table-index">
+            <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element" (click)="expand(element)">
+                    <mat-icon *ngIf="element.transportProdus.length > 0">
+                        {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
+                      </mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="referinta">
+                <th mat-header-cell *matHeaderCellDef>Referinta</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.referinta}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="data">
+                <th mat-header-cell *matHeaderCellDef>Data</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.data|customDate}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="transportator">
+                <th mat-header-cell *matHeaderCellDef>Transportator</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.transportator}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="utilizator">
+                <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.utilizator}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element">
+                    <a
+                        routerLink="/transport/edit/{{element.id}}"
+                        mat-flat-button color="primary"
+                    >
+                    Edit
+                    </a>
+                    <button mat-flat-button color="warn" 
+                    [swal]="{
+                        title: 'Confirmare',
+                        text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
+                        showCancelButton: true
+                    }"
+                    (confirm)="delete(element.id)">
+                        Delete
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
+                <table class="table" *ngIf="element.transportProdus.length > 0">
+                    <thead>
+                      <tr>
+                        <th scope="col">Depozit</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Produs</th>
+                        <th scope="col">Cant</th>
+                        <th scope="col">UM</th>                        
+                        <th scope="col">Cutii</th>                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let prod of element.transportProdus">                        
+                        <td>{{prod.depozit}}</td>
+                        <td>{{prod.clientNume}}</td>
+                        <td>{{prod.produsNume}}</td>
+                        <td>{{prod.cantitate}}</td>
+                        <td>{{prod.um}}</td>                        
+                        <td>{{prod.cutii}}</td>                        
+                        <td>                            
+                            <!-- <input type="checkbox" [(ngModel)]="prod.addToTransport" *ngIf="!prod.isInTransport" 
+                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" /> -->
+                        </td>
+                      </tr>                      
+                    </tbody>
+                  </table>
+            </div>
+            </td>
+        </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>        
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+    </ng-container>
+</app-generic-list>

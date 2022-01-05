@@ -1,0 +1,59 @@
+<form (submit)="saveChanges()" [formGroup]="form">
+    <div class="container">    
+        <div class="row">
+    <div class="col-md-12">          
+    <div class="row">
+    <div class="col-md-12"><h4>Transport</h4></div></div>
+        <div class="row">
+            <div class="col-md-4">                
+                <mat-label>Referinta</mat-label>
+                <mat-form-field appearance="outline">            
+                    <input formControlName="referinta" matInput>
+                    <mat-error>Completati Referinta!</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+            <mat-label>Transportortator</mat-label>
+            <mat-form-field appearance="outline">                
+                <mat-select formControlName="transportatorId" (selectionChange)="selectTransportator($event)">
+                    <mat-option *ngFor="let trans of transportatorList" [value]="trans.id">
+                        {{trans.nume}}
+                    </mat-option>            
+                </mat-select>
+            </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-label>Data</mat-label>            
+                <mat-form-field appearance="outline">            
+                    <input formControlName="data" matInput [matDatepicker]="dataPicker">
+                    <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dataPicker></mat-datepicker>
+                    <mat-error>Completati data!</mat-error>
+                </mat-form-field>  
+            </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+        <mat-label>Adresa</mat-label>
+        <mat-form-field appearance="outline">            
+            <input formControlName="adresa" matInput>
+        </mat-form-field>
+    </div>
+    <div class="col-md-6">
+        <mat-label>Detalii</mat-label>
+        <mat-form-field appearance="outline">            
+            <input formControlName="detalii" matInput>
+        </mat-form-field>    
+    </div>
+    </div>
+    </div>
+    <div class="col-md-12">        
+        <app-transport-produse *ngIf="selectedProdus" [selectedProdus]="selectedProdus" [depoziteLista]="depoziteLista"></app-transport-produse>
+    </div>
+        <div>
+            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+            <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
+        </div>
+    </div>
+    </div>
+    </form>

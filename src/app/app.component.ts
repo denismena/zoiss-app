@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
         "email": "Email invalid",
         "compare": "Confirmare parola incorecta",
         "alpha": "Caracterele speciale sunt interzise.",
+        "noneOf": "Valoare curenta nu este posibila.",
       }
   });
   }

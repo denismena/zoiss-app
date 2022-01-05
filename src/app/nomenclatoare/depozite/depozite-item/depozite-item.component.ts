@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { RxwebValidators } from '@rxweb/reactive-form-validators';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { RegexValidator } from '@rxweb/reactive-form-validators/util';
+import { DepoziteService } from '../depozite.service';
 import { depoziteDTO } from './depozite.model';
 
 @Component({
@@ -11,11 +13,11 @@ import { depoziteDTO } from './depozite.model';
 })
 export class DepoziteItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder) { }
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private depoztService: DepoziteService) { }
   public form!: FormGroup;
   @Input()
   model:depoziteDTO | undefined;
-  
+  depozitList: depoziteDTO[]=[];
   @Output()
   onSaveChanges: EventEmitter<depoziteDTO> = new EventEmitter<depoziteDTO>();
 
@@ -30,8 +32,15 @@ export class DepoziteItemComponent implements OnInit {
       persoanaContact: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],      
       persoanaContactTel: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
       persoanaContactEmail: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
+      parentId: [null, {validators:[RxwebValidators.noneOf({matchValues:[this.model?.id]})]}],
       active: true
     });
+
+    this.depoztService.getAll().subscribe(depozite=>{
+      this.depozitList=depozite;
+      console.log('this.depozitList', this.depozitList);
+    })
+
     if(this.model !== undefined)
     {
       this.form.patchValue(this.model);
@@ -40,6 +49,12 @@ export class DepoziteItemComponent implements OnInit {
 
   saveChanges(){
     this.onSaveChanges.emit(this.form.value);
+  }
+
+  selectParent(depozit: any){       
+    console.log('depozit', depozit);
+    this.form.get('parentId')?.setValue(depozit.value);
+    console.log('depozit', depozit.value);    
   }
 
 }

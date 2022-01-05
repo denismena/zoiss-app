@@ -5,6 +5,8 @@ export interface depoziteDTO{
     persoanaContact: string;    
     persoanaContactTel: string;
     persoanaContactEmail: string;
+    parentId:number;
+    parentDepozit:string;
     active: boolean;
 }
 
@@ -15,5 +17,6 @@ export interface depoziteCreationDTO{
     persoanaContact: string;    
     persoanaContactTel: string;
     persoanaContactEmail: string;
+    parentId:number;
     active: boolean;
 }

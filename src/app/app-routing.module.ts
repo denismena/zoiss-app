@@ -38,6 +38,8 @@ import { TransportatorEditComponent } from './nomenclatoare/transportator/transp
 import { DepoziteListComponent } from './nomenclatoare/depozite/depozite-list/depozite-list.component';
 import { DepoziteCreateComponent } from './nomenclatoare/depozite/depozite-item/depozite-create/depozite-create.component';
 import { DepoziteEditComponent } from './nomenclatoare/depozite/depozite-item/depozite-edit/depozite-edit.component';
+import { TransportListComponent } from './transport/transport-list/transport-list.component';
+import { TransportEditComponent } from './transport/transport-item/transport-edit/transport-edit.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -69,6 +71,10 @@ const routes: Routes = [
   {path: "comenzi", component: ComenziListComponent} ,
   {path: "comenzi/create", component: ComenziCreateComponent},
   {path: "comenzi/edit/:id", component: ComenziEditComponent},
+
+  {path: "transport", component: TransportListComponent} ,
+  {path: "transport/create", component: TransportatorCreateComponent},
+  {path: "transport/edit/:id", component: TransportEditComponent},
 
   {path: "comenziFurnizor", component: ComenziFurnListComponent} ,
   {path: "comenziFurnizor/create", component: ComenziFurnCreateComponent},

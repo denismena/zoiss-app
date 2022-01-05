@@ -12,7 +12,7 @@ export interface comenziFurnizorDTO{
     termenLivrare: Date;
     produseComenziFurnizorAll: number;
     produseComenziFurnizorProc: number;
-    //allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
+    allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
     comenziFurnizoriProduse: produseComandaFurnizorDTO[];
 }
 
@@ -41,8 +41,8 @@ export interface produseComandaFurnizorDTO{
     disponibilitate: Date;
     discount: number;
     detalii: string;
-    //isInComanda: boolean;    
-    //addToComanda: boolean;
+    isInTransport: boolean;    
+    addToTransport: boolean;
 }
 
 export interface comenziFurnizoriPutGetDTO{
