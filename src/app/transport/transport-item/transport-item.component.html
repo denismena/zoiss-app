@@ -13,7 +13,7 @@
                 </mat-form-field>
             </div>
             <div class="col-md-4">
-            <mat-label>Transportortator</mat-label>
+            <mat-label>Transportator</mat-label>
             <mat-form-field appearance="outline">                
                 <mat-select formControlName="transportatorId" (selectionChange)="selectTransportator($event)">
                     <mat-option *ngFor="let trans of transportatorList" [value]="trans.id">
@@ -50,10 +50,11 @@
     <div class="col-md-12">        
         <app-transport-produse *ngIf="selectedProdus" [selectedProdus]="selectedProdus" [depoziteLista]="depoziteLista"></app-transport-produse>
     </div>
-        <div>
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
-        </div>
+    <div>
+        <br />
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
+    </div>
     </div>
     </div>
     </form>

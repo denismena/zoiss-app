@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { produseComandaFurnizorDTO } from '../comenzi-furn/comenzi-furn-item/comenzi-furn.model';
-import { transportCreationDTO, transportDTO, transportEditDTO, transportProduseDepozitDTO, transportPutGetDTO } from './transport-item/transport.model';
+import { transportCreationDTO, transportDTO, transportEditDTO, transportProduseDepozitAllDTO, transportProduseDepozitDTO, transportPutGetDTO } from './transport-item/transport.model';
 
 @Injectable({
     providedIn: 'root'
@@ -49,5 +49,10 @@ export class TransportService{
   saveDepozitArrival(produsInDepozit: transportProduseDepozitDTO){
     console.log('produsInDepozit:', produsInDepozit);
     return this.http.post(`${this.apiUrl}/produsInDepozit`, produsInDepozit);
+  }
+
+  saveDepozitArrivalAll(produsInDepozit: transportProduseDepozitAllDTO){
+    console.log('produsInDepozitAll:', produsInDepozit);
+    return this.http.post(`${this.apiUrl}/produsInDepozitAll`, produsInDepozit);
   }
 }

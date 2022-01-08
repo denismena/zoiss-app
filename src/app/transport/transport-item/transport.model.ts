@@ -8,6 +8,8 @@ export interface transportDTO{
     data: Date;
     adresa: string;
     detalii: string;
+    produseTransportateAll: number;
+    produseTransportateLivrate: number;
     transportProduse: transportProduseDTO;
 }
 
@@ -47,4 +49,11 @@ export interface transportProduseDepozitDTO{
     data: Date;
     detalii:string;
     depozit:string;
+}
+export interface transportProduseDepozitAllDTO{
+    transportId:number;
+    data: Date;
+    detalii:string;
+    depozit:string;
+    overwriteAll: boolean;
 }

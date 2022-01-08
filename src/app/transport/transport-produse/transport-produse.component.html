@@ -29,7 +29,8 @@
         <td mat-cell *matCellDef="let element">{{element.depozit}}</td>
     </ng-container>
     <ng-container *ngFor="let disCol of this.depoziteLista; let colIndex = index" matColumnDef="{{disCol}}">        
-        <th mat-header-cell *matHeaderCellDef>{{disCol}}</th>        
+        <th mat-header-cell *matHeaderCellDef>{{disCol}} 
+            <mat-icon style="cursor: pointer;" (click)="showPromptAll(disCol)">add</mat-icon> </th>        
         <td mat-cell *matCellDef="let element">
             <span *ngIf="findByDepozit(element.transportProduseDepozit,disCol) as dep">
                 <span *ngIf="dep?.data!=null">
@@ -43,6 +44,10 @@
                 </span>
             </span>            
         </td>        
+    </ng-container>
+    <ng-container matColumnDef="livrat">
+        <th mat-header-cell *matHeaderCellDef>Livrat</th>
+        <td mat-cell *matCellDef="let element">{{element.livrat|daNu}}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>

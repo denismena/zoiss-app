@@ -87,6 +87,7 @@ import { TransportEditComponent } from './transport/transport-item/transport-edi
 import { TransportItemComponent } from './transport/transport-item/transport-item.component';
 import { TransportProduseComponent } from './transport/transport-produse/transport-produse.component';
 import { DepoziteDialogComponent } from './transport/depozite-dialog/depozite-dialog.component';
+import { DepoziteAllDialogComponent } from './transport/depozite-all-dialog/depozite-all-dialog.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +163,8 @@ import { DepoziteDialogComponent } from './transport/depozite-dialog/depozite-di
     TransportEditComponent,
     TransportItemComponent,
     TransportProduseComponent,
-    DepoziteDialogComponent
+    DepoziteDialogComponent,
+    DepoziteAllDialogComponent
   ],
   imports: [
     BrowserModule,

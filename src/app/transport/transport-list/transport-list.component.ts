@@ -31,7 +31,7 @@ export class TransportListComponent implements OnInit {
     this.expandedElement = [];
   }
 
-  columnsToDisplay= ['expand','referinta', 'data', 'transportator', 'utilizator', 'action'];
+  columnsToDisplay= ['expand','referinta', 'data', 'transportator', 'utilizator', 'livrate', 'action'];
 
   ngOnInit(): void {
     this.loadList();

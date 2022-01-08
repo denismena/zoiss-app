@@ -35,6 +35,12 @@
                     {{element.utilizator}}
                 </td>
             </ng-container>
+            <ng-container matColumnDef="livrate">            
+                <th mat-header-cell *matHeaderCellDef>Livrate</th>
+                <td *matCellDef="let element">
+                  {{element.produseTransportateLivrate}} / {{element.produseTransportateAll}}
+                </td>
+            </ng-container>
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>#</th>
                 <td mat-cell *matCellDef="let element">

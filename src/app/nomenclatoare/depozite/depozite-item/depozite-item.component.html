@@ -28,6 +28,12 @@
             <mat-error>{{form.get("persoanaContactEmail")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
+            <mat-label>Sort</mat-label>
+            <input formControlName="sort" matInput>
+            <mat-error>{{form.get("sort")?.getError("required")?.message}}</mat-error>
+            <mat-error>{{form.get("sort")?.getError("numeric")?.message}}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Precedent</mat-label>
             <mat-select formControlName="parentId" (selectionChange)="selectParent($event)">
                 <mat-option *ngFor="let depozit of depozitList" [value]="depozit.id">

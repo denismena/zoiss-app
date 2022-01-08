@@ -1,6 +1,6 @@
 <div class="form-container">
     <h2 mat-dialog-title>
-        Finalizare transport produs in depozit
+        Finalizare transport produse in depozit
     </h2>
     <mat-dialog-content>
         <form [formGroup]="form">
@@ -15,7 +15,8 @@
             <mat-form-field appearance="standard">
                 <mat-label>Detalii</mat-label>
                 <textarea matInput placeholder="Detalii" formControlName="detalii"></textarea>
-            </mat-form-field>            
+            </mat-form-field>
+            <div><mat-slide-toggle class="example-margin" formControlName="overwriteAll">TOATE produsele (si cele deja transportate)</mat-slide-toggle></div>            
         </form>
     </mat-dialog-content>
     <mat-dialog-actions>        

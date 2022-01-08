@@ -19,6 +19,20 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion'
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
+
+const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD MMM YYYY',
+  },
+  display: {
+    dateInput: 'DD MMM YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [],
@@ -40,7 +54,11 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatPaginatorModule,
     MatExpansionModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatMomentDateModule 
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
   imports: [
     CommonModule

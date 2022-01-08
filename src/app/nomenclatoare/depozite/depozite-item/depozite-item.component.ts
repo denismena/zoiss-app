@@ -33,6 +33,7 @@ export class DepoziteItemComponent implements OnInit {
       persoanaContactTel: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
       persoanaContactEmail: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       parentId: [null, {validators:[RxwebValidators.noneOf({matchValues:[this.model?.id]})]}],
+      sort:[null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:false })]}],
       active: true
     });
 
