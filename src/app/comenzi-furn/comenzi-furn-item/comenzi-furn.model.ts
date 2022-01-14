@@ -5,6 +5,7 @@ export interface comenziFurnizorDTO{
     numar: number;
     data: Date;
     furnizorId: number;
+    furnizor: string;
     preselectFurnizor: furnizoriDTO;    
     utilizatorId: string;
     utilizator: string;

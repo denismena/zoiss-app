@@ -27,7 +27,7 @@
         <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
         <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
-    <div><mat-checkbox class="example-margin" formControlName="active">Active</mat-checkbox></div>
+    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
     <div>
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button routerLink="/furnizori" mat-flat-button color="primary">Renunta</a>

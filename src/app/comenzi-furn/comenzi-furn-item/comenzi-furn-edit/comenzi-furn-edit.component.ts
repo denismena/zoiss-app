@@ -10,7 +10,7 @@ import { comenziFurnizorCreationDTO, comenziFurnizorDTO, produseComandaFurnizorD
 })
 export class ComenziFurnEditComponent implements OnInit {
   
-  
+  public furnizorName: string='';
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private comenziFurnizorService: ComenziFurnizorService) { }
   model!:comenziFurnizorDTO;
   selectedProdus: produseComandaFurnizorDTO[] = [];
@@ -21,8 +21,10 @@ export class ComenziFurnEditComponent implements OnInit {
         console.log('comanda:', comanda);
         this.model = comanda.comandaFurnizor;
         this.selectedProdus = comanda.comenziFurnizoriProduse;
+        this.furnizorName = this.model.furnizor;
         console.log('comenzi edit model', this.model);
         console.log('comenzi edit model selectedProdus', this.selectedProdus);        
+        console.log('furnizorName', this.furnizorName);
       })
     });
   }

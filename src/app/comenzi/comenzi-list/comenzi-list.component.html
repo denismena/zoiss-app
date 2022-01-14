@@ -44,19 +44,22 @@
             </div>
             
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
         <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
             <input type="hidden" formControlName="clientId" #clientId>
                 </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
         <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" #arhitectFilter></app-arhitecti-autocomplete>    
         <input type="hidden" formControlName="arhitectId" #arhitectId>
             </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
         <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
         <input type="hidden" formControlName="produsId" #produsId>
         </div>        
-    
+        <div class="col-md-3">
+            <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
+            <input type="hidden" formControlName="furnizorId" #furnizorId>
+            </div>
         
             </div>
         </div>

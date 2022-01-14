@@ -27,7 +27,7 @@ export class ClientiAdresaComponent implements OnInit {
 
   depozite: depoziteDTO[] = [];
   
-  columnsToDisplay = ['adresa', 'oras', 'tara', 'tel', 'email', 'actions']
+  columnsToDisplay = ['adresa', 'oras', 'tara', 'tel', 'email', 'sediu', 'livrare', 'depozit', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;

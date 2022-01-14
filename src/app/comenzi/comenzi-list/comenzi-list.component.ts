@@ -13,6 +13,8 @@ import { date } from '@rxweb/reactive-form-validators';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
+import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
+import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -46,6 +48,8 @@ export class ComenziListComponent implements OnInit {
   arhitectFilter!: ArhitectiAutocompleteComponent;
   @ViewChild(ProduseAutocompleteComponent)
   produsFilter!: ProduseAutocompleteComponent;
+  @ViewChild(FurnizoriAutocompleteComponent)
+  furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
     private router:Router, private formBuilder:FormBuilder) { 
@@ -64,6 +68,7 @@ export class ComenziListComponent implements OnInit {
       clientId: 0,
       arhitectId: 0,      
       produsId: 0,
+      furnizorId:0,
       mine: true,
       allComandate: false
     });
@@ -84,6 +89,7 @@ export class ComenziListComponent implements OnInit {
     this.comenziService.getAll(values).subscribe((response: HttpResponse<comenziDTO[]>)=>{
       this.comenzi = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
+      console.log('this.comenzi', this.comenzi);
       console.log('totalRecords', response.headers);
     });    
   }
@@ -154,22 +160,28 @@ export class ComenziListComponent implements OnInit {
     this.clientFilter.clearSelection();
     this.arhitectFilter.clearSelection();
     this.produsFilter.clearSelection();    
+    this.furnizorFilter.clearSelection();
   }
 
 //#region filtre
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);    
+    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
-  this.form.get('clientId')?.setValue(clientId);
-  console.log('clientNume: ', this.form.get('clientId')?.value);
-}
+    this.form.get('clientId')?.setValue(clientId);
+    console.log('clientNume: ', this.form.get('clientId')?.value);
+  }
 
-selectArhitect(arhitectId: string){
-  this.form.get('arhitectId')?.setValue(arhitectId);
-  console.log('arhitectId: ', this.form.get('arhitectId')?.value);
-}
+  selectArhitect(arhitectId: string){
+    this.form.get('arhitectId')?.setValue(arhitectId);
+    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
+  }
+  selectFurnizor(furnizor: any){
+    this.form.get('furnizorId')?.setValue(furnizor.id);
+    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
+  }
  //#endregion
 }
