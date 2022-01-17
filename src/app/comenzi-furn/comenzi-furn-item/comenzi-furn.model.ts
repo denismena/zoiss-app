@@ -9,7 +9,7 @@ export interface comenziFurnizorDTO{
     preselectFurnizor: furnizoriDTO;    
     utilizatorId: string;
     utilizator: string;
-    platit: boolean;
+    //platit: boolean;
     termenLivrare: Date;
     produseComenziFurnizorAll: number;
     produseComenziFurnizorProc: number;
@@ -39,8 +39,7 @@ export interface produseComandaFurnizorDTO{
     pretUm: number;
     valoare: number;
     codProdus: string;
-    disponibilitate: Date;
-    discount: number;
+    disponibilitate: Date;    
     detalii: string;
     isInTransport: boolean;    
     addToTransport: boolean;

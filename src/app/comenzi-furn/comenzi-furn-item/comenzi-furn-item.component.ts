@@ -31,8 +31,7 @@ export class ComenziFurnItemComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       numar:[null, {validators:[RxwebValidators.required()]}],
-      data:[new Date(), {validators:[RxwebValidators.required()]}],
-      platit: null,
+      data:[new Date(), {validators:[RxwebValidators.required()]}],      
       termenLivrare: null,
       comenziFurnizoriProduse: ''
     });    
@@ -56,7 +55,7 @@ export class ComenziFurnItemComponent implements OnInit {
       console.log('saveChanges: ', val);
       return {id: val.id, cantitate: val.cantitate, produsId: val.produsId, comenziProdusId: val.comenziProdusId,
         umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare, 
-        disponibilitate:val.disponibilitate, discount: val.discount, detalii:val.detalii}
+        disponibilitate:val.disponibilitate, detalii:val.detalii}
     });
     console.log('set produse', produse);
     this.form.get('comenziFurnizoriProduse')?.setValue(produse);

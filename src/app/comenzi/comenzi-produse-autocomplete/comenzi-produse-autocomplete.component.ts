@@ -34,7 +34,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
+  columnsToDisplay = ['produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'discount', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -56,7 +56,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',
-      furnizorId:[null],
+      furnizorId:[null,{validators:[Validators.required]}],
       furnizorNume:'',
       um: '',
       umId: ['', {validators:[Validators.required]}],
@@ -143,5 +143,8 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   //   moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
   //   this.table.renderRows();
   // }
-
+  changeDiscountAll(discoutAll: HTMLInputElement){
+    console.log('discoutAll:', discoutAll.value);
+    this.selectedProdus.forEach(p=>p.discount = Number(discoutAll.value));    
+  }
 }

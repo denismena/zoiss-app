@@ -1,53 +1,62 @@
 <h4>Produse</h4>
 <form (submit)="saveChanges()" [formGroup]="form">
-    <table>
-        <tr><td>
-    <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsAuto></app-produse-autocomplete>
-    <input type="hidden" formControlName="produsId" #produsId>
-    
-    <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizoriAuto></app-furnizori-autocomplete>            
-        <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF">
-    <mat-form-field appearance="outline">
-        <mat-label>um</mat-label>                
-        <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
-            <mat-option *ngFor="let um of umList" [value]="um.id">
-                {{um.nume}}
-              </mat-option>            
-          </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-        <mat-label>cantitate</mat-label>        
-        <input matInput formControlName="cantitate" (change)="onCantitateChange($event)"/>
-        <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
-        <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-        <mat-label>cutii</mat-label>
-        <input matInput formControlName="cutii"/>
-        <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
-        <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-        <mat-label>pretUm</mat-label>
-        <input matInput formControlName="pretUm"/>
-        <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
-        <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-        <mat-label>valoare</mat-label>
-        <input matInput formControlName="valoare"/>
-        <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
-        <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
-    </mat-form-field>
-
-    <button mat-flat-button color="primary" [disabled]="form.invalid">Adauga</button>
-</td>
-</tr>
-</table>
+    <div class="container">    
+        <div class="row">
+            <div class="col-md-3"> 
+                <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsAuto></app-produse-autocomplete>
+                <input type="hidden" formControlName="produsId" #produsId>
+            </div>
+            <div class="col-md-3">
+                <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizoriAuto></app-furnizori-autocomplete>            
+                <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF"> 
+            </div>
+            <div class="col-md-1">
+                <mat-label>um</mat-label>                
+                <mat-form-field appearance="outline">        
+                    <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
+                        <mat-option *ngFor="let um of umList" [value]="um.id">
+                            {{um.nume}}
+                        </mat-option>            
+                    </mat-select>
+                </mat-form-field> 
+            </div>
+            <div class="col-md-1"> 
+                <mat-label>cantitate</mat-label>        
+                <mat-form-field appearance="outline">                    
+                    <input matInput formControlName="cantitate" (change)="onCantitateChange($event)"/>
+                    <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
+                    <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+                <mat-label>cutii</mat-label>
+                <mat-form-field appearance="outline">                    
+                    <input matInput formControlName="cutii"/>
+                    <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
+                    <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field> 
+            </div>
+            <div class="col-md-1">
+                <mat-label>pretUm</mat-label>
+                <mat-form-field appearance="outline">                    
+                    <input matInput formControlName="pretUm"/>
+                    <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
+                    <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field> 
+            </div>
+            <div class="col-md-1">
+                <mat-label>valoare</mat-label>
+                <mat-form-field appearance="outline">                    
+                    <input matInput formControlName="valoare"/>
+                    <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
+                    <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field> 
+            </div>
+            <div class="col-md-1"> 
+                <button mat-flat-button color="primary" [disabled]="form.invalid">Adauga</button>
+            </div>
+</div>
+</div>
 
 </form>
 

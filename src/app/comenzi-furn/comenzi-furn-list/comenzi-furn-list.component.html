@@ -36,15 +36,7 @@
             <td mat-cell *matCellDef="let element">
                 {{element.utilizator}}
             </td>
-        </ng-container>
-        <ng-container matColumnDef="platit">            
-            <th mat-header-cell *matHeaderCellDef>Platit</th>
-            <td *matCellDef="let element">  
-                {{element.platit|daNu}}            
-              <!-- <input #checkBox type="checkbox" *ngIf="element.produseComenziFurnizorProc!=element.produseComenziFurnizorAll"
-                [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/> -->
-            </td>
-        </ng-container>
+        </ng-container>        
         <ng-container matColumnDef="termen">
             <th mat-header-cell *matHeaderCellDef>Termen livrare</th>
             <td mat-cell *matCellDef="let element">

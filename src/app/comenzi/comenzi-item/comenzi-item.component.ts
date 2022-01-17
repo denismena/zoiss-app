@@ -47,6 +47,7 @@ export class ComenziItemComponent implements OnInit {
       avans: null,
       conditiiPlata: '',
       termenLivrare: null,
+      platit: null,
       clientiAdresaId: [null, {validators:[RxwebValidators.required()]}],
       comenziProduses: ''
     });    
@@ -80,7 +81,7 @@ export class ComenziItemComponent implements OnInit {
   saveChanges(){
     const produse = this.selectedProdus.map(val => {
       return {id: val.id, cantitate: val.cantitate, furnizorId: val.furnizorId, produsId: val.produsId, oferteProdusId: val.oferteProdusId,
-        umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare}
+        umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare, discount: val.discount,}
     });
     console.log('set produse', produse);
     this.form.get('comenziProduses')?.setValue(produse);

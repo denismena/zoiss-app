@@ -1,65 +1,74 @@
 <form (submit)="saveChanges()" [formGroup]="form">
     <div class="container">    
         <div class="row">
-            <div class="col-md-6">          
-        <h4>Comanda</h4>    
-        <mat-form-field appearance="outline">
-            <mat-label>Numar</mat-label>
-            <input formControlName="numar" matInput>
-            <mat-error>Completati numarul!</mat-error>
-        </mat-form-field>
-    
-        <mat-form-field appearance="outline">
-            <mat-label>Data</mat-label>
-            <input formControlName="data" matInput [matDatepicker]="dataPicker">
-            <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
-            <mat-datepicker #dataPicker></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>    
-    
-        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" ></app-clienti-autocomplete>    
-        <input type="hidden" formControlName="clientId" #clientId>
-    
-        <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" [preselectArhitect] = "preselectArhitect"></app-arhitecti-autocomplete>    
-        <input type="hidden" formControlName="arhitectId" #arhitectId>
-    
-        <mat-form-field appearance="outline">
-            <mat-label>Avans</mat-label>
-            <input formControlName="avans" matInput>
-        </mat-form-field>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <mat-label>Numar</mat-label>
+                        <mat-form-field appearance="outline">                            
+                            <input formControlName="numar" matInput>
+                            <mat-error>Completati numarul!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-label>Data</mat-label>
+                        <mat-form-field appearance="outline">                            
+                            <input formControlName="data" matInput [matDatepicker]="dataPicker">
+                            <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataPicker></mat-datepicker>
+                            <mat-error>Completati data!</mat-error>
+                        </mat-form-field>
+                    </div>                    
+                    <div class="col-md-3">
+                        <mat-label>Termen de livrare</mat-label>
+                        <mat-form-field appearance="outline">                            
+                            <input formControlName="termenLivrare" matInput [matDatepicker]="dataPickerTL">
+                            <mat-datepicker-toggle matSuffix [for]="dataPickerTL"></mat-datepicker-toggle>
+                            <mat-datepicker #dataPickerTL></mat-datepicker>
+                            <mat-error>Completati data!</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-label>Avans</mat-label>
+                        <mat-form-field appearance="outline">                            
+                            <input formControlName="avans" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-1">
+                        <mat-slide-toggle formControlName="platit">Platit</mat-slide-toggle>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" ></app-clienti-autocomplete>    
+                        <input type="hidden" formControlName="clientId" #clientId>
+                    </div>
+                    <div class="col-md-3">
+                        <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" [preselectArhitect] = "preselectArhitect"></app-arhitecti-autocomplete>    
+                        <input type="hidden" formControlName="arhitectId" #arhitectId>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-label>Conditii plata</mat-label>
+                        <mat-form-field appearance="outline">                            
+                            <input formControlName="conditiiPlata" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        <label id="example-radio-group-label">Adresa livrare</label>
+                        <mat-radio-group
+                            aria-labelledby="example-radio-group-label"
+                            class="example-radio-group"formControlName="clientiAdresaId">
+                            <mat-radio-button class="example-radio-button" *ngFor="let adresa of adresa" [value]="adresa.id">
+                                <b>Depozit: </b>{{adresa.depozit}}   <b>Adresa: </b>{{adresa.adresa}}   <b>Oras: </b>{{adresa.oras}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error>{{form.get("clientiAdresaId")?.getError("required")?.message}}</mat-error>
+                    </div>
+                </div>
         
-        <mat-form-field appearance="outline">
-            <mat-label>Conditii plata</mat-label>
-            <input formControlName="conditiiPlata" matInput>
-        </mat-form-field>
         
-        <mat-form-field appearance="outline">
-            <mat-label>Termen de livrare</mat-label>
-            <input formControlName="termenLivrare" matInput [matDatepicker]="dataPickerTL">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerTL"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerTL></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
-        <!-- <mat-form-field appearance="outline">       
-            <mat-label>Adresa</mat-label>     
-            <select matNativeControl formControlName="depozitId">
-                <option value="" selected></option>
-                <option *ngFor="let adresa of adresa" [value]="adresa.id">
-                    {{adresa.depozit}}
-                </option>
-            </select>            
-        </mat-form-field> -->
-        <label id="example-radio-group-label">Adresa livrare</label>
-        <mat-radio-group
-            aria-labelledby="example-radio-group-label"
-            class="example-radio-group"formControlName="clientiAdresaId">
-            <mat-radio-button class="example-radio-button" *ngFor="let adresa of adresa" [value]="adresa.id">
-                <b>Depozit: </b>{{adresa.depozit}}   <b>Adresa: </b>{{adresa.adresa}}   <b>Oras: </b>{{adresa.oras}}
-            </mat-radio-button>
-        </mat-radio-group>
-        <mat-error>{{form.get("clientiAdresaId")?.getError("required")?.message}}</mat-error>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <app-comenzi-produse-autocomplete [selectedProdus]="selectedProdus"></app-comenzi-produse-autocomplete>    
     </div>
         <div>

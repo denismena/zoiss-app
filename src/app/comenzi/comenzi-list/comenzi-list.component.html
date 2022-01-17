@@ -111,6 +111,12 @@
                 {{element.utilizator}}
             </td>
         </ng-container>
+        <ng-container matColumnDef="platit">            
+            <th mat-header-cell *matHeaderCellDef>Platit</th>
+            <td *matCellDef="let element">  
+                {{element.platit|daNu}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="comandate">            
             <th mat-header-cell *matHeaderCellDef>Comandate</th>
             <td *matCellDef="let element">
