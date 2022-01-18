@@ -21,11 +21,11 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     this.produse = [];   
 
     this.selectedProdus = new Observable<produseOfertaDTO[]>();
-    this.selectedProdus = this.produsCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(state => state ? this._filterStates(state) : this.produse.slice())
-      );
+    // this.selectedProdus = this.produsCtrl.valueChanges
+    //   .pipe(
+    //     startWith(''),
+    //     map(state => state ? this._filterStates(state) : this.produse.slice())
+    //   ); 
   }
 
   @ViewChild(MatAutocompleteTrigger) 
@@ -42,18 +42,33 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   
   subscription: Subscription | undefined;
   
-  ngOnInit(): void {    
-    this.loadProduseList();
+  ngOnInit(): void {       
+    //this.loadProduseList();
   }
 
-  loadProduseList(){    
-    this.produseService.getAll().subscribe(produse=>{
-      this.produse = produse;
-      console.log(this.produse);
-      this.produsCtrl.setValue(this.preselectedProdus);
-    });    
+  // loadProduseList(){    
+  //   this.produseService.getAll().subscribe(produse=>{
+  //     this.produse = produse;
+  //     console.log(this.produse);
+  //     this.produsCtrl.setValue(this.preselectedProdus);
+  //   });    
+  // }
+  search(event: any){
+    let searchTerm = '';
+    searchTerm += event.target.value;
+    if(searchTerm.length > 2){    
+      this.produseService.search(searchTerm).subscribe(produse=>{
+        this.produse = produse;
+        console.log('load produse', produse);
+        this.selectedProdus = this.produsCtrl.valueChanges
+          .pipe(
+            startWith(''),
+            map(c => c ? this._filterStates(c) : this.produse.slice())
+          );
+        //this.produsCtrl.setValue(this.preselectClient);
+      });
+    }
   }
-
   optionSelected(event: MatAutocompleteSelectedEvent){    
     this.onOptionSelected.emit(event.option.value);
   }

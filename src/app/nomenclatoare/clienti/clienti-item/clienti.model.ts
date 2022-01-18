@@ -26,6 +26,7 @@ export interface clientiAdresaDTO{
     id: number;
     adresa: string;
     oras: string;
+    judet: string;
     tara: string;
     tel: string;
     email: string;

@@ -13,6 +13,7 @@ export class ClientiListComponent implements OnInit {
 
   clienti: clientiDTO[];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private clientiService: ClientiService) { 
     this.clienti = [];
   }
@@ -24,6 +25,7 @@ export class ClientiListComponent implements OnInit {
   loadList(){
     this.clientiService.getAll().subscribe(clienti=>{
       this.clienti = clienti;
+      this.loading$ = false;
       console.log(this.clienti);
     });    
   }

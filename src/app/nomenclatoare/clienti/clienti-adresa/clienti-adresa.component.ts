@@ -27,7 +27,7 @@ export class ClientiAdresaComponent implements OnInit {
 
   depozite: depoziteDTO[] = [];
   
-  columnsToDisplay = ['adresa', 'oras', 'tara', 'tel', 'email', 'sediu', 'livrare', 'depozit', 'actions']
+  columnsToDisplay = ['adresa', 'oras', 'judet', 'tara', 'tel', 'email', 'sediu', 'livrare', 'depozit', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -37,6 +37,7 @@ export class ClientiAdresaComponent implements OnInit {
     this.form = this.formBuilder.group({
       adresa:[null, {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:255 })]}],
       oras:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
+      judet:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       tara:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       tel:[null, {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
       email:[null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],

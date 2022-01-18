@@ -1,8 +1,12 @@
 <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Client</mat-label>
+  <mat-label>Client</mat-label>
+  <button type="button" routerLink="/clienti/create" mat-flat-button color="primary">        
+    <mat-icon>add</mat-icon>
+  </button>
+    <mat-form-field class="example-full-width" appearance="fill">      
       <input matInput
              aria-label="Client"
+             (keyup)="search($event)"
              [matAutocomplete]="auto"
              [formControl]="clientCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
@@ -11,8 +15,6 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <button type="button" routerLink="/clienti/create" mat-flat-button color="primary">        
-      <mat-icon>add</mat-icon>
-    </button>
+    
   </form>
   

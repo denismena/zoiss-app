@@ -27,6 +27,8 @@ export class FurnizoriItemComponent implements OnInit {
     this.form = this.formBuilder.group({
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:150 })]}],
       tara: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      oras: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      judet: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
       adresa: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
       tel: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
       email: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],

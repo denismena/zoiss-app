@@ -15,6 +15,9 @@ export class ClientiService {
   getAll(): Observable<clientiDTO[]>{
     return this.http.get<clientiDTO[]>(this.apiUrl);
   }
+  search(nume: string): Observable<clientiDTO[]>{
+    return this.http.get<clientiDTO[]>(`${this.apiUrl}/${nume}`);
+  }
 
   create(client: clientiCreationDTO){
     return this.http.post(this.apiUrl, client);

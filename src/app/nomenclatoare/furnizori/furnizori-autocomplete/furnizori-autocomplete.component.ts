@@ -18,11 +18,11 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     this.furnizori = [];
 
     this.selectedFurnizor = new Observable<furnizoriDTO[]>();
-    this.selectedFurnizor = this.furnizorCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(c => c ? this._filterStates(c) : this.furnizori.slice())
-      );
+    // this.selectedFurnizor = this.furnizorCtrl.valueChanges
+    //   .pipe(
+    //     startWith(''),
+    //     map(c => c ? this._filterStates(c) : this.furnizori.slice())
+    //   );
   }
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
@@ -40,21 +40,39 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   subscription: Subscription | undefined;
   
   ngOnInit(): void {
-  this.loadFurnizorList();
+  //this.loadFurnizorList();
   }
 
-  loadFurnizorList(){
-    this.furnizorService.getAll().subscribe(furnizori=>{
-      this.furnizori = furnizori;
-      console.log('preselectFurnizor', this.preselectFurnizor);
+  // loadFurnizorList(){
+  //   this.furnizorService.getAll().subscribe(furnizori=>{
+  //     this.furnizori = furnizori;
+  //     //console.log('this.furnizori', this.furnizori);
+  //     console.log('preselectFurnizor', this.preselectFurnizor);
       
-      if(this.preselectFurnizor !=0){
-        this.furnizorService.getById(this.preselectFurnizor).subscribe(fur=>{
-          this.furnizorCtrl.setValue(fur);
-        })
-      }     
+  //     if(this.preselectFurnizor !=0){
+  //       this.furnizorService.getById(this.preselectFurnizor).subscribe(fur=>{
+  //         this.furnizorCtrl.setValue(fur);
+  //       })
+  //     }     
       
-    });    
+  //   });    
+  // }
+
+  search(event: any){
+    //console.log('nume cautat:', nume.target.value);
+    let searchTerm = '';
+    searchTerm += event.target.value;
+    if(searchTerm.length > 2){    
+      this.furnizorService.search(searchTerm).subscribe(furnizori=>{
+        this.furnizori = furnizori;
+        console.log('load furnizori', furnizori);
+        this.selectedFurnizor = this.furnizorCtrl.valueChanges
+          .pipe(
+            startWith(''),
+            map(c => c ? this._filterStates(c) : this.furnizori.slice())
+          );        
+      });
+    }
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent){    

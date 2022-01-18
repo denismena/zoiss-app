@@ -2,6 +2,8 @@ export interface furnizoriDTO{
     id: number;
     nume: string;
     tara: string;
+    oras: string;
+    judet: string;
     adresa: string;
     tel: string;
     email: string;
@@ -11,6 +13,8 @@ export interface furnizoriDTO{
 export interface furnizoriCreationDTO{
     nume: string;
     tara: string;
+    oras: string;
+    judet: string;
     adresa: string;
     tel: string;
     email: string;

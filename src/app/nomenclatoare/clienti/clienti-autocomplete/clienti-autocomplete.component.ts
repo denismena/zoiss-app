@@ -18,11 +18,11 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     this.clienti = [];
     
     this.selectedClient = new Observable<clientiDTO[]>();
-    this.selectedClient = this.clientCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(c => c ? this._filterStates(c) : this.clienti.slice())
-      );
+    // this.selectedClient = this.clientCtrl.valueChanges
+    //   .pipe(
+    //     startWith(''),
+    //     map(c => c ? this._filterStates(c) : this.clienti.slice())
+    //   );
   }
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
@@ -37,17 +37,34 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   
   subscription: Subscription | undefined;
   ngOnInit(): void {
-    this.loadClientList();
+    //this.loadClientList();
+    console.log('this.preselectClient', this.preselectClient);
+    this.clientCtrl.setValue(this.preselectClient);    
   }
 
-  loadClientList(){
-    this.clientiService.getAll().subscribe(clienti=>{
-      this.clienti = clienti;
-      console.log('load clienti', this.clienti);
-      this.clientCtrl.setValue(this.preselectClient);
-    });    
+  // loadClientList(){
+  //   this.clientiService.getAll().subscribe(clienti=>{
+  //     this.clienti = clienti;
+  //     //console.log('load clienti', this.clienti);
+  //     this.clientCtrl.setValue(this.preselectClient);
+  //   });    
+  // }
+  search(event: any){
+    //console.log('nume cautat:', nume.target.value);
+    let searchTerm = '';
+    searchTerm += event.target.value;
+    if(searchTerm.length > 2){    
+      this.clientiService.search(searchTerm).subscribe(clienti=>{
+        this.clienti = clienti;
+        console.log('load clienti', clienti);
+        this.selectedClient = this.clientCtrl.valueChanges
+          .pipe(
+            startWith(''),
+            map(c => c ? this._filterStates(c) : this.clienti.slice())
+          );        
+      });
+    }
   }
-
   optionSelected(event: MatAutocompleteSelectedEvent){
     // console.log(event.option);
      console.log(event.option.value.id);
@@ -67,7 +84,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions();
+    this._subscribeToClosingActions();    
   }
 
   ngOnDestroy() {

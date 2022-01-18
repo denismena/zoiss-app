@@ -13,11 +13,12 @@ export class FurnizoriListComponent implements OnInit {
 
   furnizori: furnizoriDTO[];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private furnizoriService: FurnizoriService) { 
     this.furnizori = [];
   }
 
-  columnsToDisplay= ['nume', 'tara', 'adresa', 'tel', 'email', 'action'];
+  columnsToDisplay= ['nume', 'oras', 'judet', 'tara', 'adresa', 'tel', 'email', 'action'];
 
   ngOnInit(): void {
     this.loadList();
@@ -25,6 +26,7 @@ export class FurnizoriListComponent implements OnInit {
   loadList(){
     this.furnizoriService.getAll().subscribe(furnizori=>{
       this.furnizori = furnizori;
+      this.loading$ = false;
       console.log(this.furnizori);
     });    
   }

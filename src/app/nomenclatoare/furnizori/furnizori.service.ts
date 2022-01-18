@@ -15,7 +15,9 @@ export class FurnizoriService {
   getAll(): Observable<furnizoriDTO[]>{
     return this.http.get<furnizoriDTO[]>(this.apiUrl);
   }
-
+  search(nume: string): Observable<furnizoriDTO[]>{
+    return this.http.get<furnizoriDTO[]>(`${this.apiUrl}/${nume}`);
+  }
   create(produse: furnizoriCreationDTO){
     return this.http.post(this.apiUrl, produse);
   }

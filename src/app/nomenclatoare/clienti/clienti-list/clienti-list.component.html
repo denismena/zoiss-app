@@ -1,8 +1,11 @@
 <h2>Lista Clienti</h2>
 <button type="button" routerLink="/clienti/create" mat-flat-button color="primary">Adauga</button>   
 
-<app-generic-list [list]="clienti">
-    <ng-container content>
+<div class="spinner-container" *ngIf="loading$">
+    <mat-spinner></mat-spinner>
+</div>
+<!-- <app-generic-list [list]="clienti">
+    <ng-container content> -->
     <table mat-table *ngIf="clienti.length > 0" [dataSource]="clienti" class="mat-elevation-z8 table-index">        
         <ng-container matColumnDef="nume">
             <th mat-header-cell *matHeaderCellDef>Nume</th>
@@ -51,5 +54,5 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
-</ng-container>
-</app-generic-list>
+<!-- </ng-container>
+</app-generic-list> -->

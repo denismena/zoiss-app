@@ -67,3 +67,14 @@ $zoiss-app-theme: mat.define-light-theme((
 @include mat.core-theme($zoiss-app-theme);
 @include mat.all-component-themes($zoiss-app-theme);
 
+.w-50{
+  min-width: 50px;
+}
+
+.w-100{
+  width: 100px;
+}
+.mat-flat-button{
+  min-width: 40px;
+  padding: 0px 10px;  
+}

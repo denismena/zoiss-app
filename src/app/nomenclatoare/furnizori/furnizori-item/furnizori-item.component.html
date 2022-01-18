@@ -5,6 +5,16 @@
         <input formControlName="nume" matInput>
         <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
         <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>    
+    <mat-form-field appearance="outline">
+        <mat-label>Oras</mat-label>
+        <input formControlName="oras" matInput>
+        <mat-error>{{form.get("oras")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Judet</mat-label>
+        <input formControlName="judet" matInput>
+        <mat-error>{{form.get("judet")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Tara</mat-label>

@@ -1,6 +1,9 @@
 <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Arhitect</mat-label>
+    <mat-label>Arhitect</mat-label>
+    <button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary">        
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-form-field class="example-full-width" appearance="fill">      
       <input matInput
              aria-label="Arhitect"
              [matAutocomplete]="auto"
@@ -10,9 +13,6 @@
             {{arhitect.nume}}
         </mat-option>
       </mat-autocomplete>
-    </mat-form-field>
-    <button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary">        
-      <mat-icon>add</mat-icon>
-    </button>
+    </mat-form-field>    
 </form>
   

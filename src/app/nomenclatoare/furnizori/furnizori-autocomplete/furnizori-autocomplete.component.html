@@ -1,8 +1,12 @@
 <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Furnizor</mat-label>
+    <mat-label>Furnizor</mat-label>
+    <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">        
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-form-field class="example-full-width" appearance="fill">      
       <input matInput
              aria-label="Furnizori"
+             (keyup)="search($event)"
              [matAutocomplete]="auto"
              [formControl]="furnizorCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
@@ -10,9 +14,6 @@
             {{furn.nume}}
         </mat-option>
       </mat-autocomplete>
-    </mat-form-field>
-    <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">        
-      <mat-icon>add</mat-icon>
-    </button>
+    </mat-form-field>    
   </form>
   

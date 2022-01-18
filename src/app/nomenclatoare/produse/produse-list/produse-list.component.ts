@@ -14,6 +14,7 @@ export class ProduseListComponent implements OnInit {
 
   produse: produseDTO[];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private produseService: ProduseService) {  
     this.produse = [];
   }
@@ -28,6 +29,7 @@ export class ProduseListComponent implements OnInit {
     this.produseService.getAll().subscribe(produse=>{
       this.produse = produse;
       console.log(this.produse);
+      this.loading$ = false;
     });    
   }
   delete(id: number){

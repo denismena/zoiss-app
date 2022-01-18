@@ -29,7 +29,9 @@ export class ProduseService {
   getProduseAutocompleteComandaFurnizor(): Observable<produseComandaFurnizorDTO[]>{
     return this.http.get<produseComandaFurnizorDTO[]>(this.apiUrl);
   }
-
+  search(nume: string): Observable<produseDTO[]>{
+    return this.http.get<produseDTO[]>(`${this.apiUrl}/${nume}`);
+  }
   searchByName(name: string): Observable<produseOfertaDTO[]>{
     const headers = new HttpHeaders('Content-Type: application/json');
     return this.http.post<produseOfertaDTO[]>(this.apiUrl+'/searchByName', 

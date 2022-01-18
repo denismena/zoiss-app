@@ -1,8 +1,11 @@
 <h2>Lista Furnizori</h2>
 <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">Adauga</button>
 
-<app-generic-list [list]="furnizori">
-    <ng-container content>
+<div class="spinner-container" *ngIf="loading$">
+    <mat-spinner></mat-spinner>
+</div>
+<!-- <app-generic-list [list]="furnizori">
+    <ng-container content> -->
     <table mat-table *ngIf="furnizori.length > 0" [dataSource]="furnizori" class="mat-elevation-z8 table-index">        
         <ng-container matColumnDef="nume">
             <th mat-header-cell *matHeaderCellDef>Nume</th>
@@ -14,6 +17,18 @@
             <th mat-header-cell *matHeaderCellDef>Tara</th>
             <td mat-cell *matCellDef="let element">
                 {{element.tara}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="oras">
+            <th mat-header-cell *matHeaderCellDef>Oras</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.oras}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="judet">
+            <th mat-header-cell *matHeaderCellDef>Judet</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.judet}}
             </td>
         </ng-container>
         <ng-container matColumnDef="adresa">
@@ -35,7 +50,7 @@
             </td>
         </ng-container>
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>#</th>
+            <th mat-header-cell *matHeaderCellDef>Edit/Delete</th>
             <td mat-cell *matCellDef="let element">
                 <a
                     routerLink="/furnizori/edit/{{element.id}}"
@@ -57,5 +72,5 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
-</ng-container>
-</app-generic-list>
+<!-- </ng-container>
+</app-generic-list> -->

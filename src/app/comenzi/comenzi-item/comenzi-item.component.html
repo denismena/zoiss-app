@@ -40,7 +40,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" ></app-clienti-autocomplete>    
+                        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" *ngIf="preselectClient" ></app-clienti-autocomplete>    
                         <input type="hidden" formControlName="clientId" #clientId>
                     </div>
                     <div class="col-md-3">

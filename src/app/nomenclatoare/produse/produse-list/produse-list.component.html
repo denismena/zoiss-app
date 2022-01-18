@@ -5,9 +5,11 @@
     </button> 
 </h2>
   
-
-<app-generic-list [list]="produse">
-    <ng-container content>
+<div class="spinner-container" *ngIf="loading$">
+    <mat-spinner></mat-spinner>
+</div>
+<!-- <app-generic-list [list]="produse">
+    <ng-container content> -->
     <table mat-table *ngIf="produse.length > 0" [dataSource]="produse" class="mat-elevation-z8 table-index">
         <!-- <ng-container matColumnDef="poza">
             <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -34,7 +36,7 @@
             </td>
         </ng-container>
         <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>#</th>
+            <th class="w-50" mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element">
                 <a routerLink="/produse/edit/{{element.id}}" title="Edit">
                 <mat-icon color="primary">edit</mat-icon>
@@ -60,5 +62,5 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
-</ng-container>
-</app-generic-list>
+<!-- </ng-container>
+</app-generic-list> -->
