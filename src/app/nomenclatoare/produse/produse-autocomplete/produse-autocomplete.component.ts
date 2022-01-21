@@ -1,11 +1,11 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { ProduseCreateDialogComponent } from '../produse-item/produse-create-dialog/produse-create-dialog.component';
 import { produseDTO, produseOfertaDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
 
@@ -17,7 +17,8 @@ import { ProduseService } from '../produse.service';
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   produse: produseDTO[]
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService) { 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService,
+    public dialog: MatDialog) { 
     this.produse = [];   
 
     this.selectedProdus = new Observable<produseOfertaDTO[]>();
@@ -41,7 +42,8 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
   subscription: Subscription | undefined;
-  
+  dataFromDialog : any;
+
   ngOnInit(): void {       
     //this.loadProduseList();
   }
@@ -70,6 +72,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     }
   }
   optionSelected(event: MatAutocompleteSelectedEvent){    
+    console.log('event.option.value', event.option.value);
     this.onOptionSelected.emit(event.option.value);
   }
 
@@ -110,5 +113,21 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
 
   public clearSelection(){
     this.produsCtrl.setValue(null);
+  }
+
+  addProdusDialog(){
+    const dialogRef = this.dialog.open(ProduseCreateDialogComponent,      
+      { data:{}, width: '800px', height: '750px' });
+      
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.produsCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog);
+        }
+      });
+      
   }
 }

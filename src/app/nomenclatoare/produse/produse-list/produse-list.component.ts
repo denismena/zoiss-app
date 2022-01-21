@@ -19,7 +19,7 @@ export class ProduseListComponent implements OnInit {
     this.produse = [];
   }
   
-  columnsToDisplay= ['cod', 'nume', 'um', 'action'];
+  columnsToDisplay= ['cod', 'nume', 'perCutie', 'pret', 'um', 'action'];
 
   ngOnInit(): void {    
     this.loadList();

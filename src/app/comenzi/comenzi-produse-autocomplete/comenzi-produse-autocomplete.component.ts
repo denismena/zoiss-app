@@ -124,7 +124,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
 
   onCantitateChange(event: any){
     const cant = event.target.value;
-    this.form.controls['cutii']?.setValue(cant * this.perCutieSet??0);
+    this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet??0));
     this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
   }
 

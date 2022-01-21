@@ -101,7 +101,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     }
   }
 
-  selectProdus(produs: any){    
+  selectProdus(produs: any){  
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
     this.form.controls['pretUm']?.setValue(produs.pret);
@@ -134,7 +134,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
   onCantitateChange(event: any){
     const cant = event.target.value;
-    this.form.controls['cutii']?.setValue(cant * this.perCutieSet??0);
+    this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);
     this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
   }
 
