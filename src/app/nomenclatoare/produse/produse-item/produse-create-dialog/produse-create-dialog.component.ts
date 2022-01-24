@@ -13,6 +13,7 @@ import { produseCreationDTO } from '../produse.model';
 export class ProduseCreateDialogComponent implements OnInit {
 
   errors: string[] = [];
+  isDialog: boolean = true;
   constructor(private router:Router, private produsService: ProduseService,
     @Inject(MAT_DIALOG_DATA) data:{},
     public dialogRef: MatDialogRef<ProduseCreateDialogComponent>) { }
@@ -20,8 +21,8 @@ export class ProduseCreateDialogComponent implements OnInit {
   ngOnInit(): void {
     console.log('dialogRef', this.dialogRef);
   }
-  saveChanges(produseDTO: produseCreationDTO){
-    
+  saveChanges(produseDTO: produseCreationDTO){    
+    if(produseDTO != undefined)    {
     this.produsService.create(produseDTO).subscribe(id=>{      
       console.log('id:', id);
       this.dialogRef.close({
@@ -34,5 +35,12 @@ export class ProduseCreateDialogComponent implements OnInit {
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
+  else {
+    this.dialogRef.close({
+      clicked: 'cancel',
+      form: produseDTO,
+      id: 0
+    });
+  }
+  }
 }

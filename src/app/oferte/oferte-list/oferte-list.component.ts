@@ -84,7 +84,7 @@ export class OferteListComponent implements OnInit {
     var selectedProd: produseOfertaDTO[] = [];
     this.oferte.forEach(element => {
       element.produse.forEach(prod=>{
-        if(prod.addToComanda)
+        if(prod.addToComanda && !prod.isInComanda)
           {
             console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.addToComanda);
             selectedProd.push(prod);

@@ -1,6 +1,53 @@
-<h2>Lista Furnizori</h2>
-<button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">Adauga</button>
-
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Filtre cautare
+        </mat-panel-title>
+        <mat-panel-description>
+            <h2>Lista Furnizori</h2>
+            <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">Adauga</button>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">                
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nume</mat-label>
+                        <input formControlName="nume" matInput>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Judet</mat-label>
+                        <input formControlName="judet" matInput>                        
+                    </mat-form-field>                   
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tara</mat-label>
+                        <input formControlName="tara" matInput>                        
+                    </mat-form-field>                   
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Active</mat-label>                
+                        <mat-select formControlName="active">
+                            <mat-option [value]="0">Toate</mat-option>
+                            <mat-option [value]="1">Active</mat-option>
+                            <mat-option [value]="2">Inactive</mat-option>
+                          </mat-select>
+                    </mat-form-field>
+                    <div style="float: right;">
+                        <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+                    </div>
+                </div>
+            </div>            
+        </div>
+      </form>
+    </mat-expansion-panel>    
+</mat-accordion>
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
@@ -72,5 +119,8 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+        (page)="upadatePagination($event)" class="mat-elevation-z8">
+    </mat-paginator>
 <!-- </ng-container>
 </app-generic-list> -->

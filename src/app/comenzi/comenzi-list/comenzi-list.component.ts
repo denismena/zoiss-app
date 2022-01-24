@@ -88,6 +88,7 @@ export class ComenziListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.comenziService.getAll(values).subscribe((response: HttpResponse<comenziDTO[]>)=>{
       this.comenzi = response.body??[];
+      console.log('totalRecords', response.headers.get("totalRecords"));
       this.totalRecords = Number(response.headers.get("totalRecords"));
       console.log('this.comenzi', this.comenzi);
       console.log('totalRecords', response.headers);
@@ -126,27 +127,56 @@ export class ComenziListComponent implements OnInit {
 
   genereazaComandaFurnizor()
   {
-    console.log('in');
+    console.log('in generat');
     var selectedProd: produseComandaDTO[] = [];
+    var comenziNeplatite = false;
+    var maiMultiFurnizori = false;
+    var furnizorId = 0;
     this.comenzi.forEach(element => {
       element.comenziProduses.forEach(prod=>{
-        console.log('prod', prod);
-        if(prod.addToComandaFurnizor)
+        //console.log('prod', prod);
+        if(prod.addToComandaFurnizor && !prod.isInComandaFurnizor) 
           {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComandaFurnizor);
+            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComandaFurnizor + ' ' + furnizorId + ' ' + prod.furnizorId);
             selectedProd.push(prod);
+            if(!element.platit) comenziNeplatite = true;
+            
+            if(furnizorId != prod.furnizorId && furnizorId > 0)  maiMultiFurnizori = true; 
+            else furnizorId = prod.furnizorId;
           }
-      })
+      });      
     });
 
-    if(selectedProd.length > 0){
-      this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
-        console.log('comanda new id', id);
-        this.router.navigate(['/comenziFurnizor/edit/' + id])
-      }, 
-      error=> this.errors = parseWebAPIErrors(error));
+    console.log('selectedProd', selectedProd);
+    if(maiMultiFurnizori) 
+    { 
+      Swal.fire({ title: "Atentie!", text: "Ati selectat produse de la mai multi furnizori!", icon: 'info' });
+      return;
     }
-    else this.errors.push("Nu ati selectat nici o oferta!");
+    if(selectedProd.length == 0){
+      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o oferta!", icon: 'info' });
+      return;
+    }
+    
+    if(comenziNeplatite)
+      Swal.fire({
+        title: 'Atentie!',
+        text: "Ati selectat o comanda care nu este platita! Doriti sa continuati?",
+        icon: 'warning',
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        // confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
+            console.log('comanda new id', id);
+            this.router.navigate(['/comenziFurnizor/edit/' + id])
+          }, 
+          error=> this.errors = parseWebAPIErrors(error));
+          console.log('aici a generat comanda');
+        }
+      });   
   }
 
   upadatePagination(event: PageEvent){

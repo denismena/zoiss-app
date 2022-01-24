@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -12,11 +12,12 @@ export class FurnizoriService {
   constructor(private http: HttpClient) { }
   private apiUrl = environment.apiUrl + '/furnizori';
 
-  getAll(): Observable<furnizoriDTO[]>{
-    return this.http.get<furnizoriDTO[]>(this.apiUrl);
+  getAll(values: any): Observable<any>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<furnizoriDTO[]>(this.apiUrl, {observe:'response', params});
   }
   search(nume: string): Observable<furnizoriDTO[]>{
-    return this.http.get<furnizoriDTO[]>(`${this.apiUrl}/${nume}`);
+    return this.http.get<furnizoriDTO[]>(`${this.apiUrl}/search/${nume}`);
   }
   create(produse: furnizoriCreationDTO){
     return this.http.post(this.apiUrl, produse);

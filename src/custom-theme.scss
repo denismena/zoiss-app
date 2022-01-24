@@ -67,6 +67,10 @@ $zoiss-app-theme: mat.define-light-theme((
 @include mat.core-theme($zoiss-app-theme);
 @include mat.all-component-themes($zoiss-app-theme);
 
+mat-form-field{
+  width: 100%;
+}
+
 .w-50{
   min-width: 50px;
 }

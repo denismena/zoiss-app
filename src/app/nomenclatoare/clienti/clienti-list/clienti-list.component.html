@@ -1,6 +1,68 @@
-<h2>Lista Clienti</h2>
-<button type="button" routerLink="/clienti/create" mat-flat-button color="primary">Adauga</button>   
-
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Filtre cautare
+        </mat-panel-title>
+        <mat-panel-description>
+            <h2>Lista Clienti</h2>
+            <button type="button" routerLink="/clienti/create" mat-flat-button color="primary">Adauga</button>  
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">                
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nume</mat-label>
+                        <input formControlName="nume" matInput>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>CUI/CNP</mat-label>
+                        <input formControlName="cuicnp" matInput>                        
+                    </mat-form-field>                   
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tip</mat-label>                
+                        <mat-select formControlName="pfPj">
+                            <mat-option [value]="">Toate</mat-option>
+                            <mat-option [value]="'PF'">PF</mat-option>
+                            <mat-option [value]="'PJ'">PJ</mat-option>
+                          </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Registru Comert</mat-label>
+                        <input formControlName="registruComert" matInput>                        
+                    </mat-form-field>                   
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-75 p-3">
+                        <mat-label>Active</mat-label>                
+                        <mat-select formControlName="active">
+                            <mat-option [value]="0">Toate</mat-option>
+                            <mat-option [value]="1">Active</mat-option>
+                            <mat-option [value]="2">Inactive</mat-option>
+                          </mat-select>
+                    </mat-form-field>                    
+                </div>
+                <div class="col-md-4">
+                    <mat-slide-toggle formControlName="faraAdresa">Fara adresa</mat-slide-toggle>                    
+                    <div style="float: right;">
+                        <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+                    </div>
+                </div>
+            </div>
+        </div>
+      </form>
+    </mat-expansion-panel>    
+</mat-accordion>
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
@@ -54,5 +116,8 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+        (page)="upadatePagination($event)" class="mat-elevation-z8">
+    </mat-paginator>
 <!-- </ng-container>
 </app-generic-list> -->

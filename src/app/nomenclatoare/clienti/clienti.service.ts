@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -12,11 +12,12 @@ export class ClientiService {
   constructor(private http: HttpClient) { }
   private apiUrl = environment.apiUrl + '/clienti';
 
-  getAll(): Observable<clientiDTO[]>{
-    return this.http.get<clientiDTO[]>(this.apiUrl);
+  getAll(values: any): Observable<any>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<clientiDTO[]>(this.apiUrl, {observe:'response', params});
   }
   search(nume: string): Observable<clientiDTO[]>{
-    return this.http.get<clientiDTO[]>(`${this.apiUrl}/${nume}`);
+    return this.http.get<clientiDTO[]>(`${this.apiUrl}/search/${nume}`);
   }
 
   create(client: clientiCreationDTO){

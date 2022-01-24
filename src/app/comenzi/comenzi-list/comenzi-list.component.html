@@ -125,8 +125,7 @@
         </ng-container>
         <ng-container matColumnDef="select">            
             <th mat-header-cell *matHeaderCellDef>Select</th>
-            <td *matCellDef="let element">
-              <!-- <mat-checkbox #checkBox [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox> -->
+            <td *matCellDef="let element"  class="text-center" [ngClass]="{'alert-danger' : !element.platit}">
               <input #checkBox type="checkbox" *ngIf="element.produseComenziProc!=element.produseComenziAll"
                 [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
             </td>
@@ -188,9 +187,7 @@
                         <td>{{prod.pretUm}}</td>
                         <td>{{prod.valoare}}</td>
                         <td>
-                            <!-- <input type="checkbox" [(ngModel)]="prod.isInComandaFurnizor" name="list_name" value="{{prod.id}}"
-                                (change)="isAllSelected(element)" /> -->
-                            <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor" 
+                            <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor"                                
                                 name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
                         </td>
                       </tr>                      

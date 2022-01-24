@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { produseComandaFurnizorDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
@@ -14,8 +14,9 @@ export class ProduseService {
   constructor(private http: HttpClient) { }
   private apiUrl = environment.apiUrl + '/produse';
 
-  getAll(): Observable<produseDTO[]>{
-    return this.http.get<produseDTO[]>(this.apiUrl);
+  getAll(values: any): Observable<any>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<produseDTO[]>(this.apiUrl, {observe:'response', params});
   }
 
   getProduseAutocomplete(): Observable<produseOfertaDTO[]>{
@@ -29,8 +30,8 @@ export class ProduseService {
   getProduseAutocompleteComandaFurnizor(): Observable<produseComandaFurnizorDTO[]>{
     return this.http.get<produseComandaFurnizorDTO[]>(this.apiUrl);
   }
-  search(nume: string): Observable<produseDTO[]>{
-    return this.http.get<produseDTO[]>(`${this.apiUrl}/${nume}`);
+  search(nume: string): Observable<produseDTO[]>{    
+    return this.http.get<produseDTO[]>(`${this.apiUrl}/search/${nume}`);
   }
   searchByName(name: string): Observable<produseOfertaDTO[]>{
     const headers = new HttpHeaders('Content-Type: application/json');

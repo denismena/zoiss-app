@@ -1,9 +1,61 @@
-<h2>Lista Produse
-    <button type="button" routerLink="/produse/create" mat-flat-button color="primary">
-        <!-- <mat-icon>add_circle_outline</mat-icon>Nou -->
-        <mat-icon>add</mat-icon> Adauga
-    </button> 
-</h2>
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Filtre cautare
+        </mat-panel-title>
+        <mat-panel-description>
+            <h2>Lista Produse
+                <button type="button" routerLink="/produse/create" mat-flat-button color="primary">                    
+                    <mat-icon>add</mat-icon> Adauga
+                </button> 
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cod</mat-label>
+                        <input formControlName="cod" matInput>                        
+                    </mat-form-field>                   
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nume</mat-label>
+                        <input formControlName="nume" matInput>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>um</mat-label>                
+                        <mat-select formControlName="umId">
+                            <mat-option *ngFor="let um of umList" [value]="um.id">
+                                {{um.nume}}
+                              </mat-option>            
+                          </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <!-- <mat-slide-toggle formControlName="active">Active</mat-slide-toggle> -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Active</mat-label>                
+                        <mat-select formControlName="active">
+                            <mat-option [value]="0">Toate</mat-option>
+                            <mat-option [value]="1">Active</mat-option>
+                            <mat-option [value]="2">Inactive</mat-option>
+                          </mat-select>
+                    </mat-form-field>
+                    <div style="float: right;">
+                        <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+                    </div>
+                </div>
+            </div>
+        </div>
+      </form>
+    </mat-expansion-panel>    
+</mat-accordion>
   
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
@@ -68,5 +120,8 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+        (page)="upadatePagination($event)" class="mat-elevation-z8">
+    </mat-paginator>
 <!-- </ng-container>
 </app-generic-list> -->

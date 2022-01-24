@@ -1,4 +1,7 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { clientiDTO } from '../clienti-item/clienti.model';
@@ -14,17 +17,40 @@ export class ClientiListComponent implements OnInit {
   clienti: clientiDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  constructor(private clientiService: ClientiService) { 
+  public form!: FormGroup;
+  totalRecords:number = 0;
+  currentPage:number = 1;
+  pageSize: number = 100;
+  initialFormValues: any;
+  panelOpenState = false;
+  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder) { 
     this.clienti = [];
   }
   columnsToDisplay= ['nume', 'pfPj', 'cuicnp', 'registruComert', 'action'];
   ngOnInit(): void {
-    this.loadList();
+
+    this.form = this.formBuilder.group({            
+      nume: '',
+      pfPj: '',
+      cuicnp: '',
+      registruComert: '',      
+      active: 0,
+      faraAdresa: false
+    });  
+
+    this.initialFormValues = this.form.value
+    this.loadList(this.form.value);
+    this.form.valueChanges.subscribe(values=>{
+      this.loadList(values);      
+    })
   }
 
-  loadList(){
-    this.clientiService.getAll().subscribe(clienti=>{
-      this.clienti = clienti;
+  loadList(values:any){
+    values.page = this.currentPage;
+    values.recordsPerPage = this.pageSize;
+    this.clientiService.getAll(values).subscribe((response: HttpResponse<clientiDTO[]>)=>{
+      this.clienti = response.body??[];
+      this.totalRecords = Number(response.headers.get("totalrecords"));
       this.loading$ = false;
       console.log(this.clienti);
     });    
@@ -32,10 +58,21 @@ export class ClientiListComponent implements OnInit {
   delete(id: number){
     this.clientiService.delete(id)
     .subscribe(() => {
-      this.loadList();
+      this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
+
+  clearForm(){
+    this.form.patchValue(this.initialFormValues);    
+  }
+
+  upadatePagination(event: PageEvent){
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadList(this.form.value);
+  }
+  
 }
