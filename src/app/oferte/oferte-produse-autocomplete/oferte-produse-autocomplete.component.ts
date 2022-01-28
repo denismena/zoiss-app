@@ -8,6 +8,8 @@ import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validato
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
+import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
+import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
@@ -23,7 +25,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
   // produse: produseDTO[]
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
-    private produseService: ProduseService, private umService: UMService) { 
+    private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
   }
@@ -32,15 +34,16 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   produsCtrl: FormControl = new FormControl();
   public furnizorFormGroup!: FormGroup;
 
-  @Input()
-  selectedProdus: produseOfertaDTO[];
+  @Input() preselectedProdus:produseDTO|undefined;
+  @Input() preselectFurnizor:furnizoriDTO|undefined;
+  @Input() selectedProdus: produseOfertaDTO[];
   produsToDisplay: produseOfertaDTO[];
   umList: umDTO[]=[];
 
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
+  columnsToDisplay = ['codProdus', 'produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -53,7 +56,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   
   perCutieSet!: number;
   pretSet!: number;
-  
+  isEditMode: boolean=false;
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
     });
@@ -69,6 +72,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      codProdus:'', id:null, isInComanda:false
     });
     
     this.loadProduseList();
@@ -104,6 +108,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   selectProdus(produs: any){  
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
+    this.form.get('codProdus')?.setValue(produs.cod);
     this.form.controls['pretUm']?.setValue(produs.pret);
     this.form.controls['umId']?.setValue(produs.umId);
     this.form.controls['um']?.setValue(produs.um);
@@ -122,16 +127,37 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
 
   saveChanges(){
-    console.log('save produse', this.form.value);    
-    this.selectedProdus.push(this.form.value);
+    if(this.form.get('id')?.value !=null && this.isEditMode){
+      let index = this.selectedProdus.findIndex(a => a.id === Number(this.form.get('id')?.value));
+      this.selectedProdus[index]=this.form.value;
+    }
+    else this.selectedProdus.push(this.form.value);
+
     if (this.table !== undefined){
       this.table.renderRows();
     }
     this.form.reset();
     this.produsAuto.clearSelection();
     this.furnizoriAuto.clearSelection();
+    this.isEditMode = false;
   }
-
+  edit(produs:any){
+    console.log('produs', produs);
+    this.form.setValue(produs);
+    this.produseService.getById(produs.produsId).subscribe(produs=>{
+      this.preselectedProdus = produs;      
+    });
+    this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
+      this.preselectFurnizor = furnizor;
+    });
+    this.isEditMode = true;
+  }
+  clearForm(){
+    this.form.reset();
+    this.produsAuto.clearSelection();
+    this.furnizoriAuto.clearSelection();
+    this.isEditMode = false; 
+  }
   onCantitateChange(event: any){
     const cant = event.target.value;
     this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);

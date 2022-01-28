@@ -37,7 +37,7 @@
                           </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <!-- <mat-slide-toggle formControlName="active">Active</mat-slide-toggle> -->
                     <mat-form-field appearance="outline">
                         <mat-label>Active</mat-label>                
@@ -46,10 +46,10 @@
                             <mat-option [value]="1">Active</mat-option>
                             <mat-option [value]="2">Inactive</mat-option>
                           </mat-select>
-                    </mat-form-field>
-                    <div style="float: right;">
-                        <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
-                    </div>
+                    </mat-form-field>                    
+                </div>
+                <div class="col-md-1">
+                    <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
                 </div>
             </div>
         </div>

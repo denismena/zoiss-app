@@ -30,7 +30,7 @@
                         <input formControlName="tara" matInput>                        
                     </mat-form-field>                   
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <mat-form-field appearance="outline">
                         <mat-label>Active</mat-label>                
                         <mat-select formControlName="active">
@@ -38,10 +38,10 @@
                             <mat-option [value]="1">Active</mat-option>
                             <mat-option [value]="2">Inactive</mat-option>
                           </mat-select>
-                    </mat-form-field>
-                    <div style="float: right;">
-                        <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
-                    </div>
+                    </mat-form-field>                    
+                </div>
+                <div class="col-md-1">
+                    <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
                 </div>
             </div>            
         </div>
@@ -99,21 +99,17 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Edit/Delete</th>
             <td mat-cell *matCellDef="let element">
-                <a
-                    routerLink="/furnizori/edit/{{element.id}}"
-                    mat-flat-button color="primary"
-                >
-                Edit
+                <a routerLink="/furnizori/edit/{{element.id}}" color="primary">
+                    <mat-icon color="primary">edit</mat-icon>
                 </a>
-                <button mat-flat-button color="warn" 
-                [swal]="{
+                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" [swal]="{
                     title: 'Confirmare',
                     text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
                     showCancelButton: true
-                }"
+                }" title="Delete"
                 (confirm)="delete(element.id)">
-                    Delete
-                </button>
+                    close
+                </mat-icon>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

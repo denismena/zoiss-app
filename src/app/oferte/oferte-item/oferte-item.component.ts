@@ -67,7 +67,7 @@ export class OferteItemComponent implements OnInit {
 
   saveChanges(){
     const produse = this.selectedProdus.map(val => {
-      return {id: val.id, cantitate: val.cantitate, furnizorId: val.furnizorId, produsId: val.produsId,
+      return {id: val.id??0, cantitate: val.cantitate, furnizorId: val.furnizorId, produsId: val.produsId,
         umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare}
     });
     console.log('set produse', produse);

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import {Observable, Subscription} from 'rxjs';
@@ -11,7 +11,7 @@ import { FurnizoriService } from '../furnizori.service';
   templateUrl: './furnizori-autocomplete.component.html',
   styleUrls: ['./furnizori-autocomplete.component.scss']
 })
-export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   furnizori: furnizoriDTO[];
   constructor(private furnizorService: FurnizoriService ) { 
@@ -31,7 +31,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   selectedFurnizor: any;
   
   @Input()
-  preselectFurnizor: number = 0;
+  preselectFurnizor: furnizoriDTO | undefined;
 
 
   @Output()
@@ -41,8 +41,13 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   
   ngOnInit(): void {
   //this.loadFurnizorList();
+  if(this.preselectFurnizor !=undefined)
+    this.furnizorCtrl.setValue(this.preselectFurnizor);
   }
-
+  ngOnChanges() {
+    if(this.preselectFurnizor!=undefined)
+      this.furnizorCtrl.setValue(this.preselectFurnizor);    
+  }
   // loadFurnizorList(){
   //   this.furnizorService.getAll().subscribe(furnizori=>{
   //     this.furnizori = furnizori;

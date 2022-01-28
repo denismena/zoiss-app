@@ -39,7 +39,8 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   ngOnInit(): void {
     //this.loadClientList();
     console.log('this.preselectClient', this.preselectClient);
-    this.clientCtrl.setValue(this.preselectClient);    
+    if(this.preselectClient !=undefined)
+      this.clientCtrl.setValue(this.preselectClient);    
   }
 
   // loadClientList(){

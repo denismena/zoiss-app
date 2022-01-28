@@ -1,37 +1,40 @@
-form{
-    width: 100%;
-}
-img{
-    vertical-align: middle;
-    margin-right: 8px;
-    width: 35px;
-    height: 45px;
-}
-table {
-    width: 100%;
-    margin-bottom: 1rem;
-}
+// form{
+//     width: 100%;
+// }
+// img{
+//     vertical-align: middle;
+//     margin-right: 8px;
+//     width: 35px;
+//     height: 45px;
+// }
+// table {
+//     width: 100%;
+//     margin-bottom: 1rem;
+// }
 
-mat-icon {
-    cursor: pointer;
-}
-mat-form-field{
-    margin-top: 0.5em;
-    margin-left: 0.5em;
-    width: 5em;
-    text-align: right;
-}
-.dataPicker{
-    width: 10em;
-}
+// mat-icon {
+//     cursor: pointer;
+// }
+// // mat-form-field{
+// //     margin-top: 0.5em;
+// //     margin-left: 0.5em;
+// //     width: 5em;
+// //     text-align: right;
+// // }
+// .dataPicker{
+//     width: 10em;
+// }
 
-.detalii{
-    width: 15em;
-}
+// .detalii{
+//     width: 15em;
+// }
 
-th.mat-header-cell {
-    text-align: center !important;
-  }
-  button{
-    margin-left: 1rem;
+// th.mat-header-cell {
+//     text-align: center !important;
+//   }
+//   button{
+//     margin-left: 1rem;
+// }
+td.mat-cell{
+    padding: 1rem;
 }

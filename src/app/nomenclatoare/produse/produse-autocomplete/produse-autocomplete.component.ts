@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { ProduseService } from '../produse.service';
   templateUrl: './produse-autocomplete.component.html',
   styleUrls: ['./produse-autocomplete.component.scss']
 })
-export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   produse: produseDTO[]
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService,
@@ -36,18 +36,23 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
 
   selectedProdus: any;
   @Input()
-  preselectedProdus: produseOfertaDTO[] | undefined;
+  preselectedProdus: produseDTO | undefined;
 
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
   subscription: Subscription | undefined;
-  dataFromDialog : any;
+  dataFromDialog : any;  
 
   ngOnInit(): void {       
     //this.loadProduseList();
+    if(this.preselectedProdus!=undefined)
+      this.produsCtrl.setValue(this.preselectedProdus);    
   }
-
+  ngOnChanges() {
+    if(this.preselectedProdus!=undefined)
+      this.produsCtrl.setValue(this.preselectedProdus);    
+  }
   // loadProduseList(){    
   //   this.produseService.getAll().subscribe(produse=>{
   //     this.produse = produse;

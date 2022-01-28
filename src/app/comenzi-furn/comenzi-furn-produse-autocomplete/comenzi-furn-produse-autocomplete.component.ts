@@ -2,12 +2,15 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-//import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
-//import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
+import { produseDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
+import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
 import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
+import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
 
 @Component({
   selector: 'app-comenzi-furn-produse-autocomplete',
@@ -16,10 +19,8 @@ import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.mod
 })
 export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private umService: UMService
-    //private formBuilder:FormBuilder, 
-    //private produseService: ProduseService, 
-    ) { 
+  constructor(private activatedRoute: ActivatedRoute, private umService: UMService,
+    private formBuilder:FormBuilder, private produseService: ProduseService) { 
     this.selectedProdus = [];
     //this.produsToDisplay = [];    
   }
@@ -28,10 +29,9 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   produsCtrl: FormControl = new FormControl();
   public furnizorFormGroup!: FormGroup;
-
-  @Input()
-  selectedProdus: produseComandaFurnizorDTO[];
-  //produsToDisplay: produseComandaFurnizorDTO[];
+  
+  @Input() preselectedProdus:produseDTO|undefined;
+  @Input() selectedProdus: produseComandaFurnizorDTO[];
   umList: umDTO[]=[];
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
@@ -45,22 +45,24 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   
   perCutieSet!: number;
   pretSet!: number;
+  isEditMode: boolean=false;
+
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{      
     });
-    // this.form = this.formBuilder.group({
-    //   produsId:[null, {validators:[Validators.required]}],
-    //   produsNume:'',
-    //   um: '',
-    //   umId: ['', {validators:[Validators.required]}],
-    //   cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-    //   cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-    //   pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-    //   valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-    //   discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-    //   disponibilitate:[new Date(), {validators:[RxwebValidators.required()]}],
-    //   detalii:'',
-    // });    
+    this.form = this.formBuilder.group({
+      produsId:[null, {validators:[Validators.required]}],
+      produsNume:'',
+      um: '',
+      umId: ['', {validators:[Validators.required]}],
+      cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      //discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      disponibilitate:[null],
+      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:''
+    });    
     
     // this.loadProduseList();
         
@@ -81,15 +83,23 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   //   });    
   // }
 
-//   selectProdus(produs: any){    
-//     this.form.get('produsId')?.setValue(produs.id);
-//     this.form.get('produsNume')?.setValue(produs.nume);
-//     this.form.controls['pretUm']?.setValue(produs.pret);
-//     this.form.controls['umId']?.setValue(produs.umId);
-//     this.form.controls['um']?.setValue(produs.um);
-//     this.perCutieSet = produs.perCutie;
-//     this.pretSet = produs.pret;
-//  }
+  selectFurnizor(furnizor: any){
+    if(furnizor!==undefined){
+     this.form.get('furnizorId')?.setValue(furnizor.id);
+     this.form.get('furnizorNume')?.setValue(furnizor.nume);
+    }
+  }
+
+  selectProdus(produs: any){    
+    this.form.get('produsId')?.setValue(produs.id);
+    this.form.get('produsNume')?.setValue(produs.nume);
+    this.form.get('codProdus')?.setValue(produs.cod);
+    this.form.controls['pretUm']?.setValue(produs.pret);
+    this.form.controls['umId']?.setValue(produs.umId);
+    this.form.controls['um']?.setValue(produs.um);
+    this.perCutieSet = produs.perCutie;
+    this.pretSet = produs.pret;
+ }
 
   // private _filterStates(value: string): produseComandaFurnizorDTO[] {
   //   const filterValue = value.toLowerCase();
@@ -98,7 +108,9 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   saveChanges(){
     console.log('save produse', this.form.value);    
-    this.selectedProdus.push(this.form.value);
+    let index = this.selectedProdus.findIndex(a => a.id === Number(this.form.get('id')?.value));
+      this.selectedProdus[index]=this.form.value;
+      
     if (this.table !== undefined){
       this.table.renderRows();
     }
@@ -112,10 +124,23 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
   }
 
-  // selectUM(um: any){       
-  //   this.form.get('um')?.setValue(um.source.triggerValue);
-  // }
+  edit(produs:any){
+    console.log('produs', produs);
+    this.form.setValue(produs);
+    this.produseService.getById(produs.produsId).subscribe(produs=>{
+      this.preselectedProdus = produs;
+    });    
+    this.isEditMode = true;
+  }
 
+  clearForm(){
+    this.form.reset();
+    this.produsAuto.clearSelection();
+    this.isEditMode = false; 
+  }
+  selectUM(um: any){       
+    this.form.get('um')?.setValue(um.source.triggerValue);
+  }
   remove(produs:any){
     console.log('delete produs', produs);
     const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
