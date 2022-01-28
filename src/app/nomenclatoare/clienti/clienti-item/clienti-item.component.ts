@@ -61,7 +61,7 @@ export class ClientiItemComponent implements OnInit {
   saveChanges(){    
     //set the adrese list to model
     const adrese = this.adreseList.map(val => {
-      return {id: val.id, adresa: val.adresa, oras: val.oras, judet: val.judet, tara: val.tara,
+      return {id: val.id??0, adresa: val.adresa, oras: val.oras, judet: val.judet, tara: val.tara,
         tel: val.tel, email: val.email, sediu: val.sediu, livrare: val.livrare, depozitId: val.depozitId}
     });
     this.form.get('adrese')?.setValue(adrese);

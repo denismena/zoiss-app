@@ -24,9 +24,8 @@ export class ClientiAdresaComponent implements OnInit {
   showLivrare: boolean = true;
   @Input()
   adreseList: clientiAdresaDTO[];
-
   depozite: depoziteDTO[] = [];
-  
+  isEditMode: boolean=false;
   columnsToDisplay = ['adresa', 'oras', 'judet', 'tara', 'tel', 'email', 'sediu', 'livrare', 'depozit', 'actions']
 
   @ViewChild(MatTable)
@@ -43,7 +42,8 @@ export class ClientiAdresaComponent implements OnInit {
       email:[null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       sediu: true,
       livrare: true,
-      depozitId: [null, {validators:[RxwebValidators.required({conditionalExpression:(x:any)=>x.livrare == true})]}]
+      depozitId: [null, {validators:[RxwebValidators.required({conditionalExpression:(x:any)=>x.livrare == true})]}],
+      id:null, clientId:null, depozit:null
     });
 
     this.loadDepozite();
@@ -57,12 +57,16 @@ export class ClientiAdresaComponent implements OnInit {
     });
   }
   saveChanges(){
-    console.log('save produse', this.form.value);    
-    this.adreseList.push(this.form.value);
+    if(this.form.get('id')?.value !=null && this.isEditMode){
+      let index = this.adreseList.findIndex(a => a.id === Number(this.form.get('id')?.value));
+      this.adreseList[index]=this.form.value;
+    }
+    else this.adreseList.push(this.form.value);
     if (this.table !== undefined){
       this.table.renderRows();
     }
     this.form.reset();
+    this.isEditMode = false;
   }
 
   remove(adrese:any){
@@ -71,6 +75,16 @@ export class ClientiAdresaComponent implements OnInit {
     this.adreseList.splice(index, 1);
     this.table.renderRows();
   }
+  edit(produs:any){
+    console.log('produs', produs);
+    this.form.setValue(produs);    
+    this.isEditMode = true;
+  }
+  clearForm(){
+    this.form.reset();    
+    this.isEditMode = false; 
+  }
+
   changeLivrare(event: any){
     console.log(event.checked);
     if(event.checked)
@@ -81,5 +95,8 @@ export class ClientiAdresaComponent implements OnInit {
         this.showLivrare=false;
         this.form.get('depozitId')?.setValue(null);
     }
+  }
+  changeDepozit(depozit:any){
+    this.form.get('depozit')?.setValue(depozit.selectedOptions[0].text);
   }
 }

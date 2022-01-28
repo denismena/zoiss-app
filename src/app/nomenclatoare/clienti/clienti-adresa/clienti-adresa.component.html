@@ -2,7 +2,7 @@
 <form (submit)="saveChanges()" [formGroup]="form">
     <div class="container">    
         <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
         <mat-label>Adresa</mat-label>
         <mat-form-field appearance="outline">            
             <input matInput formControlName="adresa" />
@@ -30,10 +30,13 @@
             <input matInput formControlName="tara" />
             <mat-error>{{form.get("tara")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
-    </div>    
+    </div>   
+    <div class="col-md-1"> 
+        <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+    </div> 
         </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <mat-label>Tel</mat-label>
             <mat-form-field appearance="outline">                
                 <input matInput formControlName="tel" />
@@ -58,7 +61,7 @@
                 <div class="col-md-8">
                     <mat-label>Depozit</mat-label>
                     <mat-form-field appearance="outline" *ngIf="showLivrare">            
-                        <select matNativeControl formControlName="depozitId">
+                        <select matNativeControl formControlName="depozitId" (change)="changeDepozit($event.target)">
                             <option value="" selected></option>
                             <option *ngFor="let depozit of depozite" [value]="depozit.id">
                                 {{depozit.nume}}
@@ -69,11 +72,12 @@
                 </div>
             </div>                
         </div>
+        <div class="col-md-1"> 
+            <!-- <button mat-flat-button color="primary">Renunta</button> -->
+            <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
+        </div>
     </div>
-    </div>
-    <div>
-        <button mat-flat-button color="primary" [disabled]="form.invalid">Adauga</button>
-    </div>
+    </div>    
 </form>
 
 <table #adreseTable style="width: 100%;"
@@ -142,6 +146,7 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element">
+            <mat-icon color="primary" (click)="edit(element)">edit</mat-icon>
             <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">
                 close
             </mat-icon>
