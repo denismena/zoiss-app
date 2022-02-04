@@ -11,7 +11,7 @@
              [matAutocomplete]="auto"
              [formControl]="produsCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        <mat-option *ngFor="let prod of selectedProdus | async" [value]="prod">
+        <mat-option *ngFor="let prod of selectedProdus | async" [value]="prod" [ngClass]="{'alert-danger' : !prod.active}">
             {{prod.nume}}
         </mat-option>
       </mat-autocomplete>

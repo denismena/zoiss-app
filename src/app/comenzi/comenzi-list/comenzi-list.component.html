@@ -173,6 +173,7 @@
                         <th scope="col">Cutii</th>
                         <th scope="col">Pret um</th>
                         <th scope="col">Valoare</th>
+                        <th scope="col">Discount</th>
                         <th scope="col">#</th>
                       </tr>
                     </thead>
@@ -186,6 +187,7 @@
                         <td>{{prod.cutii}}</td>
                         <td>{{prod.pretUm}}</td>
                         <td>{{prod.valoare}}</td>
+                        <td>{{prod.discount}}</td>
                         <td>
                             <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor"                                
                                 name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
@@ -205,8 +207,8 @@
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="upadatePagination($event)" class="mat-elevation-z8">
+    <mat-paginator [pageSizeOptions]="[10,20,50,100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+        (page)="updatePagination($event)" class="mat-elevation-z8">
     </mat-paginator>
 </ng-container>
 </app-generic-list>

@@ -37,8 +37,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   
   subscription: Subscription | undefined;
   ngOnInit(): void {
-    //this.loadClientList();
-    console.log('this.preselectClient', this.preselectClient);
     if(this.preselectClient !=undefined)
       this.clientCtrl.setValue(this.preselectClient);    
   }
@@ -80,7 +78,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   displayFn(user: clientiDTO): string {
-    console.log('am trigeruit ceva la load?', user);
     return user && user.nume ? user.nume : '';
   }
 

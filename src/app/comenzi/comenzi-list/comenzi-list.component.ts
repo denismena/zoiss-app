@@ -39,7 +39,7 @@ export class ComenziListComponent implements OnInit {
   public form!: FormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
-  pageSize: number = 5;
+  pageSize: number = 20;
   initialFormValues: any;
   panelOpenState = false;
   @ViewChild(ClientiAutocompleteComponent)
@@ -179,7 +179,7 @@ export class ComenziListComponent implements OnInit {
       });   
   }
 
-  upadatePagination(event: PageEvent){
+  updatePagination(event: PageEvent){
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
     this.loadList(this.form.value);

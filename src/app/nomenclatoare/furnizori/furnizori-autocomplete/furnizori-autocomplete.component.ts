@@ -70,7 +70,6 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     if(searchTerm.length > 2){    
       this.furnizorService.search(searchTerm).subscribe(furnizori=>{
         this.furnizori = furnizori;
-        console.log('load furnizori', furnizori);
         this.selectedFurnizor = this.furnizorCtrl.valueChanges
           .pipe(
             startWith(''),
@@ -90,7 +89,6 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   }
 
   displayFn(furn: furnizoriDTO): string {
-    console.log('am trigeruit ceva la load furnizor?', furn);
     return furn && furn.nume ? furn.nume : '';
   }
 

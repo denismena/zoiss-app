@@ -116,7 +116,7 @@
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="upadatePagination($event)" class="mat-elevation-z8">
+        (page)="updatePagination($event)" class="mat-elevation-z8">
     </mat-paginator>
 <!-- </ng-container>
 </app-generic-list> -->

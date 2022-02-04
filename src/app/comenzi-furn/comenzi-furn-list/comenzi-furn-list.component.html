@@ -1,6 +1,81 @@
-<h2>Lista Comenzi Furnizori</h2>
-<!-- <button type="button" routerLink="/comenzi/create" mat-flat-button color="primary">Comanda furnizor noua</button> -->
-<button mat-flat-button color="primary" (click)="genereazaTransport()">Genereaza transport</button>
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Filtre cautare
+        </mat-panel-title>
+        <mat-panel-description>
+            <h2>Lista Comenzi Furnizori
+                <button mat-flat-button color="primary" (click)="genereazaTransport()">Genereaza transport</button>
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">
+                <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>De la data</mat-label>
+            <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerFrom></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+                </div>
+        <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>La data</mat-label>
+            <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerTo></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+        </div>
+        <div class="col-md-3">
+        <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    
+        </div>
+        <div class="col-md-3">
+        <mat-slide-toggle formControlName="allTransportate">Doar netransportate</mat-slide-toggle>
+        <div style="float: right;">
+            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+        </div>                
+        </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="w-50">
+                        <mat-label>Disponibilitate de la data</mat-label>
+                        <input formControlName="disponibilitateFromDate" matInput [matDatepicker]="dataPickerDispFrom">
+                        <mat-datepicker-toggle matSuffix [for]="dataPickerDispFrom"></mat-datepicker-toggle>
+                        <mat-datepicker #dataPickerDispFrom></mat-datepicker>                        
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="w-50">
+                        <mat-label>Disponibilitate la data</mat-label>
+                        <input formControlName="disponibilitateToDate" matInput [matDatepicker]="dataPickerDispTo">
+                        <mat-datepicker-toggle matSuffix [for]="dataPickerDispTo"></mat-datepicker-toggle>
+                        <mat-datepicker #dataPickerDispTo></mat-datepicker>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+            <input type="hidden" formControlName="clientId" #clientId>
+                </div>
+            
+        <div class="col-md-3">
+        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+        <input type="hidden" formControlName="produsId" #produsId>
+        </div>        
+        <div class="col-md-3">
+            <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
+            <input type="hidden" formControlName="furnizorId" #furnizorId>
+            </div>
+        
+            </div>
+        </div>
+    </form>
+    </mat-expansion-panel>    
+  </mat-accordion>
 
 <app-generic-list [list]="comenziFurnizor">
     <ng-container content>
@@ -92,8 +167,7 @@
                         <th scope="col">Cutii</th>
                         <th scope="col">Pret um</th>
                         <th scope="col">Valoare</th>
-                        <th scope="col">Disponibilitate</th>
-                        <th scope="col">Discount</th>
+                        <th scope="col">Disponibilitate</th>                        
                         <th scope="col">#</th>
                       </tr>
                     </thead>
@@ -106,8 +180,7 @@
                         <td>{{prod.cutii}}</td>
                         <td>{{prod.pretUm}}</td>
                         <td>{{prod.valoare}}</td>
-                        <td>{{prod.disponibilitate|customDate}}</td>
-                        <td>{{prod.discount}}</td>
+                        <td>{{prod.disponibilitate|customDate}}</td>                        
                         <td>                            
                             <input type="checkbox" [(ngModel)]="prod.addToTransport" *ngIf="!prod.isInTransport" 
                                 name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
@@ -127,5 +200,8 @@
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+        (page)="updatePagination($event)" class="mat-elevation-z8">
+    </mat-paginator>
 </ng-container>
 </app-generic-list>

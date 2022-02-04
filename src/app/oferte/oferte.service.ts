@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -13,8 +13,9 @@ export class OferteService {
   constructor(private http: HttpClient) { }
   private apiUrl = environment.apiUrl + '/oferte';
 
-  getAll(): Observable<oferteDTO[]>{
-    return this.http.get<oferteDTO[]>(this.apiUrl);
+  getAll(values: any): Observable<any>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<oferteDTO[]>(this.apiUrl, {observe:'response', params});
   }
 
   create(oferte: oferteCreationDTO){

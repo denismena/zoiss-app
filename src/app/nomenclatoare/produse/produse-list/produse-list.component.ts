@@ -76,7 +76,7 @@ export class ProduseListComponent implements OnInit {
     this.form.patchValue(this.initialFormValues);    
   }
 
-  upadatePagination(event: PageEvent){
+  updatePagination(event: PageEvent){
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
     this.loadList(this.form.value);

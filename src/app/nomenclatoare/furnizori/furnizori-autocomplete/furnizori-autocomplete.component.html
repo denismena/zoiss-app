@@ -10,7 +10,7 @@
              [matAutocomplete]="auto"
              [formControl]="furnizorCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        <mat-option *ngFor="let furn of selectedFurnizor | async" [value]="furn">
+        <mat-option *ngFor="let furn of selectedFurnizor | async" [value]="furn" [ngClass]="{'alert-danger' : !furn.active}">
             {{furn.nume}}
         </mat-option>
       </mat-autocomplete>
