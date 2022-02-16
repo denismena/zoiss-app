@@ -10,7 +10,8 @@ export interface transportDTO{
     detalii: string;
     produseTransportateAll: number;
     produseTransportateLivrate: number;
-    transportProduse: transportProduseDTO;
+    allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in livrare.
+    transportProduse: transportProduseDTO[];
 }
 
 export interface transportCreationDTO{
@@ -19,7 +20,7 @@ export interface transportCreationDTO{
     data: Date;
     adresa: string;
     detalii: string;
-    transportProduse: transportProduseDTO;
+    transportProduse: transportProduseDTO[];
 }
 export interface transportEditDTO{
     transportatorId: number;    
@@ -33,7 +34,10 @@ export interface transportProduseDTO{
     comenziFurnizoriProdusId: number;
     transportId: number;
     transport: string;
+    clientId: number;
     livrat: boolean;
+    addToLivrare:boolean;
+    isInLivrare:boolean
     transportProduseDepozit: transportProduseDepozitDTO[];
 }
 

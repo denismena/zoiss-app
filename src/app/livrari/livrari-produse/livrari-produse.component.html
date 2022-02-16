@@ -1,0 +1,33 @@
+<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0" [dataSource]="selectedProdus">
+
+    <ng-container matColumnDef="produsNume">
+        <th mat-header-cell *matHeaderCellDef>Produs</th>
+        <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
+    </ng-container>
+    <ng-container matColumnDef="cantitate">
+        <th mat-header-cell *matHeaderCellDef>Cantitate</th>
+        <td mat-cell *matCellDef="let element">{{element.cantitate}}</td>
+    </ng-container>
+    <ng-container matColumnDef="um">
+        <th mat-header-cell *matHeaderCellDef>UM</th>
+        <td mat-cell *matCellDef="let element">{{element.um}}</td>
+    </ng-container>
+    <ng-container matColumnDef="cutii">
+        <th mat-header-cell *matHeaderCellDef>Cutii</th>
+        <td mat-cell *matCellDef="let element">{{element.cutii}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="livrat">
+        <th mat-header-cell *matHeaderCellDef="let element" >Livrat
+            <input #checkBox type="checkbox" (change)="getCheckbox(checkBox)"/>
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <!-- {{element.livrat|daNu}} -->
+            <input type="hidden" [(ngModel)]="element.transportProdusId">
+            <input type="checkbox" [(ngModel)]="element.livrat" name="list_name" (change)="isAllSelected(element)" />
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+
+</table>

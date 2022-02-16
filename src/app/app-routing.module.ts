@@ -40,6 +40,8 @@ import { DepoziteCreateComponent } from './nomenclatoare/depozite/depozite-item/
 import { DepoziteEditComponent } from './nomenclatoare/depozite/depozite-item/depozite-edit/depozite-edit.component';
 import { TransportListComponent } from './transport/transport-list/transport-list.component';
 import { TransportEditComponent } from './transport/transport-item/transport-edit/transport-edit.component';
+import { LivrariListComponent } from './livrari/livrari-list/livrari-list.component';
+import { LivrariEditComponent } from './livrari/livrari-item/livrari-edit/livrari-edit.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -91,6 +93,9 @@ const routes: Routes = [
   {path: "depozite", component:DepoziteListComponent},
   {path: "depozite/create", component: DepoziteCreateComponent},
   {path: "depozite/edit/:id", component: DepoziteEditComponent},
+
+  {path: "livrari", component: LivrariListComponent} ,  
+  {path: "livrari/edit/:id", component: LivrariEditComponent},
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},

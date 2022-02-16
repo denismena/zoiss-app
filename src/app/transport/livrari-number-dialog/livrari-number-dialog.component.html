@@ -1,0 +1,26 @@
+<div class="form-container">
+    <h2 mat-dialog-title>
+        Completeaza numarul de livrare
+    </h2>
+    <mat-dialog-content>
+        <form [formGroup]="form">
+            <div class="container">                    
+            <div class="row"><div class="col-md-12">
+                <mat-label>Numar</mat-label>
+                <mat-form-field appearance="standard">                
+                    <input matInput formControlName="numar">
+                    <mat-error>{{form.get("numar")?.getError("required")?.message}}</mat-error>
+                </mat-form-field>
+            </div></div>            
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>        
+        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit(form.value)">
+            Save
+        </button>
+        <button mat-raised-button (click)="dialogRef.close(false)" color="primary">
+            Close
+        </button>
+    </mat-dialog-actions>
+</div>

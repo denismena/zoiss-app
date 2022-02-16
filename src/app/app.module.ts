@@ -89,6 +89,11 @@ import { TransportProduseComponent } from './transport/transport-produse/transpo
 import { DepoziteDialogComponent } from './transport/depozite-dialog/depozite-dialog.component';
 import { DepoziteAllDialogComponent } from './transport/depozite-all-dialog/depozite-all-dialog.component';
 import { ProduseCreateDialogComponent } from './nomenclatoare/produse/produse-item/produse-create-dialog/produse-create-dialog.component';
+import { LivrariListComponent } from './livrari/livrari-list/livrari-list.component';
+import { LivrariEditComponent } from './livrari/livrari-item/livrari-edit/livrari-edit.component';
+import { LivrariItemComponent } from './livrari/livrari-item/livrari-item.component';
+import { LivrariNumberDialogComponent } from './transport/livrari-number-dialog/livrari-number-dialog.component';
+import { LivrariProduseComponent } from './livrari/livrari-produse/livrari-produse.component';
 
 @NgModule({
   declarations: [
@@ -166,7 +171,12 @@ import { ProduseCreateDialogComponent } from './nomenclatoare/produse/produse-it
     TransportProduseComponent,
     DepoziteDialogComponent,
     DepoziteAllDialogComponent,
-    ProduseCreateDialogComponent
+    ProduseCreateDialogComponent,
+    LivrariListComponent,
+    LivrariEditComponent,
+    LivrariItemComponent,
+    LivrariNumberDialogComponent,
+    LivrariProduseComponent
   ],
   imports: [
     BrowserModule,
