@@ -1,2 +1,4 @@
 <h2>Edit Produse</h2>
-<app-produse-item *ngIf="model" [model]="model" (onSaveChanges)="saveChanges($event)"></app-produse-item>
+<app-produse-item *ngIf="model" [model]="model" 
+[preselectFurnizor]="preselectFurnizor"
+(onSaveChanges)="saveChanges($event)"></app-produse-item>

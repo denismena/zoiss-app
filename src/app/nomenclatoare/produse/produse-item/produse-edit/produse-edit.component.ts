@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
+import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
 import { ProduseService } from '../../produse.service';
 import { produseCreationDTO,produseDTO } from '../produse.model';
 
@@ -10,15 +12,23 @@ import { produseCreationDTO,produseDTO } from '../produse.model';
 })
 export class ProduseEditComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private produsService: ProduseService) { }
-
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private produsService: ProduseService,
+      private furnizorService: FurnizoriService) { }
+  
+  preselectFurnizor: furnizoriDTO | undefined;
   model!:produseDTO;
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.produsService.getById(params.id).subscribe(produs => {
         this.model = produs;
         console.log(this.model);
-      })
+
+        if(produs.prefFurnizorId !=undefined){
+          this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
+            this.preselectFurnizor = furnizor;
+          });
+        }
+      });      
     });
   }
   saveChanges(produseCreationDTO:produseCreationDTO){

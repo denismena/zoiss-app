@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { furnizoriDTO } from '../../furnizori/furnizori-item/furnizori.model';
 import { umDTO } from '../../um/um-item/um.model';
 import { UMService } from '../../um/um.service';
 import { produseCreationDTO, produseDTO } from './produse.model';
@@ -16,13 +17,12 @@ export class ProduseItemComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,private router:Router
     ,private formBuilder: FormBuilder, private umService: UMService) { }
   public form!: FormGroup;
-  @Input()
-  model!:produseCreationDTO;
-  @Input()
-  isDialog:boolean = false;
+  
+  @Input() preselectFurnizor:furnizoriDTO|undefined;
+  @Input() model!:produseCreationDTO;
+  @Input() isDialog:boolean = false;
   umList: umDTO[]=[];
-   @Output()
-   onSaveChanges: EventEmitter<produseCreationDTO> = new EventEmitter<produseCreationDTO>();
+   @Output() onSaveChanges: EventEmitter<produseCreationDTO> = new EventEmitter<produseCreationDTO>();
   
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
@@ -37,6 +37,8 @@ export class ProduseItemComponent implements OnInit {
       pret: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       greutatePerUm: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       codVamal: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],
+      prefFurnizorId: null,
+      prefFurnizor: '',
       poza: '',
       active: true
     });
@@ -63,5 +65,10 @@ export class ProduseItemComponent implements OnInit {
     if(this.isDialog) this.onSaveChanges.emit(undefined);
     else this.router.navigate(["/produse"]);
   }
-
+  selectFurnizor(furnizor: any){
+    if(furnizor!==undefined){
+     this.form.get('prefFurnizorId')?.setValue(furnizor.id);
+     this.form.get('prefFurnizor')?.setValue(furnizor.nume);
+    }
+  }
 }

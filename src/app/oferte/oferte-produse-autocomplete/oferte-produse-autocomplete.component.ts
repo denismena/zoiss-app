@@ -109,6 +109,14 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);
     this.form.get('codProdus')?.setValue(produs.cod);
+    if(produs.prefFurnizorId !=undefined){
+      console.log('prefFurnizor', produs.prefFurnizor);
+      this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
+      this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
+      this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
+        this.preselectFurnizor = furnizor;
+      });
+    }
     this.form.controls['pretUm']?.setValue(produs.pret);
     this.form.controls['umId']?.setValue(produs.umId);
     this.form.controls['um']?.setValue(produs.um);

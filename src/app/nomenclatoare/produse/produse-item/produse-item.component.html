@@ -41,6 +41,8 @@
         <input formControlName="greutatePerUm" matInput>
         <mat-error>{{form.get("greutatePerUm")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
+    <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
+    <input type="hidden" formControlName="prefFurnizorId" #furnizorId class="clsF"> 
     <app-input-img
     [urlCurrentImage]="model?.poza"
     (onImageSelected)="onImageSelected($event)"></app-input-img>

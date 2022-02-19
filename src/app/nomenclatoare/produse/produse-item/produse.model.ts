@@ -8,6 +8,8 @@ export interface produseDTO{
     pret: number;
     greutatePerUm: number;
     codVamal: string;
+    prefFurnizorId: number
+    prefFurnizor: string;
     poza: any;
     active: boolean;    
 }
@@ -21,6 +23,8 @@ export interface produseCreationDTO{
     pret: number;
     greutatePerUm: number;
     codVamal: string;
+    prefFurnizorId: number
+    prefFurnizor: string;
     poza: any;
     active: boolean; 
 }
