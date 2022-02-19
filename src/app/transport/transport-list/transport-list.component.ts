@@ -1,9 +1,17 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { LivrariService } from 'src/app/livrari/livrari.service';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
+import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozite.model';
+import { DepoziteService } from 'src/app/nomenclatoare/depozite/depozite.service';
+import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
+import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
+import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { LivrariNumberDialogComponent } from '../livrari-number-dialog/livrari-number-dialog.component';
 import { transportDTO, transportProduseDTO } from '../transport-item/transport.model';
@@ -29,8 +37,20 @@ export class TransportListComponent implements OnInit {
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];
+  depozitList: depoziteDTO[] = [];
+
+  public form!: FormGroup;
+  totalRecords:number = 0;
+  currentPage:number = 1;
+  pageSize: number = 20;
+  initialFormValues: any;
+  panelOpenState = false;
+  @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
+  @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
+  @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
+  
   constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router,
-    public dialog: MatDialog) { 
+    public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService) { 
     this.transport = [];
     this.expandedElement = [];
   }
@@ -38,19 +58,46 @@ export class TransportListComponent implements OnInit {
   columnsToDisplay= ['expand','referinta', 'data', 'transportator', 'utilizator', 'livrate', 'select', 'action'];
 
   ngOnInit(): void {
-    this.loadList();
+
+    let date: Date = new Date();
+    date.setDate(date.getDate() - 30);
+
+    this.form = this.formBuilder.group({
+      fromDate: formatDateFormData(date),
+      toDate: formatDateFormData(new Date()),      
+      clientId: 0,      
+      produsId: 0,
+      furnizorId:0,
+      mine: true,
+      allSpreLivrare: false,
+      depozitId:0
+    });
+
+    this.initialFormValues = this.form.value
+    this.loadList(this.form.value);
+    
+    this.form.valueChanges.subscribe(values=>{
+      values.fromDate = formatDateFormData(values.fromDate);
+      values.toDate = formatDateFormData(values.toDate);
+      this.loadList(values);      
+    })
+
+    this.depoziteService.getAll().subscribe(dep=>{this.depozitList=dep;});
   }
-  loadList(){
-    this.transporService.getAll().subscribe(transport=>{
-      this.transport = transport;
-      console.log(this.transport);
-    });    
+
+  loadList(values: any){
+    values.page = this.currentPage;
+    values.recordsPerPage = this.pageSize;
+    this.transporService.getAll(values).subscribe((response: HttpResponse<transportDTO[]>)=>{
+      this.transport = response.body??[];
+      this.totalRecords = Number(response.headers.get("totalRecords"));      
+    });
   }
 
   delete(id: number){
     this.transporService.delete(id)
     .subscribe(() => {
-      this.loadList();
+      this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
@@ -129,5 +176,40 @@ export class TransportListComponent implements OnInit {
         })
       console.log('row.allComandate', row.allComandate);
   }
+
+  updatePagination(event: PageEvent){
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadList(this.form.value);
+  }
+
+  clearForm(){
+    this.form.patchValue(this.initialFormValues);
+    this.clientFilter.clearSelection();    
+    this.produsFilter.clearSelection();    
+    this.furnizorFilter.clearSelection();
+  }
+
+//#region filtre
+  selectProdus(produs: any){    
+    this.form.get('produsId')?.setValue(produs.id);
+    this.form.get('produsNume')?.setValue(produs.nume);    
+    console.log('produsId: ', this.form.get('produsId')?.value);
+ }
+
+ selectClient(clientId: string){
+    this.form.get('clientId')?.setValue(clientId);
+    console.log('clientNume: ', this.form.get('clientId')?.value);
+  }
+
+  selectArhitect(arhitectId: string){
+    this.form.get('arhitectId')?.setValue(arhitectId);
+    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
+  }
+  selectFurnizor(furnizor: any){
+    this.form.get('furnizorId')?.setValue(furnizor.id);
+    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
+  }
+ //#endregion
 
 }

@@ -7,7 +7,7 @@ export interface LivrariDTO{
     curier: string;
     receptionatDe: string;
     detalii: string;
-    allLivrare: boolean;
+    allLivrare: boolean;    
     livrariProduse: livrariProduseDTO[];
 }
 
@@ -27,10 +27,8 @@ export interface livrariEditDTO{
 export interface livrariProduseDTO{
     id: number;
     transportProduseId: number;
-    // transportId: number;
-    // transport: string;
-    livrat: boolean;
-    //transportProduseDepozit: transportProduseDepozitDTO[];
+    furnizor: string;
+    livrat: boolean;    
 }
 
 export interface livrariPutGetDTO{

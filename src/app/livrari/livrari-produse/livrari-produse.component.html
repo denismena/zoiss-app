@@ -1,5 +1,9 @@
 <table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0" [dataSource]="selectedProdus">
 
+    <ng-container matColumnDef="furnizor">
+        <th mat-header-cell *matHeaderCellDef>Furnizor</th>
+        <td mat-cell *matCellDef="let element">{{element.furnizor}}</td>
+    </ng-container>
     <ng-container matColumnDef="produsNume">
         <th mat-header-cell *matHeaderCellDef>Produs</th>
         <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>

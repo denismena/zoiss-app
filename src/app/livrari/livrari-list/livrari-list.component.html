@@ -1,4 +1,69 @@
-<h2>Lista Livrari</h2>
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Filtre cautare
+        </mat-panel-title>
+        <mat-panel-description>
+            <h2>Lista Livrari
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">
+                <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>De la data</mat-label>
+            <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerFrom></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+                </div>
+        <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>La data</mat-label>
+            <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerTo></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+        </div>
+        <div class="col-md-3">
+        <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    
+        </div>
+        <div class="col-md-3">
+        <mat-slide-toggle formControlName="allSpreLivrare">Doar netransportate</mat-slide-toggle>
+        <div style="float: right;">
+            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+        </div>                
+        </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3">
+                    
+                </div>
+                <div class="col-md-3">
+        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+            <input type="hidden" formControlName="clientId" #clientId>
+                </div>
+            
+        <div class="col-md-3">
+        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+        <input type="hidden" formControlName="produsId" #produsId>
+        </div>        
+        <div class="col-md-3">
+            <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
+            <input type="hidden" formControlName="furnizorId" #furnizorId>
+            </div>
+        
+            </div>
+        </div>
+    </form>
+    </mat-expansion-panel>    
+  </mat-accordion>
 
 <app-generic-list [list]="livrari">
     <ng-container content>
@@ -87,7 +152,8 @@
                 <table class="table" *ngIf="element.livrariProduse.length > 0">
                     <thead>
                       <tr>                        
-                        <th scope="col">Produs</th>
+                        <th scope="col">Furnizor</th>
+                        <th scope="col">Produs</th>                        
                         <th scope="col">Cant</th>
                         <th scope="col">UM</th>                        
                         <th scope="col">Cutii</th>
@@ -96,6 +162,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let prod of element.livrariProduse">
+                        <td>{{prod.furnizor}}</td>
                         <td>{{prod.produsNume}}</td>
                         <td>{{prod.cantitate}}</td>
                         <td>{{prod.um}}</td>

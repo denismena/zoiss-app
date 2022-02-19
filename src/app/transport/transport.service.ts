@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -12,11 +12,11 @@ import { transportCreationDTO, transportDTO, transportEditDTO, transportProduseD
 export class TransportService{
     constructor(private http: HttpClient) { }
   private apiUrl = environment.apiUrl + '/transport';
-
-  getAll(): Observable<transportDTO[]>{
-    return this.http.get<transportDTO[]>(this.apiUrl);
+  
+  getAll(values: any): Observable<any>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<transportDTO[]>(this.apiUrl, {observe:'response', params});
   }
-
   create(transport: transportCreationDTO){
     return this.http.post<number>(this.apiUrl, transport);
   }

@@ -54,7 +54,7 @@ export class LivrariListComponent implements OnInit {
       produsId: 0,
       furnizorId:0,
       mine: true,
-      allTransportate: false
+      allSpreLivrare: false
     });
 
     this.initialFormValues = this.form.value

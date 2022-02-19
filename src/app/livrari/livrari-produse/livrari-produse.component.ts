@@ -12,7 +12,7 @@ export class LivrariProduseComponent implements OnInit {
   checked = [];
 
   constructor() { }
-  columnsToDisplay = ['produsNume', 'cantitate', 'um', 'cutii', 'livrat']
+  columnsToDisplay = ['furnizor', 'produsNume', 'cantitate', 'um', 'cutii', 'livrat']
   ngOnInit(): void {
   }
 

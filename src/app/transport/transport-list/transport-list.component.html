@@ -1,6 +1,78 @@
-<h2>Lista Transporturi
-    <button mat-flat-button color="primary" (click)="genereazaLivrare()">Genereaza livrare</button>
-</h2>
+<mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Filtre cautare
+        </mat-panel-title>
+        <mat-panel-description>
+            <h2>Lista Transporturi
+                <button mat-flat-button color="primary" (click)="genereazaLivrare()">Genereaza livrare</button>
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">
+                <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>De la data</mat-label>
+            <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerFrom></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+                </div>
+        <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>La data</mat-label>
+            <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+            <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #dataPickerTo></mat-datepicker>
+            <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+        </div>
+        <div class="col-md-3">
+        <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    
+        </div>
+        <div class="col-md-3">
+        <mat-slide-toggle formControlName="allSpreLivrare">Doar netransportate</mat-slide-toggle>
+        <div style="float: right;">
+            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+        </div>                
+        </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-label>Depozit</mat-label>
+                    <mat-form-field appearance="outline">                        
+                        <mat-select formControlName="depozitId">
+                            <mat-option value="0"></mat-option> 
+                            <mat-option *ngFor="let dep of depozitList" [value]="dep.id">
+                                {{dep.nume}}
+                              </mat-option>            
+                          </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+            <input type="hidden" formControlName="clientId" #clientId>
+                </div>
+            
+        <div class="col-md-3">
+        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+        <input type="hidden" formControlName="produsId" #produsId>
+        </div>        
+        <div class="col-md-3">
+            <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
+            <input type="hidden" formControlName="furnizorId" #furnizorId>
+            </div>
+        
+            </div>
+        </div>
+    </form>
+    </mat-expansion-panel>    
+  </mat-accordion>
 
 <app-generic-list [list]="transport">
     <ng-container content>
