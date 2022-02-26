@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
 import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
+import Swal from 'sweetalert2';
 import { LivrariService } from '../livrari.service';
 import { LivrariDTO, livrariProduseDTO } from './livrari.model';
 
@@ -44,16 +45,17 @@ export class LivrariItemComponent implements OnInit {
 
   selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   saveChanges(){  
     const produse = this.selectedProdus.map(val => {
       return {id: val.id??0, transportProduseId: val.transportProduseId, livrat: val.livrat}
     });
-    console.log('set produse', produse);
+    if(produse.filter(produse=>produse.livrat== true).length > 0 && this.form.get('curier')?.value ==null){
+      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici un curier!", icon: 'info' });
+      return;
+    }
     this.form.get('livrariProduse')?.setValue(produse);
-    console.log('this.form.value', this.form.value);
     this.onSaveChanges.emit(this.form.value);
   }
 

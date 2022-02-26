@@ -94,6 +94,7 @@ import { LivrariEditComponent } from './livrari/livrari-item/livrari-edit/livrar
 import { LivrariItemComponent } from './livrari/livrari-item/livrari-item.component';
 import { LivrariNumberDialogComponent } from './transport/livrari-number-dialog/livrari-number-dialog.component';
 import { LivrariProduseComponent } from './livrari/livrari-produse/livrari-produse.component';
+import { RapoarteItemComponent } from './rapoarte/rapoarte-item/rapoarte-item.component';
 
 @NgModule({
   declarations: [
@@ -176,7 +177,8 @@ import { LivrariProduseComponent } from './livrari/livrari-produse/livrari-produ
     LivrariEditComponent,
     LivrariItemComponent,
     LivrariNumberDialogComponent,
-    LivrariProduseComponent
+    LivrariProduseComponent,
+    RapoarteItemComponent
   ],
   imports: [
     BrowserModule,

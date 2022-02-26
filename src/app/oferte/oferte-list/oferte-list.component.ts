@@ -16,6 +16,8 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
+import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-oferte-list',
@@ -50,7 +52,7 @@ export class OferteListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
-      private formBuilder:FormBuilder) { 
+      private formBuilder:FormBuilder, private rapoarteService: RapoarteService) { 
     this.oferte = [];
     this.expandedElement = [];
   }
@@ -192,83 +194,13 @@ export class OferteListComponent implements OnInit {
   }
  //#endregion
   
-  exportExcel(){
-    //     this.http.get('app/home/1.txt').subscribe(data => {
-    //    console.log('data', data.text());
-    // })
-    const workbook = new ExcelJS.Workbook();
-    // fetch('assets/2.xlsx')
-    //   //.then(response => {response.text()})
-    //   .then(dataX => {
-    //   	// Do something with your data
-    //   	console.log(dataX);
-    
-        const arryBuffer = new Response('assets/Zoiss.xlsx').arrayBuffer();
-        arryBuffer.then(function (data) {
-          workbook.xlsx.load(data)
-            .then(function () {
-    
-              // play with workbook and worksheet now
-              console.log(workbook);
-              const worksheet = workbook.getWorksheet(1);
-              console.log('rowCount: ', worksheet.rowCount);
-              worksheet.eachRow(function (row, rowNumber) {
-                console.log('Row: ' + rowNumber + ' Value: ' + row.values);
-              });
-    
-            });
-        });
-      //});
-        // var ExcelJS = require('exceljs');
-        // var workbook = new ExcelJS.Workbook();
-        // //console.log(environment.templatePath + "PVP.xlsx");
-        // workbook.xlsx.readFile("assets/2.xlsx");
-        // //const file: File = new Blob("assets/2.xlsx");
-        // workbook.xlsx.readFile()
-        // .then(function() {
-        //     // var ws = workbook.getWorksheet(1);
-        //     // var cell = ws.getCell('A3').value;
-        //     // console.log(cell)
-        // });
-        
-        
-        // var workbook = new ExcelJS.Workbook();
-        // var worksheet = workbook.addWorksheet("Sheet1");
-        // worksheet.getCell('A3').value = "Hello";
-        // worksheet.getCell('A5').value = "World";
-        // workbook.xlsx.writeBuffer()
-        //   .then(function(buffer) {
-        //     var cell = worksheet.getCell('A3').value;
-        //     console.log(cell)
-        //   });
-      }
-    
-      readExcel(event: any) {
-        const workbook = new ExcelJS.Workbook();
-        const target: DataTransfer = <DataTransfer>(event.target);
-        if (target.files.length !== 1) {
-          throw new Error('Cannot use multiple files');
-        }
-    
-        /**
-         * Final Solution For Importing the Excel FILE
-         */
-    
-        const arryBuffer = new Response(target.files[0]).arrayBuffer();
-        arryBuffer.then(function (data) {
-          workbook.xlsx.load(data)
-            .then(function () {
-    
-              // play with workbook and worksheet now
-              console.log(workbook);
-              const worksheet = workbook.getWorksheet(1);
-              console.log('rowCount: ', worksheet.rowCount);
-              worksheet.eachRow(function (row, rowNumber) {
-                console.log('Row: ' + rowNumber + ' Value: ' + row.values);
-              });
-    
-            });
-        });
-      }
+  genereazaExcel(id:number)
+  {
+    this.rapoarteService.ofertaReport(id).subscribe(blob => {
+      saveAs(blob, 'WeeklySummary.xlsx');
+    }, error => {
+      console.log("Something went wrong");
+    });
+  }  
 
 }

@@ -136,21 +136,13 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element">
-                <a
-                    routerLink="/oferte/edit/{{element.id}}"
-                    mat-flat-button color="primary"
-                >
-                Edit
-                </a>
+                <a routerLink="/oferte/edit/{{element.id}}" mat-flat-button color="primary">Edit</a>
                 <button mat-flat-button color="warn" 
-                [swal]="{
-                    title: 'Confirmare',
-                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
-                    showCancelButton: true
-                }"
+                [swal]="{title: 'Confirmare',text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}"
                 (confirm)="delete(element.id)">
                     Delete
                 </button>
+                <button mat-flat-button color="primary" (click)="genereazaExcel(element.id)">Export</button>
             </td>
         </ng-container>
         
