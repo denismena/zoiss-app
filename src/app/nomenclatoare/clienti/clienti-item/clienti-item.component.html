@@ -63,7 +63,7 @@
     <div>
         <br />
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-        <a mat-stroke-button routerLink="/clienti" mat-flat-button color="primary">Renunta</a>
+        <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
     </div>
     </div>
 </form>

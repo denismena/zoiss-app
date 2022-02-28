@@ -11,12 +11,11 @@ import { clientiAdresaDTO, clientiDTO } from './clienti.model';
 })
 export class ClientiItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder) { }
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder,private router:Router) { }
   public form!: FormGroup;  
-  @Input()
-  model:clientiDTO | undefined;
-  @Input()
-  adreseList: clientiAdresaDTO[] = [];
+  @Input()model:clientiDTO | undefined;
+  @Input()adreseList: clientiAdresaDTO[] = [];
+  @Input() isDialog:boolean = false;
   
   isPF: boolean = false;
   
@@ -57,6 +56,11 @@ export class ClientiItemComponent implements OnInit {
         this.isPF = false;
       }
    });
+  }
+
+  cancel(){
+    if(this.isDialog) this.onSaveChanges.emit(undefined);
+    else this.router.navigate(["/clienti"]);
   }
   saveChanges(){    
     //set the adrese list to model

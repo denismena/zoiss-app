@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
 import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { FurnizoriCreateDialogComponent } from '../furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
 
@@ -14,15 +16,9 @@ import { FurnizoriService } from '../furnizori.service';
 export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   furnizori: furnizoriDTO[];
-  constructor(private furnizorService: FurnizoriService ) { 
+  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog ) { 
     this.furnizori = [];
-
-    this.selectedFurnizor = new Observable<furnizoriDTO[]>();
-    // this.selectedFurnizor = this.furnizorCtrl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(c => c ? this._filterStates(c) : this.furnizori.slice())
-    //   );
+    this.selectedFurnizor = new Observable<furnizoriDTO[]>();    
   }
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
@@ -30,15 +26,11 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   furnizorCtrl: FormControl = new FormControl();
   selectedFurnizor: any;
   
-  @Input()
-  preselectFurnizor: furnizoriDTO | undefined;
-
-
-  @Output()
-  onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
+  @Input() preselectFurnizor: furnizoriDTO | undefined;
+  @Output() onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
   subscription: Subscription | undefined;
-  
+  dataFromDialog : any;
   ngOnInit(): void {
   //this.loadFurnizorList();
   if(this.preselectFurnizor !=undefined)
@@ -47,21 +39,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   ngOnChanges() {
     if(this.preselectFurnizor!=undefined)
       this.furnizorCtrl.setValue(this.preselectFurnizor);    
-  }
-  // loadFurnizorList(){
-  //   this.furnizorService.getAll().subscribe(furnizori=>{
-  //     this.furnizori = furnizori;
-  //     //console.log('this.furnizori', this.furnizori);
-  //     console.log('preselectFurnizor', this.preselectFurnizor);
-      
-  //     if(this.preselectFurnizor !=0){
-  //       this.furnizorService.getById(this.preselectFurnizor).subscribe(fur=>{
-  //         this.furnizorCtrl.setValue(fur);
-  //       })
-  //     }     
-      
-  //   });    
-  // }
+  }  
 
   search(event: any){
     //console.log('nume cautat:', nume.target.value);
@@ -119,5 +97,21 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   }
   public clearSelection(){
     this.furnizorCtrl.setValue(null);
+  }
+
+  addFurnizorDialog(){
+    const dialogRef = this.dialog.open(FurnizoriCreateDialogComponent,      
+      { data:{}, width: '800px', height: '750px' });
+
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.furnizorCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog);
+        }
+      });
+
   }
 }

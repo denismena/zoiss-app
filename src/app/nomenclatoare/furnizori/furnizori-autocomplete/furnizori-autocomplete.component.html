@@ -1,8 +1,6 @@
 <form class="example-form">
     <mat-label>Furnizor</mat-label>
-    <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">        
-      <mat-icon>add</mat-icon>
-    </button>
+    <mat-icon role="button" (click)="addFurnizorDialog()">add</mat-icon>
     <mat-form-field class="example-full-width" appearance="fill">      
       <input matInput
              aria-label="Furnizori"

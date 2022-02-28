@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ArhitectiCreateDialogComponent } from '../arhitecti-item/arhitecti-create-dialog/arhitecti-create-dialog.component';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
 
@@ -14,7 +16,7 @@ import { ArhitectiService } from '../arhitecti.service';
 export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   arhitecti: arhitectiDTO[];
-  constructor(private arhitectiService: ArhitectiService) { 
+  constructor(private arhitectiService: ArhitectiService, public dialog: MatDialog) { 
     this.arhitecti = [];
     
     this.selectedArhitect = new Observable<arhitectiDTO[]>();
@@ -38,7 +40,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
   subscription: Subscription | undefined;
-  
+  dataFromDialog : any;
   ngOnInit(): void {
     this.loadArhitectList();
   }
@@ -93,6 +95,22 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
 
   public clearSelection(){
     this.arhitectCtrl.setValue(null);
+  }
+
+  addArhitectDialog(){
+    const dialogRef = this.dialog.open(ArhitectiCreateDialogComponent,      
+      { data:{}, width: '800px', height: '600px' });
+
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.arhitectCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog.id);
+        }
+      });
+
   }
 
 }

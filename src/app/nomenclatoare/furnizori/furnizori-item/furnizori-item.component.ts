@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { furnizoriDTO } from './furnizori.model';
 
@@ -11,11 +11,10 @@ import { furnizoriDTO } from './furnizori.model';
 })
 export class FurnizoriItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder) { }
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private router:Router) { }
   public form!: FormGroup;
-  @Input()
-  model:furnizoriDTO | undefined;
-  
+  @Input()model:furnizoriDTO | undefined;
+  @Input()isDialog:boolean = false;
   @Output()
   onSaveChanges: EventEmitter<furnizoriDTO> = new EventEmitter<furnizoriDTO>();
 
@@ -38,6 +37,10 @@ export class FurnizoriItemComponent implements OnInit {
     {
       this.form.patchValue(this.model);
     }    
+  }
+  cancel(){
+    if(this.isDialog) this.onSaveChanges.emit(undefined);
+    else this.router.navigate(["/furnizori"]);
   }
   saveChanges(){
     this.onSaveChanges.emit(this.form.value);

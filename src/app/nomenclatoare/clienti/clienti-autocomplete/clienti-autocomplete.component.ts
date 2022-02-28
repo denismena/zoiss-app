@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
 import {Observable, Subscription} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { ClientiCreateDialogComponent } from '../clienti-item/clienti-create-dialog/clienti-create-dialog.component';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
 
@@ -14,16 +16,11 @@ import { ClientiService } from '../clienti.service';
 export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   clienti: clientiDTO[];
-  constructor(private clientiService: ClientiService) { 
-    this.clienti = [];
-    
-    this.selectedClient = new Observable<clientiDTO[]>();
-    // this.selectedClient = this.clientCtrl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(c => c ? this._filterStates(c) : this.clienti.slice())
-    //   );
+  constructor(private clientiService: ClientiService, public dialog: MatDialog) { 
+    this.clienti = [];    
+    this.selectedClient = new Observable<clientiDTO[]>();    
   }
+
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
   
@@ -32,24 +29,17 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
-  @Input()
-  preselectClient: clientiDTO | undefined;
-  
+  @Input() preselectClient: clientiDTO | undefined;  
   subscription: Subscription | undefined;
+
+  dataFromDialog : any;
+
   ngOnInit(): void {
     if(this.preselectClient !=undefined)
       this.clientCtrl.setValue(this.preselectClient);    
   }
 
-  // loadClientList(){
-  //   this.clientiService.getAll().subscribe(clienti=>{
-  //     this.clienti = clienti;
-  //     //console.log('load clienti', this.clienti);
-  //     this.clientCtrl.setValue(this.preselectClient);
-  //   });    
-  // }
   search(event: any){
-    //console.log('nume cautat:', nume.target.value);
     let searchTerm = '';
     searchTerm += event.target.value;
     if(searchTerm.length > 2){    
@@ -65,11 +55,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     }
   }
   optionSelected(event: MatAutocompleteSelectedEvent){
-    // console.log(event.option);
-     console.log(event.option.value.id);
-    //this.selectedProdus.push(event.option.value);
     this.onOptionSelected.emit(event.option.value.id);
-    //this.produsCtrl.patchValue('');
   }
 
   private _filterStates(value: string): clientiDTO[] {
@@ -109,5 +95,20 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
 
   public clearSelection(){
     this.clientCtrl.setValue(null);
+  }
+  addClientDialog(){
+    const dialogRef = this.dialog.open(ClientiCreateDialogComponent,      
+      { data:{}, width: '900px', height: '750px' });
+
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.clientCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog.id);
+        }
+      });
+
   }
 }

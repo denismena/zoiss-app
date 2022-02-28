@@ -40,7 +40,7 @@
     <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
     <div>
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-        <a mat-stroke-button routerLink="/furnizori" mat-flat-button color="primary">Renunta</a>
+        <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
     </div>
 </form>
 </div>

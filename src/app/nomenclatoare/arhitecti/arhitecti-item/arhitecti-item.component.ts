@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from './arhitecti.model';
 
@@ -11,12 +11,13 @@ import { arhitectiDTO } from './arhitecti.model';
 })
 export class ArhitectiItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder) { }
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private router:Router) { }
 
   public form!: FormGroup;
   @Input()
   model:arhitectiDTO | undefined;
-  
+  @Input() isDialog:boolean = false;
+
   @Output()
   onSaveChanges: EventEmitter<arhitectiDTO> = new EventEmitter<arhitectiDTO>();
 
@@ -38,7 +39,10 @@ export class ArhitectiItemComponent implements OnInit {
       this.form.patchValue(this.model);
     }    
   }
-
+  cancel(){
+    if(this.isDialog) this.onSaveChanges.emit(undefined);
+    else this.router.navigate(["/arhitecti"]);
+  }
   saveChanges(){
     this.onSaveChanges.emit(this.form.value);
   }

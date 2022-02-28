@@ -95,6 +95,9 @@ import { LivrariItemComponent } from './livrari/livrari-item/livrari-item.compon
 import { LivrariNumberDialogComponent } from './transport/livrari-number-dialog/livrari-number-dialog.component';
 import { LivrariProduseComponent } from './livrari/livrari-produse/livrari-produse.component';
 import { RapoarteItemComponent } from './rapoarte/rapoarte-item/rapoarte-item.component';
+import { ClientiCreateDialogComponent } from './nomenclatoare/clienti/clienti-item/clienti-create-dialog/clienti-create-dialog.component';
+import { ArhitectiCreateDialogComponent } from './nomenclatoare/arhitecti/arhitecti-item/arhitecti-create-dialog/arhitecti-create-dialog.component';
+import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
 
 @NgModule({
   declarations: [
@@ -178,7 +181,10 @@ import { RapoarteItemComponent } from './rapoarte/rapoarte-item/rapoarte-item.co
     LivrariItemComponent,
     LivrariNumberDialogComponent,
     LivrariProduseComponent,
-    RapoarteItemComponent
+    RapoarteItemComponent,
+    ClientiCreateDialogComponent,
+    ArhitectiCreateDialogComponent,
+    FurnizoriCreateDialogComponent    
   ],
   imports: [
     BrowserModule,
