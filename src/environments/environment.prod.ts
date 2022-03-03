@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   apiUrl: 'https://api.zoiss.ro/api',
-  pozeProduseUrl: 'https://api.zoiss.ro/api/produse/'
+  rootUrl: 'https://api.zoiss.ro/'
 };
 //apiUrl: 'https://localhost:44384/api'

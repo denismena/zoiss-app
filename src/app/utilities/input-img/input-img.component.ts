@@ -13,15 +13,15 @@ export class InputImgComponent implements OnInit {
 
   imageBase64!: string;
 
-  @Input()
-  urlCurrentImage: any | undefined;
+  @Input() urlCurrentImage: any | undefined;
+  @Input() containerName: any | undefined;
 
   @Output()
   onImageSelected = new EventEmitter<File>();
 
-  ngOnInit(): void {
-    if(this.urlCurrentImage != undefined)
-      this.urlCurrentImage = environment.pozeProduseUrl + this.urlCurrentImage;
+  ngOnInit(): void {    
+    if(this.urlCurrentImage != undefined && this.urlCurrentImage != '')
+      this.urlCurrentImage = environment.rootUrl + this.containerName + "/" + this.urlCurrentImage;
   }
 
   change(event: any){

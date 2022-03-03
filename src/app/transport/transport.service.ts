@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { produseComandaFurnizorDTO } from '../comenzi-furn/comenzi-furn-item/comenzi-furn.model';
+import { formatDateFormData } from '../utilities/utils';
 import { transportCreationDTO, transportDTO, transportEditDTO, transportProduseDepozitAllDTO, transportProduseDepozitDTO, transportPutGetDTO } from './transport-item/transport.model';
 
 @Injectable({
@@ -48,11 +49,36 @@ export class TransportService{
 
   saveDepozitArrival(produsInDepozit: transportProduseDepozitDTO){
     console.log('produsInDepozit:', produsInDepozit);
-    return this.http.post(`${this.apiUrl}/produsInDepozit`, produsInDepozit);
+    const formData = this.buildFormData(produsInDepozit);
+    return this.http.post(`${this.apiUrl}/produsInDepozit`, formData);
+    //console.log('produsInDepozit:', produsInDepozit);
+    //return this.http.post(`${this.apiUrl}/produsInDepozit`, produsInDepozit);
   }
 
   saveDepozitArrivalAll(produsInDepozit: transportProduseDepozitAllDTO){
     console.log('produsInDepozitAll:', produsInDepozit);
     return this.http.post(`${this.apiUrl}/produsInDepozitAll`, produsInDepozit);
+  }
+
+  private buildFormData(produs: transportProduseDepozitDTO): FormData {
+    const formData = new FormData();
+
+    formData.append('detalii', produs.detalii);
+    formData.append('depozit', produs.depozit);
+    formData.append('data', formatDateFormData(produs.data));
+    formData.append('id', produs.id.toString());
+
+    if (produs.transportProdusId){
+      formData.append('transportProdusId', produs.transportProdusId.toString());
+    }
+    if (produs.depozitId){
+      formData.append('depozitId', produs.depozitId.toString());
+    }   
+
+    if (produs.poza){
+      formData.append('poza', produs.poza);
+    }
+
+    return formData;
   }
 }

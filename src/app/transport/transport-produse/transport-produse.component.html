@@ -35,10 +35,10 @@
             <span *ngIf="findByDepozit(element.transportProduseDepozit,disCol) as dep">
                 <span *ngIf="dep?.data!=null">
                     {{dep.data|customDate}}
-                    <mat-icon matTooltip={{dep.detalii}} (click)="showPrompt(element.id, dep.id, dep.data, dep.detalii)">info</mat-icon>                    
+                    <mat-icon matTooltip={{dep.detalii}} (click)="showPrompt(element.id, dep.id, dep.data, dep.detalii, dep.pozaPath)">info</mat-icon>
                 </span>
                 <span *ngIf="dep?.data==null">
-                    <button type="button" mat-flat-button color="primary" (click)="showPrompt(element.id,dep.id, null, '')">
+                    <button type="button" mat-flat-button color="primary" (click)="showPrompt(element.id,dep.id, null, '', '')">
                         <mat-icon>add</mat-icon>
                     </button>
                 </span>

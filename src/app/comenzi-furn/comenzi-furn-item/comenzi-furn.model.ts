@@ -41,6 +41,7 @@ export interface produseComandaFurnizorDTO{
     codProdus: string;
     disponibilitate: Date;    
     detalii: string;
+    clientNume:string;
     isInTransport: boolean;    
     addToTransport: boolean;
 }

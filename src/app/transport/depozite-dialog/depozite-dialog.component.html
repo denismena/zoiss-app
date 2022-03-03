@@ -6,20 +6,24 @@
         <form [formGroup]="form">
             <div class="container">    
                 <div class="row"><div class="col-md-12">
-            <mat-label>Data</mat-label>            
-            <mat-form-field appearance="outline">            
-                <input formControlName="data" matInput [matDatepicker]="dataPicker">
-                <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
-                <mat-datepicker #dataPicker></mat-datepicker>
-                <mat-error>Completati data!</mat-error>
-            </mat-form-field>
-            </div></div>
-            <div class="row"><div class="col-md-12">
-            <mat-label>Detalii</mat-label>
-            <mat-form-field appearance="standard">                
-                <textarea matInput formControlName="detalii"></textarea>
-            </mat-form-field>
-            </div></div>            
+                    <mat-label>Data</mat-label>            
+                    <mat-form-field appearance="outline">            
+                        <input formControlName="data" matInput [matDatepicker]="dataPicker">
+                        <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dataPicker></mat-datepicker>
+                        <mat-error>Completati data!</mat-error>
+                    </mat-form-field>
+                </div></div>
+                <div class="row"><div class="col-md-12">
+                    <mat-label>Detalii</mat-label>
+                    <mat-form-field appearance="standard">                
+                        <textarea matInput formControlName="detalii"></textarea>
+                    </mat-form-field>
+                </div></div>
+                <div class="row"><div class="col-md-12">
+                    <app-input-img [urlCurrentImage]="this.pozaPath" [containerName]="'produsTransport'"
+                        (onImageSelected)="onImageSelected($event)"></app-input-img>
+                </div></div>
             </div> 
         </form>
     </mat-dialog-content>

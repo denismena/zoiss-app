@@ -3,11 +3,13 @@
     <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="change($event)" />
 
     <div>
-        <div *ngIf="imageBase64">
-            <img [src]="imageBase64" />
+        <div *ngIf="imageBase64" id="divImgBase64">
+            <img [src]="imageBase64"  image-resizing 
+            image-Height="100px" image-Width="100px" />
         </div>
-        <div *ngIf="urlCurrentImage">
-            <img [src]="urlCurrentImage" />
+        <div *ngIf="urlCurrentImage" id="divCurrImage">
+            <img [src]="urlCurrentImage"  image-resizing 
+            image-Height="100px" image-Width="100px"/>
         </div>
     </div>
 </div>

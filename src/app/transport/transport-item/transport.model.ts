@@ -53,6 +53,8 @@ export interface transportProduseDepozitDTO{
     data: Date;
     detalii:string;
     depozit:string;
+    poza: any;
+    pozaPath: string;
 }
 export interface transportProduseDepozitAllDTO{
     transportId:number;

@@ -11,7 +11,8 @@ export interface produseDTO{
     prefFurnizorId: number
     prefFurnizor: string;
     poza: any;
-    active: boolean;    
+    pozaPath: string;
+    active: boolean;
 }
 
 export interface produseCreationDTO{    
@@ -26,6 +27,7 @@ export interface produseCreationDTO{
     prefFurnizorId: number
     prefFurnizor: string;
     poza: any;
+    pozaPath: string;
     active: boolean; 
 }
 

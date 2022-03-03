@@ -14,21 +14,30 @@ export class DepoziteDialogComponent implements OnInit {
   private id: number=0;
   private date: Date|null;
   private detalii: string='';
+  public pozaPath: string='';
+  //@Input() containerName: string = 'produsTransport'
   constructor(private formBuilder:FormBuilder,
-    @Inject(MAT_DIALOG_DATA) data: { id: number, date: Date|null, detalii: string },
+    @Inject(MAT_DIALOG_DATA) data: { id: number, date: Date|null, detalii: string, pozaPath:string },
     public dialogRef: MatDialogRef<DepoziteDialogComponent>) { 
       this.id = data?.id;
       this.date = data?.date == null ? new Date() : data.date;
       this.detalii = data?.detalii;
+      this.pozaPath = data?.pozaPath
     }
 
-  ngOnInit(): void {
-
+  ngOnInit(): void {    
     this.form = this.formBuilder.group({      
       id:this.id,
       data:[this.date, {validators:[RxwebValidators.required()]}],
       detalii: this.detalii,
+      poza: '',
+      pozaPath: this.pozaPath
     });    
+  }
+
+  onImageSelected(image: any){
+    this.form.get('poza')?.setValue(image);
+    this.form.get('pozaPath')?.setValue(this.id + '.png');
   }
 
   submit(form: NgForm) {    

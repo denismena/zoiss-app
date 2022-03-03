@@ -160,6 +160,7 @@
                 <table class="table" *ngIf="element.comenziFurnizoriProduse.length > 0">
                     <thead>
                       <tr>
+                        <th scope="col">Client</th>
                         <th scope="col">Produs</th>
                         <th scope="col">Cod</th>
                         <th scope="col">UM</th>
@@ -173,6 +174,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let prod of element.comenziFurnizoriProduse">                        
+                        <td>{{prod.clientNume}}</td>
                         <td>{{prod.produsNume}}</td>
                         <td>{{prod.codProdus}}</td>
                         <td>{{prod.um}}</td>

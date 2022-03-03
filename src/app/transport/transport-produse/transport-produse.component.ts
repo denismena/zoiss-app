@@ -54,9 +54,9 @@ export class TransportProduseComponent implements OnInit {
     return arr.find(f=>f.depozit=== name);    
   }
   
-  showPrompt(prodDepId:number, id:number, data: Date|null, detalii: string): void {
+  showPrompt(prodDepId:number, id:number, data: Date|null, detalii: string, pozaPath: string): void {
     const dialogRef = this.dialog.open(DepoziteDialogComponent,      
-      { data:{id: id, date:data, detalii:detalii}, width: '400px', height: '350px' });
+      { data:{id: id, date:data, detalii:detalii, pozaPath:pozaPath}, width: '600px', height: '450px' });
 
     dialogRef.afterClosed().subscribe((data) => {
       //data.form.id = id;
@@ -72,6 +72,7 @@ export class TransportProduseComponent implements OnInit {
           {
             currProDep.data = data.form.data;
             currProDep.detalii = data.form.detalii;
+            currProDep.pozaPath = data.form.pozaPath;
           }
           //console.log('this.selectedProdus updatat', this.selectedProdus);
         });

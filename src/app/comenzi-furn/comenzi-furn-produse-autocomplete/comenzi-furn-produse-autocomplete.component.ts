@@ -36,7 +36,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['produsNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'disponibilitate', 'detalii', 'actions']
+  columnsToDisplay = ['clientNume','codProdus', 'produsNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'disponibilitate', 'detalii', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -61,7 +61,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       //discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       disponibilitate:[null],
-      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:''
+      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:'', clientNume:''
     });    
     
     // this.loadProduseList();
