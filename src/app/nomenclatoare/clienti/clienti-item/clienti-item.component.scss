@@ -4,3 +4,9 @@ mat-form-field{
 button{
     margin-right: 1rem;
 }
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+  }

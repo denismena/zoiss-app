@@ -118,7 +118,7 @@ export class TransportListComponent implements OnInit {
     var selectedProd: transportProduseDTO[] = [];
           this.transport.forEach(element => {
             element.transportProduse.forEach(prod=>{              
-              if(prod.addToLivrare && !prod.isInLivrare)
+              if(prod.addToLivrare && !prod.livrat && prod.livrabil)
                 {
                   console.log('prod', prod);
                   selectedProd.push(prod);
@@ -164,7 +164,7 @@ export class TransportListComponent implements OnInit {
   getCheckbox(checkbox: any, row: transportDTO){
     this.checked = [];
     console.log(row);
-    row.transportProduse.forEach(p=>p.addToLivrare = checkbox.checked
+    row.transportProduse.forEach(p=>p.addToLivrare = p.livrabil ? checkbox.checked : false
     );    
   }
 

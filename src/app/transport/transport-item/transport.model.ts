@@ -36,8 +36,8 @@ export interface transportProduseDTO{
     transport: string;
     clientId: number;
     livrat: boolean;
-    addToLivrare:boolean;
-    isInLivrare:boolean
+    livrabil: boolean;
+    addToLivrare:boolean;    
     transportProduseDepozit: transportProduseDepozitDTO[];
 }
 

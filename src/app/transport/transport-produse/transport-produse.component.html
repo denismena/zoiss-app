@@ -34,7 +34,7 @@
         <td mat-cell *matCellDef="let element">
             <span *ngIf="findByDepozit(element.transportProduseDepozit,disCol) as dep">
                 <span *ngIf="dep?.data!=null">
-                    {{dep.data|customDate}}
+                    <span [ngClass]="{'fw-bold': dep.pozaPath != ''}">{{dep.data|customDate}}</span>
                     <mat-icon matTooltip={{dep.detalii}} (click)="showPrompt(element.id, dep.id, dep.data, dep.detalii, dep.pozaPath)">info</mat-icon>
                 </span>
                 <span *ngIf="dep?.data==null">
