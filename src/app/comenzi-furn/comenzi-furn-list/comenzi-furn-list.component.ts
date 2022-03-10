@@ -41,6 +41,7 @@ export class ComenziFurnListComponent implements OnInit {
   pageSize: number = 20;
   initialFormValues: any;
   panelOpenState = false;
+  loading$: boolean = true;
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
@@ -94,10 +95,8 @@ export class ComenziFurnListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.comenziFurnizorService.getAll(values).subscribe((response: HttpResponse<comenziFurnizorDTO[]>)=>{
       this.comenziFurnizor = response.body??[];
-      console.log('totalRecords', response.headers.get("totalRecords"));
       this.totalRecords = Number(response.headers.get("totalRecords"));
-      console.log('this.comenzi', this.comenziFurnizor);
-      console.log('totalRecords', response.headers);
+      this.loading$ = false;
     });    
   }
 
@@ -110,7 +109,9 @@ export class ComenziFurnListComponent implements OnInit {
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
-
+  togglePanel(){    
+    this.panelOpenState = !this.panelOpenState;
+  }
   expand(element: comenziFurnizorDTO){
     var index = this.expandedElement.findIndex(f=>f.id == element.id);
     if(index == -1)

@@ -36,12 +36,13 @@ export class LivrariListComponent implements OnInit {
   pageSize: number = 20;
   initialFormValues: any;
   panelOpenState = false;
+  loading$: boolean = true;
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   constructor(private livrariService: LivrariService, private router:Router, private formBuilder:FormBuilder) { }
 
-  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'livrate', 'action'];
 
   ngOnInit(): void {
     let date: Date = new Date();
@@ -74,10 +75,8 @@ export class LivrariListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.livrariService.getAll(values).subscribe((response: HttpResponse<LivrariDTO[]>)=>{
       this.livrari = response.body??[];
-      console.log('totalRecords', response.headers.get("totalRecords"));
       this.totalRecords = Number(response.headers.get("totalRecords"));
-      console.log('this.comenzi', this.livrari);
-      console.log('totalRecords', response.headers);
+      this.loading$ = false;
     });    
   }
 
@@ -90,7 +89,9 @@ export class LivrariListComponent implements OnInit {
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
-
+  togglePanel(){    
+    this.panelOpenState = !this.panelOpenState;
+  }
   expand(element: LivrariDTO){
     var index = this.expandedElement.findIndex(f=>f.id == element.id);
     if(index == -1)

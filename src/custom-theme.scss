@@ -69,11 +69,41 @@ $zoiss-app-theme: mat.define-light-theme((
 // that you are using.
 @include mat.core-theme($zoiss-app-theme);
 @include mat.all-component-themes($zoiss-app-theme);
+body{
+  // background-color: #eee;
+  color: #3c4858;
+  //font-weight: 300;
+}
 
 mat-form-field{
   width: 100%;
 }
-
+.mat-option{
+  font-size: 14px;
+  line-height: 36px !important;
+  height: 38px !important;
+}
+.mat-paginator{
+  background-color: #bcbcbc;
+  font-size: 13px;
+  //color: darkslateblue;  
+}
+.mat-paginator .mat-paginator-page-size-select{
+  margin: 0px;
+}
+.mat-header-row{
+  background-color: #e99064;  
+}
+.mat-header-row th{
+  color: #fff !important;
+  font-size: 14px;
+}
+.mat-form-field-infix{
+  padding: 7px 0px !important;
+}
+.mat-form-field-flex{
+  padding-top: 0px !important;
+}
 .w-50{
   min-width: 50px;
 }
@@ -87,4 +117,63 @@ mat-form-field{
 }
 mat-icon {
     cursor: pointer;
+  }
+.mat-expansion-panel{
+  border-style: solid;
+  border-width: thin;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+.mat-expansion-panel-header{
+  margin-top: 10px;  
+  cursor: default !important;  
+}
+// .mat-expansion-panel-header-title{
+//   margin-top: 10px;
+//   flex-grow: 2 !important;
+// }
+.table-striped thead{
+  // background-color: #dcdee0;  
+  background-color: #ffd2b0;
+}
+.table-striped thead tr th{
+  border: none;
+}
+.customAddIcon{
+  color: #487527 !important;
+  //584d4d
+  position: relative;
+  left: -37px;;
+  top:-2px;
+  font-size: inherit;
+}
+h2 {
+  width: 100%;
+  text-align: center;
+  // color: #487527;
+  font-family: Roboto Medium !important;  
+  font-weight: bold !important;  
+}
+h4{
+  color: #487527 !important;
+  font-family: Roboto Medium !important;
+  font-weight: bold !important;
+  font-size: 17px !important;
+}
+.greenIcon{
+  color: #487527 !important;
+}
+.mat-column-expand .mat-icon{
+  color: #487527 !important;
+}
+.container{
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.mat-flat-button.mat-primary{
+  color: #3c4858 !important;
+}
+.spinner-container{
+  width: 200px;
+  margin: 0 auto;
 }

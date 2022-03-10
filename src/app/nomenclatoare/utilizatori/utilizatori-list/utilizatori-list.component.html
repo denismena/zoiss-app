@@ -1,7 +1,7 @@
 <h2>Lista Utilizatori</h2>
 <app-generic-list [list]="utilizatori">
     <ng-container content>
-    <table mat-table *ngIf="utilizatori.length > 0" [dataSource]="utilizatori" class="mat-elevation-z8 table-index">        
+    <table mat-table *ngIf="utilizatori.length > 0" [dataSource]="utilizatori" class="table-index">        
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef>Email</th>
             <td mat-cell *matCellDef="let element">

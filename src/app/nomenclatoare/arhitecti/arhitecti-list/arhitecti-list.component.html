@@ -1,6 +1,7 @@
-<h2>Lista Arhitecti</h2>
-<button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary">Adauga</button>
-
+<h2>Lista Arhitecti
+<button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary">
+    <mat-icon class="greenIcon">add_circle</mat-icon></button>
+</h2>
 <app-generic-list [list]="arhitecti">
     <ng-container content>
     <table mat-table *ngIf="arhitecti.length > 0" [dataSource]="arhitecti" class="mat-elevation-z8 table-index">        
@@ -36,22 +37,14 @@
         </ng-container>
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element">
-                <a
-                    routerLink="/arhitecti/edit/{{element.id}}"
-                    mat-flat-button color="primary"
-                >
-                Edit
+            <td mat-cell *matCellDef="let element">                
+                <a routerLink="/arhitecti/edit/{{element.id}}" title="Edit">
+                    <mat-icon color="primary">edit</mat-icon>
                 </a>
-                <button mat-flat-button color="warn" 
-                [swal]="{
-                    title: 'Confirmare',
-                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
-                    showCancelButton: true
-                }"
-                (confirm)="delete(element.id)">
-                    Delete
-                </button>
+                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(element.id)" [swal]="{
+                        title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
+                        close
+                </mat-icon>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

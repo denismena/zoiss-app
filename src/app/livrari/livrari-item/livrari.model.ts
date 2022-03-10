@@ -7,7 +7,9 @@ export interface LivrariDTO{
     curier: string;
     receptionatDe: string;
     detalii: string;
-    allLivrare: boolean;    
+    allLivrare: boolean;
+    produseAll:number;
+    produseLivrate:number;    
     livrariProduse: livrariProduseDTO[];
 }
 

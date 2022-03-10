@@ -1,12 +1,16 @@
 <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Filtre cautare
-        </mat-panel-title>
-        <mat-panel-description>
-            <h2>Lista Furnizori</h2>
-            <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">Adauga</button>
+    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
+        <mat-expansion-panel-header>        
+          <mat-panel-description (click)="$event.stopPropagation();">
+              <div (click)="togglePanel()">
+                  <mat-icon class="greenIcon">
+                      {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+                  </mat-icon>
+              </div>
+            <h2>Lista Furnizori
+            <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">
+                <mat-icon class="greenIcon">add_circle</mat-icon></button>
+            </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="form">
@@ -51,9 +55,8 @@
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
-<!-- <app-generic-list [list]="furnizori">
-    <ng-container content> -->
-    <table mat-table *ngIf="furnizori.length > 0" [dataSource]="furnizori" class="mat-elevation-z8 table-index">        
+
+    <table mat-table *ngIf="furnizori.length > 0" [dataSource]="furnizori" class="table-index">        
         <ng-container matColumnDef="nume">
             <th mat-header-cell *matHeaderCellDef>Nume</th>
             <td mat-cell *matCellDef="let element">
@@ -116,7 +119,5 @@
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="updatePagination($event)" class="mat-elevation-z8">
+        (page)="updatePagination($event)">
     </mat-paginator>
-<!-- </ng-container>
-</app-generic-list> -->

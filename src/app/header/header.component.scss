@@ -1,8 +1,17 @@
+.primaryColorBG {
+    background-color: #d96136;
+  }
+  .bg-dark{
+      background-color: #7a7979 !important;
+  }
 .space{
  flex: 1 1 auto;    
 }
 a, span{
     color: white;
+}
+a:hover{
+ color: #d96136;   
 }
 .dropdown-menu{
     font-size: 14px;

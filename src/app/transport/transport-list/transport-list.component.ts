@@ -45,6 +45,7 @@ export class TransportListComponent implements OnInit {
   pageSize: number = 20;
   initialFormValues: any;
   panelOpenState = false;
+  loading$: boolean = true;
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
@@ -90,7 +91,7 @@ export class TransportListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.transporService.getAll(values).subscribe((response: HttpResponse<transportDTO[]>)=>{
       this.transport = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords"));      
+      this.totalRecords = Number(response.headers.get("totalRecords")); 
     });
   }
 
@@ -160,7 +161,9 @@ export class TransportListComponent implements OnInit {
         else console.log('else');
       });
   }
-
+  togglePanel(){
+    this.panelOpenState = !this.panelOpenState;
+  }
   getCheckbox(checkbox: any, row: transportDTO){
     this.checked = [];
     console.log(row);

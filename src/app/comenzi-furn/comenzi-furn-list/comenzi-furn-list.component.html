@@ -1,17 +1,21 @@
 <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Filtre cautare
-        </mat-panel-title>
-        <mat-panel-description>
+        <mat-panel-description (click)="$event.stopPropagation();">
+            <div (click)="togglePanel()">
+                <mat-icon class="greenIcon">
+                    {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+            </div>
             <h2>Lista Comenzi Furnizori
-                <button mat-flat-button color="primary" (click)="genereazaTransport()">Genereaza transport</button>
+                <button mat-flat-button color="primary" (click)="genereazaTransport()" matTooltip="Genereaza transport">
+                    <mat-icon>local_shipping</mat-icon></button>
+                <span class="material-icons customAddIcon">add_circle</span>                
             </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="form">
-        <div class="">    
+        <div>    
             <div class="row">
                 <div class="col-md-3">
         <mat-form-field appearance="outline">
@@ -76,10 +80,11 @@
     </form>
     </mat-expansion-panel>    
   </mat-accordion>
-
-<app-generic-list [list]="comenziFurnizor">
-    <ng-container content>
-    <table mat-table *ngIf="comenziFurnizor.length > 0" [dataSource]="comenziFurnizor" multiTemplateDataRows class="mat-elevation-z8 table-index">
+<br />
+<div class="spinner-container" *ngIf="loading$">
+    <mat-spinner></mat-spinner>
+</div>
+    <table mat-table *ngIf="comenziFurnizor.length > 0" [dataSource]="comenziFurnizor" multiTemplateDataRows>
         <ng-container matColumnDef="expand">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element" (click)="expand(element)">
@@ -134,21 +139,13 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element">
-                <a
-                    routerLink="/comenziFurnizor/edit/{{element.id}}"
-                    mat-flat-button color="primary"
-                >
-                Edit
+                <a routerLink="/comenziFurnizor/edit/{{element.id}}" title="Edit">
+                    <mat-icon color="primary">edit</mat-icon>
                 </a>
-                <button mat-flat-button color="warn" 
-                [swal]="{
-                    title: 'Confirmare',
-                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
-                    showCancelButton: true
-                }"
-                (confirm)="delete(element.id)">
-                    Delete
-                </button>
+                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(element.id)" [swal]="{
+                        title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
+                        close
+                </mat-icon>
             </td>
         </ng-container>
         
@@ -157,7 +154,7 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
             <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
-                <table class="table" *ngIf="element.comenziFurnizoriProduse.length > 0">
+                <table class="table table-striped table-sm" *ngIf="element.comenziFurnizoriProduse.length > 0">
                     <thead>
                       <tr>
                         <th scope="col">Client</th>
@@ -203,7 +200,5 @@
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="updatePagination($event)" class="mat-elevation-z8">
+        (page)="updatePagination($event)">
     </mat-paginator>
-</ng-container>
-</app-generic-list>

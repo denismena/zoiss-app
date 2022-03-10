@@ -46,6 +46,7 @@ export class OferteListComponent implements OnInit {
   pageSize: number = 5;
   initialFormValues: any;
   panelOpenState = false;
+  loading$: boolean = true;
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;
   @ViewChild(ArhitectiAutocompleteComponent) arhitectFilter!: ArhitectiAutocompleteComponent;
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
@@ -84,22 +85,13 @@ export class OferteListComponent implements OnInit {
     })
   }
 
-  // loadList(){
-  //   this.oferteService.getAll().subscribe(oferte=>{
-  //     this.oferte = oferte;
-  //     console.log(this.oferte);
-  //   });    
-  // }
-
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.oferteService.getAll(values).subscribe((response: HttpResponse<oferteDTO[]>)=>{
       this.oferte = response.body??[];
-      console.log('totalRecords', response.headers.get("totalRecords"));
       this.totalRecords = Number(response.headers.get("totalRecords"));
-      console.log('this.comenzi', this.oferte);
-      console.log('totalRecords', response.headers);
+      this.loading$ = false;
     });    
   }
 
@@ -132,6 +124,10 @@ export class OferteListComponent implements OnInit {
           return item.addToComanda == true;
         })
       console.log('row.allComandate', row.allComandate);
+  }
+
+  togglePanel(){
+    this.panelOpenState = !this.panelOpenState;
   }
 
   genereazaComanda()

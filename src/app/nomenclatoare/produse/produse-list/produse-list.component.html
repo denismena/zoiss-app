@@ -1,14 +1,15 @@
 <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Filtre cautare
-        </mat-panel-title>
-        <mat-panel-description>
+        <mat-panel-description (click)="$event.stopPropagation();">
+            <div (click)="togglePanel()">
+                <mat-icon class="greenIcon">
+                    {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+            </div>
             <h2>Lista Produse
                 <button type="button" routerLink="/produse/create" mat-flat-button color="primary">                    
-                    <mat-icon>add</mat-icon> Adauga
-                </button> 
+                    <mat-icon class="greenIcon">add_circle</mat-icon></button> 
             </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>
@@ -60,9 +61,7 @@
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
-<!-- <app-generic-list [list]="produse">
-    <ng-container content> -->
-    <table mat-table *ngIf="produse.length > 0" [dataSource]="produse" class="mat-elevation-z8 table-index">        
+    <table mat-table *ngIf="produse.length > 0" [dataSource]="produse" class="table-index">        
         <ng-container matColumnDef="cod">
             <th mat-header-cell *matHeaderCellDef>Cod</th>
             <td mat-cell *matCellDef="let element">
@@ -98,14 +97,7 @@
             <td mat-cell *matCellDef="let element">
                 <a routerLink="/produse/edit/{{element.id}}" title="Edit">
                 <mat-icon color="primary">edit</mat-icon>
-                </a>
-                <!-- <button mat-flat-button [ngStyle]="{'padding': '0px', 'width': '30px'}"
-                [swal]="{
-                    title: 'Confirmare',
-                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
-                    showCancelButton: true
-                }"
-                (confirm)="delete(element.id)"> -->
+                </a>                
                 <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" [swal]="{
                     title: 'Confirmare',
                     text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
@@ -114,14 +106,11 @@
                 (confirm)="delete(element.id)">
                     close
                 </mat-icon>
-                <!-- </button> -->
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="updatePagination($event)" class="mat-elevation-z8">
+        (page)="updatePagination($event)">
     </mat-paginator>
-<!-- </ng-container>
-</app-generic-list> -->

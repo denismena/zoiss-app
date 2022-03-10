@@ -72,6 +72,10 @@ export class ProduseListComponent implements OnInit {
     });
   }
 
+  togglePanel(){
+    this.panelOpenState = !this.panelOpenState;
+  }
+
   clearForm(){
     this.form.patchValue(this.initialFormValues);    
   }

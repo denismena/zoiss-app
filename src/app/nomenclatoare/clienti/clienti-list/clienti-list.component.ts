@@ -74,5 +74,8 @@ export class ClientiListComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.loadList(this.form.value);
   }
+  togglePanel(){
+    this.panelOpenState = !this.panelOpenState;
+  }
   
 }

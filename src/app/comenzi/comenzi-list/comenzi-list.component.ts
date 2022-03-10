@@ -42,6 +42,7 @@ export class ComenziListComponent implements OnInit {
   pageSize: number = 20;
   initialFormValues: any;
   panelOpenState = false;
+  loading$: boolean = true;
   @ViewChild(ClientiAutocompleteComponent)
   clientFilter!: ClientiAutocompleteComponent;
   @ViewChild(ArhitectiAutocompleteComponent)
@@ -88,10 +89,8 @@ export class ComenziListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.comenziService.getAll(values).subscribe((response: HttpResponse<comenziDTO[]>)=>{
       this.comenzi = response.body??[];
-      console.log('totalRecords', response.headers.get("totalRecords"));
       this.totalRecords = Number(response.headers.get("totalRecords"));
-      console.log('this.comenzi', this.comenzi);
-      console.log('totalRecords', response.headers);
+      this.loading$ = false;
     });    
   }
 
@@ -110,6 +109,10 @@ export class ComenziListComponent implements OnInit {
     if(index == -1)
       this.expandedElement.push(element);
     else this.expandedElement.splice(index,1);    
+  }
+
+  togglePanel(){
+    this.panelOpenState = !this.panelOpenState;
   }
 
   getCheckbox(checkbox: any, row: comenziDTO){
