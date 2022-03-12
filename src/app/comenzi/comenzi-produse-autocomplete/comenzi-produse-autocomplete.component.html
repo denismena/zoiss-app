@@ -44,7 +44,7 @@
             <div class="col-md-2">
                 <mat-label>pretUm</mat-label>
                 <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="pretUm"/>
+                    <input matInput formControlName="pretUm" (change)="onPretChange($event)"/>
                     <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 

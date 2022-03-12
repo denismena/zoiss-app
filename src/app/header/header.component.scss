@@ -1,17 +1,21 @@
-.primaryColorBG {
-    background-color: #d96136;
-  }
+// .primaryColorBG {
+//     background-color: #d96136;
+//   }
   .bg-dark{
       background-color: #7a7979 !important;
   }
 .space{
  flex: 1 1 auto;    
 }
-a, span{
-    color: white;
+.nav-link{
+    color: white !important;
 }
 a:hover{
- color: #d96136;   
+ color: #d96136 !important;   
+}
+.active{
+    color: #d96136 !important;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .dropdown-menu{
     font-size: 14px;

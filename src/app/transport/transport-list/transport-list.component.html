@@ -37,11 +37,15 @@
             <mat-error>Completati data!</mat-error>
         </mat-form-field>
         </div>
-        <div class="col-md-3">
-        <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    
+        <div class="col-md-3">            
+            <mat-form-field appearance="outline">
+                <mat-label>Comanda</mat-label>
+                <input formControlName="comandaNr" matInput>
+            </mat-form-field>
         </div>
         <div class="col-md-3">
-        <mat-slide-toggle formControlName="allSpreLivrare">Doar netransportate</mat-slide-toggle>
+            <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    <br/>
+            <mat-slide-toggle formControlName="allSpreLivrare">Doar netransportate</mat-slide-toggle>
         <div style="float: right;">
             <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
         </div>                
@@ -83,105 +87,105 @@
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
-        <table mat-table *ngIf="transport.length > 0" [dataSource]="transport" multiTemplateDataRows class="table-index">
-            <ng-container matColumnDef="expand">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell *matCellDef="let element" (click)="expand(element)">
-                    <mat-icon *ngIf="element.transportProduse.length > 0">
-                        {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
-                      </mat-icon>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="referinta">
-                <th mat-header-cell *matHeaderCellDef>Referinta</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.referinta}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="data">
-                <th mat-header-cell *matHeaderCellDef>Data</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.data|customDate}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="transportator">
-                <th mat-header-cell *matHeaderCellDef>Transportator</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.transportator}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="utilizator">
-                <th mat-header-cell *matHeaderCellDef>Utilizator</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.utilizator}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="livrate">            
-                <th mat-header-cell *matHeaderCellDef>Spre livrare</th>
-                <td *matCellDef="let element">
-                  {{element.produseTransportateLivrate}} / {{element.produseTransportateAll}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="select">            
-                <th mat-header-cell *matHeaderCellDef>Select</th>
-                <td *matCellDef="let element">              
-                  <input #checkBox type="checkbox" *ngIf="element.produseTransportateAll!=element.produseTransportateLivrate"
-                    [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell *matCellDef="let element">                    
-                    <a routerLink="/transport/edit/{{element.id}}" title="Edit">
-                        <mat-icon color="primary">edit</mat-icon>
-                    </a>
-                    <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(element.id)" [swal]="{
-                            title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
-                            close
-                    </mat-icon>
-                </td>
-            </ng-container>
+<table mat-table *ngIf="transport.length > 0" [dataSource]="transport" multiTemplateDataRows class="table-index">
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element" (click)="expand(element)">
+            <mat-icon *ngIf="element.transportProduse.length > 0">
+                {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="referinta">
+        <th mat-header-cell *matHeaderCellDef>Referinta</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.referinta}}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef>Data</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.data|customDate}}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="transportator">
+        <th mat-header-cell *matHeaderCellDef>Transportator</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.transportator}}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="utilizator">
+        <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.utilizator}}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="livrate">            
+        <th mat-header-cell *matHeaderCellDef>Spre livrare</th>
+        <td *matCellDef="let element">
+            {{element.produseTransportateLivrate}} / {{element.produseTransportateAll}}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="select">            
+        <th mat-header-cell *matHeaderCellDef>Select</th>
+        <td *matCellDef="let element">              
+            <input #checkBox type="checkbox" *ngIf="element.produseTransportateAll!=element.produseTransportateLivrate"
+            [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">                    
+            <a routerLink="/transport/edit/{{element.id}}" title="Edit">
+                <mat-icon color="primary">edit</mat-icon>
+            </a>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(element.id)" [swal]="{
+                    title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
+                    close
+            </mat-icon>
+        </td>
+    </ng-container>
 
-            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
-                <table class="table table-striped table-sm" *ngIf="element.transportProduse.length > 0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Depozit</th>
-                        <th scope="col">Client</th>
-                        <th scope="col">Produs</th>
-                        <th scope="col">Cant</th>
-                        <th scope="col">UM</th>                        
-                        <th scope="col">Cutii</th>
-                        <th scope="col">#</th>                        
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let prod of element.transportProduse">                        
-                        <td>{{prod.depozit}}</td>
-                        <td>{{prod.clientNume}}</td>
-                        <td>{{prod.produsNume}}</td>
-                        <td>{{prod.cantitate}}</td>
-                        <td>{{prod.um}}</td>                        
-                        <td>{{prod.cutii}}</td>                        
-                        <td>                            
-                            <input type="checkbox" [(ngModel)]="prod.addToLivrare" 
-                                *ngIf="!prod.livrat" [disabled]="!prod.livrabil" 
-                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
-                        </td>
-                      </tr>                      
-                    </tbody>
-                  </table>
-            </div>
-            </td>
-        </ng-container>
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+<ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+    <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
+        <table class="table table-striped table-sm" *ngIf="element.transportProduse.length > 0">
+            <thead>
+                <tr>
+                <th scope="col">Depozit</th>
+                <th scope="col">Client</th>
+                <th scope="col">Produs</th>
+                <th scope="col">Cant</th>
+                <th scope="col">UM</th>                        
+                <th scope="col">Cutii</th>
+                <th scope="col">#</th>                        
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let prod of element.transportProduse">                        
+                <td>{{prod.depozit}}</td>
+                <td>{{prod.clientNume}}</td>
+                <td>{{prod.produsNume}}</td>
+                <td>{{prod.cantitate}}</td>
+                <td>{{prod.um}}</td>                        
+                <td>{{prod.cutii}}</td>                        
+                <td>                            
+                    <input type="checkbox" [(ngModel)]="prod.addToLivrare" 
+                        *ngIf="!prod.livrat" [disabled]="!prod.livrabil" 
+                        name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
+                </td>
+                </tr>                      
+            </tbody>
+            </table>
+    </div>
+    </td>
+</ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>        
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-            (page)="updatePagination($event)">
-        </mat-paginator>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>        
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+    (page)="updatePagination($event)">
+</mat-paginator>

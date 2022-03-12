@@ -193,7 +193,7 @@ export class OferteListComponent implements OnInit {
   genereazaExcel(id:number)
   {
     this.rapoarteService.ofertaReport(id).subscribe(blob => {
-      saveAs(blob, 'WeeklySummary.xlsx');
+      saveAs(blob, 'Oferta.xlsx');
     }, error => {
       console.log("Something went wrong");
     });

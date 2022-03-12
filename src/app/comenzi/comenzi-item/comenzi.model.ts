@@ -51,6 +51,8 @@ export interface produseComandaDTO{
     valoare: number;
     codProdus: string;
     discount: number;
+    disponibilitate: Date;
+    depozit: string;
     isInComandaFurnizor: boolean;    
     addToComandaFurnizor: boolean;
 }

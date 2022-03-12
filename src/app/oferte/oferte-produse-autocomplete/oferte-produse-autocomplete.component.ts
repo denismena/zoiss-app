@@ -1,12 +1,9 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
@@ -23,7 +20,6 @@ import { UMService } from 'src/app/nomenclatoare/um/um.service';
 })
 export class OferteProduseAutocompleteComponent implements OnInit {
 
-  // produse: produseDTO[]
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
@@ -84,12 +80,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.produseService.searchByName(value).subscribe(produs => {
         this.produsToDisplay = produs;
       });
-    })
+    });
 
     this.umService.getAll().subscribe(um=>{
       this.umList=um;
-    })
-
+    });
   }
 
   loadProduseList(){
@@ -125,7 +120,6 @@ export class OferteProduseAutocompleteComponent implements OnInit {
  }
 
   selectUM(um: any){   
-    //console.log('select um', um.source.triggerValue);
     this.form.get('um')?.setValue(um.source.triggerValue);
   }
 
@@ -150,10 +144,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.isEditMode = false;
   }
   edit(produs:any){
-    console.log('produs', produs);
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId).subscribe(produs=>{
-      this.preselectedProdus = produs;      
+      this.preselectedProdus = produs;
+      this.perCutieSet = produs.perCutie;
+      this.pretSet = produs.pret;
     });
     this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
       this.preselectFurnizor = furnizor;
@@ -168,8 +163,22 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
   onCantitateChange(event: any){
     const cant = event.target.value;
-    this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);
-    this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
+    if(cant == ''){
+      this.form.controls['cutii']?.setValue('');
+      this.form.controls['valoare']?.setValue('');
+    }else{
+      this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);
+      this.form.controls['valoare']?.setValue(cant * this.form.controls['pretUm'].value??this.pretSet??0);
+    }
+  }
+  onPretChange(event: any){
+    const pret = event.target.value;
+    if(pret == ''){
+      this.form.controls['valoare']?.setValue('');
+    }
+    else{
+      this.form.controls['valoare']?.setValue(pret * this.form.controls['cantitate'].value??0);
+    }
   }
 
   remove(produs:any){

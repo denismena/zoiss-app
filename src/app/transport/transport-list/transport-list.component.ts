@@ -71,7 +71,8 @@ export class TransportListComponent implements OnInit {
       furnizorId:0,
       mine: true,
       allSpreLivrare: false,
-      depozitId:0
+      depozitId:0,
+      comandaNr:''
     });
 
     this.initialFormValues = this.form.value
@@ -91,7 +92,8 @@ export class TransportListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.transporService.getAll(values).subscribe((response: HttpResponse<transportDTO[]>)=>{
       this.transport = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords")); 
+      this.totalRecords = Number(response.headers.get("totalRecords"));
+      this.loading$ = false; 
     });
   }
 

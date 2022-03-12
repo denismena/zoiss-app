@@ -146,8 +146,22 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
 
   onCantitateChange(event: any){
     const cant = event.target.value;
-    this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet??0));
-    this.form.controls['valoare']?.setValue(cant * this.pretSet??0);
+    if(cant == ''){
+      this.form.controls['cutii']?.setValue('');
+      this.form.controls['valoare']?.setValue('');
+    }else{
+      this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);
+      this.form.controls['valoare']?.setValue(cant * this.form.controls['pretUm'].value??this.pretSet??0);
+    }
+  }
+  onPretChange(event: any){
+    const pret = event.target.value;
+    if(pret == ''){
+      this.form.controls['valoare']?.setValue('');
+    }
+    else{
+      this.form.controls['valoare']?.setValue(pret * this.form.controls['cantitate'].value??0);
+    }
   }
 
   remove(produs:any){
@@ -161,7 +175,8 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId).subscribe(produs=>{
       this.preselectedProdus = produs;
-      //this.onEditSelected.emit(this.preselectedProdus);
+      this.perCutieSet = produs.perCutie;
+      this.pretSet = produs.pret;
     });
     this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
       this.preselectFurnizor = furnizor;
