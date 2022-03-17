@@ -175,20 +175,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let prod of element.comenziProduses">                        
-                        <td>{{prod.produsNume}}</td>
-                        <td>{{prod.codProdus}}</td>
-                        <td>{{prod.furnizorNume}}</td>
-                        <td>{{prod.um}}</td>
-                        <td>{{prod.cantitate}}</td>
-                        <td>{{prod.cutii}}</td>
-                        <td>{{prod.pretUm}}</td>
-                        <td>{{prod.valoare}}</td>
-                        <td>{{prod.discount}}</td>
-                        <td>{{prod.disponibilitate|customDate}}</td>
-                        <td>{{prod.depozit}}</td>
+                      <tr *ngFor="let prod of element.comenziProduses" [ngClass]="{ 'categoryProd': prod.isCategory === true }">
+                        <td *ngIf="prod.isCategory === true" colspan="11">{{prod.produsNume}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.produsNume}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.codProdus}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.furnizorNume}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.um}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.cantitate}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.cutii}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.pretUm}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.valoare}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.discount}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.disponibilitate|customDate}}</td>
+                        <td *ngIf="prod.isCategory === false">{{prod.depozit}}</td>
                         <td>
-                            <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor"                                
+                            <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" *ngIf="!prod.isInComandaFurnizor && !prod.isCategory"                                
                                 name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
                         </td>
                       </tr>                      

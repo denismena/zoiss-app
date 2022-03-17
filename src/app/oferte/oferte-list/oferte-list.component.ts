@@ -43,7 +43,7 @@ export class OferteListComponent implements OnInit {
   public form!: FormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
-  pageSize: number = 5;
+  pageSize: number = 20;
   initialFormValues: any;
   panelOpenState = false;
   loading$: boolean = true;
@@ -90,6 +90,7 @@ export class OferteListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.oferteService.getAll(values).subscribe((response: HttpResponse<oferteDTO[]>)=>{
       this.oferte = response.body??[];
+      console.log('this.oferte', this.oferte);
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
     });    

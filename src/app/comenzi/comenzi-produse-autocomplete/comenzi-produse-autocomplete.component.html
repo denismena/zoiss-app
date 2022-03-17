@@ -5,16 +5,17 @@
             <div class="col-md-6">
                 <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" [preselectedProdus]="preselectedProdus" #produsAuto></app-produse-autocomplete>
                 <input type="hidden" formControlName="produsId" #produsId> 
+                <input type="hidden" formControlName="isCategory" #isCategory> 
             </div>
             <div class="col-md-5">
                 <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
                 <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF"> 
             </div>
-            <div class="col-md-1"> 
+            <div class="col-md-1 d-none d-sm-block"> 
                 <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
             </div>
-            </div>
-            <div class="row">
+        </div>
+        <div class="row">
             <div class="col-md-2">
                 <mat-label>um</mat-label>
                 <mat-form-field appearance="outline">                    
@@ -64,22 +65,26 @@
                     <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
             </div>
-            <div class="col-md-1"> 
-                <!-- <button mat-flat-button color="primary">Renunta</button> -->
+            <div class="col-md-1 d-none d-sm-block">
                 <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
             </div>
+        </div>
+        <div class="row d-block d-sm-none">
+            <div class="col">
+                <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+                <a mat-stroke-button mat-flat-button color="primary" style="margin-left: 1rem;" (click)="clearForm()">Renunta</a>
+            </div>            
         </div>
     </div>
 </form>
 
-<table #produseTable style="width: 100%;"
-    mat-table
-    *ngIf="selectedProdus.length > 0"
-    [dataSource]="selectedProdus">
+<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0"[dataSource]="selectedProdus"
+    cdkDropList [cdkDropListData]="selectedProdus" (cdkDropListDropped)="dropped($event)">
     
     <ng-container matColumnDef="codProdus">
         <th mat-header-cell *matHeaderCellDef>Cod</th>
-        <td mat-cell *matCellDef="let element">{{element.codProdus}}</td>
+        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+            {{element.codProdus}}</ng-container></td>
     </ng-container>
     <ng-container matColumnDef="produsNume">
         <th mat-header-cell *matHeaderCellDef>Produs</th>
@@ -88,51 +93,51 @@
 
     <ng-container matColumnDef="furnizorNume">
         <th mat-header-cell *matHeaderCellDef>Furnizor</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.furnizorNume}}            
+        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+            {{element.furnizorNume}}</ng-container>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="um">
         <th mat-header-cell *matHeaderCellDef>UM</th>
-        <td mat-cell *matCellDef="let element" style="text-align: left;">
-            {{element.um}}            
+        <td mat-cell *matCellDef="let element" style="text-align: left;"><ng-container *ngIf="element.isCategory === false">
+            {{element.um}}</ng-container>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="cantitate">
         <th mat-header-cell *matHeaderCellDef>Cant</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.cantitate}}
+        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+            {{element.cantitate}}</ng-container>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="cutii">
         <th mat-header-cell *matHeaderCellDef>Cutii</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.cutii}}
+        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+            {{element.cutii}}</ng-container>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="pretUm">
         <th mat-header-cell *matHeaderCellDef>Pret</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.pretUm}}
+        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+            {{element.pretUm}}</ng-container>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="valoare">
         <th mat-header-cell *matHeaderCellDef>Val</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.valoare}}
+        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+            {{element.valoare}}</ng-container>
         </td>
     </ng-container>
     <ng-container matColumnDef="discount">
         <th mat-header-cell *matHeaderCellDef>Discount &nbsp;
             <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)" min="0" step="0.01" style="width: 5rem;" />
         </th>
-        <td mat-cell *matCellDef="let element" align="right">
-            {{element.discount}}
+        <td mat-cell *matCellDef="let element" align="right"><ng-container *ngIf="element.isCategory === false">
+            {{element.discount}}</ng-container>
         </td>
     </ng-container>
     <ng-container matColumnDef="actions">
@@ -146,7 +151,7 @@
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay" cdkDrag [cdkDragData]="row" [ngClass]="{ 'categoryProd': row.isCategory== true }"></tr>
 
 </table>
   

@@ -80,8 +80,8 @@ export class ComenziItemComponent implements OnInit {
 
   saveChanges(){
     const produse = this.selectedProdus.map(val => {
-      return {id: val.id??0, cantitate: val.cantitate, furnizorId: val.furnizorId, produsId: val.produsId, oferteProdusId: val.oferteProdusId,
-        umId:val.umId, um: val.um, cutii: val.cutii, pretUm: val.pretUm, valoare: val.valoare, discount: val.discount,}
+      return {id: val.id??0, cantitate: val.cantitate??0, furnizorId: val.furnizorId, produsId: val.produsId, oferteProdusId: val.oferteProdusId,
+        umId:val.umId??1, um: val.um, cutii: val.cutii??0, pretUm: val.pretUm??0, valoare: val.valoare??0, discount: val.discount,}
     });
     console.log('set produse', produse);
     this.form.get('comenziProduses')?.setValue(produse);

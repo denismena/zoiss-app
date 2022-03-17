@@ -98,6 +98,9 @@ export class ProduseService {
     if (produs.active){
       formData.append('active', produs.active.toString());
     }
+    if (produs.isCategory){
+      formData.append('isCategory', produs.isCategory.toString());
+    }
 
     if (produs.poza){
       formData.append('poza', produs.poza);

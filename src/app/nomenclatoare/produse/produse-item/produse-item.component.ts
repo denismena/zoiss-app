@@ -40,7 +40,8 @@ export class ProduseItemComponent implements OnInit {
       prefFurnizorId: null,
       prefFurnizor: '',
       poza: '',
-      active: true
+      active: true,
+      isCategory: false
     });
     if(this.model !== undefined)
     {

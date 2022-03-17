@@ -64,11 +64,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       furnizorNume:'',
       um: '',
       umId: ['', {validators:[Validators.required]}],
-      cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      codProdus:'', id:null, isInComanda:false
+      cantitate: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      codProdus:'', id:null, isInComanda:false, isCategory: false
     });
     
     this.loadProduseList();
@@ -115,6 +115,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.form.controls['pretUm']?.setValue(produs.pret);
     this.form.controls['umId']?.setValue(produs.umId);
     this.form.controls['um']?.setValue(produs.um);
+    this.form.controls['isCategory']?.setValue(produs.isCategory);
     this.perCutieSet = produs.perCutie;
     this.pretSet = produs.pret;
  }

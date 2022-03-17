@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
@@ -60,18 +61,18 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     console.log('lista produse', this.selectProdus);
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
-      produsNume:'',
-      furnizorId:[null,{validators:[Validators.required]}],
+      produsNume:'',      
+      furnizorId:[null,{validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  })]}],
       furnizorNume:'',
       um: '',
-      umId: ['', {validators:[Validators.required]}],
-      cantitate: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      cutii: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      pretUm: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      umId: ['', {validators:[RxwebValidators.required()]}],
+      cantitate: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       discount: null,
       codProdus:'',
-      id: null, oferteProdusId:null, isInComandaFurnizor: false
+      id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null
     });    
     
     this.loadProduseList();
@@ -119,6 +120,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.form.controls['pretUm']?.setValue(produs.pret);
     this.form.controls['umId']?.setValue(produs.umId);
     this.form.controls['um']?.setValue(produs.um);
+    this.form.controls['isCategory']?.setValue(produs.isCategory);
     this.perCutieSet = produs.perCutie;
     this.pretSet = produs.pret;
  }
@@ -192,11 +194,11 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   selectUM(um: any){       
     this.form.get('um')?.setValue(um.source.triggerValue);
   }
-  // dropped(event: CdkDragDrop<any[]>){
-  //   const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
-  //   moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
-  //   this.table.renderRows();
-  // }
+  dropped(event: CdkDragDrop<any[]>){
+    const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
+    moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
+    this.table.renderRows();
+  }
   changeDiscountAll(discoutAll: HTMLInputElement){
     console.log('discoutAll:', discoutAll.value);
     this.selectedProdus.forEach(p=>p.discount = Number(discoutAll.value));    

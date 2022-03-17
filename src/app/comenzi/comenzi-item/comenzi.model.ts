@@ -55,6 +55,7 @@ export interface produseComandaDTO{
     depozit: string;
     isInComandaFurnizor: boolean;    
     addToComandaFurnizor: boolean;
+    isCategory: boolean;
 }
 export interface comenziPutGetDTO{
     comanda: comenziDTO;

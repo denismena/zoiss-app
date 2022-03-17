@@ -13,6 +13,7 @@ export interface produseDTO{
     poza: any;
     pozaPath: string;
     active: boolean;
+    isCategory: boolean;
 }
 
 export interface produseCreationDTO{    
@@ -29,6 +30,7 @@ export interface produseCreationDTO{
     poza: any;
     pozaPath: string;
     active: boolean; 
+    isCategory: boolean;
 }
 
 export interface produseOfertaDTO{    
@@ -47,4 +49,5 @@ export interface produseOfertaDTO{
     codProdus: string;
     isInComanda: boolean;
     addToComanda: boolean;
+    isCategory: boolean;
 }

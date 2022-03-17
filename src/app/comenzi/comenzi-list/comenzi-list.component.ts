@@ -134,23 +134,34 @@ export class ComenziListComponent implements OnInit {
     var selectedProd: produseComandaDTO[] = [];
     var comenziNeplatite = false;
     var maiMultiFurnizori = false;
+    var faraFurnizor = false;
     var furnizorId = 0;
     this.comenzi.forEach(element => {
       element.comenziProduses.forEach(prod=>{
         //console.log('prod', prod);
         if(prod.addToComandaFurnizor && !prod.isInComandaFurnizor) 
-          {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInComandaFurnizor + ' ' + furnizorId + ' ' + prod.furnizorId);
-            selectedProd.push(prod);
-            if(!element.platit) comenziNeplatite = true;
-            
-            if(furnizorId != prod.furnizorId && furnizorId > 0)  maiMultiFurnizori = true; 
-            else furnizorId = prod.furnizorId;
+          {            
+            if(prod.furnizorId == null && prod.isCategory == false) 
+            { 
+              faraFurnizor = true;
+            }
+            else{
+              selectedProd.push(prod);
+              if(!element.platit) comenziNeplatite = true;
+              
+              if(furnizorId != prod.furnizorId && furnizorId > 0)  maiMultiFurnizori = true; 
+              else furnizorId = prod.furnizorId;
+            }
           }
       });      
     });
 
     console.log('selectedProd', selectedProd);
+    if(faraFurnizor) 
+    {       
+      Swal.fire({ title: "Atentie!", text: "Unul dintre produse nu are furnizor!", icon: 'info' });
+      return;
+    }
     if(maiMultiFurnizori) 
     { 
       Swal.fire({ title: "Atentie!", text: "Ati selectat produse de la mai multi furnizori!", icon: 'info' });

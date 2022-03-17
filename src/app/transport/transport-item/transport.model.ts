@@ -10,6 +10,7 @@ export interface transportDTO{
     detalii: string;
     produseTransportateAll: number;
     produseTransportateLivrate: number;
+    produseTransportateDepozit: number;
     allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in livrare.
     transportProduse: transportProduseDTO[];
 }

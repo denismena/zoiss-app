@@ -11,6 +11,7 @@ import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
 import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-comenzi-furn-produse-autocomplete',
@@ -61,7 +62,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       //discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       disponibilitate:[null],
-      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:'', clientNume:''
+      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:'', clientNume:'', isCategory: false, sort: null
     });    
     
     // this.loadProduseList();
@@ -163,4 +164,9 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.selectedProdus.splice(index, 1);
     this.table.renderRows();
   }  
+  dropped(event: CdkDragDrop<any[]>){
+    const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
+    moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
+    this.table.renderRows();
+  }
 }
