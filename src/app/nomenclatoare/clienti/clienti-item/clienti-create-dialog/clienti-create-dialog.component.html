@@ -1,3 +1,5 @@
-<h2>Adauga clienti</h2>
+<h2 *ngIf="editId == 0">Adauga client</h2>
+<h2 *ngIf="editId > 0">Editeaza client</h2>
 <app-display-errors [errors]="errors"></app-display-errors>
-<app-clienti-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog"></app-clienti-item>
+<app-clienti-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog" 
+[adreseList]="adreseList" [model]="preselectClient"></app-clienti-item>

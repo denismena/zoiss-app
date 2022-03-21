@@ -71,7 +71,7 @@ export class OferteListComponent implements OnInit {
       arhitectId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: true,
+      mine: false,
       allComandate: false
     });
 

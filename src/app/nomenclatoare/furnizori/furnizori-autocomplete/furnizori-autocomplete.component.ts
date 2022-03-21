@@ -57,7 +57,8 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     }
   }
 
-  optionSelected(event: MatAutocompleteSelectedEvent){    
+  optionSelected(event: MatAutocompleteSelectedEvent){
+    this.preselectFurnizor = event.option.value;  
     this.onOptionSelected.emit(event.option.value);
   }
 
@@ -101,7 +102,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
 
   addFurnizorDialog(){
     const dialogRef = this.dialog.open(FurnizoriCreateDialogComponent,      
-      { data:{}, width: '800px', height: '750px' });
+      { data:{editId:0}, width: '800px', height: '750px' });
 
       dialogRef.afterClosed().subscribe((data) => {      
         if (data.clicked === 'submit') {
@@ -112,6 +113,21 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
+  }
 
+  editFurnizorDialog(){
+    if(this.preselectFurnizor == undefined)  return; 
+    const dialogRef = this.dialog.open(FurnizoriCreateDialogComponent,      
+      { data:{furnizor: this.preselectFurnizor, editId: this.preselectFurnizor?.id??0}, width: '800px', height: '750px' });
+
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.furnizorCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog);
+        }
+      });
   }
 }

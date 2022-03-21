@@ -68,7 +68,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      codProdus:'', id:null, isInComanda:false, isCategory: false
+      codProdus:'', id:null, isInComanda:false, isCategory: false, sort: null
     });
     
     this.loadProduseList();
@@ -151,9 +151,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.perCutieSet = produs.perCutie;
       this.pretSet = produs.pret;
     });
-    this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
-      this.preselectFurnizor = furnizor;
-    });
+    if(produs.furnizorId > 0){
+      this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
+        this.preselectFurnizor = furnizor;
+      });
+    }
     this.isEditMode = true;
   }
   clearForm(){

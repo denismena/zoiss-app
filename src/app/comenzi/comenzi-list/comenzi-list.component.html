@@ -176,7 +176,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let prod of element.comenziProduses" [ngClass]="{ 'categoryProd': prod.isCategory === true }">
-                        <td *ngIf="prod.isCategory === true" colspan="11">{{prod.produsNume}}</td>
+                        <td *ngIf="prod.isCategory === true" colspan="11" align="center">{{prod.produsNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.produsNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.codProdus}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.furnizorNume}}</td>

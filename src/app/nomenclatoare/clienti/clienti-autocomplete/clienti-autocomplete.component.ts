@@ -55,6 +55,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     }
   }
   optionSelected(event: MatAutocompleteSelectedEvent){
+    this.preselectClient = event.option.value;
     this.onOptionSelected.emit(event.option.value.id);
   }
 
@@ -98,7 +99,23 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
   addClientDialog(){
     const dialogRef = this.dialog.open(ClientiCreateDialogComponent,      
-      { data:{}, width: '900px', height: '750px' });
+      { data:{editId: 0}, width: '900px', height: '750px' });
+
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.clientCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog.id);
+        }
+      });
+  }
+  editClientDialog(){
+    if(this.preselectClient == undefined)  return; 
+    console.log('this.preselectClient', this.preselectClient);
+    const dialogRef = this.dialog.open(ClientiCreateDialogComponent,      
+      { data:{client: this.preselectClient, editId: this.preselectClient?.id??0}, width: '1000px', height: '750px' });
 
       dialogRef.afterClosed().subscribe((data) => {      
         if (data.clicked === 'submit') {

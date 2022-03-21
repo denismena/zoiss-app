@@ -1,3 +1,4 @@
-<h2>Adauga arhitecti</h2>
+<h2 *ngIf="editId == 0">Adauga arhitect</h2>
+<h2 *ngIf="editId > 0">Editeaza arhitect</h2>
 <app-display-errors [errors]="errors"></app-display-errors>
-<app-arhitecti-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog"></app-arhitecti-item>
+<app-arhitecti-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog" [model]="preselectedArhitect"></app-arhitecti-item>

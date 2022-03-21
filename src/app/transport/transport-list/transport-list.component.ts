@@ -69,7 +69,7 @@ export class TransportListComponent implements OnInit {
       clientId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: true,
+      mine: false,
       allSpreLivrare: false,
       depozitId:0,
       comandaNr:''

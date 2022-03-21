@@ -37,10 +37,8 @@ export class ClientiItemComponent implements OnInit {
       adrese: null
     });
     if(this.model !== undefined)
-    {
-      console.log('model: ', this.model);
-      this.form.patchValue(this.model);
-      
+    {      
+      this.form.patchValue(this.model);      
       this.form.controls['pfPj'].setValue(this.model.pfPj);
       if(this.model.pfPj=='PF'){
         this.isPF= true;

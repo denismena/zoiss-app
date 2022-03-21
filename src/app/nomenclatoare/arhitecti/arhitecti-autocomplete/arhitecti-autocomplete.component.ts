@@ -54,7 +54,8 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent){
-     console.log(event.option.value.id);
+    console.log(event.option.value.id);
+    this.preselectArhitect = event.option.value;
     this.onOptionSelected.emit(event.option.value.id);
   }
   
@@ -99,7 +100,21 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
 
   addArhitectDialog(){
     const dialogRef = this.dialog.open(ArhitectiCreateDialogComponent,      
-      { data:{}, width: '800px', height: '600px' });
+      { data:{editId:0}, width: '800px', height: '600px' });
+
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.arhitectCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog.id);
+        }
+      });
+  }
+  editArhitectDialog(){
+    const dialogRef = this.dialog.open(ArhitectiCreateDialogComponent,      
+      { data:{arhitect: this.preselectArhitect, editId: this.preselectArhitect?.id??0}, width: '800px', height: '600px' });
 
       dialogRef.afterClosed().subscribe((data) => {      
         if (data.clicked === 'submit') {

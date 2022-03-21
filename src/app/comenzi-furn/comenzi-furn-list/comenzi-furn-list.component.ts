@@ -66,7 +66,7 @@ export class ComenziFurnListComponent implements OnInit {
       clientId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: true,
+      mine: false,
       allTransportate: false
     });
 

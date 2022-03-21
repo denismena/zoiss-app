@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ProduseService } from '../../produse.service';
-import { produseCreationDTO } from '../produse.model';
+import { produseCreationDTO, produseDTO } from '../produse.model';
 
 @Component({
   selector: 'app-produse-create-dialog',
@@ -14,33 +14,51 @@ export class ProduseCreateDialogComponent implements OnInit {
 
   errors: string[] = [];
   isDialog: boolean = true;
+  preselectedProdus: produseCreationDTO;
+  editId: number = 0;  
   constructor(private router:Router, private produsService: ProduseService,
-    @Inject(MAT_DIALOG_DATA) data:{},
-    public dialogRef: MatDialogRef<ProduseCreateDialogComponent>) { }
+    @Inject(MAT_DIALOG_DATA) data:{produs: produseDTO, editId:number},
+    public dialogRef: MatDialogRef<ProduseCreateDialogComponent>) { 
+      this.preselectedProdus = data?.produs;
+      this.editId = data?.editId;      
+    }
 
   ngOnInit(): void {
-    console.log('dialogRef', this.dialogRef);
+    //console.log('dialogRef', this.dialogRef);    
   }
   saveChanges(produseDTO: produseCreationDTO){    
-    if(produseDTO != undefined)    {
-    this.produsService.create(produseDTO).subscribe(id=>{      
-      console.log('id:', id);
+    if(produseDTO != undefined){
+      if(this.editId == 0){
+        this.produsService.create(produseDTO).subscribe(id=>{      
+          console.log('id:', id);
+          this.dialogRef.close({
+            clicked: 'submit',
+            form: produseDTO,
+            id: id
+          });    
+          //console.log('produsService.create subscribe');
+        }, 
+        error=> this.errors = parseWebAPIErrors(error));    
+      }
+      else{
+        this.produsService.edit(this.editId, produseDTO).subscribe(id=>{      
+          console.log('id:', id);
+          this.dialogRef.close({
+            clicked: 'submit',
+            form: produseDTO,
+            id: this.editId
+          });    
+          //console.log('produsService.create subscribe');
+        }, 
+        error=> this.errors = parseWebAPIErrors(error));  
+      }
+    }
+    else {
       this.dialogRef.close({
-        clicked: 'submit',
+        clicked: 'cancel',
         form: produseDTO,
-        id: id
+        id: 0
       });
-  
-      console.log('produsService.create subscribe');
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));    
-  }
-  else {
-    this.dialogRef.close({
-      clicked: 'cancel',
-      form: produseDTO,
-      id: 0
-    });
-  }
+    }
   }
 }

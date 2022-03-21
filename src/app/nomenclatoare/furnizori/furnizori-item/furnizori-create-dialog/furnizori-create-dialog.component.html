@@ -1,3 +1,4 @@
-<h2>Adauga furnizor</h2>
+<h2 *ngIf="editId == 0">Adauga furnizor</h2>
+<h2 *ngIf="editId > 0">Editeaza furnizor</h2>
 <app-display-errors [errors]="errors"></app-display-errors>
-<app-furnizori-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog"></app-furnizori-item>
+<app-furnizori-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog" [model]="preselectedFurnizor"></app-furnizori-item>

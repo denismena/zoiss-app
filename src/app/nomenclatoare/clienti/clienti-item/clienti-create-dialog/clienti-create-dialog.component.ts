@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ClientiService } from '../../clienti.service';
-import { clientiCreationDTO } from '../clienti.model';
+import { clientiAdresaDTO, clientiCreationDTO, clientiDTO } from '../clienti.model';
 
 @Component({
   selector: 'app-clienti-create-dialog',
@@ -14,29 +14,49 @@ export class ClientiCreateDialogComponent implements OnInit {
 
   errors: string[] = [];
   isDialog: boolean = true;
-  constructor(private clientiService: ClientiService,    
-    public dialogRef: MatDialogRef<ClientiCreateDialogComponent>) { }
+  preselectClient: clientiDTO;
+  adreseList: clientiAdresaDTO[];
+  editId: number = 0;  
+  constructor(private clientiService: ClientiService,
+    @Inject(MAT_DIALOG_DATA) data:{client: clientiDTO, editId: number},    
+    public dialogRef: MatDialogRef<ClientiCreateDialogComponent>) { 
+      this.preselectClient = data?.client;
+      this.adreseList = data?.client.adrese;
+      this.editId = data?.editId;
+    }
 
   ngOnInit(): void {
   }
 
   saveChanges(clientiDTO: clientiCreationDTO){
-    if(clientiDTO != undefined)    {
-    this.clientiService.create(clientiDTO).subscribe(id=>{
+    if(clientiDTO != undefined){
+      if(this.editId == 0){
+        this.clientiService.create(clientiDTO).subscribe(id=>{
+          this.dialogRef.close({
+            clicked: 'submit',
+            form: clientiDTO,
+            id: id
+          });
+        }, 
+        error=> this.errors = parseWebAPIErrors(error));
+      }
+      else{
+        this.clientiService.edit(this.editId, clientiDTO).subscribe(id=>{
+          this.dialogRef.close({
+            clicked: 'submit',
+            form: clientiDTO,
+            id: this.editId
+          });
+        }, 
+        error=> this.errors = parseWebAPIErrors(error));
+      }
+    }else {
       this.dialogRef.close({
-        clicked: 'submit',
+        clicked: 'cancel',
         form: clientiDTO,
-        id: id
+        id: 0
       });
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));    
-  }else {
-    this.dialogRef.close({
-      clicked: 'cancel',
-      form: clientiDTO,
-      id: 0
-    });
-   }
+    }
   }
 
 }

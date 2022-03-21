@@ -45,7 +45,6 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   dataFromDialog : any;  
 
   ngOnInit(): void {       
-    //this.loadProduseList();
     if(this.preselectedProdus!=undefined)
       this.produsCtrl.setValue(this.preselectedProdus);    
   }
@@ -53,13 +52,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     if(this.preselectedProdus!=undefined)
       this.produsCtrl.setValue(this.preselectedProdus);    
   }
-  // loadProduseList(){    
-  //   this.produseService.getAll().subscribe(produse=>{
-  //     this.produse = produse;
-  //     console.log(this.produse);
-  //     this.produsCtrl.setValue(this.preselectedProdus);
-  //   });    
-  // }
+  
   search(event: any){
     let searchTerm = '';
     searchTerm += event.target.value;
@@ -78,6 +71,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
   optionSelected(event: MatAutocompleteSelectedEvent){    
     console.log('event.option.value', event.option.value);
+    this.preselectedProdus = event.option.value;
     this.onOptionSelected.emit(event.option.value);
   }
 
@@ -122,7 +116,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
 
   addProdusDialog(){
     const dialogRef = this.dialog.open(ProduseCreateDialogComponent,      
-      { data:{}, width: '800px', height: '750px' });
+      { data:{editId:0}, width: '800px', height: '750px' });
       
       dialogRef.afterClosed().subscribe((data) => {      
         if (data.clicked === 'submit') {
@@ -132,7 +126,21 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
           this.produsCtrl.setValue(this.dataFromDialog);
           this.onOptionSelected.emit(this.dataFromDialog);
         }
-      });
+      });      
+  }
+  editProdusDialog(){ 
+    if(this.preselectedProdus == undefined)  return; 
+    const dialogRef = this.dialog.open(ProduseCreateDialogComponent,      
+      { data:{produs: this.preselectedProdus, editId: this.preselectedProdus?.id??0}, width: '800px', height: '750px' });
       
+      dialogRef.afterClosed().subscribe((data) => {      
+        if (data.clicked === 'submit') {
+          this.dataFromDialog = data.form;
+          this.dataFromDialog.id = data.id;
+          console.log('data.form.data', this.dataFromDialog);
+          this.produsCtrl.setValue(this.dataFromDialog);
+          this.onOptionSelected.emit(this.dataFromDialog);
+        }
+      });      
   }
 }

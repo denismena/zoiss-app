@@ -1,3 +1,4 @@
-<h2>Adauga produse</h2>
+<h2 *ngIf="editId == 0">Adauga produse</h2>
+<h2 *ngIf="editId > 0">Editeaza produse</h2>
 <app-display-errors [errors]="errors"></app-display-errors>
-<app-produse-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog"></app-produse-item>
+<app-produse-item (onSaveChanges)="saveChanges($event)" [isDialog]="isDialog" [model]="preselectedProdus"></app-produse-item>
