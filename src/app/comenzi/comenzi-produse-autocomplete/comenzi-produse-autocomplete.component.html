@@ -42,7 +42,7 @@
                     <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <mat-label>pretUm</mat-label>
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="pretUm" (change)="onPretChange($event)"/>
@@ -64,6 +64,9 @@
                     <input matInput formControlName="discount"/>                    
                     <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
+            </div>
+            <div class="col-md-1">
+                <mat-slide-toggle formControlName="isStoc">Stoc</mat-slide-toggle>
             </div>
             <div class="col-md-1 d-none d-sm-block">
                 <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
@@ -151,7 +154,8 @@
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let row; columns: columnsToDisplay" cdkDrag [cdkDragData]="row" [ngClass]="{ 'categoryProd': row.isCategory== true }"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay" cdkDrag [cdkDragData]="row" 
+    [ngClass]="{ 'categoryProd': row.isCategory== true, 'stocProd':row.isStoc == true }"></tr>
 
 </table>
   

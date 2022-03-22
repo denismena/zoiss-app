@@ -72,7 +72,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       discount: null,
       codProdus:'',
-      id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null
+      id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null, isStoc: false
     });    
     
     this.loadProduseList();
@@ -180,10 +180,13 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.perCutieSet = produs.perCutie;
       this.pretSet = produs.pret;
     });
-    this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
-      this.preselectFurnizor = furnizor;
-    });
-    this.isEditMode = true;
+    if(produs.furnizorId == null)this.preselectFurnizor = undefined;
+    else{
+      this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
+        this.preselectFurnizor = furnizor;
+      });
+      this.isEditMode = true;
+    }
   }
   clearForm(){
     this.form.reset();

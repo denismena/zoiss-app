@@ -139,7 +139,7 @@ export class ComenziListComponent implements OnInit {
     this.comenzi.forEach(element => {
       element.comenziProduses.forEach(prod=>{
         //console.log('prod', prod);
-        if(prod.addToComandaFurnizor && !prod.isInComandaFurnizor) 
+        if(prod.addToComandaFurnizor && !prod.isInComandaFurnizor && !prod.isCategory && !prod.isStoc) 
           {            
             if(prod.furnizorId == null && prod.isCategory == false) 
             { 
@@ -156,7 +156,7 @@ export class ComenziListComponent implements OnInit {
       });      
     });
 
-    console.log('selectedProd', selectedProd);
+    console.log('selectedProd', selectedProd);    
     if(faraFurnizor) 
     {       
       Swal.fire({ title: "Atentie!", text: "Unul dintre produse nu are furnizor!", icon: 'info' });

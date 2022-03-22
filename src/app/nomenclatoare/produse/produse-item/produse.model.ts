@@ -50,4 +50,5 @@ export interface produseOfertaDTO{
     isInComanda: boolean;
     addToComanda: boolean;
     isCategory: boolean;
+    isStoc: boolean;
 }

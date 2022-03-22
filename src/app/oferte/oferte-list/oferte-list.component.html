@@ -175,7 +175,7 @@
                       </tr>
                     </thead>
                     <tbody>                        
-                      <tr *ngFor="let prod of element.produse" [ngClass]="{ 'categoryProd': prod.isCategory === true }">                        
+                      <tr *ngFor="let prod of element.produse" [ngClass]="{ 'categoryProd': prod.isCategory === true, 'stocProd':prod.isStoc === true }">
                         <td *ngIf="prod.isCategory === true" colspan="8" align="center">{{prod.produsNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.produsNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.codProdus}}</td>
