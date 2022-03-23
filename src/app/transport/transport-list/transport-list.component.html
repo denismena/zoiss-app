@@ -122,7 +122,7 @@
     </ng-container>
     <ng-container matColumnDef="livrate">            
         <th mat-header-cell *matHeaderCellDef>Spre livrare</th>
-        <td *matCellDef="let element" matTooltip="Livrate {{element.produseTransportateLivrate}} / In depozitul final {{element.produseTransportateDepozit}} / Toate {{element.produseTransportateAll}}">
+        <td *matCellDef="let element" matTooltip="Produse - Livrate: {{element.produseTransportateLivrate}} / In depozitul final: {{element.produseTransportateDepozit}} / Total: {{element.produseTransportateAll}}">
             {{element.produseTransportateLivrate}} / {{element.produseTransportateDepozit}} / {{element.produseTransportateAll}}
         </td>
     </ng-container>

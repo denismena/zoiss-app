@@ -46,7 +46,13 @@
                     <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" [preselectArhitect] = "preselectArhitect"></app-arhitecti-autocomplete>    
                     <input type="hidden" formControlName="arhitectId" #arhitectId>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-1">
+                    <mat-label>Comision</mat-label>
+                    <mat-form-field appearance="outline">                            
+                        <input formControlName="comision" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-5">
                     <mat-label>Conditii plata</mat-label>
                     <mat-form-field appearance="outline">                        
                         <input formControlName="conditiiPlata" matInput>

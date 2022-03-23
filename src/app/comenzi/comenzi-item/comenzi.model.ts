@@ -16,8 +16,10 @@ export interface comenziDTO{
     termenLivrare: Date;
     clientAdresaId: number;
     platit: boolean;
+    comision:number;
     produseComenziAll: number;
     produseComenziProc: number;
+    produseComenziValoare:number;
     allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
     comenziProduses: produseComandaDTO[];
 }
@@ -33,6 +35,7 @@ export interface comenziCreationDTO{
     termenLivrare: Date;
     clientAdresaId: number;
     platit: boolean;
+    comision:number;
     comenziProduses: produseComandaDTO[];
 }
 export interface produseComandaDTO{    

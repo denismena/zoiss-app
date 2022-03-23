@@ -183,7 +183,12 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue(pret * this.form.controls['cantitate'].value??0);
     }
   }
-
+  getTotalCost() {
+    return this.selectedProdus.map(t => t.valoare).reduce((acc, value) => acc + value, 0);
+  }
+  getTotalBox() {
+    return this.selectedProdus.map(t => t.cutii).reduce((acc, value) => acc + value, 0);
+  }
   remove(produs:any){
     console.log('delete produs', produs);
     const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);

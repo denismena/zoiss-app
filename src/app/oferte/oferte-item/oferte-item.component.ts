@@ -45,6 +45,7 @@ export class OferteItemComponent implements OnInit {
       clientId:[null, {validators:[Validators.required]}],
       arhitectId: null,      
       avans: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
+      comision: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
       conditiiPlata: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
       termenLivrare: null,
       produse: ''
@@ -81,8 +82,8 @@ export class OferteItemComponent implements OnInit {
     console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
-  selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
+  selectArhitect(arhitect: any){    
+    this.form.get('arhitectId')?.setValue(arhitect?.id);    
+    this.form.get('comision')?.setValue(arhitect?.comision);    
   }
 }

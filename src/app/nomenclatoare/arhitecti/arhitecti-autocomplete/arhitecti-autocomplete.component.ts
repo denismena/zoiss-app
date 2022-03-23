@@ -56,7 +56,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   optionSelected(event: MatAutocompleteSelectedEvent){
     console.log(event.option.value.id);
     this.preselectArhitect = event.option.value;
-    this.onOptionSelected.emit(event.option.value.id);
+    this.onOptionSelected.emit(event.option.value);
   }
   
   private _filterStates(value: string): arhitectiDTO[] {
@@ -106,9 +106,8 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.arhitectCtrl.setValue(this.dataFromDialog);
-          this.onOptionSelected.emit(this.dataFromDialog.id);
+          this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
   }
@@ -120,9 +119,8 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.arhitectCtrl.setValue(this.dataFromDialog);
-          this.onOptionSelected.emit(this.dataFromDialog.id);
+          this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
 

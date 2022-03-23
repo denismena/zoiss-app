@@ -135,6 +135,12 @@
                 {{element.avans}}
             </td>
         </ng-container>
+        <ng-container matColumnDef="valoare">
+            <th mat-header-cell *matHeaderCellDef class="table-text-right">Valoare</th>
+            <td mat-cell *matCellDef="let element" class="table-text-right">
+                {{element.produseValoare}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="action" class="w-5">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element">

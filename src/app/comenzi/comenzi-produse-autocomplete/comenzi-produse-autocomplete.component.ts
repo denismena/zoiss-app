@@ -165,7 +165,15 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue(pret * this.form.controls['cantitate'].value??0);
     }
   }
-
+  getTotalCost() {
+    return this.selectedProdus.map(t => t.valoare).reduce((acc, value) => acc + value, 0);
+  }
+  getTotalWithDiscountCost() {
+    return this.selectedProdus.map(t => t.valoare - (t.valoare * t.discount / 100)).reduce((acc, value) => acc + value, 0);
+  }
+  getTotalBox() {
+    return this.selectedProdus.map(t => t.cutii).reduce((acc, value) => acc + value, 0);
+  }
   remove(produs:any){
     console.log('delete produs', produs);
     const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
@@ -184,9 +192,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     else{
       this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
-      });
-      this.isEditMode = true;
+      });      
     }
+    this.isEditMode = true;
   }
   clearForm(){
     this.form.reset();

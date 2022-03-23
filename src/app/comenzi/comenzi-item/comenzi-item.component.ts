@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { RxwebValidators } from '@rxweb/reactive-form-validators';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
 import { clientiAdresaDTO, clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
 import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
@@ -44,7 +44,8 @@ export class ComenziItemComponent implements OnInit {
       data:[new Date(), {validators:[RxwebValidators.required()]}],
       clientId:[null, {validators:[RxwebValidators.required()]}],
       arhitectId: null,      
-      avans: null,
+      avans: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
+      comision: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
       conditiiPlata: '',
       termenLivrare: null,
       platit: null,
@@ -95,9 +96,9 @@ export class ComenziItemComponent implements OnInit {
     console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
-  selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
+  selectArhitect(arhitect: any){    
+    this.form.get('arhitectId')?.setValue(arhitect?.id);    
+    this.form.get('comision')?.setValue(arhitect?.comision);    
   }
 
 }
