@@ -42,6 +42,7 @@ import { TransportListComponent } from './transport/transport-list/transport-lis
 import { TransportEditComponent } from './transport/transport-item/transport-edit/transport-edit.component';
 import { LivrariListComponent } from './livrari/livrari-list/livrari-list.component';
 import { LivrariEditComponent } from './livrari/livrari-item/livrari-edit/livrari-edit.component';
+import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-notes-list.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -96,6 +97,8 @@ const routes: Routes = [
 
   {path: "livrari", component: LivrariListComponent} ,  
   {path: "livrari/edit/:id", component: LivrariEditComponent},
+
+  {path: "notes", component: StickyNotesListComponent} ,  
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},

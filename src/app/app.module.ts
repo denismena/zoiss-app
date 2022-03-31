@@ -98,6 +98,7 @@ import { RapoarteItemComponent } from './rapoarte/rapoarte-item/rapoarte-item.co
 import { ClientiCreateDialogComponent } from './nomenclatoare/clienti/clienti-item/clienti-create-dialog/clienti-create-dialog.component';
 import { ArhitectiCreateDialogComponent } from './nomenclatoare/arhitecti/arhitecti-item/arhitecti-create-dialog/arhitecti-create-dialog.component';
 import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
+import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-notes-list.component';
 
 @NgModule({
   declarations: [
@@ -184,7 +185,8 @@ import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furniz
     RapoarteItemComponent,
     ClientiCreateDialogComponent,
     ArhitectiCreateDialogComponent,
-    FurnizoriCreateDialogComponent    
+    FurnizoriCreateDialogComponent,
+    StickyNotesListComponent    
   ],
   imports: [
     BrowserModule,

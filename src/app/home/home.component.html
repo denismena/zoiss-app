@@ -1,34 +1,50 @@
 <!-- <app-authorize-view [role]="'admin'"></app-authorize-view> -->
 <app-authorize-view>
     <ng-container authorize>
-        <h3>Update 17 Mar</h3>
-        <ul>
-            <li>Posibilitate de a adauga "categorie" ca produs. Adaugare "categorie" la oferte, comenzi.</li>
-            <li>Posibilitatea de a sorta ordine produselor in oferte, comenzi</li>
-            <li>Afisare cate produse au ajuns la ultimul depozit</li>
-            <li>Fix design pe mobil la butoanele de Adauga produse in paginile de oferta, comenzi</li>
-            <li>Comenzi - afisare disponibilitate si depozit la produse</li>
-            <li>Meniul - culoare linkul activ</li>
-            <li>Transporturi - filtru pe numar comanda</li>
-            <li>Oferta produse, comenzi produse, comenzi furnizori produse - modificare valoare in functie de pret si cantitate</li>
-        </ul>        
-        <h3>Update 10 Mar</h3>
-        <ul>
-            <li>Design</li>
-            <li>Poza transport produs</li>
-        </ul>
-        <h3>Update 1 Mar</h3>
-        <ul>
-            <li>Raport in excel cu poza pe produse per oferta</li>
-            <li>Popup clienti, furnizori, arhitecti</li>
-        </ul>
-        <h3>Update 21 Feb</h3>
-        <ul>
-            <li>adaugare produse direct din pagina de oferta/comanda</li>
-            <li>filtrari la toate paginile</li>
-            <li>modulul livrari</li>
-            <li>produse - camp cu furnizor preferat</li>            
-        </ul>
+        <div class="container">    
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Update 23 Mar</h3>
+                    <ul>
+                        <li>Buton de Edit la nomenclatoare direct in pagina (la fel ca si Add)</li>
+                        <li>Posibilitatea de a marca un produs ca fiind stoc</li>
+                        <li>Oferta, Comanda - afisat valoare totala; comision arhitect</li>
+                        <li>Toate listele ordonate descrescator si rezultatele sa nu mai fie filtrate default pentru utilizatorul logat</li>
+                    </ul>
+                    <h3>Update 17 Mar</h3>
+                    <ul>
+                        <li>Posibilitate de a adauga "categorie" ca produs. Adaugare "categorie" la oferte, comenzi.</li>
+                        <li>Posibilitatea de a sorta ordine produselor in oferte, comenzi</li>
+                        <li>Afisare cate produse au ajuns la ultimul depozit</li>
+                        <li>Fix design pe mobil la butoanele de Adauga produse in paginile de oferta, comenzi</li>
+                        <li>Comenzi - afisare disponibilitate si depozit la produse</li>
+                        <li>Meniul - culoare linkul activ</li>
+                        <li>Transporturi - filtru pe numar comanda</li>
+                        <li>Oferta produse, comenzi produse, comenzi furnizori produse - modificare valoare in functie de pret si cantitate</li>
+                    </ul>        
+                    <h3>Update 10 Mar</h3>
+                    <ul>
+                        <li>Design</li>
+                        <li>Poza transport produs</li>
+                    </ul>
+                    <h3>Update 1 Mar</h3>
+                    <ul>
+                        <li>Raport in excel cu poza pe produse per oferta</li>
+                        <li>Popup clienti, furnizori, arhitecti</li>
+                    </ul>
+                    <h3>Update 21 Feb</h3>
+                    <ul>
+                        <li>adaugare produse direct din pagina de oferta/comanda</li>
+                        <li>filtrari la toate paginile</li>
+                        <li>modulul livrari</li>
+                        <li>produse - camp cu furnizor preferat</li>            
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <app-sticky-notes-list></app-sticky-notes-list>
+                </div>
+            </div>
+        </div>        
     </ng-container>
     <ng-container notAuthorize>
         <app-login></app-login>
