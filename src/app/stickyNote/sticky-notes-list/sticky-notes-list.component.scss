@@ -19,9 +19,9 @@ h2 {
     color:#000;
     background:#ffc;
     display:block;
-    height:18em;
-    width:18em;
-    padding:1em;
+    height:19em;
+    width:19em;
+    //padding:1em;
     box-shadow: 5px 5px 7px rgba(33,33,33,.7);
     transform: rotate(-6deg);
     //transition: transform .15s linear;
@@ -55,6 +55,20 @@ h2 {
   ul li{
     margin:0.7em;
   }
-  mat-icon {
-    float: right;
+  
+.angular-editor-toolbar{
+    padding: 0em !important;
+  }
+  .wrapper {
+    position: relative;
+  }
+  .my-custom-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+  }
+  angular-editor {
+    position: relative;
+    z-index: 1;
   }

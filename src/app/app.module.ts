@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; 
 import { SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2'
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -197,7 +198,8 @@ import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-
     MaterialModule,
     HttpClientModule,
     SweetAlert2Module.forRoot(),
-    RxReactiveFormsModule
+    RxReactiveFormsModule,
+    AngularEditorModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

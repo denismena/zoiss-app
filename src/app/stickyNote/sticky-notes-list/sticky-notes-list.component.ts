@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { stickyNotesCreationDTO, stickyNotesDTO } from '../sticky-notes.model';
@@ -54,4 +55,42 @@ export class StickyNotesListComponent implements OnInit {
   // customTrackBy(index: number, obj: any): any {
   //   return index;
   // }
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    minHeight: '5rem',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',    
+    toolbarHiddenButtons: [
+      [
+        'undo',
+        'redo',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'subscript',
+        'superscript',
+        'justifyRight',
+        'justifyFull',
+        'indent',
+        'outdent',
+        'insertOrderedList',
+        'heading',
+        'fontName'
+      ],
+      [
+        'textColor',
+        'backgroundColor',
+        'customClasses',
+        'link',
+        'unlink',
+        'insertImage',
+        'insertVideo',
+        'insertHorizontalRule',
+        'removeFormat',
+        'toggleEditorMode'
+      ]
+    ]
+  };
 }

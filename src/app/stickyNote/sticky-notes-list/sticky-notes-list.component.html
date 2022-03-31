@@ -1,13 +1,14 @@
 <div style="float: right;"><mat-icon class="greenIcon" (click)="addNotes()">add_circle</mat-icon></div>
 <ul>    
     <li *ngFor="let item of notes; index as i;" (focusout)="saveChanges(item.id, $event)">
-      <div>
-        <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(item.id)" [swal]="{
-          title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
-          close
-        </mat-icon>
-        <!-- <h2 contenteditable [(ngModel)]="notes[i].titlu">{{item.titlu}}</h2> -->
-        <p contenteditable [innerHTML]="item.descriere"></p>
+      <div class="wrapper">
+        <span class="my-custom-button">
+          <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(item.id)" [swal]="{
+            title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
+            close
+          </mat-icon>
+        </span>        
+        <angular-editor [(ngModel)]="item.descriere" [config]="config"></angular-editor>
       </div>
     </li>    
 </ul>
