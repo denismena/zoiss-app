@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozite.model';
+import { NotificariService } from 'src/app/notificari/notificari.service';
 import { DepoziteAllDialogComponent } from '../depozite-all-dialog/depozite-all-dialog.component';
 import { DepoziteDialogComponent } from '../depozite-dialog/depozite-dialog.component';
 import { transportProduseDepozitDTO, transportProduseDTO } from '../transport-item/transport.model';
@@ -30,20 +31,22 @@ export class TransportProduseComponent implements OnInit {
   table!: MatTable<any>;
 
   dataFromDialog : any;
+  // get necitite():number{
+  //   return this.notificariService.necitite;
+  // }
+  // set necitite(val: number){
+  //   this.notificariService.necitite = val;
+  // }
   constructor(private activatedRoute: ActivatedRoute,private router:Router, 
     public dialog: MatDialog, private transportService: TransportService
-    //,@Inject( LOCALE_ID ) localID: string
+    //, private notificariService: NotificariService    
     ) {     
-      //this.localID = localID;
   }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
       this.id= params.id;
     });
-    console.log('id', this.id);
-    console.log('in trans produse', this.selectedProdus);
-    console.log('in trans depoziteLista', this.depoziteLista);    
     this.depoziteLista.forEach(d=>{
       this.columnsToDisplay.push(d);
     });
@@ -59,12 +62,8 @@ export class TransportProduseComponent implements OnInit {
       { data:{id: id, date:data, detalii:detalii, pozaPath:pozaPath}, width: '600px', height: '450px' });
 
     dialogRef.afterClosed().subscribe((data) => {
-      //data.form.id = id;
-      //data.form.data = formatDate(data.form.data, 'medium', this.localID);
-      //console.log('data.form.data', data.form.data);      
       if (data.clicked === 'submit') {
         this.dataFromDialog = data.form;
-        //console.log('in parent', data.form);        
         this.transportService.saveDepozitArrival(data.form)
         .subscribe(() => {
           var currProDep = this.selectedProdus.find(f=>f.id === prodDepId)?.transportProduseDepozit.find(ff=>ff.id === id);
@@ -73,8 +72,8 @@ export class TransportProduseComponent implements OnInit {
             currProDep.data = data.form.data;
             currProDep.detalii = data.form.detalii;
             currProDep.pozaPath = data.form.pozaPath;
-          }
-          //console.log('this.selectedProdus updatat', this.selectedProdus);
+            //this.necitite = this.necitite+1;
+          }                    
         });
       }
     });
@@ -98,6 +97,7 @@ export class TransportProduseComponent implements OnInit {
                     {
                       currProDep.data = data.form.data;
                       currProDep.detalii = data.form.detalii;
+                      //this.necitite = this.necitite+1;
                     }
               });                    
             });

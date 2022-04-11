@@ -49,6 +49,7 @@
     <app-authorize-view>
       <ng-container authorize>
         <span>{{securityService.getFieldFromJwt('name')}}</span>
+        <app-notificari-list></app-notificari-list>
         <a mat-button (click)="securityService.logout()">Logout</a>
       </ng-container>
       <ng-container notAuthorize>

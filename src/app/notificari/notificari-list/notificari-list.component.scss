@@ -1,0 +1,13 @@
+.row{
+    color: white;
+    // line-height: normal;
+    // height: 32px;    
+}
+.row:not(:first-child){
+    border-top: 1px groove white;
+}
+.row div{
+    white-space: nowrap;   
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}

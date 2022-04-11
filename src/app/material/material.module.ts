@@ -23,6 +23,8 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatProgressSpinnerModule} from "@angular/material/progress-spinner"
 import {MatCardModule} from "@angular/material/card"
+import {MatBadgeModule} from "@angular/material/badge"
+import {MatMenuModule} from '@angular/material/menu';
 
 const MY_FORMATS = {
   parse: {
@@ -59,7 +61,9 @@ const MY_FORMATS = {
     MatDialogModule,
     MatMomentDateModule,
     MatProgressSpinnerModule,
-    MatCardModule 
+    MatCardModule,
+    MatBadgeModule,
+    MatMenuModule 
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },

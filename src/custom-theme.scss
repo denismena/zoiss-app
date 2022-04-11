@@ -127,6 +127,15 @@ mat-icon {
   margin-top: 10px;  
   cursor: default !important;  
 }
+.mat-menu-panel{
+  background-color: #7a7979 !important;
+  -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+  opacity: 0.9;
+  min-width: 550px !important;
+  max-width: 550px !important;
+}
 .table-text-right{
   padding-right: 1rem !important;
   text-align: right !important;

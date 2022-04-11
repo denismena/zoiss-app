@@ -100,6 +100,8 @@ import { ClientiCreateDialogComponent } from './nomenclatoare/clienti/clienti-it
 import { ArhitectiCreateDialogComponent } from './nomenclatoare/arhitecti/arhitecti-item/arhitecti-create-dialog/arhitecti-create-dialog.component';
 import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
 import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-notes-list.component';
+import { NotificariItemComponent } from './notificari/notificari-item/notificari-item.component';
+import { NotificariListComponent } from './notificari/notificari-list/notificari-list.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +189,9 @@ import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-
     ClientiCreateDialogComponent,
     ArhitectiCreateDialogComponent,
     FurnizoriCreateDialogComponent,
-    StickyNotesListComponent    
+    StickyNotesListComponent,
+    NotificariItemComponent,
+    NotificariListComponent    
   ],
   imports: [
     BrowserModule,
