@@ -102,6 +102,7 @@ import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furniz
 import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-notes-list.component';
 import { NotificariItemComponent } from './notificari/notificari-item/notificari-item.component';
 import { NotificariListComponent } from './notificari/notificari-list/notificari-list.component';
+import { BarcodeScannerLivestreamModule } from "ngx-barcode-scanner";
 
 @NgModule({
   declarations: [
@@ -203,7 +204,8 @@ import { NotificariListComponent } from './notificari/notificari-list/notificari
     HttpClientModule,
     SweetAlert2Module.forRoot(),
     RxReactiveFormsModule,
-    AngularEditorModule
+    AngularEditorModule,
+    BarcodeScannerLivestreamModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
