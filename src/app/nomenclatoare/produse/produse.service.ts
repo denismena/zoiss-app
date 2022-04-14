@@ -33,6 +33,9 @@ export class ProduseService {
   search(nume: string): Observable<produseDTO[]>{    
     return this.http.get<produseDTO[]>(`${this.apiUrl}/search/${nume}`);
   }
+  searchByQR(code: string): Observable<produseDTO>{    
+    return this.http.get<produseDTO>(`${this.apiUrl}/searchByQR/${code}`);
+  }
   searchByName(name: string): Observable<produseOfertaDTO[]>{
     const headers = new HttpHeaders('Content-Type: application/json');
     return this.http.post<produseOfertaDTO[]>(this.apiUrl+'/searchByName', 

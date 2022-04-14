@@ -43,11 +43,31 @@
     </mat-form-field>
     <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
     <input type="hidden" formControlName="prefFurnizorId" #furnizorId class="clsF"> 
-    <app-input-img
-    [urlCurrentImage]="model?.pozaPath" [containerName]="'produse'"
-    (onImageSelected)="onImageSelected($event)"></app-input-img>
-    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="isCategory">Este Categorie</mat-slide-toggle></div>
-    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+    <div class="container">    
+        <div class="row">
+            <div class="col-md-6">
+                <app-input-img [urlCurrentImage]="model?.pozaPath" [containerName]="'produse'"
+                    (onImageSelected)="onImageSelected($event)"></app-input-img>
+                <div><mat-slide-toggle class="example-margin" color="primary" formControlName="isCategory">Este Categorie</mat-slide-toggle></div>
+                <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+            </div>
+            <div class="col-md-6">
+                <qrcode
+                    [qrdata]="form.get('cod')?.value"
+                    [allowEmptyString]="true"
+                    [ariaLabel]="'QR Code image with the following content...'"
+                    [cssClass]="'center'"
+                    [colorDark]="'#000000ff'"
+                    [colorLight]="'#ffffffff'"
+                    [elementType]="'img'"
+                    [errorCorrectionLevel]="'L'"
+                    [margin]="4"
+                    [scale]="1"                    
+                    [width]="150"></qrcode>
+            </div>
+        </div>
+    </div>
+    
     <div>
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>

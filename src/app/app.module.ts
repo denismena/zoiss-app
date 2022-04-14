@@ -102,7 +102,9 @@ import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furniz
 import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-notes-list.component';
 import { NotificariItemComponent } from './notificari/notificari-item/notificari-item.component';
 import { NotificariListComponent } from './notificari/notificari-list/notificari-list.component';
-import { BarcodeScannerLivestreamModule } from "ngx-barcode-scanner";
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { QRCodeModule } from 'angularx-qrcode';
+import { ScanQRComponent } from './scan-qr/scan-qr.component';
 
 @NgModule({
   declarations: [
@@ -192,7 +194,8 @@ import { BarcodeScannerLivestreamModule } from "ngx-barcode-scanner";
     FurnizoriCreateDialogComponent,
     StickyNotesListComponent,
     NotificariItemComponent,
-    NotificariListComponent    
+    NotificariListComponent,
+    ScanQRComponent    
   ],
   imports: [
     BrowserModule,
@@ -205,7 +208,8 @@ import { BarcodeScannerLivestreamModule } from "ngx-barcode-scanner";
     SweetAlert2Module.forRoot(),
     RxReactiveFormsModule,
     AngularEditorModule,
-    BarcodeScannerLivestreamModule
+    ZXingScannerModule,
+    QRCodeModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

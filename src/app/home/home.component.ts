@@ -6,27 +6,16 @@ import { BarcodeScannerLivestreamComponent } from 'ngx-barcode-scanner';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
-  @ViewChild(BarcodeScannerLivestreamComponent)
-  barcodeScanner: BarcodeScannerLivestreamComponent | undefined;
-  barcodeValue: any;
+export class HomeComponent implements OnInit{  
+  scannerEnabled: boolean = false;
   constructor() { }
 
   ngOnInit(): void {
   }
   scan() {
-    if(this.barcodeScanner)
-      this.barcodeScanner.start();
+    this.scannerEnabled = true;
   }
   stop() {
-    if(this.barcodeScanner)
-      this.barcodeScanner.stop();
-  }
-  onValueChanges(result: any) {
-    this.barcodeValue = result.codeResult.code;
-  }
-
-  onStarted(started:any) {
-    console.log(started);
-  }
+    this.scannerEnabled = false;
+    }
 }
