@@ -21,9 +21,16 @@ table {
   button{
     margin-right: 1rem;
 }
-  
-  // .example-element-detail {
-  //   overflow: hidden;
-  //   display: flex;
-  // }
-  
+.mpanel{
+  min-width: 250px !important;
+  max-width: 450px !important;
+}
+.mat-menu-item{
+  color: white;
+  white-space: nowrap;   
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: normal;
+  height: 32px;
+  padding: 10px;
+}

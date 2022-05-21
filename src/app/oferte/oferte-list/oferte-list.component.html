@@ -152,13 +152,11 @@
                         close
                 </mat-icon>
                 <mat-icon class="greenIcon" (click)="genereazaExcel(element.id)">assignment</mat-icon>
-                <!-- <a routerLink="/oferte/edit/{{element.id}}" mat-flat-button color="primary">Edit</a>
-                <button mat-flat-button color="warn" 
-                [swal]="{title: 'Confirmare',text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}"
-                (confirm)="delete(element.id)">
-                    Delete
-                </button>
-                <button mat-flat-button color="primary" (click)="genereazaExcel(element.id)">Export</button> -->
+                <mat-icon class="redIcon" [matMenuTriggerFor]="selecteazaRaport">picture_as_pdf</mat-icon>
+                <mat-menu #selecteazaRaport class="container-sm mpanel">
+                    <menu mat-menu-item (click)="genereazaPDF(element.id)">Oferta</menu>
+                    <menu mat-menu-item (click)="genereazaPDFcuPoza(element.id)">Oferta cu poze</menu>
+                </mat-menu>
             </td>
         </ng-container>        
         
@@ -212,4 +210,4 @@
     </table>
     <mat-paginator [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
         (page)="updatePagination($event)">
-    </mat-paginator>
+    </mat-paginator>   

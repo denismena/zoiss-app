@@ -1,11 +1,9 @@
-Scaneaza produs <br>
 <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
 <div *ngIf="produsToDisplay">
-    Cod: {{produsToDisplay.cod}}
-    Nume: {{produsToDisplay.nume}}
-    Furnizor: {{produsToDisplay.prefFurnizor}}
-    UM: {{produsToDisplay.um}}
-    Pret: {{produsToDisplay.pret}}
-    <a mat-stroke-button mat-flat-button color="primary" (click)="edit()" *ngIf="produsToDisplay"> 
-        <mat-icon color="primary">edit</mat-icon> Edit</a>
+    Cod: {{produsToDisplay.cod}} <br>
+    Nume: {{produsToDisplay.nume}}<br>
+    Furnizor: {{produsToDisplay.prefFurnizor}}<br>
+    UM: {{produsToDisplay.um}}<br>
+    Pret: {{produsToDisplay.pret}}<br>
+    <a mat-stroke-button mat-flat-button color="primary" (click)="edit()"> Edit</a>
 </div>

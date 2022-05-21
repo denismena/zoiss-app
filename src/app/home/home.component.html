@@ -62,7 +62,7 @@
     <div class="row">
         <div class="col-md-6">
             Scaneaza produs <br>            
-            <app-scan-qr></app-scan-qr>
+            <app-scan-qr *ngIf="scannerEnabled"></app-scan-qr>
             <mat-icon class="greenIcon" (click)="scan()">camera_alt</mat-icon>
             <mat-icon class="redIcon" (click)="stop()">stop</mat-icon>
         </div>

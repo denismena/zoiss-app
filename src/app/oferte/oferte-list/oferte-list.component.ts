@@ -50,7 +50,7 @@ export class OferteListComponent implements OnInit {
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;
   @ViewChild(ArhitectiAutocompleteComponent) arhitectFilter!: ArhitectiAutocompleteComponent;
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
-  @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
+  @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
       private formBuilder:FormBuilder, private rapoarteService: RapoarteService) { 
@@ -193,11 +193,38 @@ export class OferteListComponent implements OnInit {
   
   genereazaExcel(id:number)
   {
+    this.loading$ = true;
     this.rapoarteService.ofertaReport(id).subscribe(blob => {
       saveAs(blob, 'Oferta.xlsx');
+      //var fileURL = window.URL.createObjectURL(blob);
+      this.loading$ = false;
+      //window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
     });
-  }  
+  }
+  genereazaPDF(id:number)
+  {    
+    this.loading$ = true;
+    this.rapoarteService.ofertaReportPDF(id).subscribe(blob => {
+      //saveAs(blob, 'Oferta.pdf');
+      var fileURL = window.URL.createObjectURL(blob);
+      this.loading$ = false;
+      window.open(fileURL, "_blank");
+    }, error => {
+      console.log("Something went wrong");
+    });
+  }
 
+  genereazaPDFcuPoza(id:number)
+  {    
+    this.loading$ = true;
+    this.rapoarteService.ofertaReportPDFcuPoza(id).subscribe(blob => {
+      var fileURL = window.URL.createObjectURL(blob);
+      this.loading$ = false;
+      window.open(fileURL, "_blank");
+    }, error => {
+      console.log("Something went wrong");
+    });
+  }
 }
