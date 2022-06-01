@@ -15,6 +15,7 @@ import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
+import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -53,7 +54,7 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
-    private router:Router, private formBuilder:FormBuilder) { 
+    private router:Router, private formBuilder:FormBuilder, private rapoarteService: RapoarteService) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
@@ -228,4 +229,17 @@ export class ComenziListComponent implements OnInit {
     console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
+
+ genereazaPDF(id:number)
+  {    
+    this.loading$ = true;
+    this.rapoarteService.comandaReportPDF(id).subscribe(blob => {      
+      var fileURL = window.URL.createObjectURL(blob);
+      this.loading$ = false;
+      window.open(fileURL, "_blank");
+    }, error => {
+      console.log("Something went wrong");
+    });
+  }
+
 }
