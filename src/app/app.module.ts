@@ -105,6 +105,8 @@ import { NotificariListComponent } from './notificari/notificari-list/notificari
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ScanQRComponent } from './scan-qr/scan-qr.component';
+import { ForgetPassComponent } from './security/forget-pass/forget-pass.component';
+import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
 
 @NgModule({
   declarations: [
@@ -195,7 +197,9 @@ import { ScanQRComponent } from './scan-qr/scan-qr.component';
     StickyNotesListComponent,
     NotificariItemComponent,
     NotificariListComponent,
-    ScanQRComponent    
+    ScanQRComponent,
+    ForgetPassComponent,
+    ResetPassComponent    
   ],
   imports: [
     BrowserModule,

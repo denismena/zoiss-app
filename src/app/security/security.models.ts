@@ -22,3 +22,13 @@ export interface UtilizatoriDTO{
     name: string;
     phoneNumber: string;   
 }
+
+export interface forgetPass{
+    email: string;
+}
+export interface resetPass{
+    token: string;
+    email: string;
+    newpassword: string;
+    confirmpassword: string;
+}

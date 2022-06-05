@@ -1,4 +1,12 @@
-<app-authentication-form (onSaveChanges)="login($event)" [action]="'Autentificare'"></app-authentication-form>
-<app-display-errors [errors]="errors"></app-display-errors>
-<br />
-<a routerLink="/register">Inregistreaza-te</a>
+<div class="container mx-auto">
+    <div class="row"><div class="col-md-12">
+        <app-authentication-form (onSaveChanges)="login($event)" [action]="'Autentificare'"></app-authentication-form>
+        <app-display-errors [errors]="errors"></app-display-errors>
+    </div></div>
+    <br />
+    <div class="row"><div class="col-md-12">
+        <a routerLink="/forgetPass">Am uitat parola</a>
+        &nbsp;&nbsp;&nbsp;
+        <a routerLink="/register">Inregistreaza-te</a>
+    </div></div>
+</div>

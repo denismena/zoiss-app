@@ -1,4 +1,4 @@
-<!-- <app-authentication-form (onSaveChanges)="register($event)" [action]="'Register'"></app-authentication-form> -->
+<div class="container">
 <h3>Inregistrare</h3>
 <form (submit)="register(form.value)" [formGroup]="form" >
     <mat-form-field appearance="outline">
@@ -35,3 +35,4 @@
     </div>
 </form>
 <app-display-errors [errors]="errors"></app-display-errors>
+</div>

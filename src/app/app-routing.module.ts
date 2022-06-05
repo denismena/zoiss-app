@@ -45,6 +45,8 @@ import { LivrariEditComponent } from './livrari/livrari-item/livrari-edit/livrar
 import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-notes-list.component';
 import { NotificariListComponent } from './notificari/notificari-list/notificari-list.component';
 import { NotificariItemComponent } from './notificari/notificari-item/notificari-item.component';
+import { ForgetPassComponent } from './security/forget-pass/forget-pass.component';
+import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -107,6 +109,8 @@ const routes: Routes = [
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
+  {path: "forgetPass", component: ForgetPassComponent},
+  {path: "resetPass", component: ResetPassComponent},
   {path: "utilizatori", component: UtilizatoriListComponent},
   {path: "utilizatori/edit/:id", component: UtilizatoriEditComponent},
   {path: '**', redirectTo:''}

@@ -1,0 +1,23 @@
+<div class="container">
+<h3>Inregistrare</h3>
+<form (submit)="register(form.value)" [formGroup]="form" >
+    <input formControlName="email" type="hidden">
+    <input formControlName="token" type="hidden">
+    <mat-form-field appearance="outline">
+        <mat-label>Parola noua</mat-label>
+        <input formControlName="newpassword" matInput type="password">
+        <mat-error>{{form.get("newpassword")?.getError("required")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Confirma parola</mat-label>
+        <input formControlName="confirmPassword" matInput type="password">
+        <mat-error>{{form.get("confirmPassword")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("confirmPassword")?.getError("compare")?.message}}</mat-error>
+    </mat-form-field>    
+    <div>
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Salveaza</button>        
+        <a mat-stroke-button routerLink="/" mat-flat-button color="primary">Renunta</a>
+    </div>
+</form>
+<app-display-errors [errors]="errors"></app-display-errors>
+</div>

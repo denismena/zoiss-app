@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { authentificationResponse, userCredentials, UtilizatoriDTO } from './security.models';
+import { authentificationResponse, forgetPass, resetPass, userCredentials, UtilizatoriDTO } from './security.models';
 
 @Injectable({
   providedIn: 'root'
@@ -46,12 +46,8 @@ export class SecurityService {
     return this.http.post<authentificationResponse>(this.apiUrl+"/create", userCredentials);
   }
 
-  edit(id:string, utilizatoriDTO: UtilizatoriDTO):Observable<authentificationResponse>{
-    console.log('id', id);
-    console.log('utilizatoriDTO', utilizatoriDTO);
-    //return this.http.post<authentificationResponse>(this.apiUrl+"/edit", utilizatoriDTO);
-    return this.http.put<authentificationResponse>(`${this.apiUrl}/${id}`, utilizatoriDTO);
-    //return this.http.put(`${this.apiUrl}/${id}`, utilizatoriDTO);
+  edit(id:string, utilizatoriDTO: UtilizatoriDTO):Observable<authentificationResponse>{    
+    return this.http.put<authentificationResponse>(`${this.apiUrl}/${id}`, utilizatoriDTO);    
   }
 
   login(userCredentials: userCredentials):Observable<authentificationResponse>{
@@ -83,5 +79,14 @@ export class SecurityService {
 
   markAsInactive(id: string) {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  forgetPassword(email: forgetPass){
+    console.log('email service:', email.email);
+    return this.http.post(this.apiUrl+"/forgetpass", email);    
+  }
+  resetPassword(resetpass: resetPass){    
+    console.log('resetpass:', resetpass);
+    return this.http.post(this.apiUrl+"/resetpass", resetpass);    
   }
 }
