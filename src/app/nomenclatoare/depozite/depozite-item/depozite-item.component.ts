@@ -21,10 +21,7 @@ export class DepoziteItemComponent implements OnInit {
   @Output()
   onSaveChanges: EventEmitter<depoziteDTO> = new EventEmitter<depoziteDTO>();
 
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
+  ngOnInit(): void {    
 
     this.form = this.formBuilder.group({
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:150 })]}],
@@ -39,7 +36,6 @@ export class DepoziteItemComponent implements OnInit {
 
     this.depoztService.getAll().subscribe(depozite=>{
       this.depozitList=depozite;
-      console.log('this.depozitList', this.depozitList);
     })
 
     if(this.model !== undefined)
@@ -53,9 +49,7 @@ export class DepoziteItemComponent implements OnInit {
   }
 
   selectParent(depozit: any){       
-    console.log('depozit', depozit);
     this.form.get('parentId')?.setValue(depozit.value);
-    console.log('depozit', depozit.value);    
   }
 
 }

@@ -20,6 +20,12 @@
                 {{element.phoneNumber}}
             </td>
         </ng-container>
+        <ng-container matColumnDef="sucursala">
+            <th mat-header-cell *matHeaderCellDef>Sucursala</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.sucursala}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="changeRole">
             <th mat-header-cell *matHeaderCellDef>Schimba rolul</th>
             <td mat-cell *matCellDef="let element">

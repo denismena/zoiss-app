@@ -16,14 +16,13 @@ export class UtilizatoriListComponent implements OnInit {
   constructor(private securitySevice: SecurityService) { 
     this.utilizatori = [];
   }
-  columnsToDisplay= ['nume', 'email', 'tel', 'action'];
+  columnsToDisplay= ['nume', 'email', 'tel', 'sucursala', 'action'];
   ngOnInit(): void {
     this.loadList();
   }
   loadList(){
     this.securitySevice.getUsers().subscribe(utilizatori=>{
       this.utilizatori = utilizatori;
-      console.log(this.utilizatori);
     });    
   }
   delete(id: string){

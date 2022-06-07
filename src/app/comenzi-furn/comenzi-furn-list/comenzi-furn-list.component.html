@@ -35,10 +35,13 @@
             <mat-error>Completati data!</mat-error>
         </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
         <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
+        <mat-slide-toggle formControlName="sucursala">Doar sucursala mea</mat-slide-toggle>    
+        </div>
+        <div class="col-md-2">
         <mat-slide-toggle formControlName="allTransportate">Doar netransportate</mat-slide-toggle>
         <div style="float: right;">
             <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    

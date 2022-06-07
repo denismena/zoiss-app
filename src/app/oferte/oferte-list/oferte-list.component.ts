@@ -18,6 +18,7 @@ import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
 import * as saveAs from 'file-saver';
+import { CookieService } from 'src/app/utilities/cookie.service';
 
 @Component({
   selector: 'app-oferte-list',
@@ -53,7 +54,7 @@ export class OferteListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
-      private formBuilder:FormBuilder, private rapoarteService: RapoarteService) { 
+      private formBuilder:FormBuilder, private rapoarteService: RapoarteService, public cookie: CookieService) { 
     this.oferte = [];
     this.expandedElement = [];
   }
@@ -71,8 +72,9 @@ export class OferteListComponent implements OnInit {
       arhitectId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: false,
-      allComandate: false
+      mine: this.cookie.getCookie('oferta_mine')== '' ? false: this.cookie.getCookie('oferta_mine'),
+      sucursala: this.cookie.getCookie('oferta_sucursala')== '' ? false: this.cookie.getCookie('oferta_sucursala'),
+      allComandate: this.cookie.getCookie('oferta_allComandate')== '' ? false: this.cookie.getCookie('oferta_allComandate')
     });
 
     this.initialFormValues = this.form.value
@@ -81,7 +83,11 @@ export class OferteListComponent implements OnInit {
     this.form.valueChanges.subscribe(values=>{
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
-      this.loadList(values);      
+      this.loadList(values);
+      //set cookies      
+      this.cookie.setCookie({name: 'oferta_mine',value: values.mine, session: true});
+      this.cookie.setCookie({name: 'oferta_sucursala',value: values.sucursala, session: true});
+      this.cookie.setCookie({name: 'oferta_allComandate',value: values.allComandate, session: true});
     })
   }
 
@@ -90,7 +96,6 @@ export class OferteListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.oferteService.getAll(values).subscribe((response: HttpResponse<oferteDTO[]>)=>{
       this.oferte = response.body??[];
-      console.log('this.oferte', this.oferte);
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
     });    
@@ -115,7 +120,6 @@ export class OferteListComponent implements OnInit {
 
   getCheckbox(checkbox: any, row: oferteDTO){
     this.checked = [];
-    console.log(row);
     row.produse.forEach(p=>p.addToComanda = checkbox.checked
     );    
   }
@@ -124,7 +128,6 @@ export class OferteListComponent implements OnInit {
     row.allComandate = row.produse.every(function(item:any) {
           return item.addToComanda == true;
         })
-      console.log('row.allComandate', row.allComandate);
   }
 
   togglePanel(){
@@ -147,7 +150,6 @@ export class OferteListComponent implements OnInit {
 
     if(selectedProd.length > 0){
       this.comenziService.fromOferta(selectedProd).subscribe(id=>{
-        console.log('comanda new id', id);
         this.router.navigate(['/comenzi/edit/' + id])
       }, 
       error=> this.errors = parseWebAPIErrors(error));
@@ -173,21 +175,17 @@ export class OferteListComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitectId: string){
     this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
   
@@ -196,9 +194,7 @@ export class OferteListComponent implements OnInit {
     this.loading$ = true;
     this.rapoarteService.ofertaReport(id).subscribe(blob => {
       saveAs(blob, 'Oferta.xlsx');
-      //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
-      //window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
     });
@@ -207,7 +203,6 @@ export class OferteListComponent implements OnInit {
   {    
     this.loading$ = true;
     this.rapoarteService.ofertaReportPDF(id).subscribe(blob => {
-      //saveAs(blob, 'Oferta.pdf');
       var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       window.open(fileURL, "_blank");

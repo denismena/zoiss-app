@@ -16,6 +16,7 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
+import { CookieService } from 'src/app/utilities/cookie.service';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -54,7 +55,7 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
-    private router:Router, private formBuilder:FormBuilder, private rapoarteService: RapoarteService) { 
+    private router:Router, private formBuilder:FormBuilder, private rapoarteService: RapoarteService, public cookie: CookieService) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
@@ -63,7 +64,6 @@ export class ComenziListComponent implements OnInit {
   ngOnInit(): void {
     let date: Date = new Date();
     date.setDate(date.getDate() - 30);
-
     this.form = this.formBuilder.group({
       fromDate: formatDateFormData(date),
       toDate: formatDateFormData(new Date()),
@@ -71,8 +71,12 @@ export class ComenziListComponent implements OnInit {
       arhitectId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: false,
-      allComandate: false
+      // mine: false,
+      // sucursala: true,
+      // allComandate: false
+      mine: this.cookie.getCookie('comanda_mine')== '' ? false: this.cookie.getCookie('comanda_mine'),
+      sucursala: this.cookie.getCookie('comanda_sucursala')== '' ? false: this.cookie.getCookie('comanda_sucursala'),
+      allComandate: this.cookie.getCookie('comanda_allComandate')== '' ? false: this.cookie.getCookie('comanda_allComandate')
     });
 
     this.initialFormValues = this.form.value
@@ -82,6 +86,10 @@ export class ComenziListComponent implements OnInit {
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);      
+      //set cookies      
+      this.cookie.setCookie({name: 'comanda_mine',value: values.mine, session: true});
+      this.cookie.setCookie({name: 'comanda_sucursala',value: values.sucursala, session: true});
+      this.cookie.setCookie({name: 'comanda_allComandate',value: values.allComandate, session: true});
     })
   }
 

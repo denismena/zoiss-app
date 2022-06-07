@@ -107,6 +107,11 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { ScanQRComponent } from './scan-qr/scan-qr.component';
 import { ForgetPassComponent } from './security/forget-pass/forget-pass.component';
 import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
+import { SucursaleListComponent } from './nomenclatoare/sucursale/sucursale-list/sucursale-list.component';
+import { SucursaleItemComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-item.component';
+import { SucursaleCreateComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-create/sucursale-create.component';
+import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-edit/sucursale-edit.component';
+import { CookieService } from './utilities/cookie.service';
 
 @NgModule({
   declarations: [
@@ -199,7 +204,11 @@ import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
     NotificariListComponent,
     ScanQRComponent,
     ForgetPassComponent,
-    ResetPassComponent    
+    ResetPassComponent,
+    SucursaleListComponent,
+    SucursaleItemComponent,
+    SucursaleCreateComponent,
+    SucursaleEditComponent    
   ],
   imports: [
     BrowserModule,
@@ -219,7 +228,7 @@ import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
     provide: HTTP_INTERCEPTORS,
     useClass: JwtInterceptorService,
     multi: true
-  }],
+  }, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

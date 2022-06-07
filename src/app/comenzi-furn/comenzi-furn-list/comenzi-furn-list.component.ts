@@ -9,6 +9,7 @@ import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clie
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { TransportService } from 'src/app/transport/transport.service';
+import { CookieService } from 'src/app/utilities/cookie.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
@@ -47,7 +48,7 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
-    private router:Router, private formBuilder:FormBuilder) { 
+    private router:Router, private formBuilder:FormBuilder, public cookie: CookieService) { 
     this.comenziFurnizor = [];
     this.expandedElement = [];
   }
@@ -65,9 +66,10 @@ export class ComenziFurnListComponent implements OnInit {
       disponibilitateToDate: '',
       clientId: 0,      
       produsId: 0,
-      furnizorId:0,
-      mine: false,
-      allTransportate: false
+      furnizorId:0,      
+      mine: this.cookie.getCookie('comanda_mine')== '' ? false: this.cookie.getCookie('comanda_mine'),
+      sucursala: this.cookie.getCookie('comanda_sucursala')== '' ? false: this.cookie.getCookie('comanda_sucursala'),
+      allTransportate: this.cookie.getCookie('comanda_allTransportate')== '' ? false: this.cookie.getCookie('comanda_allTransportate')
     });
 
     this.initialFormValues = this.form.value
@@ -75,21 +77,18 @@ export class ComenziFurnListComponent implements OnInit {
 
     this.form.valueChanges.subscribe(values=>{
       values.fromDate = formatDateFormData(values.fromDate);
-      values.toDate = formatDateFormData(values.toDate);
-      console.log(values.disponibilitateFromDate);
+      values.toDate = formatDateFormData(values.toDate);      
       values.disponibilitateFromDate = values.disponibilitateFromDate=='' || values.disponibilitateFromDate== null ? '' : formatDateFormData(values.disponibilitateFromDate);
       values.disponibilitateToDate = values.disponibilitateToDate=='' || values.disponibilitateToDate== null ? '' : formatDateFormData(values.disponibilitateToDate);
       
       this.loadList(values);      
+      //set cookies      
+      this.cookie.setCookie({name: 'comanda_mine',value: values.mine, session: true});
+      this.cookie.setCookie({name: 'comanda_sucursala',value: values.sucursala, session: true});
+      this.cookie.setCookie({name: 'comanda_allTransportate',value: values.allTransportate, session: true});
     })
   }
 
-  // loadList(values:any){
-  //   this.comenziFurnizorService.getAll().subscribe(comenziFurnizor=>{
-  //     this.comenziFurnizor = comenziFurnizor;
-  //     console.log(this.comenziFurnizor);
-  //   });    
-  // }
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
@@ -121,30 +120,24 @@ export class ComenziFurnListComponent implements OnInit {
 
   getCheckbox(checkbox: any, row: comenziFurnizorDTO){
     this.checked = [];
-    console.log(row);
     row.comenziFurnizoriProduse.forEach(p=>p.addToTransport = checkbox.checked
     );    
   }
 
   isAllSelected(row: comenziFurnizorDTO) {   
-    console.log('in isAllSelected', row); 
     row.allComandate = row.comenziFurnizoriProduse.every(function(item:any) {
           console.log('in isAllSelected row', item); 
           return item.addToTransport == true;
         })
-      console.log('row.allComandate', row.allComandate);
   }
 
   genereazaTransport()
   {
-    console.log('in');
     var selectedProd: produseComandaFurnizorDTO[] = [];
     this.comenziFurnizor.forEach(element => {
       element.comenziFurnizoriProduse.forEach(prod=>{
-        console.log('prod', prod);
         if(prod.addToTransport)
           {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.isInTransport);
             selectedProd.push(prod);
           }
       })
@@ -177,21 +170,17 @@ export class ComenziFurnListComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitectId: string){
     this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
 }

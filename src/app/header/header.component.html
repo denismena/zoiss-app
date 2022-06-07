@@ -26,21 +26,11 @@
             <li class="nav-item"><a class="nav-link" href="/um">UM</a></li>
             <li class="nav-item"><a class="nav-link" href="/transportator">Transportator</a></li>
             <li class="nav-item"><a class="nav-link" href="/depozite">Depozite</a></li>
-            <li class="nav-item"><a class="nav-link" href="/utilizatori">Utilizatori</a></li>
-            <!-- <li><a class="nav-link dropdown-item" href="/produse">Produse</a></li>
-            <li class="nav-item"><a class="nav-link dropdown-item" href="/clienti">Clienti</a></li>
-            <li class="nav-item"><a class="dropdown-item" href="/furnizori">Furnizori</a></li>
-            <li><a class="dropdown-item" href="/arhitecti">Arhitecti</a></li> -->
+            <li class="nav-item"><a class="nav-link" href="/sucursale">Sucursale</a></li>
+            <li class="nav-item"><a class="nav-link" href="/utilizatori">Utilizatori</a></li>            
           </ul>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li> -->
-      </ul>
-      <!-- <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> -->
+        </li>        
+      </ul>      
     </div>
       </ng-container>
     </app-authorize-view>
@@ -53,7 +43,6 @@
         <a mat-button (click)="securityService.logout()">Logout</a>
       </ng-container>
       <ng-container notAuthorize>
-        <!-- <button routerLink="login">Login</button> -->
         <a routerLink="login">Login</a>&nbsp;&nbsp;
         <a routerLink="register">Inregistrare</a>
       </ng-container>

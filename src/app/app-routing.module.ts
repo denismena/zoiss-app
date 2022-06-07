@@ -47,6 +47,10 @@ import { NotificariListComponent } from './notificari/notificari-list/notificari
 import { NotificariItemComponent } from './notificari/notificari-item/notificari-item.component';
 import { ForgetPassComponent } from './security/forget-pass/forget-pass.component';
 import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
+import { SucursaleListComponent } from './nomenclatoare/sucursale/sucursale-list/sucursale-list.component';
+import { SucursaleCreateComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-create/sucursale-create.component';
+import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-edit/sucursale-edit.component';
+import { CookieService } from './utilities/cookie.service';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -107,6 +111,10 @@ const routes: Routes = [
   {path: "notificari", component: NotificariListComponent} ,  
   {path: "notificari/edit/:id", component: NotificariItemComponent},
 
+  {path: "sucursale", component:SucursaleListComponent},
+  {path: "sucursale/create", component: SucursaleCreateComponent},
+  {path: "sucursale/edit/:id", component: SucursaleEditComponent},
+
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
   {path: "forgetPass", component: ForgetPassComponent},
@@ -118,6 +126,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [CookieService],
 })
 export class AppRoutingModule { }

@@ -5,6 +5,8 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { userCredentials, UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { SucursaleService } from '../../sucursale/sucursala.service';
+import { sucursalaDTO } from '../../sucursale/sucursale-item/sucursala.model';
 
 @Component({
   selector: 'app-utilizatori-edit',
@@ -14,12 +16,13 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
 export class UtilizatoriEditComponent implements OnInit {
 
   constructor(private securityService: SecurityService, private router: Router, 
-    private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute) { 
+    private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private sucursaleService: SucursaleService) { 
       
     }
   errors: string[] = [];
   public form!: FormGroup;
   public model!: UtilizatoriDTO;
+  sucursaleList: sucursalaDTO[]=[];
 
   ngOnInit(): void {   
 
@@ -38,17 +41,29 @@ export class UtilizatoriEditComponent implements OnInit {
       email: [null, {validators:[RxwebValidators.required(), RxwebValidators.email() ]}], 
       name: [null,{validators:[RxwebValidators.required()]}],
       phoneNumber: [null,{validators:[RxwebValidators.required()]}],
+      sucursalaId: null
     })
 
-    
+    this.sucursaleService.getAll().subscribe(sucursale=>{
+      this.sucursaleList=sucursale;      
+    })
+
+    this.securityService.getFieldFromJwt('id')
+
   }
+
   edit(utilizatoriDTO: UtilizatoriDTO){
     this.errors=[];
-    console.log(this.model.id);
+    if(utilizatoriDTO.sucursalaId == 0) utilizatoriDTO.sucursalaId = null;
     this.securityService.edit(this.model.id, utilizatoriDTO).subscribe(authenticationResponse=>{
-      this.securityService.saveToke(authenticationResponse);
+      if(this.model.email == this.securityService.getFieldFromJwt('email'))
+        this.securityService.saveToke(authenticationResponse);
       this.router.navigate(['/utilizatori']);
     }, error=> this.errors = parseWebAPIErrors(error));
+  }
+
+  selectParent(depozit: any){       
+    this.form.get('sucursalaId')?.setValue(depozit.value);
   }
 
 }
