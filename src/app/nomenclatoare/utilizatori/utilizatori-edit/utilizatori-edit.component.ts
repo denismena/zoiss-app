@@ -29,7 +29,6 @@ export class UtilizatoriEditComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.securityService.getById(params.id).subscribe(util => {
         this.model = util;
-        console.log(this.model);
         if(this.model !== undefined)
         {
           this.form.patchValue(this.model);
@@ -47,9 +46,6 @@ export class UtilizatoriEditComponent implements OnInit {
     this.sucursaleService.getAll().subscribe(sucursale=>{
       this.sucursaleList=sucursale;      
     })
-
-    this.securityService.getFieldFromJwt('id')
-
   }
 
   edit(utilizatoriDTO: UtilizatoriDTO){

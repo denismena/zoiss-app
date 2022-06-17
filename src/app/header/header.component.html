@@ -38,13 +38,13 @@
     </div>
     <app-authorize-view>
       <ng-container authorize>
-        <span>{{securityService.getFieldFromJwt('name')}}</span>
+        <span class="text-light">{{securityService.getFieldFromJwt('name')}}</span>
         <app-notificari-list></app-notificari-list>
-        <a mat-button (click)="securityService.logout()">Logout</a>
+        <a mat-button (click)="securityService.logout()" class="text-light">Logout</a>
       </ng-container>
-      <ng-container notAuthorize>
-        <a routerLink="login">Login</a>&nbsp;&nbsp;
-        <a routerLink="register">Inregistrare</a>
+      <ng-container notAuthorize class="text-light">
+        <a routerLink="login" class="text-light">Login</a>&nbsp;&nbsp;
+        <a routerLink="register" class="text-light">Inregistrare</a>
       </ng-container>
     </app-authorize-view>
   </div>  
