@@ -110,39 +110,39 @@
     </ng-container>
 
     <ng-container matColumnDef="cantitate">
-        <th mat-header-cell *matHeaderCellDef>Cant</th>
-        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+        <th mat-header-cell *matHeaderCellDef class="table-text-right">Cant</th>
+        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.cantitate}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="cutii">
-        <th mat-header-cell *matHeaderCellDef>Cutii</th>
-        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+        <th mat-header-cell *matHeaderCellDef class="table-text-right">Cutii</th>
+        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.cutii}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef> {{getTotalBox()}} </td>
     </ng-container>
 
     <ng-container matColumnDef="pretUm">
-        <th mat-header-cell *matHeaderCellDef>Pret</th>
-        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+        <th mat-header-cell *matHeaderCellDef class="table-text-right">Pret</th>
+        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.pretUm}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="valoare">
-        <th mat-header-cell *matHeaderCellDef>Val</th>
-        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
+        <th mat-header-cell *matHeaderCellDef class="table-text-right">Val</th>
+        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.valoare}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef> {{getTotalCost()}} </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>#</th>
+        <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
         <td mat-cell *matCellDef="let element">
             <mat-icon color="primary" (click)="edit(element)">edit</mat-icon>
             <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">

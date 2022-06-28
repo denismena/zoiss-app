@@ -14,15 +14,17 @@ export class ClientiCreateDialogComponent implements OnInit {
 
   errors: string[] = [];
   isDialog: boolean = true;
-  preselectClient: clientiDTO;
-  adreseList: clientiAdresaDTO[];
+  preselectClient: clientiDTO | undefined;
+  adreseList: clientiAdresaDTO[] = [];
   editId: number = 0;  
   constructor(private clientiService: ClientiService,
     @Inject(MAT_DIALOG_DATA) data:{client: clientiDTO, editId: number},    
     public dialogRef: MatDialogRef<ClientiCreateDialogComponent>) { 
-      this.preselectClient = data?.client;
-      this.adreseList = data?.client.adrese;
       this.editId = data?.editId;
+      if(this.editId > 0){
+        this.preselectClient = data?.client;
+        this.adreseList = data?.client.adrese;
+      }      
     }
 
   ngOnInit(): void {
