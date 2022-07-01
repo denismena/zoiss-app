@@ -54,8 +54,8 @@ export class ProduseItemComponent implements OnInit {
   }
 
   saveProduse(){
-    //this.router.navigate(['/clienti'])
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
   onImageSelected(image: any){

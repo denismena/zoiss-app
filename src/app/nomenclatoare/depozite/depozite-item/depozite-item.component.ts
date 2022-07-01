@@ -45,7 +45,8 @@ export class DepoziteItemComponent implements OnInit {
   }
 
   saveChanges(){
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
   selectParent(depozit: any){       

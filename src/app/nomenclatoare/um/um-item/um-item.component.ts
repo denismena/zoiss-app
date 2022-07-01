@@ -35,7 +35,8 @@ export class UmItemComponent implements OnInit {
 
   saveProduse(){
     //this.router.navigate(['/um'])
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
   // getErrorMessageFieldName(){
   //   const field = this.form.get('nume');

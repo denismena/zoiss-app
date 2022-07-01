@@ -56,7 +56,8 @@ export class LivrariItemComponent implements OnInit {
       return;
     }
     this.form.get('livrariProduse')?.setValue(produse);
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
 }

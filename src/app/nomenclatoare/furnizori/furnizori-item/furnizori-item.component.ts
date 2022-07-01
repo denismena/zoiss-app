@@ -43,7 +43,8 @@ export class FurnizoriItemComponent implements OnInit {
     else this.router.navigate(["/furnizori"]);
   }
   saveChanges(){
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
 }

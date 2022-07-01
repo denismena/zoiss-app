@@ -66,8 +66,8 @@ export class TransportItemComponent implements OnInit {
     // console.log('set produse', produse);
     // this.form.get('transportProduse')?.setValue(produse);
     
-    console.log('this.form.value', this.form.value);
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
 }

@@ -59,8 +59,8 @@ export class ComenziFurnItemComponent implements OnInit {
     });
     console.log('set produse', produse);
     this.form.get('comenziFurnizoriProduse')?.setValue(produse);
-    
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
 }

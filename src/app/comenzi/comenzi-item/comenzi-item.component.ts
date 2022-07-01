@@ -86,8 +86,8 @@ export class ComenziItemComponent implements OnInit {
     });
     console.log('set produse', produse);
     this.form.get('comenziProduses')?.setValue(produse);
-    
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
   selectClient(clientId: string){

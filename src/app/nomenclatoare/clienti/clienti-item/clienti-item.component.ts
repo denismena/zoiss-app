@@ -34,7 +34,7 @@ export class ClientiItemComponent implements OnInit {
       persoanaContactTel: [null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       persoanaContactEmail: [null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
       active: true,
-      adrese: null
+      adrese: [null, {validators:[RxwebValidators.required()]}]
     });
     if(this.model !== undefined)
     {      
@@ -67,7 +67,7 @@ export class ClientiItemComponent implements OnInit {
         tel: val.tel, email: val.email, sediu: val.sediu, livrare: val.livrare, depozitId: val.depozitId}
     });
     this.form.get('adrese')?.setValue(adrese);
-
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 }

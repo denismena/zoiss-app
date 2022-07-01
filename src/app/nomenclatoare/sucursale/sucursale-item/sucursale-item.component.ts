@@ -30,7 +30,8 @@ export class SucursaleItemComponent implements OnInit {
   }
 
   saveProduse(){
-    this.onSaveChanges.emit(this.form.value);
+    if(this.form.valid)
+      this.onSaveChanges.emit(this.form.value);
   }
 
 }
