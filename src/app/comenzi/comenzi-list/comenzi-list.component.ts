@@ -17,6 +17,7 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -192,16 +193,21 @@ export class ComenziListComponent implements OnInit {
         // confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
-            console.log('comanda new id', id);
-            this.router.navigate(['/comenziFurnizor/edit/' + id])
-          }, 
-          error=> this.errors = parseWebAPIErrors(error));
-          console.log('aici a generat comanda');
+          this.genereazaComnada(selectedProd);
         }
-      });   
+      });  
+      
+      this.genereazaComnada(selectedProd);
   }
 
+  genereazaComnada(selectedProd:any){
+    this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
+      console.log('comanda new id', id);
+      this.router.navigate(['/comenziFurnizor/edit/' + id])
+    }, 
+    error=> this.errors = parseWebAPIErrors(error));
+    console.log('aici a generat comanda');
+  }
   updatePagination(event: PageEvent){
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
@@ -238,13 +244,15 @@ export class ComenziListComponent implements OnInit {
   }
  //#endregion
 
- genereazaPDF(id:number)
+ genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.rapoarteService.comandaReportPDF(id).subscribe(blob => {      
-      var fileURL = window.URL.createObjectURL(blob);
+    this.rapoarteService.comandaReportPDF(element.id).subscribe(blob => {
+      //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
-      window.open(fileURL, "_blank");
+      const dt = new Date(element.data)
+      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+      //window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
     });

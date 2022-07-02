@@ -189,34 +189,39 @@ export class OferteListComponent implements OnInit {
   }
  //#endregion
   
-  genereazaExcel(id:number)
+  genereazaExcel(element:any)
   {
     this.loading$ = true;
-    this.rapoarteService.ofertaReport(id).subscribe(blob => {
-      saveAs(blob, 'Oferta.xlsx');
+    this.rapoarteService.ofertaReport(element.id).subscribe(blob => {
+      const dt = new Date(element.data)
+      saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
     }, error => {
       console.log("Something went wrong");
     });
   }
-  genereazaPDF(id:number)
+  genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.rapoarteService.ofertaReportPDF(id).subscribe(blob => {
-      var fileURL = window.URL.createObjectURL(blob);
+    this.rapoarteService.ofertaReportPDF(element.id).subscribe(blob => {
+      //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
-      window.open(fileURL, "_blank");
+      const dt = new Date(element.data)
+      saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+      //window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
     });
   }
 
-  genereazaPDFcuPoza(id:number)
+  genereazaPDFcuPoza(element:any)
   {    
     this.loading$ = true;
-    this.rapoarteService.ofertaReportPDFcuPoza(id).subscribe(blob => {
+    this.rapoarteService.ofertaReportPDFcuPoza(element.id).subscribe(blob => {
       var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
+      const dt = new Date(element.data)
+      saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
