@@ -23,6 +23,9 @@ export class RapoarteService{
   ofertaReportPDFcuPoza(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/ofertaPDFcuPoza/${id}`, { responseType: 'blob' as 'json' });
   }
+  comandaReport(id:number): Observable<Blob>{
+    return this.http.get<Blob>(`${this.apiUrl}/comanda/${id}`, { responseType: 'blob' as 'json' });
+  }
   comandaReportPDF(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comandaPDF/${id}`, { responseType: 'blob' as 'json' });
   }

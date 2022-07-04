@@ -243,7 +243,17 @@ export class ComenziListComponent implements OnInit {
     console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
-
+ genereazaExcel(element:any)
+ {
+   this.loading$ = true;
+   this.rapoarteService.comandaReport(element.id).subscribe(blob => {
+     const dt = new Date(element.data)
+     saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
+     this.loading$ = false;
+   }, error => {
+     console.log("Something went wrong");
+   });
+ }
  genereazaPDF(element:any)
   {    
     this.loading$ = true;
