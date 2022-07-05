@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -43,6 +43,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   table!: MatTable<any>;
   @ViewChild(ProduseAutocompleteComponent)
   produsAuto!: ProduseAutocompleteComponent;
+  @ViewChild("cantitate") _cantitate!: ElementRef<HTMLInputElement>;
   
   perCutieSet!: number;
   pretSet!: number;
@@ -148,6 +149,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       this.pretSet = produs.pret;
     });    
     this.isEditMode = true;
+    this._cantitate.nativeElement.focus();
   }
 
   clearForm(){

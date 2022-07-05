@@ -23,7 +23,7 @@
                     <div class="col-md-2">
                         <mat-label>cantitate</mat-label>        
                         <mat-form-field appearance="outline">                    
-                            <input matInput formControlName="cantitate" (change)="onCantitateChange($event)"/>
+                            <input matInput formControlName="cantitate" #cantitate id="cantitate" (change)="onCantitateChange($event)"/>
                             <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
                             <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
                         </mat-form-field> 

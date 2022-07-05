@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -49,6 +49,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
   @ViewChild(FurnizoriAutocompleteComponent)
   furnizoriAuto!: FurnizoriAutocompleteComponent;
+  @ViewChild("cantitate") _cantitate!: ElementRef<HTMLInputElement>;
   
   perCutieSet!: number;
   pretSet!: number;
@@ -157,6 +158,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       });
     }
     this.isEditMode = true;
+    this._cantitate.nativeElement.focus();
   }
   clearForm(){
     this.form.reset();
@@ -170,7 +172,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.form.controls['cutii']?.setValue('');
       this.form.controls['valoare']?.setValue('');
     }else{
-      this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);
+      this.form.controls['cutii']?.setValue(Math.ceil(cant / this.perCutieSet)??0);
       this.form.controls['valoare']?.setValue(cant * this.form.controls['pretUm'].value??this.pretSet??0);
     }
   }
@@ -184,10 +186,10 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     }
   }
   getTotalCost() {
-    return this.selectedProdus.map(t => t.valoare).reduce((acc, value) => acc + value, 0);
+    return this.selectedProdus.map(t => t.valoare).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
   getTotalBox() {
-    return this.selectedProdus.map(t => t.cutii).reduce((acc, value) => acc + value, 0);
+    return this.selectedProdus.map(t => t.cutii).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
   remove(produs:any){
     console.log('delete produs', produs);

@@ -3,8 +3,8 @@
     <div class="container">    
         <div class="row">
             <div class="col-md-6">
-                <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" [preselectedProdus]="preselectedProdus" #produsAuto></app-produse-autocomplete>
-                <input type="hidden" formControlName="produsId" #produsId> 
+                <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" [preselectedProdus]="preselectedProdus" id="produsAuto" #produsAuto></app-produse-autocomplete>
+                <input type="hidden" formControlName="produsId" #produsId id="produsId"> 
                 <input type="hidden" formControlName="isCategory" #isCategory> 
             </div>
             <div class="col-md-5">
@@ -29,7 +29,7 @@
             <div class="col-md-2">
                 <mat-label>cantitate</mat-label>        
                 <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="cantitate" (change)="onCantitateChange($event)"/>
+                    <input id="cantitate" matInput #cantitate formControlName="cantitate" (change)="onCantitateChange($event)"/>
                     <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
@@ -74,7 +74,7 @@
         </div>
         <div class="row d-block d-sm-none">
             <div class="col">
-                <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+                <button id="salveaza" #salveaza mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
                 <a mat-stroke-button mat-flat-button color="primary" style="margin-left: 1rem;" (click)="clearForm()">Renunta</a>
             </div>            
         </div>
@@ -125,7 +125,7 @@
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.cutii}}</ng-container>
         </td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalBox()}} </td>
+        <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalBox()| number: '1.0-2'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="pretUm">
@@ -141,7 +141,7 @@
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.valoare}}</ng-container>
         </td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()| number: '1.0-2'}} </td>
+        <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalCost()| number: '1.0-2'}} </td>
     </ng-container>
     <ng-container matColumnDef="discount">
         <th mat-header-cell *matHeaderCellDef>Discount <br />
@@ -160,7 +160,7 @@
                 close
             </mat-icon>
         </td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalWithDiscountCost()| number: '1.0-2'}} </td>
+        <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalWithDiscountCost()| number: '1.0-2'}} </td>
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
