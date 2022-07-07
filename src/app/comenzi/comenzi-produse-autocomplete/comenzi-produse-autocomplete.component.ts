@@ -163,7 +163,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue(pret * this.form.controls['cantitate'].value??0);
+      this.form.controls['valoare']?.setValue(Number(pret) * Number(this.form.controls['cantitate'].value??0));
     }
   }
   getTotalCost() {

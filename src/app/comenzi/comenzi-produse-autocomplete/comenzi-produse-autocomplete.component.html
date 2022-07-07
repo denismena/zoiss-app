@@ -43,7 +43,7 @@
                 </mat-form-field> 
             </div>
             <div class="col-md-1">
-                <mat-label>pretUm</mat-label>
+                <mat-label>Pret Um</mat-label>
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="pretUm" (change)="onPretChange($event)"/>
                     <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
@@ -155,7 +155,7 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
         <td mat-cell *matCellDef="let element">
-            <mat-icon color="primary" (click)="edit(element)">edit</mat-icon>
+            <mat-icon color="primary" (click)="edit(element)" *ngIf="element.id !=null">edit</mat-icon>
             <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">
                 close
             </mat-icon>

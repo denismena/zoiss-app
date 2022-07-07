@@ -178,7 +178,7 @@ export class ComenziListComponent implements OnInit {
       return;
     }
     if(selectedProd.length == 0){
-      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o oferta!", icon: 'info' });
+      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o comanda!", icon: 'info' });
       return;
     }
     
