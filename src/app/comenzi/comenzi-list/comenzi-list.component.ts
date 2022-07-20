@@ -71,10 +71,7 @@ export class ComenziListComponent implements OnInit {
       clientId: 0,
       arhitectId: 0,      
       produsId: 0,
-      furnizorId:0,
-      // mine: false,
-      // sucursala: true,
-      // allComandate: false
+      furnizorId:0,      
       mine: this.cookie.getCookie('comanda_mine')== '' ? false: this.cookie.getCookie('comanda_mine'),
       sucursala: this.cookie.getCookie('comanda_sucursala')== '' ? false: this.cookie.getCookie('comanda_sucursala'),
       allComandate: this.cookie.getCookie('comanda_allComandate')== '' ? false: this.cookie.getCookie('comanda_allComandate')
@@ -224,22 +221,22 @@ export class ComenziListComponent implements OnInit {
 
 //#region filtre
   selectProdus(produs: any){    
-    this.form.get('produsId')?.setValue(produs.id);
-    this.form.get('produsNume')?.setValue(produs.nume);    
+    this.form.get('produsId')?.setValue(produs == undefined ? 0 : produs.id);
+    this.form.get('produsNume')?.setValue(produs == undefined ? "" :produs.nume);    
     console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
-    this.form.get('clientId')?.setValue(clientId);
+    this.form.get('clientId')?.setValue(clientId??0);
     console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId);
+    this.form.get('arhitectId')?.setValue(arhitectId??0);
     console.log('arhitectId: ', this.form.get('arhitectId')?.value);
   }
   selectFurnizor(furnizor: any){
-    this.form.get('furnizorId')?.setValue(furnizor.id);
+    this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
     console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion

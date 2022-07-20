@@ -118,18 +118,16 @@
             </td>
         </ng-container>
         <ng-container matColumnDef="comandate">            
-            <th mat-header-cell *matHeaderCellDef>Comandate</th>
-            <td *matCellDef="let element">
+            <th mat-header-cell *matHeaderCellDef class="text-center">Comandate</th>
+            <td *matCellDef="let element" class="text-center">
               {{element.produseProc}} / {{element.produseAll}}
             </td>
         </ng-container>
         <ng-container matColumnDef="select">            
             <th mat-header-cell *matHeaderCellDef>Select</th>
-            <td *matCellDef="let element">
-              <!-- <mat-checkbox #checkBox *ngIf="element.produseProc!=element.produseAll"
-                    [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"></mat-checkbox> -->
+            <td *matCellDef="let element">              
             <input #checkBox type="checkbox" *ngIf="element.produseProc!=element.produseAll"
-                [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
+                [(ngModel)]="element.allComandate" (change)="getCheckbox(checkBox, element)"/>
             </td>
         </ng-container>
         <ng-container matColumnDef="avans">

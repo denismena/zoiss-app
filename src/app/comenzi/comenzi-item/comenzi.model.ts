@@ -18,6 +18,7 @@ export interface comenziDTO{
     platit: boolean;
     comision:number;
     produseComenziAll: number;
+    produseComenziStoc: number;
     produseComenziProc: number;
     produseComenziValoare:number;
     allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.

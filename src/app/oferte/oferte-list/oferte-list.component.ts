@@ -173,19 +173,19 @@ export class OferteListComponent implements OnInit {
 
   //#region filtre
   selectProdus(produs: any){    
-    this.form.get('produsId')?.setValue(produs.id);
-    this.form.get('produsNume')?.setValue(produs.nume);    
+    this.form.get('produsId')?.setValue(produs == undefined ? 0 : produs.id);
+    this.form.get('produsNume')?.setValue(produs == undefined ? "" :produs.nume);    
  }
 
  selectClient(clientId: string){
-    this.form.get('clientId')?.setValue(clientId);
+    this.form.get('clientId')?.setValue(clientId??0);
   }
 
   selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId);
+    this.form.get('arhitectId')?.setValue(arhitectId??0);
   }
   selectFurnizor(furnizor: any){
-    this.form.get('furnizorId')?.setValue(furnizor.id);
+    this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
   }
  //#endregion
   

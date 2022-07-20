@@ -56,7 +56,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   optionSelected(event: MatAutocompleteSelectedEvent){
     console.log(event.option.value.id);
     this.preselectArhitect = event.option.value;
-    this.onOptionSelected.emit(event.option.value);
+    this.onOptionSelected.emit(event.option.value.id);
   }
   
   private _filterStates(value: string): arhitectiDTO[] {
