@@ -60,7 +60,7 @@ export class OferteService {
       formData.append('conditiiPlata', oferta.conditiiPlata);
     }
     if (oferta.termenLivrare){
-      formData.append('termenLivrare', formatDateFormData(oferta.termenLivrare));
+      formData.append('termenLivrare', oferta.termenLivrare);
     }
     console.log('formData produse:', oferta.produse);
     formData.append('produse', JSON.stringify(oferta.produse));

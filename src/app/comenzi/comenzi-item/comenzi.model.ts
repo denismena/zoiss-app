@@ -13,7 +13,7 @@ export interface comenziDTO{
     utilizator: string;
     avans: number;
     conditiiPlata: string;
-    termenLivrare: Date;
+    termenLivrare: string;
     clientAdresaId: number;
     platit: boolean;
     comision:number;
@@ -33,7 +33,7 @@ export interface comenziCreationDTO{
     utilizatorId: string;    
     avans: number;
     conditiiPlata: string;
-    termenLivrare: Date;
+    termenLivrare: string;
     clientAdresaId: number;
     platit: boolean;
     comision:number;

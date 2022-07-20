@@ -47,7 +47,7 @@ export class OferteItemComponent implements OnInit {
       avans: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
       comision: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
       conditiiPlata: ['', {validators:[RxwebValidators.maxLength({value:250 })]}],
-      termenLivrare: null,
+      termenLivrare: ['', {validators:[RxwebValidators.maxLength({value:255 })]}],
       produse: ''
     });    
     

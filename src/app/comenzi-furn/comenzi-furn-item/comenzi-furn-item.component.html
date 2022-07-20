@@ -23,9 +23,7 @@
     <div class="col-md-4">
         <mat-label>Termen de livrare</mat-label>
         <mat-form-field appearance="outline">            
-            <input formControlName="termenLivrare" matInput [matDatepicker]="dataPickerTL">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerTL"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerTL></mat-datepicker>
+            <input formControlName="termenLivrare" matInput>
             <mat-error>Completati data!</mat-error>
         </mat-form-field>
     </div>    

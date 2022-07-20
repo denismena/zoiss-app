@@ -47,7 +47,7 @@ export class ComenziItemComponent implements OnInit {
       avans: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
       comision: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:true })]}],
       conditiiPlata: '',
-      termenLivrare: null,
+      termenLivrare: ['', {validators:[RxwebValidators.maxLength({value:255 })]}],
       platit: null,
       clientiAdresaId: [null, {validators:[RxwebValidators.required()]}],
       comenziProduses: ''

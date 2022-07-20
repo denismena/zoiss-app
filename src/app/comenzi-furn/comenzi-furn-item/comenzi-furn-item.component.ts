@@ -32,7 +32,7 @@ export class ComenziFurnItemComponent implements OnInit {
     this.form = this.formBuilder.group({
       numar:[null, {validators:[RxwebValidators.required()]}],
       data:[new Date(), {validators:[RxwebValidators.required()]}],      
-      termenLivrare: null,
+      termenLivrare: ['', {validators:[RxwebValidators.maxLength({value:255 })]}],
       comenziFurnizoriProduse: ''
     });    
     

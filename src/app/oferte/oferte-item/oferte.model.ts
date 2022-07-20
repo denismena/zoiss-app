@@ -14,7 +14,7 @@ export interface oferteDTO{
     utilizator: string;
     avans: number;
     conditiiPlata: string;
-    termenLivrare: Date;
+    termenLivrare: string;
     comision: number;
     produseAll: number;
     produseProc: number;
@@ -31,7 +31,7 @@ export interface oferteCreationDTO{
     utilizatorId: string;    
     avans: number;
     conditiiPlata: string;
-    termenLivrare: Date;
+    termenLivrare: string;
     comision: number;
     produse: produseOfertaDTO[];
 }

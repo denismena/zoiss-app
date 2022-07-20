@@ -152,7 +152,7 @@
                         title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
                         close
                 </mat-icon>
-                <mat-icon class="greenIcon" (click)="genereazaExcel(element)">assignment</mat-icon>
+                <mat-icon class="greenIcon" title="Genereaza Excel" (click)="genereazaExcel(element)">assignment</mat-icon>
                 <mat-icon class="redIcon" [matMenuTriggerFor]="selecteazaRaport">picture_as_pdf</mat-icon>
                 <mat-menu #selecteazaRaport class="container-sm mpanel">
                     <menu mat-menu-item (click)="genereazaPDF(element)">Oferta</menu>
