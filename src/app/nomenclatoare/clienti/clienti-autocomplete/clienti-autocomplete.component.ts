@@ -40,8 +40,9 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   search(event: any){
+    console.log('key up', event);
     let searchTerm = '';
-    searchTerm += event.target.value;
+    searchTerm += event;
     if(searchTerm.length > 2){    
       this.clientiService.search(searchTerm).subscribe(clienti=>{
         this.clienti = clienti;
@@ -52,7 +53,8 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
             map(c => c ? this._filterStates(c) : this.clienti.slice())
           );        
       });
-    }
+    }    
+    console.log('this.selectedClient', this.selectedClient);
   }
   optionSelected(event: MatAutocompleteSelectedEvent){
     this.preselectClient = event.option.value;
@@ -79,15 +81,19 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private _subscribeToClosingActions(): void {
+    console.log('_subscribeToClosingActions');
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
 
     this.subscription = this.trigger.panelClosingActions
+    //this.trigger.panelClosingActions.pipe(this.takeUntil(this.trigger.autocomplete.closed))
       .subscribe(e => {
+        console.log('e', e);
         if (!e || !e.source) {
-          this.clientCtrl.setValue(null);
-          this.onOptionSelected.emit(undefined);
+          console.log('this.clientCtrl.value', this.clientCtrl.value);
+          if(this.clientCtrl.value == '')
+            this.onOptionSelected.emit(undefined);
         }
       },
       err => this._subscribeToClosingActions(),

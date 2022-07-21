@@ -231,9 +231,8 @@ export class ComenziListComponent implements OnInit {
     console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
-  selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId??0);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
+  selectArhitect(arhitect: any){
+    this.form.get('arhitectId')?.setValue(arhitect == undefined ? 0 : arhitect.id);
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);

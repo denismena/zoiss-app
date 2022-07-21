@@ -181,8 +181,8 @@ export class OferteListComponent implements OnInit {
     this.form.get('clientId')?.setValue(clientId??0);
   }
 
-  selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId??0);
+  selectArhitect(arhitect: any){
+    this.form.get('arhitectId')?.setValue(arhitect == undefined ? 0 : arhitect.id);
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
