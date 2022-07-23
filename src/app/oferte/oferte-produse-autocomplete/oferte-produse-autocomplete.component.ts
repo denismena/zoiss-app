@@ -95,17 +95,15 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
 
   selectFurnizor(furnizor: any){
-    if(furnizor!==undefined){
-     this.form.get('furnizorId')?.setValue(furnizor.id);
-     this.form.get('furnizorNume')?.setValue(furnizor.nume);
-    }
+     this.form.get('furnizorId')?.setValue(furnizor?.id);
+     this.form.get('furnizorNume')?.setValue(furnizor?.nume);
   }
 
   selectProdus(produs: any){  
-    this.form.get('produsId')?.setValue(produs.id);
-    this.form.get('produsNume')?.setValue(produs.nume);
-    this.form.get('codProdus')?.setValue(produs.cod);
-    if(produs.prefFurnizorId !=undefined){
+    this.form.get('produsId')?.setValue(produs?.id);
+    this.form.get('produsNume')?.setValue(produs?.nume);
+    this.form.get('codProdus')?.setValue(produs?.cod);
+    if(produs != undefined && produs.prefFurnizorId !=undefined){
       console.log('prefFurnizor', produs.prefFurnizor);
       this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
       this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
@@ -113,12 +111,12 @@ export class OferteProduseAutocompleteComponent implements OnInit {
         this.preselectFurnizor = furnizor;
       });
     }
-    this.form.controls['pretUm']?.setValue(produs.pret);
-    this.form.controls['umId']?.setValue(produs.umId);
-    this.form.controls['um']?.setValue(produs.um);
-    this.form.controls['isCategory']?.setValue(produs.isCategory);
-    this.perCutieSet = produs.perCutie;
-    this.pretSet = produs.pret;
+    this.form.controls['pretUm']?.setValue(produs?.pret);
+    this.form.controls['umId']?.setValue(produs?.umId);
+    this.form.controls['um']?.setValue(produs?.um);
+    this.form.controls['isCategory']?.setValue(produs?.isCategory);
+    this.perCutieSet = produs?.perCutie;
+    this.pretSet = produs?.pret;
  }
 
   selectUM(um: any){   

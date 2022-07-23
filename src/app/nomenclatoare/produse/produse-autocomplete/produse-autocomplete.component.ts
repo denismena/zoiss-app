@@ -55,7 +55,8 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   
   search(event: any){
     let searchTerm = '';
-    searchTerm += event.target.value;
+    searchTerm += event;
+    console.log('searchTerm', searchTerm);
     if(searchTerm.length > 2){    
       this.produseService.search(searchTerm).subscribe(produse=>{
         this.produse = produse;
@@ -102,8 +103,14 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
         if (!e || !e.source) {
-          this.produsCtrl.setValue(null);
-          this.onOptionSelected.emit(undefined);
+          console.log('this.preselectedProdus', this.preselectedProdus);
+          console.log('this.produsCtrl.value', this.produsCtrl.value);
+          console.log('this.produsCtrl', this.produsCtrl);
+          if(this.preselectedProdus == undefined)//daca nu are nimic selectat, scrisul este sters
+            this.produsCtrl.setValue(null);
+          console.log('this.produsCtrl2', this.produsCtrl);
+          if(this.produsCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+            this.onOptionSelected.emit(undefined);
         }
       },
       err => this._subscribeToClosingActions(),

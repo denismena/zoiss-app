@@ -64,43 +64,28 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       //discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       disponibilitate:[null],
       detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:'', clientNume:'', isCategory: false, sort: null
-    });    
+    });   
     
-    // this.loadProduseList();
-        
-    // this.produsCtrl.valueChanges.subscribe(value => {
-    //   this.produseService.searchByNameComandaFurnizor(value).subscribe(produs => {
-    //     this.produsToDisplay = produs;
-    //   });
-    // })
-
+    
     this.umService.getAll().subscribe(um=>{
       this.umList=um;
     })
   }
-
-  // loadProduseList(){
-  //   this.produseService.getProduseAutocompleteComandaFurnizor().subscribe(produse=>{
-  //     this.produsToDisplay = produse;
-  //   });    
-  // }
-
+  
   selectFurnizor(furnizor: any){
-    if(furnizor!==undefined){
      this.form.get('furnizorId')?.setValue(furnizor.id);
      this.form.get('furnizorNume')?.setValue(furnizor.nume);
-    }
   }
 
   selectProdus(produs: any){    
-    this.form.get('produsId')?.setValue(produs.id);
-    this.form.get('produsNume')?.setValue(produs.nume);
-    this.form.get('codProdus')?.setValue(produs.cod);
-    this.form.controls['pretUm']?.setValue(produs.pret);
-    this.form.controls['umId']?.setValue(produs.umId);
-    this.form.controls['um']?.setValue(produs.um);
-    this.perCutieSet = produs.perCutie;
-    this.pretSet = produs.pret;
+    this.form.get('produsId')?.setValue(produs?.id);
+    this.form.get('produsNume')?.setValue(produs?.nume);
+    this.form.get('codProdus')?.setValue(produs?.cod);
+    this.form.controls['pretUm']?.setValue(produs?.pret);
+    this.form.controls['umId']?.setValue(produs?.umId);
+    this.form.controls['um']?.setValue(produs?.um);
+    this.perCutieSet = produs?.perCutie;
+    this.pretSet = produs?.pret;
  }
 
   // private _filterStates(value: string): produseComandaFurnizorDTO[] {

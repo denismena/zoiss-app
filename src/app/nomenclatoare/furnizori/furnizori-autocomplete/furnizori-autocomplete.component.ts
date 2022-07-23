@@ -13,7 +13,7 @@ import { FurnizoriService } from '../furnizori.service';
   templateUrl: './furnizori-autocomplete.component.html',
   styleUrls: ['./furnizori-autocomplete.component.scss']
 })
-export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   furnizori: furnizoriDTO[];
   constructor(private furnizorService: FurnizoriService, public dialog: MatDialog ) { 
@@ -32,7 +32,6 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   subscription: Subscription | undefined;
   dataFromDialog : any;
   ngOnInit(): void {
-  //this.loadFurnizorList();
   if(this.preselectFurnizor !=undefined)
     this.furnizorCtrl.setValue(this.preselectFurnizor);
   }
@@ -42,9 +41,8 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
   }  
 
   search(event: any){
-    //console.log('nume cautat:', nume.target.value);
     let searchTerm = '';
-    searchTerm += event.target.value;
+    searchTerm += event;
     if(searchTerm.length > 2){    
       this.furnizorService.search(searchTerm).subscribe(furnizori=>{
         this.furnizori = furnizori;
@@ -89,8 +87,14 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
         if (!e || !e.source) {
-          this.furnizorCtrl.setValue(null);
-          this.onOptionSelected.emit(undefined);
+          console.log('this.preselectFurnizor', this.preselectFurnizor);
+          console.log('this.furnizorCtrl', this.furnizorCtrl.value);
+          if(this.preselectFurnizor == undefined)//daca nu are nimic selectat, scrisul este sters
+            this.furnizorCtrl.setValue(null);
+          if(this.furnizorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+            this.onOptionSelected.emit(undefined);
+          //this.furnizorCtrl.setValue(null);
+          //this.onOptionSelected.emit(undefined);
         }
       },
       err => this._subscribeToClosingActions(),

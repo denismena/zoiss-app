@@ -85,8 +85,10 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
         if (!e || !e.source) {
-          this.arhitectCtrl.setValue(null);
-          this.onOptionSelected.emit(undefined);
+          if(this.preselectArhitect == undefined)//daca nu are nimic selectat, scrisul este sters
+            this.arhitectCtrl.setValue(null);
+          if(this.arhitectCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+            this.onOptionSelected.emit(undefined);
         }
       },
       err => this._subscribeToClosingActions(),

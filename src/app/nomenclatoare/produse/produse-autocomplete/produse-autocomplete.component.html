@@ -5,7 +5,7 @@
     <mat-form-field class="example-full-width" appearance="fill">      
       <input matInput
              aria-label="Produse"
-             (keyup)="search($event)"
+             (ngModelChange)="search($event)"
              [matAutocomplete]="auto"
              [formControl]="produsCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">

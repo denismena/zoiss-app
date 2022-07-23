@@ -81,7 +81,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   private _subscribeToClosingActions(): void {
-    console.log('_subscribeToClosingActions');
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
@@ -89,10 +88,11 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     this.subscription = this.trigger.panelClosingActions
     //this.trigger.panelClosingActions.pipe(this.takeUntil(this.trigger.autocomplete.closed))
       .subscribe(e => {
-        console.log('e', e);
         if (!e || !e.source) {
-          console.log('this.clientCtrl.value', this.clientCtrl.value);
-          if(this.clientCtrl.value == '')
+          console.log('this.preselectClient', this.preselectClient);
+          if(this.preselectClient == undefined)//daca nu are nimic selectat, scrisul este sters
+            this.clientCtrl.setValue(null);          
+          if(this.clientCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
             this.onOptionSelected.emit(undefined);
         }
       },
