@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { LivrariService } from 'src/app/livrari/livrari.service';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozite.model';
@@ -72,7 +73,7 @@ export class TransportListComponent implements OnInit {
       mine: false,
       allSpreLivrare: false,
       depozitId:0,
-      comandaNr:''
+      comandaNr:['', {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:false })]}],
     });
 
     this.initialFormValues = this.form.value
@@ -81,6 +82,7 @@ export class TransportListComponent implements OnInit {
     this.form.valueChanges.subscribe(values=>{
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
+      values.comandaNr = values.comandaNr == null ? '' : values.comandaNr;
       this.loadList(values);      
     })
 
@@ -197,23 +199,19 @@ export class TransportListComponent implements OnInit {
 
 //#region filtre
   selectProdus(produs: any){    
-    this.form.get('produsId')?.setValue(produs.id);
-    this.form.get('produsNume')?.setValue(produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
- }
-
- selectClient(clientId: string){
-    this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
+    this.form.get('produsId')?.setValue(produs == undefined ? 0 : produs.id);
+    this.form.get('produsNume')?.setValue(produs == undefined ? "" :produs.nume);    
   }
 
-  selectArhitect(arhitectId: string){
-    this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
+  selectClient(clientId: string){
+    this.form.get('clientId')?.setValue(clientId??0);
+  }
+
+  selectArhitect(arhitect: any){
+    this.form.get('arhitectId')?.setValue(arhitect == undefined ? 0 : arhitect.id);
   }
   selectFurnizor(furnizor: any){
-    this.form.get('furnizorId')?.setValue(furnizor.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
+    this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
   }
  //#endregion
 

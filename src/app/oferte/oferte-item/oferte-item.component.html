@@ -23,7 +23,8 @@
                 <div class="col-md-3">
                     <mat-label>Avans</mat-label>
                     <mat-form-field appearance="outline">                        
-                        <input formControlName="avans" matInput>
+                        <input formControlName="avans" matInput type="number" class="table-text-right">
+                        <span matSuffix>%</span>
                         <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
                     </mat-form-field>
                 </div>
