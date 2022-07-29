@@ -106,13 +106,18 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   }
 
   onCantitateChange(event: any){
-    const cant = event.target.value;
-    if(cant == ''){
+    var cantInt = Number(event.target.value??0) * 100;
+    var perCutieInt = Number(this.perCutieSet) * 100 ;
+    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 100;
+    var cutii = Math.ceil(cantInt / perCutieInt);
+    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 10000
+    if(cantInt == null){
       this.form.controls['cutii']?.setValue('');
       this.form.controls['valoare']?.setValue('');
-    }else{
-      this.form.controls['cutii']?.setValue(Math.ceil(cant * this.perCutieSet)??0);
-      this.form.controls['valoare']?.setValue(cant * this.form.controls['pretUm'].value??this.pretSet??0);
+    }else{      
+      this.form.controls['cantitate']?.setValue(cantDecimal);
+      this.form.controls['cutii']?.setValue(cutii??0);
+      this.form.controls['valoare']?.setValue(valoareDecimal.toFixed(2)??0);
     }
   }
   onPretChange(event: any){
@@ -121,7 +126,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue(pret * this.form.controls['cantitate'].value??0);
+      this.form.controls['valoare']?.setValue(Number(pret * this.form.controls['cantitate'].value??0).toFixed(2));
     }
   }
 
