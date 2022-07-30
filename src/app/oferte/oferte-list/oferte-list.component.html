@@ -74,7 +74,7 @@
     </form>
     </mat-expansion-panel>    
   </mat-accordion>
-
+  <app-display-errors [errors]="errors"></app-display-errors>
     <div class="spinner-container" *ngIf="loading$">
         <mat-spinner></mat-spinner>
     </div>
