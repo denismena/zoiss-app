@@ -29,4 +29,7 @@ export class RapoarteService{
   comandaReportPDF(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comandaPDF/${id}`, { responseType: 'blob' as 'json' });
   }
+  comandaFurnizorReport(id:number): Observable<Blob>{
+    return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
+  }
 }
