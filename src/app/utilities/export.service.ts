@@ -7,9 +7,9 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root'
   })
 
-export class RapoarteService{
+export class ExportService{
     constructor(private http: HttpClient) { }
-  private apiUrl = environment.apiUrl + '/reports';
+  private apiUrl = environment.apiUrl + '/export';
   
   firstReport(): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/firstReport`, { responseType: 'blob' as 'json' });

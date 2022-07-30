@@ -5,13 +5,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import * as saveAs from 'file-saver';
-import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
-import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
 import { TransportService } from 'src/app/transport/transport.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
+import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
@@ -50,7 +49,7 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
-    private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private rapoarteService: RapoarteService) { 
+    private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService) { 
     this.comenziFurnizor = [];
     this.expandedElement = [];
   }
@@ -188,7 +187,7 @@ selectFurnizor(furnizor: any){
  genereazaExcel(element:any)
  {
    this.loading$ = true;
-   this.rapoarteService.comandaFurnizorReport(element.id).subscribe(blob => {
+   this.exportService.comandaFurnizorReport(element.id).subscribe(blob => {
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.furnizor + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;

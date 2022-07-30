@@ -1,14 +1,12 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MatRow } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
-import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
+import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { oferteDTO } from '../oferte-item/oferte.model';
 import { OferteService } from '../oferte.service';
-import * as ExcelJS from 'exceljs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
@@ -16,9 +14,9 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
 import * as saveAs from 'file-saver';
 import { CookieService } from 'src/app/utilities/cookie.service';
+import { ExportService } from 'src/app/utilities/export.service';
 
 @Component({
   selector: 'app-oferte-list',
@@ -54,7 +52,7 @@ export class OferteListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
-      private formBuilder:FormBuilder, private rapoarteService: RapoarteService, public cookie: CookieService) { 
+      private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { 
     this.oferte = [];
     this.expandedElement = [];
   }
@@ -192,7 +190,7 @@ export class OferteListComponent implements OnInit {
   genereazaExcel(element:any)
   {
     this.loading$ = true;
-    this.rapoarteService.ofertaReport(element.id).subscribe(blob => {
+    this.exportService.ofertaReport(element.id).subscribe(blob => {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
@@ -203,7 +201,7 @@ export class OferteListComponent implements OnInit {
   genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.rapoarteService.ofertaReportPDF(element.id).subscribe(blob => {
+    this.exportService.ofertaReportPDF(element.id).subscribe(blob => {
       //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
@@ -217,7 +215,7 @@ export class OferteListComponent implements OnInit {
   genereazaPDFcuPoza(element:any)
   {    
     this.loading$ = true;
-    this.rapoarteService.ofertaReportPDFcuPoza(element.id).subscribe(blob => {
+    this.exportService.ofertaReportPDFcuPoza(element.id).subscribe(blob => {
       var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)

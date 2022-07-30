@@ -9,15 +9,13 @@ import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.servic
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { date } from '@rxweb/reactive-form-validators';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
-import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
-import { RapoarteService } from 'src/app/rapoarte/rapoarte.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import * as saveAs from 'file-saver';
+import { ExportService } from 'src/app/utilities/export.service';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -56,7 +54,7 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
-    private router:Router, private formBuilder:FormBuilder, private rapoarteService: RapoarteService, public cookie: CookieService) { 
+    private router:Router, private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
@@ -242,7 +240,7 @@ export class ComenziListComponent implements OnInit {
  genereazaExcel(element:any)
  {
    this.loading$ = true;
-   this.rapoarteService.comandaReport(element.id).subscribe(blob => {
+   this.exportService.comandaReport(element.id).subscribe(blob => {
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
@@ -253,7 +251,7 @@ export class ComenziListComponent implements OnInit {
  genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.rapoarteService.comandaReportPDF(element.id).subscribe(blob => {
+    this.exportService.comandaReportPDF(element.id).subscribe(blob => {
       //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
