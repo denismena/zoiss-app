@@ -16,6 +16,7 @@ export interface comenziDTO{
     termenLivrare: string;
     clientAdresaId: number;
     platit: boolean;
+    arhitectPlatit: boolean;
     comision:number;
     produseComenziAll: number;
     produseComenziStoc: number;
@@ -36,6 +37,7 @@ export interface comenziCreationDTO{
     termenLivrare: string;
     clientAdresaId: number;
     platit: boolean;
+    arhitectPlatit: boolean;
     comision:number;
     comenziProduses: produseComandaDTO[];
 }

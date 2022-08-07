@@ -51,6 +51,7 @@ import { SucursaleCreateComponent } from './nomenclatoare/sucursale/sucursale-it
 import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-edit/sucursale-edit.component';
 import { CookieService } from './utilities/cookie.service';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
+import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -114,6 +115,8 @@ const routes: Routes = [
   {path: "sucursale", component:SucursaleListComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "sucursale/create", component: SucursaleCreateComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "sucursale/edit/:id", component: SucursaleEditComponent, canActivate:[IsAuthenticatedGuard]},
+
+  {path: "rapoarte/comisionArhitect", component: ComisionArhitectiComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},

@@ -49,6 +49,7 @@ export class ComenziItemComponent implements OnInit {
       conditiiPlata: '',
       termenLivrare: ['', {validators:[RxwebValidators.maxLength({value:255 })]}],
       platit: null,
+      // arhitectPlatit: null,
       clientiAdresaId: [null, {validators:[RxwebValidators.required()]}],
       comenziProduses: ''
     });    
@@ -85,6 +86,7 @@ export class ComenziItemComponent implements OnInit {
         umId:val.umId??1, um: val.um, cutii: val.cutii??0, pretUm: val.pretUm??0, valoare: val.valoare??0, discount: val.discount, isStoc: val.isStoc??false}
     });
     console.log('set produse', produse);
+    console.log('this.form.value', this.form.value);
     this.form.get('comenziProduses')?.setValue(produse);
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);

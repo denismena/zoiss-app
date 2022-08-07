@@ -95,7 +95,6 @@ import { LivrariEditComponent } from './livrari/livrari-item/livrari-edit/livrar
 import { LivrariItemComponent } from './livrari/livrari-item/livrari-item.component';
 import { LivrariNumberDialogComponent } from './transport/livrari-number-dialog/livrari-number-dialog.component';
 import { LivrariProduseComponent } from './livrari/livrari-produse/livrari-produse.component';
-import { RapoarteItemComponent } from './rapoarte/rapoarte-item/rapoarte-item.component';
 import { ClientiCreateDialogComponent } from './nomenclatoare/clienti/clienti-item/clienti-create-dialog/clienti-create-dialog.component';
 import { ArhitectiCreateDialogComponent } from './nomenclatoare/arhitecti/arhitecti-item/arhitecti-create-dialog/arhitecti-create-dialog.component';
 import { FurnizoriCreateDialogComponent } from './nomenclatoare/furnizori/furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
@@ -112,6 +111,7 @@ import { SucursaleItemComponent } from './nomenclatoare/sucursale/sucursale-item
 import { SucursaleCreateComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-create/sucursale-create.component';
 import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-edit/sucursale-edit.component';
 import { CookieService } from './utilities/cookie.service';
+import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
 
 @NgModule({
   declarations: [
@@ -194,8 +194,7 @@ import { CookieService } from './utilities/cookie.service';
     LivrariEditComponent,
     LivrariItemComponent,
     LivrariNumberDialogComponent,
-    LivrariProduseComponent,
-    RapoarteItemComponent,
+    LivrariProduseComponent,    
     ClientiCreateDialogComponent,
     ArhitectiCreateDialogComponent,
     FurnizoriCreateDialogComponent,
@@ -208,7 +207,8 @@ import { CookieService } from './utilities/cookie.service';
     SucursaleListComponent,
     SucursaleItemComponent,
     SucursaleCreateComponent,
-    SucursaleEditComponent    
+    SucursaleEditComponent,
+    ComisionArhitectiComponent    
   ],
   imports: [
     BrowserModule,
