@@ -95,8 +95,7 @@ export class ComisionArhitectiComponent implements OnInit {
       return;
     }
     this.reportService.plateste(selectedComenzi).subscribe(id=>{      
-      //console.log('trebuie redirect');
-      this.router.navigate(['/rapoarte/comisionArhitect/'])
+      this.loadList(this.form.value);
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }

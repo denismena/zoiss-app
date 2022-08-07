@@ -49,7 +49,7 @@ export class ComenziItemComponent implements OnInit {
       conditiiPlata: '',
       termenLivrare: ['', {validators:[RxwebValidators.maxLength({value:255 })]}],
       platit: null,
-      // arhitectPlatit: null,
+      arhitectPlatit: null,
       clientiAdresaId: [null, {validators:[RxwebValidators.required()]}],
       comenziProduses: ''
     });    
