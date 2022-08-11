@@ -20,23 +20,18 @@
                         </mat-form-field>
                     </div>                    
                     <div class="col-md-3">
+                        <mat-label>Conditii plata</mat-label>
+                        <mat-form-field appearance="outline">                            
+                            <input formControlName="conditiiPlata" matInput>
+                        </mat-form-field>                        
+                    </div>
+                    <div class="col-md-3">
                         <mat-label>Termen de livrare</mat-label>
                         <mat-form-field appearance="outline">                            
                             <input formControlName="termenLivrare" matInput>
                             <mat-error>Completati data!</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-2">
-                        <mat-label>Avans</mat-label>
-                        <mat-form-field appearance="outline">                            
-                            <input formControlName="avans" matInput type="number" class="table-text-right">
-                            <span matSuffix>%</span>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-md-1">
-                        <mat-slide-toggle formControlName="platit" matTooltip="Platit">Platit</mat-slide-toggle>
-                        <mat-slide-toggle formControlName="arhitectPlatit" matTooltip="Arhitect platit">Arhitect platit</mat-slide-toggle>
-                    </div>
+                        </mat-form-field>                        
+                    </div>                    
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -49,17 +44,27 @@
                     </div>
                     <div class="col-md-1">
                         <mat-label>Comision</mat-label>
-                        <mat-form-field appearance="outline">                            
-                            <input formControlName="comision" matInput>
+                        <mat-form-field appearance="fill">                            
+                            <input formControlName="comision" matInput class="table-text-right">
+                            <span matSuffix style="padding-left: 5px;">%</span>
                         </mat-form-field>
                     </div>
                     <div class="col-md-2">
-                        <mat-label>Conditii plata</mat-label>
+                        <mat-label>Avans</mat-label>
                         <mat-form-field appearance="outline">                            
-                            <input formControlName="conditiiPlata" matInput>
+                            <input formControlName="avans" matInput class="table-text-right">
+                            <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-md-3">
+                        <mat-label>Factura avans</mat-label>
+                        <mat-form-field appearance="outline">                        
+                            <input formControlName="facturaAvans" matInput>                        
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                         <label id="example-radio-group-label">Adresa livrare</label>
                         <mat-radio-group
                             aria-labelledby="example-radio-group-label"
@@ -70,17 +75,36 @@
                         </mat-radio-group>
                         <mat-error>{{form.get("clientiAdresaId")?.getError("required")?.message}}</mat-error>
                     </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-1">
+                        <mat-slide-toggle formControlName="platit" matTooltip="Platit">Platit</mat-slide-toggle>                        
+                    </div>                
+                    <div class="col-md-2">
+                        <mat-slide-toggle formControlName="arhitectPlatit" matTooltip="Arhitect platit">Arhitect platit</mat-slide-toggle>
+                    </div> 
                 </div>
-        
-        
-    </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-label>Conditii livrare</mat-label>
+                        <mat-form-field appearance="outline">                        
+                            <input formControlName="conditiiLivrare" matInput>                        
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-label>Observatii</mat-label>
+                        <mat-form-field appearance="outline">                        
+                            <input formControlName="observatii" matInput>                        
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
     <div class="col-md-12">
         <app-comenzi-produse-autocomplete [selectedProdus]="selectedProdus"></app-comenzi-produse-autocomplete>    
     </div>
-        <div>
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button routerLink="/comenzi" mat-flat-button color="primary">Renunta</a>
+            <div>
+                <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+                <a mat-stroke-button routerLink="/comenzi" mat-flat-button color="primary">Renunta</a>
+            </div>
         </div>
     </div>
-    </div>
-    </form>
+</form>

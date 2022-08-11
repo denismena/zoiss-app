@@ -13,8 +13,12 @@ export interface oferteDTO{
     utilizatorId: string;
     utilizator: string;
     avans: number;
+    facturaAvans: string;
     conditiiPlata: string;
     termenLivrare: string;
+    conditiiLivrare:string;
+    observatii: string;
+    valabilitate: string;
     comision: number;
     produseAll: number;
     produseProc: number;
@@ -30,8 +34,12 @@ export interface oferteCreationDTO{
     arhitectId: number;    
     utilizatorId: string;    
     avans: number;
+    facturaAvans: string;
     conditiiPlata: string;
     termenLivrare: string;
+    conditiiLivrare:string;
+    observatii: string;
+    valabilitate: string;
     comision: number;
     produse: produseOfertaDTO[];
 }

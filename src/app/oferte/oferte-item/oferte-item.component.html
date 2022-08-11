@@ -19,21 +19,19 @@
                         <mat-datepicker #dataPicker></mat-datepicker>
                         <mat-error>Completati data!</mat-error>
                     </mat-form-field>
-                </div>
+                </div>                
                 <div class="col-md-3">
-                    <mat-label>Avans</mat-label>
+                    <mat-label>Conditii plata</mat-label>
                     <mat-form-field appearance="outline">                        
-                        <input formControlName="avans" matInput type="number" class="table-text-right">
-                        <span matSuffix>%</span>
-                        <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
-                    </mat-form-field>
+                        <input formControlName="conditiiPlata" matInput>
+                        <mat-error>{{form.get("conditiiPlata")?.getError("maxLength")?.message}}</mat-error>
+                    </mat-form-field>                    
                 </div>
                 <div class="col-md-3">
                     <mat-label>Termen de livrare</mat-label>
                     <mat-form-field appearance="outline">                        
-                        <input formControlName="termenLivrare" matInput>
-                        <mat-error>Completati data!</mat-error>
-                    </mat-form-field>
+                        <input formControlName="termenLivrare" matInput>                        
+                    </mat-form-field>                    
                 </div>
             </div>
             <div class="row">
@@ -47,17 +45,44 @@
                 </div>
                 <div class="col-md-1">
                     <mat-label>Comision</mat-label>
-                    <mat-form-field appearance="outline">                            
-                        <input formControlName="comision" matInput>
+                    <mat-form-field appearance="fill">                            
+                        <input formControlName="comision" matInput class="table-text-right">
+                        <span matSuffix class="pl-3" style="padding-left: 5px;">%</span>
                     </mat-form-field>
                 </div>
-                <div class="col-md-5">
-                    <mat-label>Conditii plata</mat-label>
+                <div class="col-md-2">
+                    <mat-label>Avans</mat-label>
                     <mat-form-field appearance="outline">                        
-                        <input formControlName="conditiiPlata" matInput>
-                        <mat-error>{{form.get("conditiiPlata")?.getError("maxLength")?.message}}</mat-error>
+                        <input formControlName="avans" matInput class="table-text-right">
+                        <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
                     </mat-form-field>
-                </div>                
+                </div>
+                <div class="col-md-3">
+                    <mat-label>Factura avans</mat-label>
+                    <mat-form-field appearance="outline">                        
+                        <input formControlName="facturaAvans" matInput>                        
+                    </mat-form-field>                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-label>Conditii livrare</mat-label>
+                    <mat-form-field appearance="outline">                        
+                        <input formControlName="conditiiLivrare" matInput>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-label>Observatii</mat-label>
+                    <mat-form-field appearance="outline">                        
+                        <input formControlName="observatii" matInput>                        
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-label>Valabilitate oferta</mat-label>
+                    <mat-form-field appearance="outline">                        
+                        <input formControlName="valabilitate" matInput>                        
+                    </mat-form-field>
+                </div>
             </div>
 </div>
 <div class="col-md-12">

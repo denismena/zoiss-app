@@ -12,8 +12,11 @@ export interface comenziDTO{
     utilizatorId: string;
     utilizator: string;
     avans: number;
+    facturaAvans: string;
     conditiiPlata: string;
     termenLivrare: string;
+    conditiiLivrare:string;
+    observatii: string;
     clientAdresaId: number;
     platit: boolean;
     arhitectPlatit: boolean;
@@ -33,8 +36,11 @@ export interface comenziCreationDTO{
     arhitectId: number;    
     utilizatorId: string;    
     avans: number;
+    facturaAvans: string;
     conditiiPlata: string;
     termenLivrare: string;
+    conditiiLivrare:string;
+    observatii: string;
     clientAdresaId: number;
     platit: boolean;
     arhitectPlatit: boolean;
