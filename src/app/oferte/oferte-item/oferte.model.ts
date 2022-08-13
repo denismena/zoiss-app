@@ -22,6 +22,8 @@ export interface oferteDTO{
     comision: number;
     produseAll: number;
     produseProc: number;
+    produseValoareTotala:number;
+    produseDiscount:number;
     produseValoare:number;
     allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
     produse: produseOfertaDTO[];

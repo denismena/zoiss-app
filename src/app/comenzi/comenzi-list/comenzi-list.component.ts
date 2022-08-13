@@ -58,7 +58,7 @@ export class ComenziListComponent implements OnInit {
     this.comenzi = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'valoare', 'comandate', 'platit', 'select', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'arhitect', 'utilizator', 'avans', 'total', 'discount', 'valoare', 'comandate', 'platit', 'select', 'action'];
 
   ngOnInit(): void {
     let date: Date = new Date();

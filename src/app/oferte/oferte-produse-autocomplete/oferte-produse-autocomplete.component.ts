@@ -39,7 +39,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['codProdus', 'produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'actions']
+  columnsToDisplay = ['codProdus', 'produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'discount', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -69,6 +69,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      discount: null,
       codProdus:'', id:null, isInComanda:false, isCategory: false, sort: null, isStoc: false
     });
     
@@ -205,6 +206,13 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
     moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
     this.table.renderRows();
+  }
+
+  changeDiscountAll(discoutAll: HTMLInputElement){    
+    this.selectedProdus.forEach(p=>p.discount = Number(discoutAll.value));    
+  }
+  getTotalWithDiscountCost() {
+    return this.selectedProdus.map(t => t.valoare - (t.valoare * t.discount / 100)).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
 }
 

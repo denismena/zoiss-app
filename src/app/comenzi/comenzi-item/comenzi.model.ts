@@ -24,6 +24,8 @@ export interface comenziDTO{
     produseComenziAll: number;
     produseComenziStoc: number;
     produseComenziProc: number;
+    produseComenziValoareTotala:number;
+    produseComenziDiscount:number;
     produseComenziValoare:number;
     allComandate: boolean;//pentru a vedea cand sunt toate produsele selectate in oferta.
     comenziProduses: produseComandaDTO[];

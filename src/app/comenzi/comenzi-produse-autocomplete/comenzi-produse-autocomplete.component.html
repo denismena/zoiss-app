@@ -62,7 +62,8 @@
             <div class="col-md-1">
                 <mat-label>discount</mat-label>
                 <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="discount"/>                    
+                    <input matInput formControlName="discount" class="table-text-right"/>        
+                    <span matSuffix>%</span>            
                     <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
             </div>
@@ -146,7 +147,8 @@
     </ng-container>
     <ng-container matColumnDef="discount">
         <th mat-header-cell *matHeaderCellDef>Discount <br />
-            <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)" min="0" step="0.01" style="width: 4rem;" />
+            <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)" 
+            class="table-text-right" style="width: 4rem;" />
         </th>
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
             {{element.discount}} <span *ngIf="element.discount > 0">%</span></ng-container>

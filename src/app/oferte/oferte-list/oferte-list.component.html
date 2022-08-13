@@ -136,6 +136,18 @@
                 {{element.avans}}
             </td>
         </ng-container>
+        <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef class="table-text-right">Total</th>
+            <td mat-cell *matCellDef="let element" class="table-text-right">
+                {{element.produseValoareTotala}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef class="table-text-right">Discount</th>
+            <td mat-cell *matCellDef="let element" class="table-text-right">
+                {{element.produseDiscount}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="valoare">
             <th mat-header-cell *matHeaderCellDef class="table-text-right">Valoare</th>
             <td mat-cell *matCellDef="let element" class="table-text-right">

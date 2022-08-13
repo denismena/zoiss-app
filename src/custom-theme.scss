@@ -75,6 +75,7 @@ body{
   //font-weight: 300;
 }
 
+/*MATERIAL*/
 mat-form-field{
   width: 100%;
 }
@@ -101,25 +102,6 @@ mat-form-field{
 .mat-tooltip{
   font-size: 14px;
 }
-td.mat-cell{
-  padding: 0.2rem !important;
-}
-th.mat-header-cell{
-  padding: 0.2rem !important;
-}
-.mat-form-field-infix{
-  padding: 7px 0px !important;
-}
-.mat-form-field-flex{
-  padding-top: 0px !important;
-}
-.w-50{
-  min-width: 50px;
-}
-
-.w-100{
-  width: 100px;
-}
 .mat-flat-button{
   min-width: 40px;
   padding: 0px 10px;  
@@ -145,6 +127,37 @@ mat-icon {
   min-width: 550px !important;
   max-width: 550px !important;
 }
+.mat-flat-button.mat-primary{
+  color: #3c4858 !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-suffix{
+  top: 0em !important;
+}
+.mat-form-field-suffix span{
+  padding-left: 5px;
+}
+td.mat-cell{
+  padding: 0.2rem !important;
+}
+th.mat-header-cell{
+  padding: 0.2rem !important;
+}
+.mat-form-field-infix{
+  padding: 7px 0px !important;
+}
+.mat-form-field-flex{
+  padding-top: 0px !important;
+}
+
+/* END MATERIAL*/
+.w-50{
+  min-width: 50px;
+}
+
+.w-100{
+  width: 100px;
+}
+
 .mpanel{
   min-width: 250px !important;
   max-width: 450px !important;
@@ -194,9 +207,6 @@ h4{
   background-color: white;
   padding-top: 10px;
   padding-bottom: 10px;
-}
-.mat-flat-button.mat-primary{
-  color: #3c4858 !important;
 }
 .categoryProd{
   background-color: #c2c2c2 ;
