@@ -133,25 +133,25 @@
         <ng-container matColumnDef="avans">
             <th mat-header-cell *matHeaderCellDef>Avans</th>
             <td mat-cell *matCellDef="let element">
-                {{element.avans}}
+                {{element.avans| number: '1.0-2'}}
             </td>
         </ng-container>
         <ng-container matColumnDef="total">
             <th mat-header-cell *matHeaderCellDef class="table-text-right">Total</th>
             <td mat-cell *matCellDef="let element" class="table-text-right">
-                {{element.produseComenziValoareTotala}}
+                {{element.produseComenziValoareTotala| number: '1.0-2'}}
             </td>
         </ng-container>
         <ng-container matColumnDef="discount">
             <th mat-header-cell *matHeaderCellDef class="table-text-right">Discount</th>
             <td mat-cell *matCellDef="let element" class="table-text-right">
-                {{element.produseComenziDiscount}}
+                {{element.produseComenziDiscount| number: '1.0-2'}}
             </td>
         </ng-container>
         <ng-container matColumnDef="valoare">
             <th mat-header-cell *matHeaderCellDef class="table-text-right">Valoare</th>
             <td mat-cell *matCellDef="let element" class="table-text-right">
-                {{element.produseComenziValoare}}
+                {{element.produseComenziValoare| number: '1.0-2'}}
             </td>
         </ng-container>
         <ng-container matColumnDef="select">            
@@ -188,12 +188,11 @@
                         <th scope="col">Cod</th>
                         <th scope="col">Furnizor</th>
                         <th scope="col">UM</th>
-                        <th scope="col">Cant</th>
-                        <th scope="col">Cutii</th>
-                        <th scope="col">Pret um</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Discount</th>
-                        <th scope="col">Valoare</th>
+                        <th scope="col" class="table-text-right">Cant</th>
+                        <th scope="col" class="table-text-right">Cutii</th>
+                        <th scope="col" class="table-text-right">Pret um</th>
+                        <th scope="col" class="table-text-right">Discount</th>
+                        <th scope="col" class="table-text-right">Valoare</th>
                         <th scope="col">Disponibilitate</th>
                         <th scope="col">Depozit</th>
                         <th scope="col">#</th>
@@ -201,17 +200,16 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let prod of element.comenziProduses" [ngClass]="{ 'categoryProd': prod.isCategory === true, 'stocProd':prod.isStoc === true }">
-                        <td *ngIf="prod.isCategory === true" colspan="11" align="center">{{prod.produsNume}}</td>
+                        <td *ngIf="prod.isCategory === true" colspan="11" class="table-text-center">{{prod.produsNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.produsNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.codProdus}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.furnizorNume}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.um}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.cantitate}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.cutii}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.pretUm}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.valoare}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.discount}}</td>
-                        <td *ngIf="prod.isCategory === false">{{(prod.discount ? prod.valoare - prod.valoare/prod.discount : prod.valoare)}}</td>
+                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.cantitate| number: '1.0-2'}}</td>
+                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.cutii| number: '1.0-2'}}</td>
+                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.pretUm| number: '1.0-2'}}</td>
+                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.discount| number: '1.0-2'}}</td>
+                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.valoare| number: '1.0-2'}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.disponibilitate|customDate}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.depozit}}</td>
                         <td>

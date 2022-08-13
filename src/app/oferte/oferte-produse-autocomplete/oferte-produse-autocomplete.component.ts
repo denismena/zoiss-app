@@ -39,7 +39,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
 
-  columnsToDisplay = ['codProdus', 'produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'valoare', 'discount', 'actions']
+  columnsToDisplay = ['codProdus', 'produsNume', 'furnizorNume', 'cantitate', 'um', 'cutii', 'pretUm', 'discount', 'valoare', 'actions']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -171,6 +171,8 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 100;
     var cutii = Math.ceil(cantInt / perCutieInt);
     var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 10000
+    var discount = this.form.controls['discount'].value??0;
+    valoareDecimal = discount > 0 ? valoareDecimal - (valoareDecimal * discount / 100) : valoareDecimal;
     if(cantInt == null){
       this.form.controls['cutii']?.setValue('');
       this.form.controls['valoare']?.setValue('');
@@ -180,13 +182,16 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue(valoareDecimal.toFixed(2)??0);
     }
   }
-  onPretChange(event: any){
-    const pret = event.target.value;
+  onPretChange(event: any){    
+    const pret = this.form.controls['pretUm'].value??0;    
+    const discount = this.form.controls['discount'].value??0;    
+    var val = Number(pret * this.form.controls['cantitate'].value??0);
+    val = discount > 0 ? val - (val * discount / 100) : val;
     if(pret == ''){
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue(Number(pret * this.form.controls['cantitate'].value??0).toFixed(2));
+      this.form.controls['valoare']?.setValue(val.toFixed(2));
     }
   }
   getTotalCost() {
@@ -209,10 +214,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
 
   changeDiscountAll(discoutAll: HTMLInputElement){    
-    this.selectedProdus.forEach(p=>p.discount = Number(discoutAll.value));    
-  }
-  getTotalWithDiscountCost() {
-    return this.selectedProdus.map(t => t.valoare - (t.valoare * t.discount / 100)).reduce((acc, value) => Number(acc) + Number(value), 0);
+    this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = p.valoare - (p.valoare * Number(discoutAll.value) / 100)});    
   }
 }
 

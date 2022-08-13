@@ -50,6 +50,14 @@
                     <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
+            </div>            
+            <div class="col-md-1">
+                <mat-label>discount</mat-label>
+                <mat-form-field appearance="outline">                    
+                    <input matInput formControlName="discount" (change)="onPretChange($event)" class="table-text-right"/>        
+                    <span matSuffix>%</span>            
+                    <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field> 
             </div>
             <div class="col-md-2">
                 <mat-label>valoare</mat-label>
@@ -57,14 +65,6 @@
                     <input matInput formControlName="valoare" readonly="true"/>
                     <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field> 
-            </div>
-            <div class="col-md-1">
-                <mat-label>discount</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="discount" class="table-text-right"/>        
-                    <span matSuffix>%</span>            
-                    <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field> 
             </div>
             <div class="col-md-1">
@@ -121,7 +121,7 @@
     <ng-container matColumnDef="cantitate">
         <th mat-header-cell *matHeaderCellDef class="table-text-right">Cant</th>
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.cantitate}}</ng-container>
+            {{element.cantitate| number: '1.0-2'}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
@@ -129,7 +129,7 @@
     <ng-container matColumnDef="cutii">
         <th mat-header-cell *matHeaderCellDef class="table-text-right">Cutii</th>
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.cutii}}</ng-container>
+            {{element.cutii| number: '1.0-2'}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalBox()}} </td>
     </ng-container>
@@ -137,7 +137,18 @@
     <ng-container matColumnDef="pretUm">
         <th mat-header-cell *matHeaderCellDef class="table-text-right">Pret</th>
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.pretUm}}</ng-container>
+            {{element.pretUm| number: '1.0-2'}}</ng-container>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef>Discount <br />
+            <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)" 
+                class="table-text-right" style="width: 4rem;" />
+        </th>
+        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
+            {{element.discount| number: '1.0-2'}} <span *ngIf="element.discount > 0">%</span></ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
@@ -145,20 +156,9 @@
     <ng-container matColumnDef="valoare">
         <th mat-header-cell *matHeaderCellDef class="table-text-right">Val</th>
         <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.valoare}}</ng-container>
+            {{element.valoare| number: '1.0-2'}}</ng-container>
         </td>
         <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalCost()| number: '1.0-2'}} </td>
-    </ng-container>
-    
-    <ng-container matColumnDef="discount">
-        <th mat-header-cell *matHeaderCellDef>Discount <br />
-            <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)" 
-                class="table-text-right" style="width: 4rem;" />
-        </th>
-        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.discount}} <span *ngIf="element.discount > 0">%</span></ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -169,7 +169,7 @@
                 close
             </mat-icon>
         </td>
-        <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalWithDiscountCost()| number: '1.0-2'}} </td>
+        <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
