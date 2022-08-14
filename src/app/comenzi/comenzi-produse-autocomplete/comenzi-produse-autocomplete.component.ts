@@ -73,7 +73,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       discount: null,
       codProdus:'',
-      id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null, isStoc: false
+      id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null, isStoc: false, discountValoare: null
     });    
     
     this.loadProduseList();
@@ -105,23 +105,28 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
  }
 
  selectProdus(produs: any){  
-   this.form.get('produsId')?.setValue(produs?.id);
-   this.form.get('produsNume')?.setValue(produs?.nume);
-   this.form.get('codProdus')?.setValue(produs?.cod);
-   if(produs != undefined && produs.prefFurnizorId !=undefined){
-     console.log('prefFurnizor', produs.prefFurnizor);
-     this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
-     this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
-     this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
-       this.preselectFurnizor = furnizor;
-     });
-   }
-   this.form.controls['pretUm']?.setValue(produs?.pret);
-   this.form.controls['umId']?.setValue(produs?.umId);
-   this.form.controls['um']?.setValue(produs?.um);
-   this.form.controls['isCategory']?.setValue(produs?.isCategory);
-   this.perCutieSet = produs?.perCutie;
-   this.pretSet = produs?.pret;
+  //reset some values
+  this.form.controls['cantitate']?.setValue(null);
+  this.form.controls['cutii']?.setValue(null);
+  this.form.controls['valoare']?.setValue(null);
+
+  this.form.get('produsId')?.setValue(produs?.id);
+  this.form.get('produsNume')?.setValue(produs?.nume);
+  this.form.get('codProdus')?.setValue(produs?.cod);
+  if(produs != undefined && produs.prefFurnizorId !=undefined){
+    console.log('prefFurnizor', produs.prefFurnizor);
+    this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
+    this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
+    this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
+      this.preselectFurnizor = furnizor;
+    });
+  }
+  this.form.controls['pretUm']?.setValue(produs?.pret);
+  this.form.controls['umId']?.setValue(produs?.umId);
+  this.form.controls['um']?.setValue(produs?.um);
+  this.form.controls['isCategory']?.setValue(produs?.isCategory);
+  this.perCutieSet = produs?.perCutie;
+  this.pretSet = produs?.pret;
 }
 
   private _filterStates(value: string): produseComandaDTO[] {
@@ -220,6 +225,6 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.table.renderRows();
   }
   changeDiscountAll(discoutAll: HTMLInputElement){    
-    this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = p.valoare - (p.valoare * Number(discoutAll.value) / 100)});    
+    this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
 }

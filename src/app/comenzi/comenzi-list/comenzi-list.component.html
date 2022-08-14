@@ -126,7 +126,7 @@
         <ng-container matColumnDef="comandate">            
             <th mat-header-cell *matHeaderCellDef class="text-center">Comandate</th>
             <td *matCellDef="let element" class="text-center" [matTooltipDisabled]="element.produseComenziStoc == 0"
-                matTooltip="Produse - Comandate: {{element.produseComenziProc}} / Total: {{element.produseComenziAll}} / De Stoc: {{element.produseComenziStoc}}">
+                matTooltip="Produse - Comandate: {{element.produseComenziProc}} / Total: {{element.produseComenziAll}} / Din stoc: {{element.produseComenziStoc}}">
               {{element.produseComenziProc}} / {{element.produseComenziAll}} <span *ngIf="element.produseComenziStoc > 0">+ {{element.produseComenziStoc}}</span>
             </td>
         </ng-container>        

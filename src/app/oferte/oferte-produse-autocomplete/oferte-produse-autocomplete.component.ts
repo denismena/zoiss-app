@@ -69,8 +69,8 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      discount: null,
-      codProdus:'', id:null, isInComanda:false, isCategory: false, sort: null, isStoc: false
+      discount: null, 
+      codProdus:'', id:null, isInComanda:false, isCategory: false, sort: null, isStoc: false, discountValoare: null
     });
     
     this.loadProduseList();
@@ -101,6 +101,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
 
   selectProdus(produs: any){  
+    //reset some values
+    this.form.controls['cantitate']?.setValue(null);
+    this.form.controls['cutii']?.setValue(null);
+    this.form.controls['valoare']?.setValue(null);
+
     this.form.get('produsId')?.setValue(produs?.id);
     this.form.get('produsNume')?.setValue(produs?.nume);
     this.form.get('codProdus')?.setValue(produs?.cod);
@@ -214,7 +219,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
 
   changeDiscountAll(discoutAll: HTMLInputElement){    
-    this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = p.valoare - (p.valoare * Number(discoutAll.value) / 100)});    
+    this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
 }
 
