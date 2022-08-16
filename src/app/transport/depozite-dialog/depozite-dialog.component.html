@@ -1,6 +1,6 @@
 <div class="form-container">
     <h2 mat-dialog-title>
-        Finalizare transport produs in depozit
+        Receptie produs in depozit
     </h2>
     <mat-dialog-content>
         <form [formGroup]="form">
@@ -16,8 +16,8 @@
                 </div></div>
                 <div class="row"><div class="col-md-12">
                     <mat-label>Detalii</mat-label>
-                    <mat-form-field appearance="standard">                
-                        <textarea matInput formControlName="detalii"></textarea>
+                    <mat-form-field appearance="outline">                
+                        <textarea matInput formControlName="detalii" rows="3"></textarea>
                     </mat-form-field>
                 </div></div>
                 <div class="row"><div class="col-md-12">

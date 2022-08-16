@@ -135,7 +135,6 @@ export class ComenziListComponent implements OnInit {
 
   genereazaComandaFurnizor()
   {
-    console.log('in generat');
     var selectedProd: produseComandaDTO[] = [];
     var comenziNeplatite = false;
     var maiMultiFurnizori = false;
@@ -177,7 +176,7 @@ export class ComenziListComponent implements OnInit {
       return;
     }
     
-    if(comenziNeplatite)
+    if(comenziNeplatite){
       Swal.fire({
         title: 'Atentie!',
         text: "Ati selectat o comanda care nu este platita! Doriti sa continuati?",
@@ -191,17 +190,17 @@ export class ComenziListComponent implements OnInit {
           this.genereazaComnada(selectedProd);
         }
       });  
-      
+    }
+    else {
       this.genereazaComnada(selectedProd);
+    }
   }
 
   genereazaComnada(selectedProd:any){
     this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
-      console.log('comanda new id', id);
       this.router.navigate(['/comenziFurnizor/edit/' + id])
     }, 
     error=> this.errors = parseWebAPIErrors(error));
-    console.log('aici a generat comanda');
   }
   updatePagination(event: PageEvent){
     this.currentPage = event.pageIndex + 1;
