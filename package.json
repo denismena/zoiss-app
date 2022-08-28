@@ -35,7 +35,7 @@
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "ngx-barcode-scanner": "^0.3.0",
     "rxjs": "~6.6.0",
     "stream": "0.0.2",
@@ -44,7 +44,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^13.2.4",
+    "@angular-devkit/build-angular": "^13.3.9",
     "@angular/cli": "~13.0.4",
     "@angular/compiler-cli": "~13.0.3",
     "@types/file-saver": "^2.0.5",

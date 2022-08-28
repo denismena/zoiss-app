@@ -40,6 +40,7 @@ export class ProduseItemComponent implements OnInit {
       prefFurnizorId: null,
       prefFurnizor: '',
       poza: '',
+      pozaPath: '',
       active: true,
       isCategory: false
     });
@@ -59,7 +60,14 @@ export class ProduseItemComponent implements OnInit {
   }
 
   onImageSelected(image: any){
+    console.log('image', image);
     this.form.get('poza')?.setValue(image);
+    this.form.get('pozaPath')?.setValue('image');
+  }
+
+  onImageDeleted(){
+    this.form.get('poza')?.setValue(null);
+    this.form.get('pozaPath')?.setValue(null);
   }
 
   cancel(){

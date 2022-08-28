@@ -108,6 +108,9 @@ export class ProduseService {
     if (produs.poza){
       formData.append('poza', produs.poza);
     }
+    if (produs.pozaPath){
+      formData.append('pozaPath', produs.pozaPath);
+    }
 
     return formData;
   }

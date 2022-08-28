@@ -18,6 +18,8 @@ export class InputImgComponent implements OnInit {
 
   @Output()
   onImageSelected = new EventEmitter<File>();
+  @Output()
+  onImageDeleted = new EventEmitter<number>();
 
   ngOnInit(): void {    
     if(this.urlCurrentImage != undefined && this.urlCurrentImage != '')
@@ -32,5 +34,9 @@ export class InputImgComponent implements OnInit {
       this.urlCurrentImage = null;
     }
   }
-
+  delete(){
+    this.urlCurrentImage = null;
+    this.imageBase64 = '';
+    this.onImageDeleted.emit();
+  }
 }

@@ -3,13 +3,23 @@
     <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="change($event)" />
 
     <div>
-        <div *ngIf="imageBase64" id="divImgBase64">
-            <img [src]="imageBase64"  image-resizing 
-            image-Height="100px" image-Width="100px" />
+        <div *ngIf="imageBase64" id="divImgBase64" class="produsImgContent">
+            <img [src]="imageBase64"  image-resizing image-Height="100px" image-Width="100px" />
+
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" 
+                [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti poza?', showCancelButton: true}" 
+                title="Delete" (confirm)="delete()" *ngIf="imageBase64 || urlCurrentImage">
+                close
+            </mat-icon>
         </div>
-        <div *ngIf="urlCurrentImage" id="divCurrImage">
-            <img [src]="urlCurrentImage"  image-resizing 
-            image-Height="100px" image-Width="100px"/>
+        <div *ngIf="urlCurrentImage" id="divCurrImage" class="produsImgContent">
+            <img [src]="urlCurrentImage"  image-resizing image-Height="100px" image-Width="100px"/>
+
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" 
+                [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti poza?', showCancelButton: true}" 
+                title="Delete" (confirm)="delete()" *ngIf="imageBase64 || urlCurrentImage">
+                close
+            </mat-icon>
         </div>
-    </div>
+    </div>    
 </div>
