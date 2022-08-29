@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { userCredentials } from '../security.models';
 
@@ -10,8 +10,8 @@ import { userCredentials } from '../security.models';
 })
 export class AuthenticationFormComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, ) { }
-  public form!: FormGroup;
+  constructor(private formBuilder: UntypedFormBuilder, ) { }
+  public form!: UntypedFormGroup;
   @Input()
   action: string = '';
   

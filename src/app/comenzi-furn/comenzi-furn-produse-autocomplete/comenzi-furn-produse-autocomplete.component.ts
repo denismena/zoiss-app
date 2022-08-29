@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
@@ -21,15 +21,15 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private umService: UMService,
-    private formBuilder:FormBuilder, private produseService: ProduseService) { 
+    private formBuilder:UntypedFormBuilder, private produseService: ProduseService) { 
     this.selectedProdus = [];
     //this.produsToDisplay = [];    
   }
 
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
-  produsCtrl: FormControl = new FormControl();
-  public furnizorFormGroup!: FormGroup;
+  produsCtrl: UntypedFormControl = new UntypedFormControl();
+  public furnizorFormGroup!: UntypedFormGroup;
   
   @Input() preselectedProdus:produseDTO|undefined;
   @Input() selectedProdus: produseComandaFurnizorDTO[];

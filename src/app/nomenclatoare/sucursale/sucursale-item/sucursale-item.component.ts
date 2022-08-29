@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { sucursalaCreationDTO } from './sucursala.model';
@@ -11,8 +11,8 @@ import { sucursalaCreationDTO } from './sucursala.model';
 })
 export class SucursaleItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder) { }
-  public form!: FormGroup;
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: UntypedFormBuilder) { }
+  public form!: UntypedFormGroup;
   @Input()
   model!:sucursalaCreationDTO;
   

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
@@ -30,7 +30,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
 
-  arhitectCtrl: FormControl = new FormControl();
+  arhitectCtrl: UntypedFormControl = new UntypedFormControl();
   selectedArhitect: any;
 
   @Input()

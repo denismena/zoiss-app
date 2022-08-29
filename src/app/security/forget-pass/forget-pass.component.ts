@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -13,8 +13,8 @@ import { SecurityService } from '../security.service';
 })
 export class ForgetPassComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private securityservice: SecurityService, private router: Router ) { }
-  public form!: FormGroup;
+  constructor(private formBuilder: UntypedFormBuilder, private securityservice: SecurityService, private router: Router ) { }
+  public form!: UntypedFormGroup;
   errors: string[] = [];
   success: boolean = false;
 

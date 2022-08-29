@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import Swal from 'sweetalert2';
@@ -12,8 +12,8 @@ import { clientiAdresaDTO, clientiDTO } from './clienti.model';
 })
 export class ClientiItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder,private router:Router) { }
-  public form!: FormGroup;  
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder,private router:Router) { }
+  public form!: UntypedFormGroup;  
   @Input()model:clientiDTO | undefined;
   @Input()adreseList: clientiAdresaDTO[] = [];
   @Input() isDialog:boolean = false;

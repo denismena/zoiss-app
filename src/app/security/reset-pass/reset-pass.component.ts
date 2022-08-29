@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -13,10 +13,10 @@ import { SecurityService } from '../security.service';
 })
 export class ResetPassComponent implements OnInit {
 
-  constructor(private securityService: SecurityService, private router: Router, private formBuilder: FormBuilder,
+  constructor(private securityService: SecurityService, private router: Router, private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute) { }
   errors: string[] = [];
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {

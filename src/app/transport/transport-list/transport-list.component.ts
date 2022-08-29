@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -40,7 +40,7 @@ export class TransportListComponent implements OnInit {
   errors: string[] = [];
   depozitList: depoziteDTO[] = [];
 
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 20;
@@ -52,7 +52,7 @@ export class TransportListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router,
-    public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService) { 
+    public dialog: MatDialog, private formBuilder:UntypedFormBuilder, private depoziteService: DepoziteService) { 
     this.transport = [];
     this.expandedElement = [];
   }

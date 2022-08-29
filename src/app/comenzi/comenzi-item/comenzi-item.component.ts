@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
@@ -15,12 +15,12 @@ import { comenziDTO, produseComandaDTO } from './comenzi.model';
 })
 export class ComenziItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, 
     private comenziService: ComenziService, private clientiService: ClientiService) { }
   @Input()
   model:comenziDTO | undefined;
   adresa: clientiAdresaDTO[] | undefined;
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
   @Input()
   selectedProdus: produseComandaDTO[] = [];

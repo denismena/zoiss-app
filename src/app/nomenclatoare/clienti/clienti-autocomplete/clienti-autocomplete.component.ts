@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import {Observable, Subscription} from 'rxjs';
@@ -24,7 +24,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
   
-  clientCtrl: FormControl = new FormControl();
+  clientCtrl: UntypedFormControl = new UntypedFormControl();
   selectedClient: any;
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();

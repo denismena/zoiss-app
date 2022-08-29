@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
@@ -17,13 +17,13 @@ export class ClientiListComponent implements OnInit {
   clienti: clientiDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder) { 
+  constructor(private clientiService: ClientiService, private formBuilder:UntypedFormBuilder) { 
     this.clienti = [];
   }
   columnsToDisplay= ['nume', 'pfPj', 'cuicnp', 'registruComert', 'action'];

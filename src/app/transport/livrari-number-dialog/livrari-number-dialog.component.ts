@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
@@ -10,8 +10,8 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 })
 export class LivrariNumberDialogComponent implements OnInit {
 
-  public form!: FormGroup;  
-  constructor(private formBuilder:FormBuilder,
+  public form!: UntypedFormGroup;  
+  constructor(private formBuilder:UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) data: { },
     public dialogRef: MatDialogRef<LivrariNumberDialogComponent>) {
     }    

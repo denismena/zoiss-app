@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
@@ -19,14 +19,14 @@ export class ProduseListComponent implements OnInit {
   produse: produseDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
   umList: umDTO[]=[];
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private produseService: ProduseService, private formBuilder:FormBuilder, private umService: UMService) {  
+  constructor(private produseService: ProduseService, private formBuilder:UntypedFormBuilder, private umService: UMService) {  
     this.produse = [];
   }
   

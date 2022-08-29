@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { furnizoriDTO } from '../../furnizori/furnizori-item/furnizori.model';
@@ -15,8 +15,8 @@ import { produseCreationDTO, produseDTO } from './produse.model';
 export class ProduseItemComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,private router:Router
-    ,private formBuilder: FormBuilder, private umService: UMService) { }
-  public form!: FormGroup;
+    ,private formBuilder: UntypedFormBuilder, private umService: UMService) { }
+  public form!: UntypedFormGroup;
   
   @Input() preselectFurnizor:furnizoriDTO|undefined;
   @Input() model!:produseCreationDTO;

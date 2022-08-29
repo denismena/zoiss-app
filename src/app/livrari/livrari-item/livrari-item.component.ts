@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
@@ -15,13 +15,13 @@ import { LivrariDTO, livrariProduseDTO } from './livrari.model';
 })
 export class LivrariItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, 
     private livrariService: LivrariService, private clientiService: ClientiService) { }
 
   @Input() model:LivrariDTO | undefined;  
   @Input() preselectClient: clientiDTO | undefined;
   @Input() selectedProdus: livrariProduseDTO[] = [];
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
   @Output() onSaveChanges: EventEmitter<LivrariDTO> = new EventEmitter<LivrariDTO>();
 

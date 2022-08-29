@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
@@ -15,10 +15,10 @@ import { oferteDTO } from './oferte.model';
 })
 export class OferteItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private oferteService: OferteService) { }
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, private oferteService: OferteService) { }
   @Input()
   model:oferteDTO | undefined;
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
   @Input()
   selectedProdus: produseOfertaDTO[] = [];

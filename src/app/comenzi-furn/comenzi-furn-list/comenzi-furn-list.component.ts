@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import * as saveAs from 'file-saver';
@@ -37,7 +37,7 @@ export class ComenziFurnListComponent implements OnInit {
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];
 
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 20;
@@ -49,7 +49,7 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
-    private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService) { 
+    private router:Router, private formBuilder:UntypedFormBuilder, public cookie: CookieService, private exportService: ExportService) { 
     this.comenziFurnizor = [];
     this.expandedElement = [];
   }

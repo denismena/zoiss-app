@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -15,12 +15,12 @@ import { ClientiService } from '../clienti.service';
 })
 export class ClientiAdresaComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, 
     private clientService: ClientiService, private depoziteService: DepoziteService) { 
    this.adreseList=[]; 
   }
 
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
   showLivrare: boolean = true;
   @Input()
   adreseList: clientiAdresaDTO[];

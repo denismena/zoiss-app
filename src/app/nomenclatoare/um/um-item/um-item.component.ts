@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { umCreationDTO } from './um.model';
@@ -11,8 +11,8 @@ import { umCreationDTO } from './um.model';
 })
 export class UmItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder) { }
-  public form!: FormGroup;
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: UntypedFormBuilder) { }
+  public form!: UntypedFormGroup;
   @Input()
   model!:umCreationDTO;
   

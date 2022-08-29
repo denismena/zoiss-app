@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
@@ -27,9 +27,9 @@ export class ComisionArhitectiComponent implements OnInit {
   comisioaneArhitecti: arhitectiComisionDTO[];
   expandedElement: arhitectiComisionDTO[];
   errors: string[] = [];
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
-  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private router:Router) { 
+  constructor(private reportService: RapoarteService, private formBuilder:UntypedFormBuilder, private router:Router) { 
     this.comisioaneArhitecti = [];
     this.expandedElement = [];
   }

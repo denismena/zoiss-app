@@ -1,6 +1,5 @@
-import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -14,9 +13,9 @@ import { SecurityService } from '../security.service';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private securityService: SecurityService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private securityService: SecurityService, private router: Router, private formBuilder: UntypedFormBuilder) { }
   errors: string[] = [];
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
   
   ngOnInit(): void {
     this.form = this.formBuilder.group({

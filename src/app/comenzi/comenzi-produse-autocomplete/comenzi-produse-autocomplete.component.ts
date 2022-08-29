@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -21,15 +21,15 @@ import { produseComandaDTO } from '../comenzi-item/comenzi.model';
 })
 export class ComenziProduseAutocompleteComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, 
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
   }
-  public form!: FormGroup;
+  public form!: UntypedFormGroup;
 
-  produsCtrl: FormControl = new FormControl();
-  public furnizorFormGroup!: FormGroup;
+  produsCtrl: UntypedFormControl = new UntypedFormControl();
+  public furnizorFormGroup!: UntypedFormGroup;
 
   @Input() preselectedProdus:produseDTO|undefined;
   @Input() preselectFurnizor:furnizoriDTO|undefined;
@@ -78,8 +78,8 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     
     this.loadProduseList();
     
-    this.furnizorFormGroup = new FormGroup({
-      furnizorId: new FormControl()
+    this.furnizorFormGroup = new UntypedFormGroup({
+      furnizorId: new UntypedFormControl()
     });
     this.produsCtrl.valueChanges.subscribe(value => {
       this.produseService.searchByNameComanda(value).subscribe(produs => {
