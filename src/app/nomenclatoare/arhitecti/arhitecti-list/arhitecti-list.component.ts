@@ -13,6 +13,7 @@ export class ArhitectiListComponent implements OnInit {
 
   arhitecti: arhitectiDTO[];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private arhitectiService: ArhitectiService) { 
     this.arhitecti = [];
   }
@@ -25,7 +26,10 @@ export class ArhitectiListComponent implements OnInit {
   loadList(){
     this.arhitectiService.getAll().subscribe(arhitecti=>{
       this.arhitecti = arhitecti;
-      console.log(this.arhitecti);
+      this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
   delete(id: number){

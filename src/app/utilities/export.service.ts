@@ -32,4 +32,9 @@ export class ExportService{
   comandaFurnizorReport(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
   }
+  comisionArhitectPDF(values:any): Observable<Blob>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<Blob>(`${this.apiUrl}/comisionArhitectPDF`, {responseType: 'blob' as 'json', params});
+    //return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
+  }
 }

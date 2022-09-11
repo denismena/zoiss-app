@@ -97,6 +97,9 @@ export class ComenziFurnListComponent implements OnInit {
       this.comenziFurnizor = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
 

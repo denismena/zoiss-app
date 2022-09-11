@@ -96,6 +96,9 @@ export class ComenziListComponent implements OnInit {
       this.comenzi = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
 

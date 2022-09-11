@@ -14,6 +14,7 @@ export class SucursaleListComponent implements OnInit {
   sucursala: sucursalaDTO[] = [];
   columnsToDisplay= ['nume', 'action'];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private sucursalaService: SucursaleService) { }
 
   ngOnInit(): void {
@@ -23,6 +24,10 @@ export class SucursaleListComponent implements OnInit {
   loadList(){
     this.sucursalaService.getAll().subscribe(sucursala=>{
       this.sucursala = sucursala;
+      this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
   delete(id: number){

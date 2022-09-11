@@ -14,6 +14,7 @@ export class UmListComponent implements OnInit {
   um: umDTO[] = [];
   columnsToDisplay= ['nume', 'action'];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private umService: UMService) { }
 
   ngOnInit(): void {    
@@ -23,7 +24,10 @@ export class UmListComponent implements OnInit {
   loadList(){
     this.umService.getAll().subscribe(um=>{
       this.um = um;
-      console.log(this.um);
+      this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
   delete(id: number){

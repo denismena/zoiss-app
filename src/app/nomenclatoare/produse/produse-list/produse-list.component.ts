@@ -56,9 +56,11 @@ export class ProduseListComponent implements OnInit {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.produseService.getAll(values).subscribe((response: HttpResponse<produseDTO[]>)=>{
-      this.produse = response.body??[];
-      console.log(this.produse);
+      this.produse = response.body??[];      
       this.totalRecords = Number(response.headers.get("totalRecords"));
+      this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
     });    
   }

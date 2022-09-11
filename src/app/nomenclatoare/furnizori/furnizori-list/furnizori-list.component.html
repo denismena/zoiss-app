@@ -121,3 +121,4 @@
     <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
         (page)="updatePagination($event)">
     </mat-paginator>
+    <app-display-errors [errors]="errors"></app-display-errors>

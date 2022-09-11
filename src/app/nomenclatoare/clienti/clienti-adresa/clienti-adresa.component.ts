@@ -38,9 +38,9 @@ export class ClientiAdresaComponent implements OnInit {
       oras:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       judet:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       tara:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
-      tel:[null, {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
+      tel:[null, {validators:[RxwebValidators.maxLength({value:50 })]}],
       email:[null, {validators: [RxwebValidators.email(), RxwebValidators.maxLength({value:100 })]}],
-      sediu: true,
+      sediu: [true,{validators:[RxwebValidators.requiredTrue({conditionalExpression:(x:any)=>x.livrare == false})]}],
       livrare: true,
       depozitId: [null, {validators:[RxwebValidators.required({conditionalExpression:(x:any)=>x.livrare == true})]}],
       id:null, clientId:null, depozit:null

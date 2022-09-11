@@ -13,6 +13,7 @@ export class DepoziteListComponent implements OnInit {
 
   errors: string[] = [];
   depozite: depoziteDTO[];
+  loading$: boolean = true;
   constructor(private depoziteService: DepoziteService) { 
     this.depozite = [];
   }
@@ -25,7 +26,10 @@ export class DepoziteListComponent implements OnInit {
   loadList(){
     this.depoziteService.getAll().subscribe(depozit=>{
       this.depozite = depozit;
-      console.log(this.depozite);
+      this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
   delete(id: number){

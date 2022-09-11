@@ -13,6 +13,7 @@ export class TransportatorListComponent implements OnInit {
 
   transportator: transportatorDTO[];
   errors: string[] = [];
+  loading$: boolean = true;
   constructor(private transporatorService: TransporatorService) { 
     this.transportator = [];
   }
@@ -25,7 +26,10 @@ export class TransportatorListComponent implements OnInit {
   loadList(){
     this.transporatorService.getAll().subscribe(transportator=>{
       this.transportator = transportator;
-      console.log(this.transportator);
+      this.loading$ = false;
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });    
   }
   delete(id: number){

@@ -96,6 +96,9 @@ export class TransportListComponent implements OnInit {
       this.transport = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false; 
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
+      this.loading$ = false;
     });
   }
 

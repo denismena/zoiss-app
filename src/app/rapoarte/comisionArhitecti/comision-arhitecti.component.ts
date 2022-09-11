@@ -3,6 +3,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as saveAs from 'file-saver';
+import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { RapoarteService } from '../rapoarte.service';
@@ -29,16 +31,18 @@ export class ComisionArhitectiComponent implements OnInit {
   errors: string[] = [];
   public form!: UntypedFormGroup;
 
-  constructor(private reportService: RapoarteService, private formBuilder:UntypedFormBuilder, private router:Router) { 
+  constructor(private reportService: RapoarteService, private formBuilder:UntypedFormBuilder, 
+      private router:Router, private exportService: ExportService) { 
     this.comisioaneArhitecti = [];
     this.expandedElement = [];
   }
 
-  columnsToDisplay= ['expand', 'arhitect', 'valoare', 'select'];
+  columnsToDisplay= ['expand', 'arhitect', 'valoare', 'select', 'action'];
   ngOnInit(): void {
     let date: Date = new Date();
     date.setDate(date.getDate() - 30);
     this.form = this.formBuilder.group({
+      arhitectId: 0,
       fromDate: formatDateFormData(date),
       toDate: formatDateFormData(new Date()),
     });
@@ -46,6 +50,7 @@ export class ComisionArhitectiComponent implements OnInit {
     this.loadList(this.form.value);
 
     this.form.valueChanges.subscribe(values=>{
+      values.arhitectId = values.arhitectId;
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);            
@@ -98,6 +103,24 @@ export class ComisionArhitectiComponent implements OnInit {
       this.loadList(this.form.value);
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
+  }
+
+  genereazaPDF(element:any)
+  {    
+    this.loading$ = true;
+    this.form.get('arhitectId')?.setValue(element.arhitectId);
+    console.log('this.form.value', this.form.value);
+    console.log('element', element);
+    this.exportService.comisionArhitectPDF(this.form.value).subscribe(blob => {
+      //var fileURL = window.URL.createObjectURL(blob);      
+      const dtfrom = new Date(this.form.controls['fromDate'].value);
+      const dtTo = new Date(this.form.controls['toDate'].value);
+      saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
+      this.loading$ = false;
+      //window.open(fileURL, "_blank");
+    }, error => {
+      console.log("Something went wrong");
+    });
   }
 
 }

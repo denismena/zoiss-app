@@ -3,7 +3,7 @@ button {
 }
 
 img {
-    width: 400px;
+    width: 300px;
 }
 .produsImgContent{
     position:relative;
@@ -12,5 +12,5 @@ img {
 .mat-icon{
     position:absolute;
     top:0;
-    right:0;
+    left:300px;
 }

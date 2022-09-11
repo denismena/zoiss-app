@@ -49,8 +49,10 @@ export class FurnizoriListComponent implements OnInit {
     this.furnizoriService.getAll(values).subscribe((response: HttpResponse<furnizoriDTO[]>)=>{
       this.furnizori = response.body??[];
       this.totalRecords = Number(response.headers.get("totalrecords"));
+      this.loading$ = false;      
+    }, error => {
+      this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
-      console.log(this.furnizori);
     });    
   }
   delete(id: number){

@@ -1,6 +1,7 @@
 import { comenziDTO } from "src/app/comenzi/comenzi-item/comenzi.model";
 
 export interface arhitectiComisionDTO{
+    arhitectId: number;
     arhitect: string;
     valoare: number;
     existaNeplatite: boolean;
