@@ -37,4 +37,8 @@ export class ExportService{
     return this.http.get<Blob>(`${this.apiUrl}/comisionArhitectPDF`, {responseType: 'blob' as 'json', params});
     //return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
   }
+  aimPDF(id:number): Observable<Blob>{
+    return this.http.get<Blob>(`${this.apiUrl}/aimPDF/${id}`, { responseType: 'blob' as 'json' });
+  }
+
 }

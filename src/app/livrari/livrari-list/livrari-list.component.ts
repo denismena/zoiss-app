@@ -4,9 +4,11 @@ import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import * as saveAs from 'file-saver';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
+import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { LivrariDTO } from '../livrari-item/livrari.model';
@@ -40,7 +42,8 @@ export class LivrariListComponent implements OnInit {
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
-  constructor(private livrariService: LivrariService, private router:Router, private formBuilder:UntypedFormBuilder) { }
+  constructor(private livrariService: LivrariService, private router:Router, 
+    private formBuilder:UntypedFormBuilder, private exportService: ExportService) { }
 
   columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'livrate', 'action'];
 
@@ -113,6 +116,18 @@ export class LivrariListComponent implements OnInit {
     this.clientFilter.clearSelection();    
     this.produsFilter.clearSelection();    
     this.furnizorFilter.clearSelection();
+  }
+
+  genereazaPDF(element:any)
+  {    
+    this.loading$ = true;
+    this.exportService.aimPDF(element.id).subscribe(blob => {
+      this.loading$ = false;
+      const dt = new Date(element.data)
+      saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+    }, error => {
+      console.log("Something went wrong");
+    });
   }
 
   //#region filtre
