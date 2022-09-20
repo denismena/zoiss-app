@@ -69,8 +69,8 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       umId: ['', {validators:[RxwebValidators.required()]}],
       cantitate: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
-      valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
+      pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
+      valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
       discount: null,
       codProdus:'',
       id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null, isStoc: false, discountValoare: null
@@ -151,11 +151,11 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   }
 
   onCantitateChange(event: any){
-    var cantInt = Number(event.target.value??0) * 100;
-    var perCutieInt = Number(this.perCutieSet) * 100 ;
-    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 100;
+    var cantInt = Number(event.target.value??0) * 1000;
+    var perCutieInt = Number(this.perCutieSet) * 1000 ;
+    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 1000;
     var cutii = Math.ceil(cantInt / perCutieInt);
-    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 10000
+    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 100000;
     var discount = this.form.controls['discount'].value??0;
     valoareDecimal = discount > 0 ? valoareDecimal - (valoareDecimal * discount / 100) : valoareDecimal;
     if(cantInt == null){
@@ -164,7 +164,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     }else{      
       this.form.controls['cantitate']?.setValue(cantDecimal);
       this.form.controls['cutii']?.setValue(cutii??0);
-      this.form.controls['valoare']?.setValue(valoareDecimal.toFixed(2)??0);
+      this.form.controls['valoare']?.setValue((Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000)??0);
     }
   }
   onPretChange(event: any){    
@@ -176,7 +176,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue(val.toFixed(2));
+      this.form.controls['valoare']?.setValue((Math.round((val + Number.EPSILON) * 1000) / 1000)??0);
     }
   }
   getTotalCost() {

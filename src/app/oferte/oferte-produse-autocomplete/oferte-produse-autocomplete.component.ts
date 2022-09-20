@@ -109,8 +109,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.form.get('produsId')?.setValue(produs?.id);
     this.form.get('produsNume')?.setValue(produs?.nume);
     this.form.get('codProdus')?.setValue(produs?.cod);
-    if(produs != undefined && produs.prefFurnizorId !=undefined){
-      console.log('prefFurnizor', produs.prefFurnizor);
+    if(produs != undefined && produs.prefFurnizorId !=undefined){      
       this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
       this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
       this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
@@ -171,11 +170,11 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     this.isEditMode = false; 
   }
   onCantitateChange(event: any){
-    var cantInt = Number(event.target.value??0) * 100;
-    var perCutieInt = Number(this.perCutieSet) * 100 ;
-    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 100;
+    var cantInt = Number(event.target.value??0) * 1000;
+    var perCutieInt = Number(this.perCutieSet) * 1000 ;
+    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 1000;
     var cutii = Math.ceil(cantInt / perCutieInt);
-    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 10000
+    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 100000;
     var discount = this.form.controls['discount'].value??0;
     valoareDecimal = discount > 0 ? valoareDecimal - (valoareDecimal * discount / 100) : valoareDecimal;
     if(cantInt == null){
@@ -184,7 +183,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     }else{      
       this.form.controls['cantitate']?.setValue(cantDecimal);
       this.form.controls['cutii']?.setValue(cutii??0);
-      this.form.controls['valoare']?.setValue(valoareDecimal.toFixed(2)??0);
+      this.form.controls['valoare']?.setValue((Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000)??0);
     }
   }
   onPretChange(event: any){    
@@ -196,7 +195,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue(val.toFixed(2));
+      this.form.controls['valoare']?.setValue(Math.round((val + Number.EPSILON) * 1000) / 1000);
     }
   }
   getTotalCost() {

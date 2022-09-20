@@ -94,7 +94,6 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   // }
 
   saveChanges(){
-    console.log('save produse', this.form.value);    
     let index = this.selectedProdus.findIndex(a => a.id === Number(this.form.get('id')?.value));
       this.selectedProdus[index]=this.form.value;
       
@@ -105,33 +104,33 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.produsAuto.clearSelection();
   }
 
-  onCantitateChange(event: any){
-    var cantInt = Number(event.target.value??0) * 100;
-    var perCutieInt = Number(this.perCutieSet) * 100 ;
-    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 100;
+  onCantitateChange(event: any){    
+    var cantInt = Number(event.target.value??0) * 1000;
+    var perCutieInt = Number(this.perCutieSet) * 1000 ;
+    var cantDecimal = (Math.ceil(cantInt / perCutieInt) * perCutieInt) / 1000;
     var cutii = Math.ceil(cantInt / perCutieInt);
-    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 10000
+    var valoareDecimal = ((Math.ceil(cantInt / perCutieInt) * perCutieInt) * (Number(this.form.controls['pretUm'].value) * 100)) / 100000;
     if(cantInt == null){
       this.form.controls['cutii']?.setValue('');
       this.form.controls['valoare']?.setValue('');
     }else{      
       this.form.controls['cantitate']?.setValue(cantDecimal);
       this.form.controls['cutii']?.setValue(cutii??0);
-      this.form.controls['valoare']?.setValue(valoareDecimal.toFixed(2)??0);
+      this.form.controls['valoare']?.setValue((Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000)??0);
     }
   }
   onPretChange(event: any){
     const pret = event.target.value;
+    var val = Number(pret * this.form.controls['cantitate'].value??0)
     if(pret == ''){
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue(Number(pret * this.form.controls['cantitate'].value??0).toFixed(2));
+      this.form.controls['valoare']?.setValue((Math.round((val + Number.EPSILON) * 1000) / 1000)??0);
     }
   }
 
-  edit(produs:any){
-    console.log('produs', produs);
+  edit(produs:any){    
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId).subscribe(produs=>{
       this.preselectedProdus = produs;
@@ -151,7 +150,6 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.form.get('um')?.setValue(um.source.triggerValue);
   }
   remove(produs:any){
-    console.log('delete produs', produs);
     const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
     this.selectedProdus.splice(index, 1);
     this.table.renderRows();
