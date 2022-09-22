@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import { userCredentials } from '../security.models';
+import { forgetPass, userCredentials } from '../security.models';
 import { SecurityService } from '../security.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(private securityService: SecurityService, private router: Router, private formBuilder: UntypedFormBuilder) { }
   errors: string[] = [];
+  success: boolean = false;
   public form!: UntypedFormGroup;
   
   ngOnInit(): void {
@@ -28,9 +29,13 @@ export class RegisterComponent implements OnInit {
   }
   register(userCredentials: userCredentials){
     this.errors=[];
+    this.success=false;
     this.securityService.register(userCredentials).subscribe(authenticationResponse=>{
-      this.securityService.saveToke(authenticationResponse);
-      this.router.navigate(['/']);
+      console.log('authenticationResponse', authenticationResponse);
+      if(authenticationResponse == null){
+        this.success=true;
+        //this.confirmEmail(userCredentials.email);
+      }
     }, error=> this.errors = parseWebAPIErrors(error));
   }
 }

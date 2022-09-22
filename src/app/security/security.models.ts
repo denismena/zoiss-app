@@ -27,3 +27,8 @@ export interface resetPass{
     newpassword: string;
     confirmpassword: string;
 }
+
+export interface confirmEmail{
+    email: string;
+    token: string;
+}

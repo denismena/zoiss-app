@@ -35,4 +35,8 @@
     </div>
 </form>
 <app-display-errors [errors]="errors"></app-display-errors>
+<br /><br />
+<div *ngIf="success" class="text-success">
+    Un email de verificare a fost trimis pe adresa dumneavoastra. Urmati pasii din email pentru a continua procesul de inregistrare.
+</div>
 </div>

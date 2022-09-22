@@ -82,11 +82,12 @@ export class SecurityService {
   }
 
   forgetPassword(email: forgetPass){
-    console.log('email service:', email.email);
     return this.http.post(this.apiUrl+"/forgetpass", email);    
   }
   resetPassword(resetpass: resetPass){    
-    console.log('resetpass:', resetpass);
     return this.http.post(this.apiUrl+"/resetpass", resetpass);    
+  }
+  confirmEmail(email: forgetPass){
+    return this.http.post(this.apiUrl+"/confirmEmail", email);    
   }
 }

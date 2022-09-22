@@ -52,6 +52,7 @@ import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item
 import { CookieService } from './utilities/cookie.service';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
 import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
+import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -122,6 +123,7 @@ const routes: Routes = [
   {path: "register", component: RegisterComponent},
   {path: "forgetPass", component: ForgetPassComponent},
   {path: "resetPass", component: ResetPassComponent},
+  {path: "confirmEmail", component: ConfirmEmailComponent},
   {path: "utilizatori", component: UtilizatoriListComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "utilizatori/edit/:id", component: UtilizatoriEditComponent, canActivate:[IsAuthenticatedGuard]},
   {path: '**', redirectTo:''}

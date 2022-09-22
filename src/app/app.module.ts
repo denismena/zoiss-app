@@ -112,6 +112,7 @@ import { SucursaleCreateComponent } from './nomenclatoare/sucursale/sucursale-it
 import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item/sucursale-edit/sucursale-edit.component';
 import { CookieService } from './utilities/cookie.service';
 import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
+import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -208,7 +209,8 @@ import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comisio
     SucursaleItemComponent,
     SucursaleCreateComponent,
     SucursaleEditComponent,
-    ComisionArhitectiComponent    
+    ComisionArhitectiComponent,
+    ConfirmEmailComponent    
   ],
   imports: [
     BrowserModule,
