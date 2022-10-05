@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { userCredentials, UtilizatoriDTO } from 'src/app/security/security.models';
@@ -16,11 +16,11 @@ import { sucursalaDTO } from '../../sucursale/sucursale-item/sucursala.model';
 export class UtilizatoriEditComponent implements OnInit {
 
   constructor(private securityService: SecurityService, private router: Router, 
-    private formBuilder: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private sucursaleService: SucursaleService) { 
+    private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private sucursaleService: SucursaleService) { 
       
     }
   errors: string[] = [];
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   public model!: UtilizatoriDTO;
   sucursaleList: sucursalaDTO[]=[];
 

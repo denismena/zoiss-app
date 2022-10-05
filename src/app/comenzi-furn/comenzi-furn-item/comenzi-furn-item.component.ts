@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
@@ -12,11 +12,11 @@ import { comenziFurnizorDTO, produseComandaFurnizorDTO } from './comenzi-furn.mo
 })
 export class ComenziFurnItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, private comenziFurnizorService: ComenziFurnizorService) { }
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private comenziFurnizorService: ComenziFurnizorService) { }
 
   @Input()
   model:comenziFurnizorDTO | undefined;
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
 
   @Input()
   selectedProdus: produseComandaFurnizorDTO[] = [];

@@ -1,8 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { produseDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
@@ -10,7 +9,6 @@ import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
 import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
-import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -21,15 +19,15 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private umService: UMService,
-    private formBuilder:UntypedFormBuilder, private produseService: ProduseService) { 
+    private formBuilder:FormBuilder, private produseService: ProduseService) { 
     this.selectedProdus = [];
     //this.produsToDisplay = [];    
   }
 
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
 
-  produsCtrl: UntypedFormControl = new UntypedFormControl();
-  public furnizorFormGroup!: UntypedFormGroup;
+  produsCtrl: FormControl = new FormControl();
+  public furnizorFormGroup!: FormGroup;
   
   @Input() preselectedProdus:produseDTO|undefined;
   @Input() selectedProdus: produseComandaFurnizorDTO[];

@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import * as saveAs from 'file-saver';
@@ -32,7 +32,7 @@ export class LivrariListComponent implements OnInit {
   expandedElement: LivrariDTO[]=[];
   errors: string[] = [];
 
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 20;
@@ -43,7 +43,7 @@ export class LivrariListComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   constructor(private livrariService: LivrariService, private router:Router, 
-    private formBuilder:UntypedFormBuilder, private exportService: ExportService) { }
+    private formBuilder:FormBuilder, private exportService: ExportService) { }
 
   columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'livrate', 'action'];
 

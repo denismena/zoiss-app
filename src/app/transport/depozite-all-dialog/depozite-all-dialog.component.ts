@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
@@ -10,11 +10,11 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 })
 export class DepoziteAllDialogComponent implements OnInit {
 
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   private transportId: number=0;
   //private date: Date|null;
   private depozit: string='';
-  constructor(private formBuilder:UntypedFormBuilder,
+  constructor(private formBuilder:FormBuilder,
     @Inject(MAT_DIALOG_DATA) data: { id: number, depozit: string },
     public dialogRef: MatDialogRef<DepoziteAllDialogComponent>) { 
       this.transportId = data?.id;      

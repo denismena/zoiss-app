@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +17,7 @@ import { ProduseService } from '../produse.service';
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   produse: produseDTO[]
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, private produseService: ProduseService,
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService,
     public dialog: MatDialog) { 
     this.produse = [];   
 
@@ -32,7 +32,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
   
-  produsCtrl: UntypedFormControl = new UntypedFormControl();
+  produsCtrl: FormControl = new FormControl();
 
   selectedProdus: any;
   @Input()

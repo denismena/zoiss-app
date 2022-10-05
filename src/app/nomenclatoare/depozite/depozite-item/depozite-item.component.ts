@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { RegexValidator } from '@rxweb/reactive-form-validators/util';
@@ -13,8 +13,8 @@ import { depoziteDTO } from './depozite.model';
 })
 export class DepoziteItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: UntypedFormBuilder, private depoztService: DepoziteService) { }
-  public form!: UntypedFormGroup;
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private depoztService: DepoziteService) { }
+  public form!: FormGroup;
   @Input()
   model:depoziteDTO | undefined;
   depozitList: depoziteDTO[]=[];

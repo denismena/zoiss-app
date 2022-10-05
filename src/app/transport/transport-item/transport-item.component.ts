@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozite.model';
@@ -15,7 +15,7 @@ import { transportDTO, transportProduseDTO } from './transport.model';
 })
 export class TransportItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:UntypedFormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
     private transportService: TransportService, private transportatorService: TransporatorService) { }
   @Input()
   model:transportDTO | undefined;
@@ -24,7 +24,7 @@ export class TransportItemComponent implements OnInit {
   @Input()
   depoziteLista: string[]=[];
   
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   transportatorList: transportatorDTO[]=[];
   @Output()
   onSaveChanges: EventEmitter<transportDTO> = new EventEmitter<transportDTO>();

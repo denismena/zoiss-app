@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
@@ -17,13 +17,13 @@ export class FurnizoriListComponent implements OnInit {
   furnizori: furnizoriDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private furnizoriService: FurnizoriService, private formBuilder:UntypedFormBuilder) { 
+  constructor(private furnizoriService: FurnizoriService, private formBuilder:FormBuilder) { 
     this.furnizori = [];
   }
 

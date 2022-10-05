@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { arhitectiDTO } from './arhitecti.model';
@@ -11,9 +11,9 @@ import { arhitectiDTO } from './arhitecti.model';
 })
 export class ArhitectiItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: UntypedFormBuilder, private router:Router) { }
+  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private router:Router) { }
 
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   @Input()
   model:arhitectiDTO | undefined;
   @Input() isDialog:boolean = false;

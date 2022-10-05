@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.service';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
@@ -37,7 +37,7 @@ export class ComenziListComponent implements OnInit {
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];
-  public form!: UntypedFormGroup;
+  public form!: FormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
   pageSize: number = 20;
@@ -54,7 +54,7 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
-    private router:Router, private formBuilder:UntypedFormBuilder, private exportService: ExportService, public cookie: CookieService) { 
+    private router:Router, private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
