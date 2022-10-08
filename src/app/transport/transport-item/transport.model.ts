@@ -40,6 +40,8 @@ export interface transportProduseDTO{
     livrabil: boolean;
     addToLivrare:boolean;    
     transportProduseDepozit: transportProduseDepozitDTO[];
+    selectedNewDepozit: boolean;
+    depozitId: number;
 }
 
 export interface transportPutGetDTO{

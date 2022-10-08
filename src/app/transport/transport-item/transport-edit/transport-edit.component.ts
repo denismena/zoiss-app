@@ -19,16 +19,11 @@ export class TransportEditComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(params => {
       this.transportService.putGet(params.id).subscribe(transport => {
-        console.log('transport:', transport);
         this.model = transport.transport;
         this.selectedProdus = transport.transportProduse;
         transport.depoziteLista.forEach(d=>{
           this.depoziteLista.push(d.nume);
         })
-        //this.depoziteLista = depoziteLista;
-        console.log('transport model', this.model);
-        console.log('transport model selectedProdus', this.selectedProdus);        
-        console.log('transport model depoziteLista', this.depoziteLista);        
       })
     });
   }

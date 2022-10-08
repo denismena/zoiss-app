@@ -21,6 +21,8 @@ export class TransportProduseComponent implements OnInit {
   selectedProdus: transportProduseDTO[]=[];
   @Input()
   depoziteLista: string[]=[];
+  @Input()
+  showModificaDepozit: boolean = false;
   id!: number;
   
   //public localID: string ='';
@@ -29,18 +31,10 @@ export class TransportProduseComponent implements OnInit {
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
-
   dataFromDialog : any;
-  // get necitite():number{
-  //   return this.notificariService.necitite;
-  // }
-  // set necitite(val: number){
-  //   this.notificariService.necitite = val;
-  // }
+  
   constructor(private activatedRoute: ActivatedRoute,private router:Router, 
-    public dialog: MatDialog, private transportService: TransportService
-    //, private notificariService: NotificariService    
-    ) {     
+    public dialog: MatDialog, private transportService: TransportService) {     
   }
 
   ngOnInit(): void {
@@ -51,6 +45,7 @@ export class TransportProduseComponent implements OnInit {
       this.columnsToDisplay.push(d);
     });
     this.columnsToDisplay.push('livrat');
+    this.columnsToDisplay.push('#');
   }
   
   findByDepozit(arr:transportProduseDepozitDTO[] , name: string) {
@@ -86,7 +81,6 @@ export class TransportProduseComponent implements OnInit {
     dialogRef.afterClosed().subscribe((data) => {      
       if (data.clicked === 'submit') {
         this.dataFromDialog = data.form;
-        console.log('data.form.data', data.form.data);
         
         this.transportService.saveDepozitArrivalAll(data.form)
             .subscribe(() => {
@@ -102,8 +96,6 @@ export class TransportProduseComponent implements OnInit {
               });                    
             });
       }
-      else console.log('else');
     }); 
-    console.log('after close');
   }
 }
