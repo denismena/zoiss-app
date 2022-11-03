@@ -45,12 +45,14 @@ export class ComisionArhitectiComponent implements OnInit {
       arhitectId: 0,
       fromDate: formatDateFormData(date),
       toDate: formatDateFormData(new Date()),
+      status: ''
     });
 
     this.loadList(this.form.value);
 
     this.form.valueChanges.subscribe(values=>{
       values.arhitectId = values.arhitectId;
+      values.status = values.status;
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);            
@@ -60,7 +62,7 @@ export class ComisionArhitectiComponent implements OnInit {
   loadList(values: any){
     this.reportService.comisionArhitecti(values).subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
       this.comisioaneArhitecti = response.body??[];
-      console.log('this.comisioaneArhitecti', this.comisioaneArhitecti);
+      //console.log('this.comisioaneArhitecti', this.comisioaneArhitecti);
       this.loading$ = false;
     });    
   }

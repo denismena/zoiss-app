@@ -7,7 +7,7 @@
     <form [formGroup]="form">
         <div class="">    
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <mat-form-field appearance="outline">
                         <mat-label>De la data</mat-label>
                         <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
@@ -16,7 +16,17 @@
                         <mat-error>Completati data!</mat-error>
                     </mat-form-field>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Status</mat-label>                
+                        <mat-select formControlName="status">
+                            <mat-option [value]="''">Toate</mat-option>
+                            <mat-option [value]="'P'">Platite</mat-option>
+                            <mat-option [value]="'NP'">Neplatite</mat-option>
+                          </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
                     <mat-form-field appearance="outline">
                         <mat-label>La data</mat-label>
                         <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
