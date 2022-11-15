@@ -57,7 +57,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     let searchTerm = '';
     searchTerm += event;
     console.log('searchTerm', searchTerm);
-    if(searchTerm.length > 2){    
+    if(searchTerm.length >= 2){    
       this.produseService.search(searchTerm).subscribe(produse=>{
         this.produse = produse;
         console.log('load produse', produse);

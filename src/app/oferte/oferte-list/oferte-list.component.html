@@ -19,7 +19,7 @@
       <form [formGroup]="form">
         <div class="">    
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
         <mat-form-field appearance="outline">
             <mat-label>De la data</mat-label>
             <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
@@ -28,7 +28,7 @@
             <mat-error>Completati data!</mat-error>
         </mat-form-field>
                 </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
         <mat-form-field appearance="outline">
             <mat-label>La data</mat-label>
             <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
@@ -36,6 +36,12 @@
             <mat-datepicker #dataPickerTo></mat-datepicker>
             <mat-error>Completati data!</mat-error>
         </mat-form-field>
+        </div>
+        <div class="col-md-2">            
+            <mat-form-field appearance="outline">
+                <mat-label>Numar</mat-label>
+                <input formControlName="numar" value=""  matInput class="table-text-right">
+            </mat-form-field>
         </div>
         <div class="col-md-2">
         <mat-slide-toggle formControlName="mine">Doar ofertele mele</mat-slide-toggle>    

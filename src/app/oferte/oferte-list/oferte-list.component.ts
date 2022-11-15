@@ -66,6 +66,7 @@ export class OferteListComponent implements OnInit {
     this.form = this.formBuilder.group({
       fromDate: formatDateFormData(date),
       toDate: formatDateFormData(new Date()),
+      numar: '',
       clientId: 0,
       arhitectId: 0,      
       produsId: 0,
