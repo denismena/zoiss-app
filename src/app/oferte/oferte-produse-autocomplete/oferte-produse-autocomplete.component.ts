@@ -206,7 +206,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
   remove(produs:any){
     console.log('delete produs', produs);
-    const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
+    const index = this.selectedProdus.findIndex(a => a.id === produs.id);
     this.selectedProdus.splice(index, 1);
     this.table.renderRows();
   }

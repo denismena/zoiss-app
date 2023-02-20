@@ -76,3 +76,16 @@ export interface comenziPutGetDTO{
     comanda: comenziDTO;
     comenziProduses: produseComandaDTO[];
 }
+
+export interface produseStocComandaDTO{    
+    id: number;
+    comandaNumar: string;
+    comandaData: Date;
+    produsId: number;
+    produsNume: string;
+    um: string;
+    cantitate : number
+    cutii: number;
+    pretUm: number;
+    valoare: number;    
+}

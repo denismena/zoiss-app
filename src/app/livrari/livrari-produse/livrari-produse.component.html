@@ -1,3 +1,25 @@
+<!-- <form (submit)="adaugaProdusStoc()" [formGroup]="form" #autoForm>
+<div class="">    
+    <div class="row">
+        <div class="col-md-2">
+            Produs de stoc:
+        </div>
+        <div class="col-md-6">
+            <mat-form-field appearance="outline">
+            <mat-select formControlName="comandaProdusId">
+            <mat-option *ngFor="let produs of produseStocList" [value]="produs.id">
+                <b>Comanda:</b> {{produs.comandaNumar}}/{{produs.comandaData|customDate}} <b>Produs:</b> {{produs.produsNume}} <b>Cant:</b> {{produs.cantitate}}                
+                </mat-option>            
+            </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <button mat-flat-button color="primary">Adauga</button>
+        </div>
+    </div>
+</div>
+</form>
+<br /> -->
 <table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0" [dataSource]="selectedProdus">
 
     <ng-container matColumnDef="furnizor">
@@ -5,7 +27,9 @@
         <td mat-cell *matCellDef="let element">{{element.furnizor}}</td>
     </ng-container>
     <ng-container matColumnDef="produsNume">
-        <th mat-header-cell *matHeaderCellDef>Produs</th>
+        <th mat-header-cell *matHeaderCellDef>Produs
+            <mat-icon style="cursor: pointer; color: green;" (click)="produsStocPrompt()">note_add</mat-icon>
+        </th>
         <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
     </ng-container>
     <ng-container matColumnDef="cantitate">
@@ -25,11 +49,19 @@
         <th mat-header-cell *matHeaderCellDef="let element" >Livrat
             <input #checkBox type="checkbox" (change)="getCheckbox(checkBox)"/>
         </th>
-        <td mat-cell *matCellDef="let element">
-            <!-- {{element.livrat|daNu}} -->
+        <td mat-cell *matCellDef="let element">            
             <input type="hidden" [(ngModel)]="element.transportProdusId">
             <input type="checkbox" [(ngModel)]="element.livrat" name="list_name" (change)="isAllSelected(element)" />
         </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
+        <td mat-cell *matCellDef="let element" class="table-text-center">
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">
+                close
+            </mat-icon>            
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>

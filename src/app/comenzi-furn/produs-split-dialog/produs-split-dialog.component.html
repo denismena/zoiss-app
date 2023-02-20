@@ -1,0 +1,47 @@
+<div class="form-container">
+    <h2 mat-dialog-title>
+        {{this.produsSplit.produsNume}}
+    </h2>
+    <mat-dialog-content>
+        <form [formGroup]="form">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        Imparte in:
+                    </div>
+                    <div class="col-md-3 float-right">
+                        {{this.nouaValoareCantiate}} / {{this.produsSplit.cantitate}} {{this.produsSplit.um}}
+                    </div>                    
+                    <div class="col-md-3 float-right">
+                        <mat-form-field appearance="outline">
+                            <input matInput formControlName="cutii" (change)="onCutiiChange($event)" required="" />
+                            <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        din {{this.produsSplit.cutii}} / cutii
+                    </div>
+                </div>
+                <div class="row" *ngIf="!form.invalid">
+                    <div class="col-md-3">
+                        Rest:
+                    </div>
+                    <div class="col-md-3 text-right">
+                        {{this.produsSplit.cantitate - this.nouaValoareCantiate}} / {{this.produsSplit.cantitate}} {{this.produsSplit.um}}
+                    </div>                    
+                    <div class="col-md-3 text-right">
+                        {{this.produsSplit.cutii - this.nouaValoareCutii}}
+                    </div>                    
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>        
+        <button mat-raised-button [disabled]="form.invalid" color="primary" (click)="submit(form.value)">
+            Save
+        </button>    
+        <button mat-raised-button (click)="dialogRef.close(false)" color="primary">
+            Close
+        </button>                
+    </mat-dialog-actions>
+</div>

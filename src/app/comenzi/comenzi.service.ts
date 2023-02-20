@@ -3,15 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { produseOfertaDTO } from '../nomenclatoare/produse/produse-item/produse.model';
-import { formatDateFormData } from '../utilities/utils';
-import { comenziCreationDTO, comenziDTO, comenziPutGetDTO } from './comenzi-item/comenzi.model';
+import { comenziCreationDTO, comenziDTO, comenziPutGetDTO, produseStocComandaDTO } from './comenzi-item/comenzi.model';
 
 @Injectable({
     providedIn: 'root'
   })
 
 export class ComenziService{
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
   private apiUrl = environment.apiUrl + '/comenzi';
 
   getAll(values: any): Observable<any>{
@@ -45,6 +44,10 @@ export class ComenziService{
   
   fromOferta(produse: produseOfertaDTO[]){
     return this.http.post(`${this.apiUrl}/fromOferta`, produse);
+  }
+
+  produseStoc() {
+    return this.http.get<produseStocComandaDTO[]>(`${this.apiUrl}/produseStoc`);
   }
 
   public putGet(id: number): Observable<comenziPutGetDTO>{

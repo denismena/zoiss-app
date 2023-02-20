@@ -23,7 +23,7 @@
                     <div class="col-md-2">
                         <mat-label>cantitate</mat-label>        
                         <mat-form-field appearance="outline">                    
-                            <input matInput formControlName="cantitate" #cantitate id="cantitate" (change)="onCantitateChange($event)"/>
+                            <input matInput formControlName="cantitate" #cantitate (change)="onCantitateChange($event)"/>
                             <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
                             <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
                         </mat-form-field> 
@@ -146,11 +146,14 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
+        <th mat-header-cell *matHeaderCellDef style="width: 90px;">#</th>
         <td mat-cell *matCellDef="let element">
-            <mat-icon color="primary" (click)="edit(element)">edit</mat-icon>
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">
+            <mat-icon color="primary"                           (click)="edit(element)" *ngIf="!element.isInTransport && element.id > 0">edit</mat-icon>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)" *ngIf="!element.isInTransport">
                 close
+            </mat-icon>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'green'}" (click)="split(element)" *ngIf="!element.isInTransport">
+                call_split
             </mat-icon>
         </td>
     </ng-container>

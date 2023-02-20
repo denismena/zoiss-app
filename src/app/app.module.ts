@@ -113,6 +113,8 @@ import { SucursaleEditComponent } from './nomenclatoare/sucursale/sucursale-item
 import { CookieService } from './utilities/cookie.service';
 import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
 import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.component';
+import { ProdusStocDialogComponent } from './livrari/produs-stoc-dialog/produs-stoc-dialog.component';
+import { ProdusSplitDialogComponent } from './comenzi-furn/produs-split-dialog/produs-split-dialog.component';
 
 @NgModule({
   declarations: [
@@ -210,7 +212,9 @@ import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.co
     SucursaleCreateComponent,
     SucursaleEditComponent,
     ComisionArhitectiComponent,
-    ConfirmEmailComponent    
+    ConfirmEmailComponent,
+    ProdusStocDialogComponent,
+    ProdusSplitDialogComponent    
   ],
   imports: [
     BrowserModule,

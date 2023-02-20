@@ -28,9 +28,15 @@ export interface livrariEditDTO{
 }
 export interface livrariProduseDTO{
     id: number;
-    transportProduseId: number;
+    livrariId: number;
+    transportProduseId: number|null;
+    comenziProdusId: number;
     furnizor: string;
-    livrat: boolean;    
+    livrat: boolean; 
+    produsNume: string;
+    um: string;
+    cantitate: number;
+    cutii: number;    
 }
 
 export interface livrariPutGetDTO{

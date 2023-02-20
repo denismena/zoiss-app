@@ -1,14 +1,14 @@
 <form (submit)="saveChanges()" [formGroup]="form">
 <div class="container">           
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-2">
         <span>Numar</span>
         <mat-form-field appearance="outline">            
             <input formControlName="numar" matInput>
             <mat-error>Completati numarul!</mat-error>
         </mat-form-field>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-2">
         <mat-label>Data</mat-label>            
         <mat-form-field appearance="outline">            
             <input formControlName="data" matInput [matDatepicker]="dataPicker">
@@ -16,10 +16,6 @@
             <mat-datepicker #dataPicker></mat-datepicker>
             <mat-error>Completati data!</mat-error>
         </mat-form-field>  
-    </div>
-    <div class="col-md-4">
-        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" *ngIf="preselectClient||!model" ></app-clienti-autocomplete>    
-        <input type="hidden" formControlName="clientId" #clientId>
     </div>
     <div class="col-md-4">
         <span>Curier</span>
@@ -33,7 +29,7 @@
             <input formControlName="receptionatDe" matInput>
         </mat-form-field>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-12">
         <span>Detalii</span>
         <mat-form-field appearance="outline">            
             <input formControlName="detalii" matInput>

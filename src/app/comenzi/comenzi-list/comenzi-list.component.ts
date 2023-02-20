@@ -62,7 +62,7 @@ export class ComenziListComponent implements OnInit {
 
   ngOnInit(): void {
     let date: Date = new Date();
-    date.setDate(date.getDate() - 30);
+    date.setDate(date.getDate() - 180);
     this.form = this.formBuilder.group({
       fromDate: formatDateFormData(date),
       toDate: formatDateFormData(new Date()),

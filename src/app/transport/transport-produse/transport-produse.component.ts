@@ -27,7 +27,7 @@ export class TransportProduseComponent implements OnInit {
   
   //public localID: string ='';
 
-  columnsToDisplay = ['clientNume', 'produsNume', 'cantitate', 'um', 'cutii', 'depozit']
+  columnsToDisplay = ['clientNume', 'produsCod', 'produsNume', 'cantitate', 'um', 'cutii', 'depozit']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;

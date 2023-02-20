@@ -17,12 +17,15 @@ export class LivrariEditComponent implements OnInit {
   model!:LivrariDTO;
   selectedProdus: livrariProduseDTO[] = [];
   preselectClient: clientiDTO | undefined;
+  public client: string |undefined;
+  
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.livrareService.putGet(params.id).subscribe(livrare => {
         this.model = livrare.livrare;        
         this.selectedProdus = livrare.livrareProduse;
         
+        this.client=livrare.livrare.client;
         this.clientiService.getById(livrare.livrare.clientId).subscribe(client=>{
           this.preselectClient = client;
         });        

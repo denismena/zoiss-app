@@ -1,0 +1,30 @@
+<div class="form-container">
+    <h2 mat-dialog-title>
+        Selectati produsul de pe stoc
+    </h2>
+    <mat-dialog-content>
+        <form [formGroup]="form">
+            <div class="container">                    
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-form-field appearance="outline">
+                    <mat-select formControlName="comandaProdusId"  (selectionChange)="onchange($event)">
+                        <mat-option *ngFor="let produs of produseStocList" [value]="produs.id">
+                            <b>Comanda:</b> {{produs.comandaNumar}}/{{produs.comandaData|customDate}} <b>Produs:</b> {{produs.produsNume}} <b>Cant:</b> {{produs.cantitate}}                            
+                        </mat-option>            
+                    </mat-select>
+                    </mat-form-field>
+                </div>                
+            </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>        
+        <button mat-raised-button [disabled]="form.invalid" color="primary" (click)="submit(form.value)">
+            Save
+        </button>
+        <button mat-raised-button (click)="dialogRef.close(false)" color="primary">
+            Close
+        </button>
+    </mat-dialog-actions>
+</div>

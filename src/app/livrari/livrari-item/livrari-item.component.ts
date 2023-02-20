@@ -29,7 +29,7 @@ export class LivrariItemComponent implements OnInit {
     this.form = this.formBuilder.group({
       numar:[null, {validators:[RxwebValidators.required()]}],
       data:[new Date(), {validators:[RxwebValidators.required()]}],
-      clientId:[null, {validators:[RxwebValidators.required()]}],
+      clientId:[null, {validators:[RxwebValidators.required()]}],      
       curier: null,      
       receptionatDe: null,      
       detalii: null,
@@ -49,7 +49,7 @@ export class LivrariItemComponent implements OnInit {
 
   saveChanges(){  
     const produse = this.selectedProdus.map(val => {
-      return {id: val.id??0, transportProduseId: val.transportProduseId, livrat: val.livrat}
+      return {id: val.id??0, transportProduseId: val.transportProduseId, comenziProdusId:val.comenziProdusId, livrat: val.livrat}
     });
     if(produse.filter(produse=>produse.livrat== true).length > 0 && this.form.get('curier')?.value ==null){
       Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici un curier!", icon: 'info' });

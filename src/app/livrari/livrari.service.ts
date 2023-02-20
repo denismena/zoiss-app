@@ -24,6 +24,10 @@ export class LivrariService{
   getById(id: number): Observable<LivrariDTO>{
     return this.http.get<LivrariDTO>(`${this.apiUrl}/${id}`);
   }
+
+  getNextNumber(): Observable<number>{
+    return this.http.get<number>(`${this.apiUrl}/getNextNumber`);
+  }
   
   fromTransport(numar: string, produse: transportProduseDTO[]){
     return this.http.post(`${this.apiUrl}/fromTransport/${numar}`, produse);

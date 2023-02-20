@@ -10,6 +10,8 @@ import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
 import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatDialog } from '@angular/material/dialog';
+import { ProdusSplitDialogComponent } from '../produs-split-dialog/produs-split-dialog.component';
 
 @Component({
   selector: 'app-comenzi-furn-produse-autocomplete',
@@ -19,7 +21,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private umService: UMService,
-    private formBuilder:FormBuilder, private produseService: ProduseService) { 
+    private formBuilder:FormBuilder, private produseService: ProduseService, public dialog: MatDialog) { 
     this.selectedProdus = [];
     //this.produsToDisplay = [];    
   }
@@ -61,7 +63,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       valoare: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       //discount: [null, {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],
       disponibilitate:[null],
-      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:'', clientNume:'', isCategory: false, sort: null
+      detalii:'', id:null, comenziFurnizorId:null, comenziProdusId:null, codProdus:'', clientNume:'', isCategory: false, isInTransport: false, sort: null
     });   
     
     
@@ -136,7 +138,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
       this.pretSet = produs.pret;
     });    
     this.isEditMode = true;
-    this._cantitate.nativeElement.focus();
+    //this._cantitate.nativeElement.focus();
   }
 
   clearForm(){
@@ -148,9 +150,39 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.form.get('um')?.setValue(um.source.triggerValue);
   }
   remove(produs:any){
-    const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
+    const index = this.selectedProdus.findIndex(a => a.id === produs.id && a.produsId === produs.produsId);
     this.selectedProdus.splice(index, 1);
     this.table.renderRows();
+  }
+  
+  split(produs:any){
+    let oldCutiiValue = produs.cutii;
+    let oldCantitateValue = produs.cantitate;
+    let oldValoareValue = produs.valoare;
+    const dialogRef = this.dialog.open(ProdusSplitDialogComponent,      
+      { data:{produsSplit: produs}, width: '650px', height: '300px' });
+      dialogRef.afterClosed().subscribe((data) => {
+        if (data.clicked === 'submit') {
+          const anotherProdus : produseComandaFurnizorDTO = {
+            ...data.form,
+            id: 0,
+            isInTransport:0
+          }
+          console.log('anotherProdus: ', anotherProdus);
+          for (let object of this.selectedProdus) {
+            if (object.id === produs.id) {
+                object.cutii = oldCutiiValue - anotherProdus.cutii;
+                object.cantitate = oldCantitateValue - anotherProdus.cantitate;
+                object.valoare = oldValoareValue - anotherProdus.valoare;
+            }
+          }
+          this.selectedProdus.push(anotherProdus);
+          
+          if (this.table !== undefined){      
+            this.table.renderRows();
+          }          
+        }
+      });    
   }  
   dropped(event: CdkDragDrop<any[]>){
     const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);

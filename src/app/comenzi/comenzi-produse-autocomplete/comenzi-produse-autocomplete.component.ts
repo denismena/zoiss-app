@@ -54,12 +54,10 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   pretSet!: number;
   isEditMode: boolean=false;
 
-  ngOnInit(): void {
-    console.log('selectedProdus in autocomplete:', this.selectedProdus);
+  ngOnInit(): void {    
     this.activatedRoute.params.subscribe(params=>{
       //alert(params.id);
     });
-    console.log('lista produse', this.selectProdus);
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',      
@@ -186,13 +184,11 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     return this.selectedProdus.map(t => t.cutii).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
   remove(produs:any){
-    console.log('delete produs', produs);
-    const index = this.selectedProdus.findIndex(a => a.produsId === produs.produsId);
+    const index = this.selectedProdus.findIndex(a => a.id === produs.id);
     this.selectedProdus.splice(index, 1);
     this.table.renderRows();
   }
   edit(produs:any){
-    console.log('produs', produs);
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId).subscribe(produs=>{
       this.preselectedProdus = produs;
@@ -206,9 +202,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       });      
     }
     this.isEditMode = true;
-    this._cantitate.nativeElement.focus();
-    //this._cantitate.nativeElement.scrollIntoView({block: "start", inline: "start"});
-    //window.scroll(0,0);
+    this._cantitate.nativeElement.focus();    
   }
   clearForm(){
     this.form.reset();
