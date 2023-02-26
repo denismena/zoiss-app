@@ -115,6 +115,7 @@ import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comisio
 import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.component';
 import { ProdusStocDialogComponent } from './livrari/produs-stoc-dialog/produs-stoc-dialog.component';
 import { ProdusSplitDialogComponent } from './comenzi-furn/produs-split-dialog/produs-split-dialog.component';
+import { UtilizatoriAutocompleteComponent } from './nomenclatoare/utilizatori/utilizatori-autocomplete/utilizatori-autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -214,7 +215,8 @@ import { ProdusSplitDialogComponent } from './comenzi-furn/produs-split-dialog/p
     ComisionArhitectiComponent,
     ConfirmEmailComponent,
     ProdusStocDialogComponent,
-    ProdusSplitDialogComponent    
+    ProdusSplitDialogComponent,
+    UtilizatoriAutocompleteComponent    
   ],
   imports: [
     BrowserModule,

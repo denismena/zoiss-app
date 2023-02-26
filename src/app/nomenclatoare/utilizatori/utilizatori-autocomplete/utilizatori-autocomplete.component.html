@@ -1,0 +1,15 @@
+<form class="example-form">
+    <mat-label>Utilizator</mat-label>
+    <mat-form-field class="example-full-width" appearance="fill">      
+      <input matInput
+             aria-label="Utilizator"
+             [matAutocomplete]="autoUtilizator"
+             [formControl]="utilizatorCtrl">
+      <mat-autocomplete #autoUtilizator="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
+        <mat-option *ngFor="let utilizator of selectedUtilizator | async" [value]="utilizator">
+            {{utilizator.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>    
+</form>
+  

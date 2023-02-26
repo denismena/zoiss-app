@@ -5,6 +5,8 @@ import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validato
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
 import { clientiAdresaDTO, clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
 import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
+import { UtilizatoriDTO } from 'src/app/security/security.models';
+import { SecurityService } from 'src/app/security/security.service';
 import { ComenziService } from '../comenzi.service';
 import { comenziDTO, produseComandaDTO } from './comenzi.model';
 
@@ -16,10 +18,11 @@ import { comenziDTO, produseComandaDTO } from './comenzi.model';
 export class ComenziItemComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
-    private comenziService: ComenziService, private clientiService: ClientiService) { }
+    private comenziService: ComenziService, private clientiService: ClientiService, private securityService: SecurityService) { }
   @Input()
   model:comenziDTO | undefined;
   adresa: clientiAdresaDTO[] | undefined;
+  preselectUtilizator: UtilizatoriDTO | undefined;
   public form!: FormGroup;
 
   @Input()
@@ -29,15 +32,12 @@ export class ComenziItemComponent implements OnInit {
   preselectClient: clientiDTO | undefined;
 
   @Input()
-  preselectArhitect: arhitectiDTO | undefined;  
+  preselectArhitect: arhitectiDTO | undefined;    
 
   @Output()
   onSaveChanges: EventEmitter<comenziDTO> = new EventEmitter<comenziDTO>();
 
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
+  ngOnInit(): void {   
 
     this.form = this.formBuilder.group({
       numar:[null, {validators:[RxwebValidators.required()]}],
@@ -54,7 +54,8 @@ export class ComenziItemComponent implements OnInit {
       platit: null,
       arhitectPlatit: null,
       clientiAdresaId: [null, {validators:[RxwebValidators.required()]}],
-      comenziProduses: ''
+      comenziProduses: '',
+      utilizatorId: [null, {validators:[RxwebValidators.required()]}],
     });    
     
     if(this.model !== undefined)
@@ -67,19 +68,24 @@ export class ComenziItemComponent implements OnInit {
       //on add form get the next contract number
       this.comenziService.getNextNumber().subscribe(data=>{
         this.form.get('numar')?.setValue(data);
-        console.log('next number assigne', data);
       });
     }
     if(this.form.get('clientId')?.value)
       this.loadAdrese(this.form.get('clientId')?.value);
+    
+    this.securityService.getById(this.form.get('utilizatorId')?.value).subscribe(utilizator => {
+      this.preselectUtilizator = utilizator;
+      if(this.model !== undefined)
+      {
+        this.form.patchValue(this.model);
+      }
+    });
   }
 
   loadAdrese(clientId: number)
   {
     this.clientiService.getById(clientId).subscribe(adresa=>{
-      //console.log('adrese inainte', adresa.adrese);
       this.adresa = adresa.adrese.filter(a=>a.livrare == true);
-      //console.log('adresa filtrata', this.adresa);
     });
   }
 
@@ -88,8 +94,6 @@ export class ComenziItemComponent implements OnInit {
       return {id: val.id??0, cantitate: val.cantitate??0, furnizorId: val.furnizorId, produsId: val.produsId, oferteProdusId: val.oferteProdusId,
         umId:val.umId??1, um: val.um, cutii: val.cutii??0, pretUm: val.pretUm??0, valoare: val.valoare??0, discount: val.discount, isStoc: val.isStoc??false}
     });
-    console.log('set produse', produse);
-    console.log('this.form.value', this.form.value);
     this.form.get('comenziProduses')?.setValue(produse);
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
@@ -98,12 +102,15 @@ export class ComenziItemComponent implements OnInit {
   selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
     this.loadAdrese(Number(clientId));
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitect: any){    
     this.form.get('arhitectId')?.setValue(arhitect?.id);    
     this.form.get('comision')?.setValue(arhitect?.comision);    
+  }
+
+  selectUtilizator(utilizator: any){    
+    this.form.get('utilizatorId')?.setValue(utilizator?.id);
   }
 
 }

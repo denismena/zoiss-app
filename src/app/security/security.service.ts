@@ -75,7 +75,11 @@ export class SecurityService {
 
   getById(id: string): Observable<UtilizatoriDTO>{
     return this.http.get<UtilizatoriDTO>(`${this.apiUrl}/${id}`);
-  } 
+  }
+  
+  getByEmail(id: string): Observable<UtilizatoriDTO>{
+    return this.http.get<UtilizatoriDTO>(`${this.apiUrl}/getByEmail/${id}`);
+  }
 
   markAsInactive(id: string) {
     return this.http.delete(`${this.apiUrl}/${id}`);
