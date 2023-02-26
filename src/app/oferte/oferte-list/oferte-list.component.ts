@@ -64,7 +64,7 @@ export class OferteListComponent implements OnInit {
     date.setDate(date.getDate() - 30);
 
     this.form = this.formBuilder.group({
-      fromDate: formatDateFormData(date),
+      fromDate: this.cookie.getCookie('oferta_fromDate')== '' ? formatDateFormData(date): this.cookie.getCookie('oferta_fromDate'),
       toDate: formatDateFormData(new Date()),
       numar: '',
       clientId: 0,
@@ -84,6 +84,7 @@ export class OferteListComponent implements OnInit {
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);
       //set cookies      
+      this.cookie.setCookie({name: 'oferta_fromDate',value: values.fromDate, session: true});
       this.cookie.setCookie({name: 'oferta_mine',value: values.mine, session: true});
       this.cookie.setCookie({name: 'oferta_sucursala',value: values.sucursala, session: true});
       this.cookie.setCookie({name: 'oferta_allComandate',value: values.allComandate, session: true});

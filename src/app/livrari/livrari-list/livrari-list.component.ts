@@ -8,6 +8,7 @@ import * as saveAs from 'file-saver';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
+import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
@@ -43,7 +44,7 @@ export class LivrariListComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   constructor(private livrariService: LivrariService, private router:Router, 
-    private formBuilder:FormBuilder, private exportService: ExportService) { }
+    private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { }
 
   columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'livrate', 'action'];
 
@@ -52,13 +53,13 @@ export class LivrariListComponent implements OnInit {
     date.setDate(date.getDate() - 30);
 
     this.form = this.formBuilder.group({
-      fromDate: formatDateFormData(date),
+      fromDate: this.cookie.getCookie('livrare_FromDate')== '' ? formatDateFormData(date): this.cookie.getCookie('livrare_FromDate'),
       toDate: formatDateFormData(new Date()),
       clientId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: false,
-      allLivrate: false
+      mine: this.cookie.getCookie('livrare_mine')== '' ? false: this.cookie.getCookie('livrare_mine'),
+      allLivrate: this.cookie.getCookie('livrare_allLivrate')== '' ? false: this.cookie.getCookie('livrare_allLivrate'),
     });
 
     this.initialFormValues = this.form.value
@@ -67,9 +68,11 @@ export class LivrariListComponent implements OnInit {
     this.form.valueChanges.subscribe(values=>{
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
-      console.log(values.disponibilitateFromDate);     
-      
       this.loadList(values);      
+      //set cookies      
+      this.cookie.setCookie({name: 'livrare_FromDate',value: values.fromDate, session: true});
+      this.cookie.setCookie({name: 'livrare_mine',value: values.mine, session: true});
+      this.cookie.setCookie({name: 'livrare_allLivrate',value: values.allLivrate, session: true});
     })
   }
 

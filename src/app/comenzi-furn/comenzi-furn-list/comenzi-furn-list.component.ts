@@ -61,16 +61,16 @@ export class ComenziFurnListComponent implements OnInit {
     date.setDate(date.getDate() - 30);
 
     this.form = this.formBuilder.group({
-      fromDate: formatDateFormData(date),
+      fromDate: this.cookie.getCookie('comandaFurnizor_fromDate')== '' ? formatDateFormData(date): this.cookie.getCookie('comandaFurnizor_fromDate'),
       toDate: formatDateFormData(new Date()),
       disponibilitateFromDate: '',
       disponibilitateToDate: '',
       clientId: 0,      
       produsId: 0,
       furnizorId:0,      
-      mine: this.cookie.getCookie('comanda_mine')== '' ? false: this.cookie.getCookie('comanda_mine'),
-      sucursala: this.cookie.getCookie('comanda_sucursala')== '' ? false: this.cookie.getCookie('comanda_sucursala'),
-      allTransportate: this.cookie.getCookie('comanda_allTransportate')== '' ? false: this.cookie.getCookie('comanda_allTransportate')
+      mine: this.cookie.getCookie('comandaFurnizor_mine')== '' ? false: this.cookie.getCookie('comandaFurnizor_mine'),
+      sucursala: this.cookie.getCookie('comandaFurnizor_sucursala')== '' ? false: this.cookie.getCookie('comandaFurnizor_sucursala'),
+      allTransportate: this.cookie.getCookie('comandaFurnizor_allTransportate')== '' ? false: this.cookie.getCookie('comandaFurnizor_allTransportate')
     });
 
     this.initialFormValues = this.form.value
@@ -83,10 +83,11 @@ export class ComenziFurnListComponent implements OnInit {
       values.disponibilitateToDate = values.disponibilitateToDate=='' || values.disponibilitateToDate== null ? '' : formatDateFormData(values.disponibilitateToDate);
       
       this.loadList(values);      
-      //set cookies      
-      this.cookie.setCookie({name: 'comanda_mine',value: values.mine, session: true});
-      this.cookie.setCookie({name: 'comanda_sucursala',value: values.sucursala, session: true});
-      this.cookie.setCookie({name: 'comanda_allTransportate',value: values.allTransportate, session: true});
+      //set cookies     
+      this.cookie.setCookie({name: 'comandaFurnizor_fromDate',value: values.fromDate, session: true}); 
+      this.cookie.setCookie({name: 'comandaFurnizor_mine',value: values.mine, session: true});
+      this.cookie.setCookie({name: 'comandaFurnizor_sucursala',value: values.sucursala, session: true});
+      this.cookie.setCookie({name: 'comandaFurnizor_allTransportate',value: values.allTransportate, session: true});
     })
   }
 

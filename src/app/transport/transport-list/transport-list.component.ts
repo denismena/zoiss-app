@@ -12,6 +12,7 @@ import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozi
 import { DepoziteService } from 'src/app/nomenclatoare/depozite/depozite.service';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
+import { CookieService } from 'src/app/utilities/cookie.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { LivrariNumberDialogComponent } from '../livrari-number-dialog/livrari-number-dialog.component';
@@ -52,7 +53,7 @@ export class TransportListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router,
-    public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService) { 
+    public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService, public cookie: CookieService) { 
     this.transport = [];
     this.expandedElement = [];
   }
@@ -65,13 +66,13 @@ export class TransportListComponent implements OnInit {
     date.setDate(date.getDate() - 30);
 
     this.form = this.formBuilder.group({
-      fromDate: formatDateFormData(date),
+      fromDate: this.cookie.getCookie('transport_fromDate')== '' ? formatDateFormData(date): this.cookie.getCookie('transport_fromDate'),
       toDate: formatDateFormData(new Date()),      
       clientId: 0,      
       produsId: 0,
       furnizorId:0,
-      mine: false,
-      allSpreLivrare: false,
+      mine: this.cookie.getCookie('transport_mine')== '' ? false: this.cookie.getCookie('transport_mine'),
+      allSpreLivrare: this.cookie.getCookie('transport_allSpreLivrare')== '' ? false: this.cookie.getCookie('transport_allSpreLivrare'),
       depozitId:0,
       comandaNr:['', {validators:[RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber, allowDecimal:false })]}],
     });
@@ -84,6 +85,10 @@ export class TransportListComponent implements OnInit {
       values.toDate = formatDateFormData(values.toDate);
       values.comandaNr = values.comandaNr == null ? '' : values.comandaNr;
       this.loadList(values);      
+      //set cookies      
+      this.cookie.setCookie({name: 'transport_fromDate',value: values.fromDate, session: true});
+      this.cookie.setCookie({name: 'transport_mine',value: values.mine, session: true});
+      this.cookie.setCookie({name: 'transport_allSpreLivrare',value: values.allSpreLivrare, session: true});
     })
 
     this.depoziteService.getAll().subscribe(dep=>{this.depozitList=dep;});

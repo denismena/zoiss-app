@@ -64,7 +64,7 @@ export class ComenziListComponent implements OnInit {
     let date: Date = new Date();
     date.setDate(date.getDate() - 180);
     this.form = this.formBuilder.group({
-      fromDate: formatDateFormData(date),
+      fromDate: this.cookie.getCookie('comanda_fromDate')== '' ? formatDateFormData(date): this.cookie.getCookie('comanda_fromDate'),
       toDate: formatDateFormData(new Date()),
       numar: '',
       clientId: 0,
@@ -84,6 +84,7 @@ export class ComenziListComponent implements OnInit {
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);      
       //set cookies      
+      this.cookie.setCookie({name: 'comanda_fromDate',value: values.fromDate, session: true});
       this.cookie.setCookie({name: 'comanda_mine',value: values.mine, session: true});
       this.cookie.setCookie({name: 'comanda_sucursala',value: values.sucursala, session: true});
       this.cookie.setCookie({name: 'comanda_allComandate',value: values.allComandate, session: true});
