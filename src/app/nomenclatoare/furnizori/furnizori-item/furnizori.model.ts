@@ -7,7 +7,10 @@ export interface furnizoriDTO{
     adresa: string;
     tel: string;
     email: string;
+    conditii: string;
     active: boolean;
+    files: File[];
+    fileNames: Record<number, string>[];
 }
 
 export interface furnizoriCreationDTO{
@@ -18,5 +21,8 @@ export interface furnizoriCreationDTO{
     adresa: string;
     tel: string;
     email: string;
+    conditii: string;
     active: boolean;
+    files: File[];
+    fileNames: Record<number, string>[];    
 }

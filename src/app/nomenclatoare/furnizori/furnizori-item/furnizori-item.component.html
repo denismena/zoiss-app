@@ -37,7 +37,32 @@
         <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
         <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
-    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+    <mat-form-field appearance="outline">
+        <mat-label>Conditii comerciale</mat-label>
+        <textarea formControlName="conditii" matInput col></textarea>
+        <mat-error>{{form.get("conditii")?.getError("conditii")?.message}}</mat-error>
+    </mat-form-field>
+    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>    
+    <br />
+    <div class="form-group">        
+        <input formControlName="files" id="file" type="file" multiple class="form-control" accept="application/*,!application/xml,text/*"
+            (change)="onFileChange($event)">        
+        <div *ngIf="f.files.touched && f.files.invalid" class="alert alert-danger">
+            <div *ngIf="f.files.errors && f.files.errors.required">File is required.</div>
+        </div>
+        <br />
+        <div *ngFor="let fileName of this.model?.fileNames|keyvalue">
+            <span style="margin-right: 10px;">{{fileName.value}}</span>
+            <mat-icon color="primary" (click)="viewFileFromServer($event, fileName.key, fileName.value)">pageview</mat-icon>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="deleteFileFromServer($event, fileName.key)">close</mat-icon>
+        </div>
+        <div *ngFor="let file of selectedFiles">
+            <span style="margin-right: 10px;">{{file.name}}</span>
+            <mat-icon color="primary" (click)="viewFile($event, file)">pageview</mat-icon>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="deleteFile($event, file)">close</mat-icon>
+        </div>        
+    </div>
+    <br />
     <div>
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
