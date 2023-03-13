@@ -153,25 +153,21 @@ export class TransportListComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(LivrariNumberDialogComponent,      
-      { data:{ }, width: '450px', height: '400px' });
+      { data:{ }, width: '400px', height: '300px' });
 
-      dialogRef.afterClosed().subscribe((data) => {      
-        if (data.clicked === 'submit') {
-          var numar = data.form.numar;
-          console.log('data.form', data.form);       
-          
-          
-          if(selectedProd.length > 0){
-            this.livrariService.fromTransport(numar, selectedProd).subscribe(id=>{
-              console.log('comanda new id', id);
-              this.router.navigate(['/livrari/edit/' + id])
-            }, 
-            error=> this.errors = parseWebAPIErrors(error));
-          }
-          else this.errors.push("Nu ati selectat nici o comanda!");
+    dialogRef.afterClosed().subscribe((data) => {      
+      if (data.clicked === 'submit') {
+        var numar = data.form.numar;
+
+        if(selectedProd.length > 0){
+          this.livrariService.fromTransport(numar, selectedProd).subscribe(id=>{
+            this.router.navigate(['/livrari/edit/' + id])
+          }, 
+          error=> this.errors = parseWebAPIErrors(error));
         }
-        else console.log('else');
-      });
+        else this.errors.push("Nu ati selectat nici o comanda!");
+      }      
+    });
   }
   togglePanel(){
     this.panelOpenState = !this.panelOpenState;

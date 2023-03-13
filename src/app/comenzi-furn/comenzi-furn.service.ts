@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { produseComandaDTO } from '../comenzi/comenzi-item/comenzi.model';
-import { comenziFurnizorDTO, comenziFurnizorCreationDTO, comenziFurnizoriPutGetDTO } from './comenzi-furn-item/comenzi-furn.model';
+import { comenziFurnizorDTO, comenziFurnizorCreationDTO, comenziFurnizoriPutGetDTO, comenziFurnizorBasicDTO, toExistingComenziFurnizoriDTO } from './comenzi-furn-item/comenzi-furn.model';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +18,9 @@ export class ComenziFurnizorService{
     return this.http.get<comenziFurnizorDTO[]>(this.apiUrl, {observe:'response', params});
   }
 
+  getBasicList(furnizorId: number): Observable<comenziFurnizorBasicDTO[]>{
+    return this.http.get<comenziFurnizorBasicDTO[]>(`${this.apiUrl}/getBasicList/${furnizorId}`);
+  }
   create(oferte: comenziFurnizorCreationDTO){
     return this.http.post<number>(this.apiUrl, oferte);
   }
@@ -30,8 +33,12 @@ export class ComenziFurnizorService{
     return this.http.get<number>(`${this.apiUrl}/getNextNumber`);
   }
   
-  fromOferta(produse: produseComandaDTO[]){
+  fromComanda(produse: produseComandaDTO[]){
     return this.http.post(`${this.apiUrl}/fromComanda`, produse);
+  }
+  addToExisting(produse: toExistingComenziFurnizoriDTO){
+    console.log('produse:', produse); 
+    return this.http.post(`${this.apiUrl}/addProduse`, produse);
   }
 
   public putGet(id: number): Observable<comenziFurnizoriPutGetDTO>{    

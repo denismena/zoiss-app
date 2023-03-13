@@ -116,6 +116,7 @@ import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.co
 import { ProdusStocDialogComponent } from './livrari/produs-stoc-dialog/produs-stoc-dialog.component';
 import { ProdusSplitDialogComponent } from './comenzi-furn/produs-split-dialog/produs-split-dialog.component';
 import { UtilizatoriAutocompleteComponent } from './nomenclatoare/utilizatori/utilizatori-autocomplete/utilizatori-autocomplete.component';
+import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
 
 @NgModule({
   declarations: [
@@ -216,7 +217,8 @@ import { UtilizatoriAutocompleteComponent } from './nomenclatoare/utilizatori/ut
     ConfirmEmailComponent,
     ProdusStocDialogComponent,
     ProdusSplitDialogComponent,
-    UtilizatoriAutocompleteComponent    
+    UtilizatoriAutocompleteComponent,
+    ComenziFurnSelectDialogComponent    
   ],
   imports: [
     BrowserModule,

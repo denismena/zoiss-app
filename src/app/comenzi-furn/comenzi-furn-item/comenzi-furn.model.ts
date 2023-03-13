@@ -1,3 +1,4 @@
+import { produseComandaDTO } from "src/app/comenzi/comenzi-item/comenzi.model";
 import { furnizoriDTO } from "src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model";
 
 export interface comenziFurnizorDTO{
@@ -46,4 +47,15 @@ export interface produseComandaFurnizorDTO{
 export interface comenziFurnizoriPutGetDTO{
     comandaFurnizor: comenziFurnizorDTO;
     comenziFurnizoriProduse: produseComandaFurnizorDTO[];
+}
+
+export interface comenziFurnizorBasicDTO{
+    id: number;
+    numar: number;
+    data: Date;    
+}
+
+export interface toExistingComenziFurnizoriDTO{
+    comandaFurnizorId: number;
+    comenziProduse: produseComandaDTO[];
 }

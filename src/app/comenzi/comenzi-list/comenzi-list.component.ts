@@ -16,6 +16,9 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 import { CookieService } from 'src/app/utilities/cookie.service';
 import * as saveAs from 'file-saver';
 import { ExportService } from 'src/app/utilities/export.service';
+import { ComenziFurnSelectDialogComponent } from '../comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { toExistingComenziFurnizoriDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -54,7 +57,8 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
-    private router:Router, private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { 
+    private router:Router, private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService,
+    public dialog: MatDialog) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
@@ -140,6 +144,37 @@ export class ComenziListComponent implements OnInit {
 
   genereazaComandaFurnizor()
   {
+    const resuls = this.valideazaComandaFurnizor();    
+    const comenziNeplatite = resuls[0];
+    const selectedProd = resuls[1];
+    const furnizorId = resuls[2];
+    if(!comenziNeplatite && selectedProd.length == 0 && furnizorId == 0) return;
+    
+    if(comenziNeplatite){
+      Swal.fire({
+        title: 'Atentie!',
+        text: "Ati selectat o comanda care nu este platita! Doriti sa continuati?",
+        icon: 'warning',
+        showCancelButton: true,        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.genereazaComnada(selectedProd);
+        }
+      });  
+    }
+    else {
+      this.genereazaComnada(selectedProd);
+    }
+  }
+
+  genereazaComnada(selectedProd:any){
+    this.comenziFurnizorService.fromComanda(selectedProd).subscribe(id=>{
+      this.router.navigate(['/comenziFurnizor/edit/' + id])
+    }, 
+    error=> this.errors = parseWebAPIErrors(error));
+  }
+
+  valideazaComandaFurnizor():[boolean, produseComandaDTO[], number] {
     var selectedProd: produseComandaDTO[] = [];
     var comenziNeplatite = false;
     var maiMultiFurnizori = false;
@@ -147,7 +182,6 @@ export class ComenziListComponent implements OnInit {
     var furnizorId = 0;
     this.comenzi.forEach(element => {
       element.comenziProduses.forEach(prod=>{
-        //console.log('prod', prod);
         if(prod.addToComandaFurnizor && !prod.isInComandaFurnizor && !prod.isCategory && !prod.isStoc) 
           {            
             if(prod.furnizorId == null && prod.isCategory == false) 
@@ -165,48 +199,77 @@ export class ComenziListComponent implements OnInit {
       });      
     });
 
-    console.log('selectedProd', selectedProd);    
     if(faraFurnizor) 
     {       
       Swal.fire({ title: "Atentie!", text: "Unul dintre produse nu are furnizor!", icon: 'info' });
-      return;
+      return [false, [], 0];
     }
     if(maiMultiFurnizori) 
     { 
       Swal.fire({ title: "Atentie!", text: "Ati selectat produse de la mai multi furnizori!", icon: 'info' });
-      return;
+      return [false, [], 0];
     }
     if(selectedProd.length == 0){
       Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o comanda!", icon: 'info' });
-      return;
+      return [false, [], 0];
     }
+
+    return [comenziNeplatite, selectedProd, furnizorId];
+  }
+
+  adaugaLaComandaFurnizor()
+  {
+    const resuls = this.valideazaComandaFurnizor();    
+    const comenziNeplatite = resuls[0];
+    const selectedProd = resuls[1];
+    const furnizorId = resuls[2];
+    if(!comenziNeplatite && selectedProd.length == 0 && furnizorId == 0) return;
     
     if(comenziNeplatite){
       Swal.fire({
         title: 'Atentie!',
         text: "Ati selectat o comanda care nu este platita! Doriti sa continuati?",
         icon: 'warning',
-        showCancelButton: true,
-        // confirmButtonColor: '#3085d6',
-        // cancelButtonColor: '#d33',
-        // confirmButtonText: 'Yes, delete it!'
+        showCancelButton: true        
       }).then((result) => {
         if (result.isConfirmed) {
-          this.genereazaComnada(selectedProd);
+          this.adaugaLaComnada(selectedProd, furnizorId);
         }
       });  
     }
     else {
-      this.genereazaComnada(selectedProd);
+      this.adaugaLaComnada(selectedProd, furnizorId);
     }
   }
 
-  genereazaComnada(selectedProd:any){
-    this.comenziFurnizorService.fromOferta(selectedProd).subscribe(id=>{
-      this.router.navigate(['/comenziFurnizor/edit/' + id])
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));
+  adaugaLaComnada(selectedProd:any, furnizorId: number){
+    console.log('sunt unde trebuie. furnizorId', furnizorId); 
+    
+    const dialogRef = this.dialog.open(ComenziFurnSelectDialogComponent,      
+      { data:{ furnizorId : furnizorId}, width: '450px', height: '400px' });
+
+    dialogRef.afterClosed().subscribe((data) => {      
+      if (data.clicked === 'submit') {
+        var comandaFurnizorId = data.form.comandaFurnId;
+
+        const paramObject: toExistingComenziFurnizoriDTO = {
+          comandaFurnizorId: comandaFurnizorId,
+          comenziProduse: selectedProd
+        };
+        
+        if(selectedProd.length > 0){
+          this.comenziFurnizorService.addToExisting(paramObject).subscribe(()=>{
+            this.router.navigate(['/comenziFurnizor/edit/' + comandaFurnizorId])
+          }, 
+          error=> this.errors = parseWebAPIErrors(error));
+        }
+        else this.errors.push("Nu ati selectat nici o comanda!");
+      }      
+    });
+    
+    
   }
+
   updatePagination(event: PageEvent){
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
