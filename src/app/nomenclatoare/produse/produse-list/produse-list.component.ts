@@ -2,6 +2,8 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
+import { filter, map } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { umDTO } from '../../um/um-item/um.model';
@@ -47,9 +49,11 @@ export class ProduseListComponent implements OnInit {
       this.umList=um;
     })
 
-    this.form.valueChanges.subscribe(values=>{
-      this.loadList(values);      
-    })
+    this.form.valueChanges
+    .pipe(debounceTime(1000))
+    .subscribe(values => {
+      this.loadList(values);
+    });
   }
 
   loadList(values: any){

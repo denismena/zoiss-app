@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ClientiService } from '../../clienti.service';
 import { clientiDTO, clientiCreationDTO, clientiAdresaDTO } from '../clienti.model';
 
@@ -14,6 +15,7 @@ export class ClientiEditComponent implements OnInit {
 
   adreseList: clientiAdresaDTO[] = [];
   model!:clientiDTO;
+  errors: string[] = [];
   //model:clientiDTO = { nume:'ion', pf_pj: 1, cui_cnp: '21323432', registruComert:'dsadsa', active: true}
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -21,6 +23,10 @@ export class ClientiEditComponent implements OnInit {
         this.model = client.client;
         this.adreseList = client.adrese;
         console.log('edit', this.model);
+      }, error => {
+        console.log('error: ',error);
+        this.errors = parseWebAPIErrors(error);      
+        //this.loading$ = false;
       })
     });
   }
