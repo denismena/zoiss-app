@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { produseStocComandaDTO } from 'src/app/comenzi/comenzi-item/comenzi.model';
+import { comandaStocDTO, comandaStocProduseDTO } from 'src/app/comenzi/comenzi-item/comenzi.model';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 
 @Component({
@@ -12,39 +12,41 @@ import { ComenziService } from 'src/app/comenzi/comenzi.service';
 export class ProdusStocDialogComponent implements OnInit {
 
   public form!: FormGroup;
-  produseStocList: produseStocComandaDTO[] =[];
-  //private selectedProdusCantitate: number= 99;
+  produseStocList: comandaStocDTO[] =[];
   constructor(private formBuilder:FormBuilder, private comenziService: ComenziService, 
     @Inject(MAT_DIALOG_DATA) data: { id: number },
     public dialogRef: MatDialogRef<ProdusStocDialogComponent>) { 
-    //this.id = data?.id;    
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       comandaProdusId:[null, {validators:[Validators.required]}],
-      //cantitate:[null, {validators:[Validators.required, Validators.max(this.selectedProdusCantitate)]}],      
     })
     
     this.comenziService.produseStoc().subscribe(produseStoc=>{
-      this.produseStocList=produseStoc;      
-    })
-  }
-  onchange(produs:any){
-    var prodIndex = this.produseStocList.findIndex(a=>a.id == produs.value); 
-    //this.selectedProdusCantitate = this.produseStocList[prodIndex].cantitate;
-    // this.form.get('cantitate')?.setValidators([Validators.required, Validators.max(this.selectedProdusCantitate)])
-    // this.form.get('cantitate')?.updateValueAndValidity();    
-  }
-  submit(form: NgForm) {   
-    var prodIndex = this.produseStocList.findIndex(a=>a.id === Number(this.form.get('comandaProdusId')?.value)); 
-    const selectedProdus : produseStocComandaDTO = {
-      ...this.produseStocList[prodIndex]  ,
-      //cantitate:  Number(this.form.get('cantitate')?.value),
-    }
+      this.produseStocList=produseStoc;
+      console.log('this.produseStocList:', this.produseStocList);      
+    });
+  }  
+
+  submit(form: NgForm) {    
+    const selectedProdusList : comandaStocProduseDTO[] = [];
+    const selectedValues = this.form.get('comandaProdusId')?.value;
+    selectedValues.forEach((comandaProdusId: number) => {
+      this.produseStocList.forEach(produs => {
+        produs.comenziProduseStoc.forEach(comandaProdus => {
+          if(comandaProdus.id == comandaProdusId){
+            const selectedProdus : comandaStocProduseDTO = {
+              ...comandaProdus
+            }
+            selectedProdusList.push(selectedProdus);
+          }
+        });        
+      });
+    });
     this.dialogRef.close({
       clicked: 'submit',
-      form: selectedProdus
+      form: selectedProdusList
     });
   }
 

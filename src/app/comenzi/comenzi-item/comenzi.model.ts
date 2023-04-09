@@ -77,10 +77,13 @@ export interface comenziPutGetDTO{
     comenziProduses: produseComandaDTO[];
 }
 
-export interface produseStocComandaDTO{    
-    id: number;
+export interface comandaStocDTO{        
     comandaNumar: string;
     comandaData: Date;
+    comenziProduseStoc: comandaStocProduseDTO[];
+}
+export interface comandaStocProduseDTO{    
+    id: number;
     produsId: number;
     produsNume: string;
     um: string;

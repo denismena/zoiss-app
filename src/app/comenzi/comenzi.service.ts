@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { produseOfertaDTO } from '../nomenclatoare/produse/produse-item/produse.model';
-import { comenziCreationDTO, comenziDTO, comenziPutGetDTO, produseStocComandaDTO } from './comenzi-item/comenzi.model';
+import { comandaStocDTO, comenziCreationDTO, comenziDTO, comenziPutGetDTO } from './comenzi-item/comenzi.model';
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +47,7 @@ export class ComenziService{
   }
 
   produseStoc() {
-    return this.http.get<produseStocComandaDTO[]>(`${this.apiUrl}/produseStoc`);
+    return this.http.get<comandaStocDTO[]>(`${this.apiUrl}/produseStoc`);
   }
 
   public putGet(id: number): Observable<comenziPutGetDTO>{

@@ -40,26 +40,27 @@ export class LivrariProduseComponent implements OnInit {
       { data:{id: livrariId}, width: '650px', height: '300px' });
 
       dialogRef.afterClosed().subscribe((data) => {
-        if (data.clicked === 'submit') {
-          console.log('data.form: ', data.form);
-          const anotherLivrareProdus : livrariProduseDTO = {
-            produsNume: data.form.produsNume,
-            um: data.form.um,
-            cantitate: data.form.cantitate,
-            cutii: data.form.cutii,
+        if (data.clicked === 'submit') {          
+          data.form.forEach((produs: any) => {
+            const anotherLivrareProdus : livrariProduseDTO = {
+              produsNume: produs.produsNume,
+              um: produs.um,
+              cantitate: produs.cantitate,
+              cutii: produs.cutii,
 
-            id: 0,
-            livrariId: 0,
-            transportProduseId: null,
-            comenziProdusId: data.form.id,
-            furnizor: '',
-            livrat: false
-          }
-          this.selectedProdus.push(anotherLivrareProdus);
-          
+              id: 0,
+              livrariId: 0,
+              transportProduseId: null,
+              comenziProdusId: produs.id,
+              furnizor: '',
+              livrat: false
+            }
+            this.selectedProdus.push(anotherLivrareProdus);
+          });     
+
           if (this.table !== undefined){      
             this.table.renderRows();
-          }          
+          }
         }
       });
   }
