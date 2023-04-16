@@ -1,26 +1,4 @@
-<!-- <form (submit)="adaugaProdusStoc()" [formGroup]="form" #autoForm>
-<div class="">    
-    <div class="row">
-        <div class="col-md-2">
-            Produs de stoc:
-        </div>
-        <div class="col-md-6">
-            <mat-form-field appearance="outline">
-            <mat-select formControlName="comandaProdusId">
-            <mat-option *ngFor="let produs of produseStocList" [value]="produs.id">
-                <b>Comanda:</b> {{produs.comandaNumar}}/{{produs.comandaData|customDate}} <b>Produs:</b> {{produs.produsNume}} <b>Cant:</b> {{produs.cantitate}}                
-                </mat-option>            
-            </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <button mat-flat-button color="primary">Adauga</button>
-        </div>
-    </div>
-</div>
-</form>
-<br /> -->
-<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0" [dataSource]="selectedProdus">
+<table #produseTable style="width: 100%;" mat-table [dataSource]="selectedProdus">
 
     <ng-container matColumnDef="furnizor">
         <th mat-header-cell *matHeaderCellDef>Furnizor</th>

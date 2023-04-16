@@ -7,14 +7,20 @@
             <div class="container">                    
             <div class="row">
                 <div class="col-md-12">
-                    <mat-form-field appearance="outline">
-                    <mat-select formControlName="comandaProdusId" multiple>
-                        <mat-optgroup *ngFor="let group of produseStocList" [label]="'Comanda: ' + group.comandaNumar + ' / '+ (group.comandaData|customDate)">
-                        <mat-option *ngFor="let produs of group.comenziProduseStoc" [value]="produs.id">
-                            {{produs.produsNume}} <b>Cant:</b> {{produs.cantitate}}
-                        </mat-option>
-                        </mat-optgroup>                        
-                    </mat-select>
+                    <mat-form-field appearance="outline">                    
+                        <mat-select formControlName="comandaProdusId" multiple>
+                            <div style="display: flex;">
+                              <input matInput placeholder="Cauta dupa numar comanda" class="mat-optgroup-label"
+                                    [(ngModel)]="searchTextComanda" [ngModelOptions]="{standalone: true}" style="flex: 1;">
+                              <input matInput placeholder="Cauta dupa cod sau nume produs" class="mat-optgroup-label"
+                                    [(ngModel)]="searchTextProdus" [ngModelOptions]="{standalone: true}" (ngModelChange)="updateSearchResults()" style="flex: 1;">
+                            </div>
+                            <mat-optgroup *ngFor="let group of filteredProduseStocList | filterComandaProdusStoc: searchTextComanda" [label]="'Comanda: ' + group.comandaNumar + ' / ' + (group.comandaData | customDate)">
+                                <mat-option *ngFor="let produs of filterComenziProduseStoc(group.comenziProduseStoc, searchTextProdus)" [value]="produs.id">
+                                    (<b>{{produs.codProdus}}</b>) {{produs.produsNume}}; <b>Cant:</b> {{produs.cantitate}}
+                                  </mat-option>
+                            </mat-optgroup>
+                          </mat-select>
                     </mat-form-field>
                 </div>                
             </div>

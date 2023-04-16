@@ -18,6 +18,7 @@ export class LivrariEditComponent implements OnInit {
   selectedProdus: livrariProduseDTO[] = [];
   preselectClient: clientiDTO | undefined;
   public client: string |undefined;
+  public clientId: number |undefined;
   
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -26,9 +27,7 @@ export class LivrariEditComponent implements OnInit {
         this.selectedProdus = livrare.livrareProduse;
         
         this.client=livrare.livrare.client;
-        this.clientiService.getById(livrare.livrare.clientId).subscribe(client=>{
-          this.preselectClient = client;
-        });        
+        this.clientId=livrare.livrare.clientId;       
       })
     });
   }

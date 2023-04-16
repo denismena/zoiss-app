@@ -46,8 +46,8 @@ export class ComenziService{
     return this.http.post(`${this.apiUrl}/fromOferta`, produse);
   }
 
-  produseStoc() {
-    return this.http.get<comandaStocDTO[]>(`${this.apiUrl}/produseStoc`);
+  produseStoc(clientId: number): Observable<comandaStocDTO[]>{
+    return this.http.get<comandaStocDTO[]>(`${this.apiUrl}/produseStoc/${clientId}`);
   }
 
   public putGet(id: number): Observable<comenziPutGetDTO>{

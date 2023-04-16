@@ -29,7 +29,11 @@
             <input formControlName="receptionatDe" matInput>
         </mat-form-field>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-4" *ngIf="!model">
+        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+        <input type="hidden" formControlName="clientId" #hdnClientId>
+    </div>
+    <div [ngClass]="{'col-md-12': model, 'col-md-8': !model}">
         <span>Detalii</span>
         <mat-form-field appearance="outline">            
             <input formControlName="detalii" matInput>
@@ -38,7 +42,7 @@
 </div>    
 <div class="row">
     <div class="col-md-12">
-        <app-livrari-produse [selectedProdus]="selectedProdus"></app-livrari-produse>    
+        <app-livrari-produse [selectedProdus]="selectedProdus" [clientId]="clientId"></app-livrari-produse>    
     </div>
 </div>
 <div class="row">

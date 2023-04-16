@@ -109,17 +109,20 @@ export class ComisionArhitectiComponent implements OnInit {
 
   genereazaPDF(element:any)
   {    
+    var selectedComenziId: number[] = [];
+    this.comisioaneArhitecti.forEach(element => {
+      element.comenzi.forEach(com=>{
+        if(com.addToPlatit){            
+          selectedComenziId.push(com.id);
+        }
+      })
+    });
     this.loading$ = true;
-    this.form.get('arhitectId')?.setValue(element.arhitectId);
-    console.log('this.form.value', this.form.value);
-    console.log('element', element);
-    this.exportService.comisionArhitectPDF(this.form.value).subscribe(blob => {
-      //var fileURL = window.URL.createObjectURL(blob);      
-      const dtfrom = new Date(this.form.controls['fromDate'].value);
-      const dtTo = new Date(this.form.controls['toDate'].value);
+    const dtfrom = new Date(this.form.controls['fromDate'].value);
+    const dtTo = new Date(this.form.controls['toDate'].value);
+    this.exportService.comisionArhitectPDF(selectedComenziId, dtfrom, dtTo).subscribe(blob => {      
       saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
       this.loading$ = false;
-      //window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
     });

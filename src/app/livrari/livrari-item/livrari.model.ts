@@ -13,9 +13,14 @@ export interface LivrariDTO{
     livrariProduse: livrariProduseDTO[];
 }
 
-export interface livrariCreationDTO{    
-    referinta: string;
-    transportProduse: livrariProduseDTO[];
+export interface livrariCreationDTO{        
+    numar: string;
+    data: Date;
+    clientId: number;
+    curier: string;
+    receptionatDe: string;
+    detalii: string;
+    livrariProduse: livrariProduseDTO[];
 }
 export interface livrariEditDTO{
     clientId: number;    
@@ -36,7 +41,8 @@ export interface livrariProduseDTO{
     produsNume: string;
     um: string;
     cantitate: number;
-    cutii: number;    
+    cutii: number;
+    clientId: number;
 }
 
 export interface livrariPutGetDTO{

@@ -89,6 +89,5 @@ export interface comandaStocProduseDTO{
     um: string;
     cantitate : number
     cutii: number;
-    pretUm: number;
-    valoare: number;    
+    codProdus: string;
 }

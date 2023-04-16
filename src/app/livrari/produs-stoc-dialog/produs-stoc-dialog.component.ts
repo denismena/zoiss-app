@@ -13,9 +13,14 @@ export class ProdusStocDialogComponent implements OnInit {
 
   public form!: FormGroup;
   produseStocList: comandaStocDTO[] =[];
+  filteredProduseStocList: comandaStocDTO[] =[];
+  searchTextProdus: string = '';
+  searchTextComanda: string = '';
+  clientId: number = 0;
   constructor(private formBuilder:FormBuilder, private comenziService: ComenziService, 
     @Inject(MAT_DIALOG_DATA) data: { id: number },
-    public dialogRef: MatDialogRef<ProdusStocDialogComponent>) { 
+    public dialogRef: MatDialogRef<ProdusStocDialogComponent>) {
+      this.clientId = data.id; 
   }
 
   ngOnInit(): void {
@@ -23,12 +28,32 @@ export class ProdusStocDialogComponent implements OnInit {
       comandaProdusId:[null, {validators:[Validators.required]}],
     })
     
-    this.comenziService.produseStoc().subscribe(produseStoc=>{
-      this.produseStocList=produseStoc;
-      console.log('this.produseStocList:', this.produseStocList);      
+    this.comenziService.produseStoc(this.clientId).subscribe(produseStoc=>{
+      this.filteredProduseStocList = this.produseStocList = produseStoc;
+      //console.log('this.produseStocList:', this.produseStocList);      
     });
   }  
 
+  updateSearchResults(): void {
+    this.filteredProduseStocList = this.produseStocList.filter((comanda) => {
+      const filteredComenziProduse = comanda.comenziProduseStoc.filter((produs) => {
+        const searchRegex = new RegExp(this.searchTextProdus, 'i');
+        return searchRegex.test(produs.produsNume) || searchRegex.test(produs.codProdus);
+      });
+      return filteredComenziProduse.length > 0;
+    });
+  }
+
+  filterComenziProduseStoc(comenziProduseStoc: comandaStocProduseDTO[], searchText: string): comandaStocProduseDTO[] {
+    if (!searchText) {
+      return comenziProduseStoc;
+    }
+    searchText = searchText.toLowerCase();
+    return comenziProduseStoc.filter((produs: comandaStocProduseDTO) => {
+      return produs.produsNume.toLowerCase().includes(searchText) || produs.codProdus.toLowerCase().includes(searchText);
+    });
+  }
+  
   submit(form: NgForm) {    
     const selectedProdusList : comandaStocProduseDTO[] = [];
     const selectedValues = this.form.get('comandaProdusId')?.value;

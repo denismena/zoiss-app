@@ -40,13 +40,11 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
 
   search(event: any){
-    console.log('key up', event);
     let searchTerm = '';
     searchTerm += event;
     if(searchTerm.length > 2){    
       this.clientiService.search(searchTerm).subscribe(clienti=>{
         this.clienti = clienti;
-        console.log('load clienti', clienti);
         this.selectedClient = this.clientCtrl.valueChanges
           .pipe(
             startWith(''),
@@ -54,7 +52,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
           );        
       });
     }    
-    console.log('this.selectedClient', this.selectedClient);
   }
   optionSelected(event: MatAutocompleteSelectedEvent){
     this.preselectClient = event.option.value;
@@ -89,7 +86,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     //this.trigger.panelClosingActions.pipe(this.takeUntil(this.trigger.autocomplete.closed))
       .subscribe(e => {
         if (!e || !e.source) {
-          console.log('this.preselectClient', this.preselectClient);
           if(this.preselectClient == undefined)//daca nu are nimic selectat, scrisul este sters
             this.clientCtrl.setValue(null);          
           if(this.clientCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
@@ -111,7 +107,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.clientCtrl.setValue(this.dataFromDialog);
           this.onOptionSelected.emit(this.dataFromDialog.id);
         }
@@ -119,7 +114,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   }
   editClientDialog(){
     if(this.preselectClient == undefined)  return; 
-    console.log('this.preselectClient', this.preselectClient);
     const dialogRef = this.dialog.open(ClientiCreateDialogComponent,      
       { data:{client: this.preselectClient, editId: this.preselectClient?.id??0}, width: '1000px', height: '750px' });
 
@@ -127,7 +121,6 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.clientCtrl.setValue(this.dataFromDialog);
           this.onOptionSelected.emit(this.dataFromDialog.id);
         }

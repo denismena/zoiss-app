@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
@@ -19,8 +19,9 @@ export class LivrariItemComponent implements OnInit {
     private livrariService: LivrariService, private clientiService: ClientiService) { }
 
   @Input() model:LivrariDTO | undefined;  
-  @Input() preselectClient: clientiDTO | undefined;
+  @Input() clientId: number | undefined;
   @Input() selectedProdus: livrariProduseDTO[] = [];
+  livrariProduse!: FormArray;
   public form!: FormGroup;
 
   @Output() onSaveChanges: EventEmitter<LivrariDTO> = new EventEmitter<LivrariDTO>();
@@ -28,23 +29,32 @@ export class LivrariItemComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       numar:[null, {validators:[RxwebValidators.required()]}],
-      data:[new Date(), {validators:[RxwebValidators.required()]}],
+      data:[new Date(new Date().getTime() + 24 * 60 * 60 * 1000), {validators:[RxwebValidators.required()]}],
       clientId:[null, {validators:[RxwebValidators.required()]}],      
       curier: null,      
       receptionatDe: null,      
       detalii: null,
-      livrariProduse:''      
+      livrariProduse:''
     });    
     
     if(this.model !== undefined)
     {
       //on edit form
       this.form.patchValue(this.model);      
-    }    
+    }
+    else{
+      //on add form
+      this.form.get('clientId')?.setValue(this.clientId);
+      this.livrariService.getNextNumber().subscribe(data=>{
+        console.log(data);
+        this.form.get('numar')?.setValue(data);
+      });
+    }
   }
 
   selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
+    this.clientId = parseInt(clientId);
   }
 
   saveChanges(){  
@@ -59,5 +69,4 @@ export class LivrariItemComponent implements OnInit {
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
   }
-
 }

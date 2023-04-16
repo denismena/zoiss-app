@@ -12,6 +12,7 @@ import { ProdusStocDialogComponent } from '../produs-stoc-dialog/produs-stoc-dia
 export class LivrariProduseComponent implements OnInit {
   
   @Input() selectedProdus: livrariProduseDTO[]=[];
+  @Input() clientId: number | undefined;
   checked = [];  
   @ViewChild(MatTable)
   table!: MatTable<any>;
@@ -35,9 +36,9 @@ export class LivrariProduseComponent implements OnInit {
   }
 
   produsStocPrompt(){
-    var livrariId = this.selectedProdus[0].livrariId;
+    //var clientId = this.selectedProdus[0].clientId;
     const dialogRef = this.dialog.open(ProdusStocDialogComponent,      
-      { data:{id: livrariId}, width: '650px', height: '300px' });
+      { data:{id: this.clientId}, width: '650px', height: '300px' });
 
       dialogRef.afterClosed().subscribe((data) => {
         if (data.clicked === 'submit') {          
@@ -47,6 +48,7 @@ export class LivrariProduseComponent implements OnInit {
               um: produs.um,
               cantitate: produs.cantitate,
               cutii: produs.cutii,
+              clientId: this.clientId ?? 0,
 
               id: 0,
               livrariId: 0,
