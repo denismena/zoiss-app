@@ -6,6 +6,15 @@
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
+// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
+//  The following line adds:
+//    1. Default typography styles for all components
+//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
+//  If you specify typography styles for the components you use elsewhere, you should delete this line.
+//  If you don't need the default component typographies but still want the hierarchy styles,
+//  you can delete this line and instead use:
+//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
+@include mat.all-component-typographies();
 @include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
@@ -79,30 +88,32 @@ body{
 mat-form-field{
   width: 100%;
 }
-.mat-option{
+.mat-mdc-option{
   font-size: 14px;
   line-height: 36px !important;
   height: 32px !important;
 }
-.mat-paginator{
+.mat-mdc-paginator{
   background-color: #bcbcbc;
   font-size: 13px;
   //color: darkslateblue;  
 }
-.mat-paginator .mat-paginator-page-size-select{
+
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
+.mat-mdc-paginator .mat-paginator-page-size-select{
   margin: 0px;
 }
-.mat-header-row{
+.mat-mdc-header-row{
   background-color: #e99064;  
 }
-.mat-header-row th{
+.mat-mdc-header-row th{
   color: #fff !important;
   font-size: 14px;
 }
-.mat-tooltip{
+.mat-mdc-tooltip{
   font-size: 14px;
 }
-.mat-flat-button{
+.mat-mdc-unelevated-button{
   min-width: 40px;
   padding: 0px 10px;  
 }
@@ -118,7 +129,7 @@ mat-icon {
   margin-top: 10px;  
   cursor: default !important;  
 }
-.mat-menu-panel{
+.mat-mdc-menu-panel{
   background-color: #7a7979 !important;
   -webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -127,24 +138,28 @@ mat-icon {
   min-width: 550px !important;
   max-width: 550px !important;
 }
-.mat-flat-button.mat-primary{
+.mat-mdc-unelevated-button.mat-primary{
   color: #3c4858 !important;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-appearance-outline .mat-form-field-suffix{
   top: 0em !important;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-suffix span{
   padding-left: 5px;
 }
-td.mat-cell{
+td.mat-mdc-cell{
   padding: 0.2rem !important;
 }
-th.mat-header-cell{
+th.mat-mdc-header-cell{
   padding: 0.2rem !important;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-infix{
   padding: 7px 0px !important;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-flex{
   padding-top: 0px !important;
 }
