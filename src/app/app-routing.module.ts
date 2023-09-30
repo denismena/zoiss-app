@@ -53,6 +53,7 @@ import { CookieService } from './utilities/cookie.service';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
 import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
 import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.component';
+import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -106,6 +107,7 @@ const routes: Routes = [
   {path: "depozite/edit/:id", component: DepoziteEditComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "livrari", component: LivrariListComponent, canActivate:[IsAuthenticatedGuard]} ,  
+  {path: "livrari/create", component: LivrariCreateComponent, canActivate:[IsAuthenticatedGuard]} ,  
   {path: "livrari/edit/:id", component: LivrariEditComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "notes", component: StickyNotesListComponent} ,  

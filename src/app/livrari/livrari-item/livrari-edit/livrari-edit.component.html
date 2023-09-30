@@ -1,5 +1,5 @@
 <h2>Editeaza Livrarea Client: {{this.client}} </h2>
 <app-livrari-item *ngIf="model" 
 [selectedProdus] = "selectedProdus"
-[preselectClient] = "preselectClient"
+[clientId] = "clientId"
 [model]="model" (onSaveChanges)="saveChanges($event)"></app-livrari-item>

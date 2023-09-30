@@ -32,8 +32,11 @@ export class ExportService{
   comandaFurnizorReport(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
   }
-  comisionArhitectPDF(values:any): Observable<Blob>{
-    const params = new HttpParams({fromObject: values});
+  comisionArhitectPDF(values:number[], fromDate: Date, toDate: Date): Observable<Blob>{
+    const params = new HttpParams()
+    .set('selectedComenziId', values.join(','))
+    .set('fromDate', fromDate.toISOString())
+    .set('toDate', toDate.toISOString());
     return this.http.get<Blob>(`${this.apiUrl}/comisionArhitectPDF`, {responseType: 'blob' as 'json', params});
     //return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
   }

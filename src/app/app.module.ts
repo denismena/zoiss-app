@@ -50,7 +50,7 @@ import { ArhitectiEditComponent } from './nomenclatoare/arhitecti/arhitecti-item
 import { ArhitectiAutocompleteComponent } from './nomenclatoare/arhitecti/arhitecti-autocomplete/arhitecti-autocomplete.component';
 
 import { InputImgComponent } from './utilities/input-img/input-img.component';
-import {CustomDateTimePipe, CustomDatePipe, DaNuPipe} from './utilities/custom.datepipe';
+import {CustomDateTimePipe, CustomDatePipe, DaNuPipe, FilterComandaProdusStocPipe} from './utilities/custom.datepipe';
 import { OferteProduseAutocompleteComponent } from './oferte/oferte-produse-autocomplete/oferte-produse-autocomplete.component';
 import { ClientiAdresaComponent } from './nomenclatoare/clienti/clienti-adresa/clienti-adresa.component';
 import { UmListComponent } from './nomenclatoare/um/um-list/um-list.component';
@@ -117,6 +117,7 @@ import { ProdusStocDialogComponent } from './livrari/produs-stoc-dialog/produs-s
 import { ProdusSplitDialogComponent } from './comenzi-furn/produs-split-dialog/produs-split-dialog.component';
 import { UtilizatoriAutocompleteComponent } from './nomenclatoare/utilizatori/utilizatori-autocomplete/utilizatori-autocomplete.component';
 import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
+import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-
     CustomDateTimePipe,
     CustomDatePipe,
     DaNuPipe,
-
+    FilterComandaProdusStocPipe,
+    
     ProduseListComponent,
     ProduseItemComponent,
     ClientiListComponent,
@@ -218,7 +220,8 @@ import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-
     ProdusStocDialogComponent,
     ProdusSplitDialogComponent,
     UtilizatoriAutocompleteComponent,
-    ComenziFurnSelectDialogComponent    
+    ComenziFurnSelectDialogComponent,
+    LivrariCreateComponent    
   ],
   imports: [
     BrowserModule,
