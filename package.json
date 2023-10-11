@@ -30,7 +30,7 @@
     "@zxing/library": "^0.20.0",
     "@zxing/ngx-scanner": "^16.0.1",
     "ajv": "^6.12.6",
-    "angularx-qrcode": "^13.0.14",
+    "angularx-qrcode": "^13.0.15",
     "bootstrap": "^5.0.2",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
