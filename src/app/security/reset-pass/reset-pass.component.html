@@ -1,23 +1,34 @@
-<div class="container">
-<h3>Inregistrare</h3>
-<form (submit)="register(form.value)" [formGroup]="form" >
-    <input formControlName="email" type="hidden">
-    <input formControlName="token" type="hidden">
-    <mat-form-field appearance="outline">
-        <mat-label>Parola noua</mat-label>
-        <input formControlName="newpassword" matInput type="password">
-        <mat-error>{{form.get("newpassword")?.getError("required")?.message}}</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Confirma parola</mat-label>
-        <input formControlName="confirmPassword" matInput type="password">
-        <mat-error>{{form.get("confirmPassword")?.getError("required")?.message}}</mat-error>
-        <mat-error>{{form.get("confirmPassword")?.getError("compare")?.message}}</mat-error>
-    </mat-form-field>    
-    <div>
-        <button mat-flat-button color="primary" [disabled]="form.invalid">Salveaza</button>        
-        <a mat-stroke-button routerLink="/" mat-flat-button color="primary">Renunta</a>
-    </div>
-</form>
-<app-display-errors [errors]="errors"></app-display-errors>
+<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
+    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+      <div class="col-lg-4 d-flex align-items-center">
+        <mat-card class="cardWithShadow boxed-auth">
+          <mat-card-content class="p-32">
+            <div class="text-center">
+                <img src="./assets/images/zoiss.png" class="align-middle m-2" alt="logo"/>
+            </div>
+            <h3 class="mat-mdc-header-row text-center p-2">Inregistrare</h3>
+            <form (submit)="register(form.value)" [formGroup]="form" >
+                <input formControlName="email" type="hidden">
+                <input formControlName="token" type="hidden">
+                <mat-form-field appearance="outline">
+                    <mat-label>Parola noua</mat-label>
+                    <input formControlName="newpassword" matInput type="password">
+                    <mat-error>{{form.get("newpassword")?.getError("required")?.message}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Confirma parola</mat-label>
+                    <input formControlName="confirmPassword" matInput type="password">
+                    <mat-error>{{form.get("confirmPassword")?.getError("required")?.message}}</mat-error>
+                    <mat-error>{{form.get("confirmPassword")?.getError("compare")?.message}}</mat-error>
+                </mat-form-field>    
+                <div class="text-center">
+                    <button mat-flat-button color="primary" [disabled]="form.invalid">Salveaza</button>        
+                    <a mat-stroke-button routerLink="/" mat-flat-button color="primary">Renunta</a>
+                </div>
+            </form>
+            <app-display-errors [errors]="errors"></app-display-errors>
+        </mat-card-content>            
+    </mat-card>
+</div>
+</div>
 </div>

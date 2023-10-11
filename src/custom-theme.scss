@@ -87,11 +87,13 @@ body{
 /*MATERIAL*/
 mat-form-field{
   width: 100%;
+  @include mat.form-field-density(-3);
 }
 .mat-mdc-option{
   font-size: 14px;
   line-height: 36px !important;
   height: 32px !important;
+  min-height: 32px !important;
 }
 .mat-mdc-paginator{
   background-color: #bcbcbc;
@@ -104,7 +106,7 @@ mat-form-field{
   margin: 0px;
 }
 .mat-mdc-header-row{
-  background-color: #e99064;  
+  background-color: #e99064 !important;  
 }
 .mat-mdc-header-row th{
   color: #fff !important;
@@ -163,7 +165,47 @@ th.mat-mdc-header-cell{
 .mat-form-field-flex{
   padding-top: 0px !important;
 }
+// .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
+//   @include mat.form-field-density(-3);
+// }
+// .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea)
+//   .mat-mdc-form-field-infix {
+//     @include mat.form-field-density(-3);
+//   }
+//   .mat-mdc-form-field-infix{
+//     @include mat.form-field-density(-3);
+//   }
+/*
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
+  padding-top: 8px;
+  padding-bottom: 8px;
 
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;  
+  letter-spacing: .0178571429em;
+}
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea)
+  .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;  
+    letter-spacing: .0178571429em;
+  }
+.mat-mdc-form-field-infix{
+  min-height: 28px !important;
+}
+*/
+// ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
+// ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+
+// ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+//     transform: translateY(-1.1em) scale(.75);
+//     width: 133.33333%;
+// }
 /* END MATERIAL*/
 .w-50{
   min-width: 50px;
@@ -236,7 +278,7 @@ h4{
   font-family: Roboto Medium ;
 }
 .tableFooter{  
-  background-color: #bcbcbc;
+  background-color: #bcbcbc !important;
 }
 .spinner-container{
   width: 200px;

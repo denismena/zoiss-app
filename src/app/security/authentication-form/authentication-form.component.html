@@ -1,5 +1,5 @@
-<h3>{{action}}</h3>
-<form (submit)="onSaveChanges.emit(form.value)" [formGroup]="form" >
+<h3 class="mat-mdc-header-row text-center p-2">{{action}}</h3>
+<!-- <form (submit)="onSaveChanges.emit(form.value)" [formGroup]="form" >
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput>
@@ -16,4 +16,27 @@
         <button mat-flat-button color="primary" [disabled]="form.invalid">{{action}}</button>        
         <a mat-stroke-button routerLink="/" mat-flat-button color="primary">Renunta</a>
     </div>
-</form>
+</form> -->
+<form class="m-t-30" (submit)="onSaveChanges.emit(form.value)" [formGroup]="form">
+    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
+    <mat-form-field appearance="outline">
+      <input formControlName="email" matInput>
+      <mat-error>{{form.get("email")?.getError("required")?.message}}</mat-error>
+      <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Parola</mat-label>
+    <mat-form-field appearance="outline">
+      <input formControlName="password" matInput type="password">
+      <mat-error>{{form.get("password")?.getError("required")?.message}}</mat-error>
+  </mat-form-field>
+
+    <div class="d-block f-w-500 text-end m-2">
+      <a [routerLink]="['/forgetPass']" class="text-decoration-none">Am uitat parola</a>
+    </div>
+    <div class="text-center">
+      <button mat-flat-button color="primary" [disabled]="form.invalid">Intra in cont</button>
+    </div>
+    <!-- <a [routerLink]="['/']" mat-flat-button color="primary" class="w-100">
+      Sign In
+    </a>     -->
+  </form>

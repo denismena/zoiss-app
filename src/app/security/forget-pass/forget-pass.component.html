@@ -1,22 +1,30 @@
-<form (submit)="confirm(form.value)" [formGroup]="form" >
-    <div class="container white">    
-        <div class="row">
-            <div class="col-md-12">
+<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
+    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+      <div class="col-lg-4 d-flex align-items-center">
+        <mat-card class="cardWithShadow boxed-auth">
+          <mat-card-content class="p-32">
+            <div class="text-center">
+                <img src="./assets/images/zoiss.png" class="align-middle m-2" alt="logo"/>
+            </div>
+            <h3 class="mat-mdc-header-row text-center p-2">Reseteaza parola</h3>
+            <form class="m-t-30" (submit)="confirm(form.value)" [formGroup]="form" >                
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
                     <input formControlName="email" matInput>
                     <mat-error>{{form.get("email")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
                 </mat-form-field>
-            </div>
-            <div>
-                <button mat-flat-button color="primary" [disabled]="form.invalid">Confirma</button>
-                <app-display-errors [errors]="errors"></app-display-errors>
-                <br /><br />
-                <div *ngIf="success" class="text-success">
-                    Un email pe adresa dumneavoastra a fost trimis. Urmati pasii din email pentru a continua procesul de resetare a parolei.
-                </div>
-            </div>
-        </div>
+                <div class="text-center">
+                    <button mat-flat-button color="primary" [disabled]="form.invalid">Confirma</button>
+                    <app-display-errors [errors]="errors"></app-display-errors>
+                    <br /><br />
+                    <div *ngIf="success" class="text-success">
+                        Un email pe adresa dumneavoastra a fost trimis. Urmati pasii din email pentru a continua procesul de resetare a parolei.
+                    </div>
+                </div>                   
+            </form>
+            </mat-card-content>            
+        </mat-card>        
     </div>
-</form>
+    </div>
+</div>

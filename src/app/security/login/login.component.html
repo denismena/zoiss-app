@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<!-- <div class="container mx-auto">
     <div class="row"><div class="col-md-12">
         <app-authentication-form (onSaveChanges)="login($event)" [action]="'Autentificare'"></app-authentication-form>
         <app-display-errors [errors]="errors"></app-display-errors>
@@ -9,4 +9,33 @@
         &nbsp;&nbsp;&nbsp;
         <a routerLink="/register">Inregistreaza-te</a>
     </div></div>
+</div> -->
+<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
+  <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+    <div class="col-lg-4 d-flex align-items-center">
+      <mat-card class="cardWithShadow boxed-auth">
+        <mat-card-content class="p-32">
+          <div class="text-center">
+              <img src="./assets/images/zoiss.png" class="align-middle m-2" alt="logo"/>
+          </div>
+
+          <app-authentication-form (onSaveChanges)="login($event)" [action]="'Autentificare'"></app-authentication-form>
+          <span class="d-block f-w-500 text-center m-2">
+            Utilizator nou?
+            <a [routerLink]="['/register']" class="text-decoration-none text-primary f-w-500 f-s-14">
+              Inregistreaza-te</a>
+          </span>
+          <div class="mat-mdc-header-row p-2 text-center">
+            Scaneaza produs             
+            <mat-icon class="greenIcon" (click)="scannerEnabled=true">camera_alt</mat-icon>
+            <mat-icon class="redIcon" (click)="scannerEnabled=false">stop</mat-icon>
+            <app-scan-qr *ngIf="scannerEnabled"></app-scan-qr>
+          </div>    
+        </mat-card-content>
+        <app-display-errors [errors]="errors"></app-display-errors>
+        
+      </mat-card>        
+    </div>
+  </div>
 </div>
+  

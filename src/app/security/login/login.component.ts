@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private securityservice: SecurityService, private router: Router) { }
   errors: string[] = [];
+  scannerEnabled: boolean = false;
 
   ngOnInit(): void {
   }
