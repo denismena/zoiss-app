@@ -24,7 +24,7 @@
     "@ericblade/quagga2": "^1.6.0",
     "@kolkov/angular-editor": "^2.1.0",
     "@popperjs/core": "^2.9.2",
-    "@rxweb/reactive-form-validators": "^2.1.4",
+    "@rxweb/reactive-form-validators": "^13.0.1",
     "@sweetalert2/ngx-sweetalert2": "^12.2.0",
     "@zxing/browser": "^0.1.4",
     "@zxing/library": "^0.20.0",
