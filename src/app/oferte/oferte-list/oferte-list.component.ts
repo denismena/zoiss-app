@@ -191,11 +191,19 @@ export class OferteListComponent implements OnInit {
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
   }
  //#endregion
-  
-  genereazaExcel(element:any)
-  {
+ 
+  private getSelectedProduse(element: any): number[]{
+    const selectedProd = element.produse
+      .filter((prod: produseOfertaDTO) => prod.addToComanda && !prod.isInComanda)
+      .map((prod: produseOfertaDTO) => prod.id);
+    return selectedProd;
+  } 
+
+  genereazaExcel(element: any) {
     this.loading$ = true;
-    this.exportService.ofertaReport(element.id).subscribe(blob => {
+    
+    const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
+    this.exportService.ofertaReport(element.id, this.getSelectedProduse(element), neComandate).subscribe(blob => {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
@@ -203,10 +211,12 @@ export class OferteListComponent implements OnInit {
       console.log("Something went wrong");
     });
   }
+  
   genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.exportService.ofertaReportPDF(element.id).subscribe(blob => {
+    const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
+    this.exportService.ofertaReportPDF(element.id, this.getSelectedProduse(element), neComandate).subscribe(blob => {
       //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
@@ -220,7 +230,8 @@ export class OferteListComponent implements OnInit {
   genereazaPDFcuPoza(element:any)
   {    
     this.loading$ = true;
-    this.exportService.ofertaReportPDFcuPoza(element.id).subscribe(blob => {
+    const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
+    this.exportService.ofertaReportPDFcuPoza(element.id, this.getSelectedProduse(element), neComandate).subscribe(blob => {
       var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)

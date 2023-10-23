@@ -15,6 +15,7 @@ import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-comenzi-furn-list',
@@ -54,7 +55,7 @@ export class ComenziFurnListComponent implements OnInit {
     this.expandedElement = [];
   }
 
-  columnsToDisplay= ['expand', 'numar', 'data', 'furnizor', 'utilizator', 'termen', 'transportate', 'select', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'furnizor', 'utilizator', 'termen', 'transportate', 'select', 'platit', 'action'];
 
   ngOnInit(): void {
     let date: Date = new Date();
@@ -198,5 +199,11 @@ selectFurnizor(furnizor: any){
    }, error => {
      console.log("Something went wrong");
    });
+ }
+
+ setPlatita(event: MatSlideToggleChange, comandaId: number){
+  console.log('checkbox:', event);
+  this.comenziFurnizorService.setPlatita(comandaId, event.checked)
+    .subscribe(() => {});  
  }
 }

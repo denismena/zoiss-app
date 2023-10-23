@@ -14,14 +14,26 @@ export class ExportService{
   firstReport(): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/firstReport`, { responseType: 'blob' as 'json' });
   }
-  ofertaReport(id:number): Observable<Blob>{
-    return this.http.get<Blob>(`${this.apiUrl}/oferta/${id}`, { responseType: 'blob' as 'json' });
+  ofertaReport(id:number, values:number[], doarNecomandate:string): Observable<Blob>{
+    const params = new HttpParams()
+    .set('id', id)
+    .set('selectedId', values.join(','))
+    .set('doarNecomandate', doarNecomandate);
+    return this.http.get<Blob>(`${this.apiUrl}/oferta`, { responseType: 'blob' as 'json', params });
   }
-  ofertaReportPDF(id:number): Observable<Blob>{
-    return this.http.get<Blob>(`${this.apiUrl}/ofertaPDF/${id}`, { responseType: 'blob' as 'json' });
+  ofertaReportPDF(id:number, values:number[], doarNecomandate:string): Observable<Blob>{
+    const params = new HttpParams()
+    .set('id', id)
+    .set('selectedId', values.join(','))
+    .set('doarNecomandate', doarNecomandate);
+    return this.http.get<Blob>(`${this.apiUrl}/ofertaPDF`, { responseType: 'blob' as 'json', params });
   }
-  ofertaReportPDFcuPoza(id:number): Observable<Blob>{
-    return this.http.get<Blob>(`${this.apiUrl}/ofertaPDFcuPoza/${id}`, { responseType: 'blob' as 'json' });
+  ofertaReportPDFcuPoza(id:number, values:number[], doarNecomandate:string): Observable<Blob>{
+    const params = new HttpParams()
+    .set('id', id)
+    .set('selectedId', values.join(','))
+    .set('doarNecomandate', doarNecomandate);
+    return this.http.get<Blob>(`${this.apiUrl}/ofertaPDFcuPoza`, { responseType: 'blob' as 'json', params });
   }
   comandaReport(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comanda/${id}`, { responseType: 'blob' as 'json' });

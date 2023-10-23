@@ -12,6 +12,7 @@ import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/prod
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
+import { CookieService } from 'src/app/utilities/cookie.service';
 
 @Component({
   selector: 'app-oferte-produse-autocomplete',
@@ -20,12 +21,13 @@ import { UMService } from 'src/app/nomenclatoare/um/um.service';
 })
 export class OferteProduseAutocompleteComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, public cookie: CookieService,
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
   }
   public form!: FormGroup;
+  public formDoarNecomandate!: FormGroup;
 
   produsCtrl: FormControl = new FormControl();
   public furnizorFormGroup!: FormGroup;
@@ -33,8 +35,10 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   @Input() preselectedProdus:produseDTO|undefined;
   @Input() preselectFurnizor:furnizoriDTO|undefined;
   @Input() selectedProdus: produseOfertaDTO[];
+  @Input() idOferta: number|undefined;
   produsToDisplay: produseOfertaDTO[];
   umList: umDTO[]=[];
+  selectedProdusFiltered: produseOfertaDTO[]=[];
 
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
@@ -54,10 +58,10 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   perCutieSet!: number;
   pretSet!: number;
   isEditMode: boolean=false;
+  
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
     });
-
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',
@@ -72,12 +76,29 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       discount: null, 
       codProdus:'', id:null, isInComanda:false, isCategory: false, sort: null, isStoc: false, discountValoare: null
     });
-    
+    this.formDoarNecomandate = this.formBuilder.group({
+      doarNecomandate: this.idOferta ? this.cookie.getCookie('oferta' + this.idOferta)== '' ? false: this.cookie.getCookie('oferta' + this.idOferta) : false,
+    });
+    this.formDoarNecomandate.controls['doarNecomandate'].valueChanges.subscribe(value => {
+      this.cookie.setCookie({name:'oferta' + this.idOferta, value, session: true});
+
+      if(value){
+        this.selectedProdusFiltered = this.selectedProdus.filter(p=>p.isInComanda == false);
+      }
+      else this.selectedProdusFiltered = this.selectedProdus.filter(p=>p.isInComanda == true || p.isInComanda == false);
+    });
+
+    if(this.cookie.getCookie('oferta' + this.idOferta)){
+      this.selectedProdusFiltered = this.selectedProdus.filter(p=>p.isInComanda == false);
+    }
+    else this.selectedProdusFiltered = this.selectedProdus.filter(p=>p.isInComanda == true || p.isInComanda == false);
+
     this.loadProduseList();
     
     this.furnizorFormGroup = new FormGroup({
       furnizorId: new FormControl()
     });
+
     this.produsCtrl.valueChanges.subscribe(value => {
       this.produseService.searchByName(value).subscribe(produs => {
         this.produsToDisplay = produs;
@@ -135,10 +156,16 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
   saveChanges(){
     if(this.form.get('id')?.value !=null && this.isEditMode){
-      let index = this.selectedProdus.findIndex(a => a.id === Number(this.form.get('id')?.value));
-      this.selectedProdus[index]=this.form.value;
+      let index = this.selectedProdusFiltered.findIndex(a => a.id === Number(this.form.get('id')?.value));
+      this.selectedProdusFiltered[index]=this.form.value;
+
+      let index2 = this.selectedProdus.findIndex(a => a.id === Number(this.form.get('id')?.value));
+      this.selectedProdus[index2]=this.form.value;
     }
-    else this.selectedProdus.push(this.form.value);
+    else {
+      this.selectedProdusFiltered.push(this.form.value);
+      this.selectedProdus.push(this.form.value);
+    }    
 
     if (this.table !== undefined){
       this.table.renderRows();
@@ -199,26 +226,32 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     }
   }
   getTotalCost() {
-    return this.selectedProdus.map(t => t.valoare).reduce((acc, value) => Number(acc) + Number(value), 0);
+    return this.selectedProdusFiltered.map(t => t.valoare).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
   getTotalBox() {
-    return this.selectedProdus.map(t => t.cutii).reduce((acc, value) => Number(acc) + Number(value), 0);
+    return this.selectedProdusFiltered.map(t => t.cutii).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
   remove(produs:any){
     console.log('delete produs', produs);
-    const index = this.selectedProdus.findIndex(a => a.id === produs.id);
-    this.selectedProdus.splice(index, 1);
+    const index = this.selectedProdusFiltered.findIndex(a => a.id === produs.id);
+    this.selectedProdusFiltered.splice(index, 1);
+    
+    const index2 = this.selectedProdus.findIndex(a => a.id === produs.id);
+    this.selectedProdus.splice(index2, 1);
     this.table.renderRows();
   }
 
   dropped(event: CdkDragDrop<any[]>){
-    const previousIndex = this.selectedProdus.findIndex(produs => produs === event.item.data);
-    moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
+    const previousIndex = this.selectedProdusFiltered.findIndex(produs => produs === event.item.data);
+    moveItemInArray(this.selectedProdusFiltered, previousIndex, event.currentIndex);
     this.table.renderRows();
+
+    const previousIndex2 = this.selectedProdus.findIndex(produs => produs === event.item.data);
+    moveItemInArray(this.selectedProdus, previousIndex2, event.currentIndex);
   }
 
   changeDiscountAll(discoutAll: HTMLInputElement){    
-    this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
+    this.selectedProdusFiltered.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
 }
 

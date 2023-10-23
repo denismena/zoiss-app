@@ -53,4 +53,8 @@ export class ComenziFurnizorService{
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  setPlatita(id: number, platita: boolean){
+    return this.http.get(`${this.apiUrl}/setPlatita/${id}/${platita}`); 
+  }
 }

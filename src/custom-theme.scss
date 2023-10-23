@@ -90,13 +90,13 @@ mat-form-field{
   @include mat.form-field-density(-3);
 }
 .mat-mdc-option{
-  font-size: 14px;
-  line-height: 36px !important;
-  height: 32px !important;
+  font-size: 14px !important;
+  //line-height: 36px !important;
+  //height: 32px !important;
   min-height: 32px !important;
 }
 .mat-mdc-paginator{
-  background-color: #bcbcbc;
+  background-color: #bcbcbc !important;
   font-size: 13px;
   //color: darkslateblue;  
 }
@@ -270,11 +270,11 @@ h4{
   padding-bottom: 10px;
 }
 .categoryProd{
-  background-color: #c2c2c2 ;
+  background-color: #c2c2c2 !important;
   font-family: Roboto Medium ;
 }
 .stocProd{
-  background-color: #d8ebcb ;
+  background-color: #d8ebcb !important ;
   font-family: Roboto Medium ;
 }
 .tableFooter{  
