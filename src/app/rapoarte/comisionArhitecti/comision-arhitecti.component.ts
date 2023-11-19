@@ -62,7 +62,6 @@ export class ComisionArhitectiComponent implements OnInit {
   loadList(values: any){
     this.reportService.comisionArhitecti(values).subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
       this.comisioaneArhitecti = response.body??[];
-      //console.log('this.comisioaneArhitecti', this.comisioaneArhitecti);
       this.loading$ = false;
     });    
   }
@@ -110,13 +109,11 @@ export class ComisionArhitectiComponent implements OnInit {
   genereazaPDF(element:any)
   {    
     var selectedComenziId: number[] = [];
-    this.comisioaneArhitecti.forEach(element => {
-      element.comenzi.forEach(com=>{
-        if(com.addToPlatit){            
-          selectedComenziId.push(com.id);
-        }
-      })
+    //this.comisioaneArhitecti.forEach(element => {
+    element.comenzi.forEach((com: comandaArhitectiDTO) => {
+      if (com.addToPlatit) selectedComenziId.push(com.id);
     });
+      //});
     this.loading$ = true;
     const dtfrom = new Date(this.form.controls['fromDate'].value);
     const dtTo = new Date(this.form.controls['toDate'].value);
@@ -127,5 +124,4 @@ export class ComisionArhitectiComponent implements OnInit {
       console.log("Something went wrong");
     });
   }
-
 }

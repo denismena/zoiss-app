@@ -48,7 +48,6 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   loadArhitectList(){
     this.arhitectiService.getAll().subscribe(arhitecti=>{
       this.arhitecti = arhitecti;
-      console.log(this.arhitecti);
       this.arhitectCtrl.setValue(this.preselectArhitect);
     });    
   }

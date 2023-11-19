@@ -222,7 +222,7 @@
                         <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.discount| number: '1.0-2'}}</td>
                         <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.valoare| number: '1.0-2'}}</td>
                         <td *ngIf="prod.isCategory === false">{{prod.disponibilitate|customDate}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.depozit}}</td>
+                        <td *ngIf="prod.isCategory === false" [ngClass]="{'livratProd' : prod.isLivrat === true}">{{prod.depozit}}</td>
                         <td>
                             <input type="checkbox" [(ngModel)]="prod.addToComandaFurnizor" 
                                 *ngIf="!prod.isInComandaFurnizor && !prod.isCategory && !prod.isStoc"
