@@ -54,6 +54,8 @@ import { IsAuthenticatedGuard } from './is-authenticated.guard';
 import { ComisionArhitectiComponent } from './rapoarte/comisionArhitecti/comision-arhitecti.component';
 import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.component';
 import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
+import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/comenzi-utilizatori.component';
+import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -120,6 +122,8 @@ const routes: Routes = [
   {path: "sucursale/edit/:id", component: SucursaleEditComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "rapoarte/comisionArhitect", component: ComisionArhitectiComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "rapoarte/comenziUtilizatori", component: ComenziUtilizatoriComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "rapoarte/comenziDepozite", component: ComenziDepoziteComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},

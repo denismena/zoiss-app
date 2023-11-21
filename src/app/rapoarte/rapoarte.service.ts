@@ -20,4 +20,14 @@ export class RapoarteService{
     plateste(comenzi: comandaArhitectiDTO[]){
       return this.http.post(`${this.apiUrl}/plateste`, comenzi);
     }
+
+    comenziUtilizatori(values: any): Observable<any>{
+      const params = new HttpParams({fromObject: values});
+      return this.http.get<comenziDTO[]>(`${this.apiUrl}/comenziUtilizatori`, {observe:'response', params});
+    }
+    
+    comenziDepozite(values: any): Observable<any>{
+      const params = new HttpParams({fromObject: values});
+      return this.http.get<comenziDTO[]>(`${this.apiUrl}/comenziDepozite`, {observe:'response', params});
+    }
 }

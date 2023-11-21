@@ -118,6 +118,8 @@ import { ProdusSplitDialogComponent } from './comenzi-furn/produs-split-dialog/p
 import { UtilizatoriAutocompleteComponent } from './nomenclatoare/utilizatori/utilizatori-autocomplete/utilizatori-autocomplete.component';
 import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
 import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
+import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/comenzi-utilizatori.component';
+import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
 
 @NgModule({
   declarations: [
@@ -221,7 +223,9 @@ import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/li
     ProdusSplitDialogComponent,
     UtilizatoriAutocompleteComponent,
     ComenziFurnSelectDialogComponent,
-    LivrariCreateComponent    
+    LivrariCreateComponent,
+    ComenziUtilizatoriComponent,
+    ComenziDepoziteComponent    
   ],
   imports: [
     BrowserModule,

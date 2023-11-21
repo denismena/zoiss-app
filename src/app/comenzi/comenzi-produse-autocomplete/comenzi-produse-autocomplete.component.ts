@@ -189,6 +189,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     this.table.renderRows();
   }
   edit(produs:any){
+    // Remove the 'isLivrat' property from produs
+    delete produs.isLivrat;
+
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId).subscribe(produs=>{
       this.preselectedProdus = produs;
