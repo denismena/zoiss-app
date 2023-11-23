@@ -58,10 +58,16 @@
             {{element.arhitect}}
         </td>
     </ng-container>
+    <ng-container matColumnDef="cantitate">
+        <th mat-header-cell *matHeaderCellDef>Platite / Total</th>
+        <td mat-cell *matCellDef="let element">
+            <div class="w-25 table-text-right">{{element.cantitatePlatite}} / {{element.cantitate}}</div>
+        </td>
+    </ng-container>
     <ng-container matColumnDef="valoare">
         <th mat-header-cell *matHeaderCellDef>Valoare</th>
         <td mat-cell *matCellDef="let element">
-            <div class="w-25 table-text-right">{{element.valoare| number: '1.0-2'}}</div>
+            <div class="w-25 table-text-right">{{element.valoare | number: '1.2-2'}}</div>
         </td>
     </ng-container>
     <ng-container matColumnDef="select">            
@@ -84,7 +90,7 @@
             <table class="table table-striped table-sm" *ngIf="element.comenzi.length > 0">
                 <thead>
                   <tr>
-                    <th scope="col">Contract Numar</th>
+                    <th scope="col">Comanda Numar</th>
                     <th scope="col">Data</th>
                     <th scope="col">Client</th>
                     <th scope="col" class="table-text-right">Valoare</th>

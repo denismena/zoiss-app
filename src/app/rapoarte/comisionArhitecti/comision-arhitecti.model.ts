@@ -2,6 +2,8 @@ export interface arhitectiComisionDTO{
     arhitectId: number;
     arhitect: string;
     valoare: number;
+    cantitate: number;
+    cantitatePlatita: number;
     existaNeplatite: boolean;
     selectAllSprePlata: boolean;
     comenzi: comandaArhitectiDTO[];

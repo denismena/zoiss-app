@@ -15,7 +15,7 @@ export class ComenziUtilizatoriComponent implements OnInit{
   comenziUtilizatori: utilizatoriComenziDTO[] = [];
   public form!: FormGroup;
 
-  columnsToDisplay= ['utilizator', 'valoare'];
+  columnsToDisplay= ['utilizator', 'cantitate', 'valoare'];
   constructor(private reportService: RapoarteService, private formBuilder:FormBuilder) {}
   
   ngOnInit(): void {
@@ -49,4 +49,7 @@ export class ComenziUtilizatoriComponent implements OnInit{
   getTotalCost() {
     return this.comenziUtilizatori.map(t => t.valoare).reduce((acc, value) => Number(acc) + Number(value), 0);
   }  
+  getTotalNumber() {
+    return this.comenziUtilizatori.map(t => t.cantitate).reduce((acc, value) => Number(acc) + Number(value), 0);
+  }
 }

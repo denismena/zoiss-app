@@ -37,7 +37,7 @@ export class ComisionArhitectiComponent implements OnInit {
     this.expandedElement = [];
   }
 
-  columnsToDisplay= ['expand', 'arhitect', 'valoare', 'select', 'action'];
+  columnsToDisplay= ['expand', 'arhitect', 'cantitate', 'valoare', 'select', 'action'];
   ngOnInit(): void {
     let date: Date = new Date();
     date.setDate(date.getDate() - 30);
@@ -61,6 +61,7 @@ export class ComisionArhitectiComponent implements OnInit {
 
   loadList(values: any){
     this.reportService.comisionArhitecti(values).subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
+      console.log('response', response);
       this.comisioaneArhitecti = response.body??[];
       this.loading$ = false;
     });    

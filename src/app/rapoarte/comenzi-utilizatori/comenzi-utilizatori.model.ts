@@ -1,5 +1,6 @@
 export interface utilizatoriComenziDTO{
     utilizatorId: number;
     utilizator: string;
-    valoare: number;    
+    valoare: number;
+    cantitate: number;    
 }

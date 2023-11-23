@@ -1,5 +1,6 @@
 export interface depoziteComenziDTO{
     depozitId: number;
     depozit: string;
-    valoare: number;   
+    valoare: number;
+    cantitate: number;
 }
