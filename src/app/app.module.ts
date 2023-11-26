@@ -120,6 +120,8 @@ import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-
 import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
 import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/comenzi-utilizatori.component';
 import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -225,7 +227,8 @@ import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-de
     ComenziFurnSelectDialogComponent,
     LivrariCreateComponent,
     ComenziUtilizatoriComponent,
-    ComenziDepoziteComponent    
+    ComenziDepoziteComponent,
+    DashboardComponent    
   ],
   imports: [
     BrowserModule,
@@ -239,7 +242,8 @@ import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-de
     RxReactiveFormsModule,
     AngularEditorModule,
     ZXingScannerModule,
-    QRCodeModule
+    QRCodeModule,
+    HighchartsChartModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

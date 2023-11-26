@@ -35,9 +35,8 @@
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+    <div class="row">        
+        <div class="col-md-6">
             <table mat-table *ngIf="comenziUtilizatori.length > 0" [dataSource]="comenziUtilizatori" multiTemplateDataRows class="table-index center-table">
                 <ng-container matColumnDef="utilizator">
                     <th mat-header-cell *matHeaderCellDef>Utilizator</th>
@@ -65,5 +64,7 @@
                 <tr mat-footer-row *matFooterRowDef="columnsToDisplay" ngClass="tableFooter"></tr>
             </table>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-6">
+            <div id="your-chart-container"></div>
+        </div>
 </div>

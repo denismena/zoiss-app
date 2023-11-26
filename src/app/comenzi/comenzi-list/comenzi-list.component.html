@@ -130,8 +130,10 @@
         </ng-container>
         <ng-container matColumnDef="platit">            
             <th mat-header-cell *matHeaderCellDef class="text-center">Platit</th>
-            <td *matCellDef="let element" class="text-center" [ngClass]="{'alert-danger' : !element.platit}">  
-                {{element.platit|daNu}}
+            <td *matCellDef="let element" class="text-center">  
+                <span *ngIf="element.platit" class="material-icons greenIcon">paid</span>
+                <span *ngIf="!element.platit" class="material-icons redIcon">paid</span>
+                <!-- {{element.platit|daNu}} -->
             </td>
         </ng-container>
         <ng-container matColumnDef="comandate">            

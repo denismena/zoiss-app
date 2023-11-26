@@ -2,87 +2,26 @@
     <ng-container authorize>        
         <div class="container">    
             <div class="row">
-                <div class="d-none d-sm-block col-md-6">
-                    <h2>Updates</h2>
-                    <h3>Update 15 Apr</h3>
-                    <ul>
-                        <li>Rapoarte -> Comisioane arhitecti - sa afiseze doar comenzile selectate</li>
-                        <li>Livrare edit -> adauga produse de stoc - adaugat cautare pe comanda si produse</li>
-                        <li>Livrare add - adaugare produse stoc</li>
-                    </ul>
-                    <h3>Update 9 Apr</h3>
-                    <ul>
-                        <li>Livrari - posibilitatea de a selecta mai multe produse stoc pentru adaugare. Lista grupata dupa comanda.</li>
-                    </ul>
-                    <h3>Update 14 Mar</h3>
-                    <ul>
-                        <li>Comenzi - optiune de a adauga produse la o comanda funizor deja existenta</li>
-                    </ul>
-                    <h3>Update 7 Mar</h3>
-                    <ul>
-                        <li>Furnizori - camp nou Conditii comerciale. Upload unul sau mai multer fisiere</li>                        
-                    </ul>
-                    <h3>Update 20 Feb</h3>
-                    <ul>
-                        <li>Generare Livrare din Transporturi - autocomplete la numar librare. Numarul se reseteaza in fiecare zi.</li>
-                        <li>Comenzi furnizori - posibilitatea de a da split la un produs dupa cutii.</li>
-                        <li>Livrare produse - adauga produs de stoc; export in pdf - afiseaza furnizor produs</li>
-                        <li>Transport - optiunea de a sterge un produs; afisare cod produs</li>
-                    </ul>
-                    <h3>Update 15 Nov</h3>
-                    <ul>
-                        <li>Oferta/Comanda - adaugat filtru Numar</li>
-                        <li>Search produse - incepand cu 2 caractere</li>
-                        <li>Oferte - produse se poata acea cantitatea/cutii cu valoare negativa</li>
-                        <li>Oferte/Comenzi - la export in excel/pdf adresa sa fie compusa din campurile de adresa + oras + judet</li>
-                    </ul>
-                    <h3>Update 3 Nov</h3>
-                    <ul>
-                        <li>Comision arhitecti - adaugat filtru Status</li>
-                        <li>Optiune de modificare a depozitului in pagina de transport</li>
-                        <li>Imbunatatire timp de incarcare a paginilor.</li>
-                    </ul>
-                    <h3>Update 25 Sep</h3>
-                    <ul>
-                        <li>User nou - trimis mail catre office si marketing care trebuie sa aprobe accesul.</li>
-                        <li>Export in pdf - modificat logica sa apara toate inregistrarile care au loc pe pagina. Sectiune cu semnatura nu se va separa niciodata. Total cu va fi niciodata primul rand dintr-o pagina noua.</li>
-                        <li>Raport comision arhitecti - Adaugat coloane Comision(fara TVA) si Comision TVA</li>
-                    </ul>
-                    <h3>Update 17 Sept</h3>
-                    <ul>
-                        <li>Aviz de insotire a marfii: modificare pozitie semnatura. Afisat observatii</li>
-                        <li>Comanda produse: sa permita valori negative la pret si valoare</li>
-                        <li>Produse: per cutie sa permita 3 zecimale</li>
-                    </ul>
-                    <h3>Update 12 Sept</h3>
-                    <ul>
-                        <li>Aviz de insotire a marfii - pdf</li>
-                        <li>Oferta/comanda - pentru a putea copia text din lista de produse apasa CTRL si selecteaza textul</li>
-                        <li>Raport comision arhitecti</li>
-                        <li>Resize automat la pozele upload-ate la produse. Optiune de a sterge poza</li>                        
-                        <li>Update la tehnologiile folosite</li>
-                    </ul>                    
+                <div class="col-md-9 col-12">
+                    <app-dashboard></app-dashboard>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <h2>Stick notes</h2>
                     <app-sticky-notes-list></app-sticky-notes-list>
                 </div>
-            </div>
+            </div>            
         </div>        
     </ng-container>
     <ng-container notAuthorize>
         <app-login></app-login>
     </ng-container>
 </app-authorize-view>
-<!-- <div class="container">    
-    <div class="row">
-        <div class="col-md-6">
-            Scaneaza produs <br>            
-            <app-scan-qr *ngIf="scannerEnabled"></app-scan-qr>
-            <mat-icon class="greenIcon" (click)="scan()">camera_alt</mat-icon>
-            <mat-icon class="redIcon" (click)="stop()">stop</mat-icon>
-        </div>
-        <div class="col-md-6">            
-        </div>
+
+<!-- <app-authorize-view>
+    <div class="d-none d-sm-block col-md-9 col-12">
+        <app-dashboard></app-dashboard>
     </div>
-</div> -->
+    <ng-container notAuthorize>
+        <app-login></app-login>
+    </ng-container>
+</app-authorize-view> -->

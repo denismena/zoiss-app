@@ -34,9 +34,8 @@
     <mat-spinner></mat-spinner>
 </div>
 <div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+    <div class="row">        
+        <div class="col-md-6">
             <table mat-table *ngIf="comenziDepozite.length > 0" [dataSource]="comenziDepozite" multiTemplateDataRows class="table-index">
                 <ng-container matColumnDef="depozit">
                     <th mat-header-cell *matHeaderCellDef>Depozit</th>
@@ -64,6 +63,8 @@
                 <tr mat-footer-row *matFooterRowDef="columnsToDisplay" ngClass="tableFooter"></tr>
             </table>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-6">
+            <div id="your-chart-container"></div>
+        </div>
     </div>
 </div>

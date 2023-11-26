@@ -4,3 +4,10 @@ export interface depoziteComenziDTO{
     valoare: number;
     cantitate: number;
 }
+
+export interface comenziPerLuna{    
+    nume: string;
+    luna: string;
+    valoare: number;
+    cantitate: number;    
+}
