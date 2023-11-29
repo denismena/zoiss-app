@@ -26,12 +26,12 @@
         <input formControlName="adresa" matInput>
         <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" style="width: 40%;">
         <mat-label>Telefon</mat-label>
         <input formControlName="tel" matInput>
         <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" style="width: 60%;">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput>
         <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>

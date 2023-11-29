@@ -1,18 +1,20 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-furnizori-list',
   templateUrl: './furnizori-list.component.html',
   styleUrls: ['./furnizori-list.component.scss']
 })
-export class FurnizoriListComponent implements OnInit {
+export class FurnizoriListComponent implements OnInit, OnDestroy {
 
   furnizori: furnizoriDTO[];
   errors: string[] = [];
@@ -23,7 +25,7 @@ export class FurnizoriListComponent implements OnInit {
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private furnizoriService: FurnizoriService, private formBuilder:FormBuilder) { 
+  constructor(private furnizoriService: FurnizoriService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService) { 
     this.furnizori = [];
   }
 
@@ -46,7 +48,9 @@ export class FurnizoriListComponent implements OnInit {
   loadList(values:any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
-    this.furnizoriService.getAll(values).subscribe((response: HttpResponse<furnizoriDTO[]>)=>{
+    this.furnizoriService.getAll(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<furnizoriDTO[]>)=>{
       this.furnizori = response.body??[];
       this.totalRecords = Number(response.headers.get("totalrecords"));
       this.loading$ = false;      
@@ -57,6 +61,7 @@ export class FurnizoriListComponent implements OnInit {
   }
   delete(id: number){
     this.furnizoriService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
@@ -78,4 +83,6 @@ export class FurnizoriListComponent implements OnInit {
   togglePanel(){
     this.panelOpenState = !this.panelOpenState;
   }
+
+  ngOnDestroy(): void {}
 }

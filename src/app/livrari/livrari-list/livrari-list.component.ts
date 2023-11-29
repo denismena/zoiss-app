@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -14,6 +14,8 @@ import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { LivrariDTO } from '../livrari-item/livrari.model';
 import { LivrariService } from '../livrari.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-livrari-list',
@@ -27,7 +29,7 @@ import { LivrariService } from '../livrari.service';
     ]),
   ],
 })
-export class LivrariListComponent implements OnInit {
+export class LivrariListComponent implements OnInit, OnDestroy {
 
   livrari: LivrariDTO[]=[]
   expandedElement: LivrariDTO[]=[];
@@ -43,7 +45,7 @@ export class LivrariListComponent implements OnInit {
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
-  constructor(private livrariService: LivrariService, private router:Router, 
+  constructor(private livrariService: LivrariService, private unsubscribeService: UnsubscribeService,
     private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { }
 
   columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'livrate', 'action'];
@@ -79,7 +81,9 @@ export class LivrariListComponent implements OnInit {
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
-    this.livrariService.getAll(values).subscribe((response: HttpResponse<LivrariDTO[]>)=>{
+    this.livrariService.getAll(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<LivrariDTO[]>)=>{
       this.livrari = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
@@ -91,6 +95,7 @@ export class LivrariListComponent implements OnInit {
 
   delete(id: number){
     this.livrariService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
@@ -124,7 +129,9 @@ export class LivrariListComponent implements OnInit {
   genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.exportService.aimPDF(element.id).subscribe(blob => {
+    this.exportService.aimPDF(element.id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(blob => {
       this.loading$ = false;
       const dt = new Date(element.data)
       saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
@@ -155,4 +162,5 @@ export class LivrariListComponent implements OnInit {
   }
  //#endregion
 
+  ngOnDestroy(): void {}
 }

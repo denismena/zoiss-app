@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,16 +7,18 @@ import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 import Swal from 'sweetalert2';
 import { LivrariService } from '../livrari.service';
 import { LivrariDTO, livrariProduseDTO } from './livrari.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-livrari-item',
   templateUrl: './livrari-item.component.html',
   styleUrls: ['./livrari-item.component.scss']
 })
-export class LivrariItemComponent implements OnInit {
+export class LivrariItemComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
-    private livrariService: LivrariService, private clientiService: ClientiService) { }
+  constructor(private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
+    private livrariService: LivrariService) { }
 
   @Input() model:LivrariDTO | undefined;  
   @Input() clientId: number | undefined;
@@ -45,7 +47,9 @@ export class LivrariItemComponent implements OnInit {
     else{
       //on add form
       this.form.get('clientId')?.setValue(this.clientId);
-      this.livrariService.getNextNumber().subscribe(data=>{
+      this.livrariService.getNextNumber()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(data=>{
         console.log(data);
         this.form.get('numar')?.setValue(data);
       });
@@ -69,4 +73,6 @@ export class LivrariItemComponent implements OnInit {
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
   }
+
+  ngOnDestroy(): void {}
 }

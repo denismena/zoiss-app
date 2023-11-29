@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -13,19 +13,21 @@ import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
 import { produseComandaDTO } from '../comenzi-item/comenzi.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comenzi-produse-autocomplete',
   templateUrl: './comenzi-produse-autocomplete.component.html',
   styleUrls: ['./comenzi-produse-autocomplete.component.scss']
 })
-export class ComenziProduseAutocompleteComponent implements OnInit {
+export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
-  }
+  }  
   public form!: FormGroup;
 
   produsCtrl: FormControl = new FormControl();
@@ -54,10 +56,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   pretSet!: number;
   isEditMode: boolean=false;
 
-  ngOnInit(): void {    
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',      
@@ -80,19 +79,25 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       furnizorId: new FormControl()
     });
     this.produsCtrl.valueChanges.subscribe(value => {
-      this.produseService.searchByNameComanda(value).subscribe(produs => {
+      this.produseService.searchByNameComanda(value)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(produs => {
         this.produsToDisplay = produs;
       });
     })
 
-    this.umService.getAll().subscribe(um=>{
+    this.umService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(um=>{
       this.umList=um;
     })
 
   }
 
   loadProduseList(){
-    this.produseService.getProduseAutocompleteComanda().subscribe(produse=>{
+    this.produseService.getProduseAutocompleteComanda()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(produse=>{
       this.produsToDisplay = produse;
     });    
   }
@@ -115,7 +120,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     console.log('prefFurnizor', produs.prefFurnizor);
     this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
     this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
-    this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
+    this.furnizorService.getById(produs.prefFurnizorId)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))    
+    .subscribe(furnizor=>{
       this.preselectFurnizor = furnizor;
     });
   }
@@ -193,14 +200,18 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     delete produs.isLivrat;
 
     this.form.setValue(produs);
-    this.produseService.getById(produs.produsId).subscribe(produs=>{
+    this.produseService.getById(produs.produsId)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(produs=>{
       this.preselectedProdus = produs;
       this.perCutieSet = produs.perCutie;
       this.pretSet = produs.pret;
     });
     if(produs.furnizorId == null)this.preselectFurnizor = undefined;
     else{
-      this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
+      this.furnizorService.getById(produs.furnizorId)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
       });      
     }
@@ -224,4 +235,6 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   changeDiscountAll(discoutAll: HTMLInputElement){    
     this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
+
+  ngOnDestroy(): void {}
 }

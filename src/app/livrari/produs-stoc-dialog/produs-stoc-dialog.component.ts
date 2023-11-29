@@ -1,15 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
 import { comandaStocDTO, comandaStocProduseDTO } from 'src/app/comenzi/comenzi-item/comenzi.model';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
   selector: 'app-produs-stoc-dialog',
   templateUrl: './produs-stoc-dialog.component.html',
   styleUrls: ['./produs-stoc-dialog.component.scss']
 })
-export class ProdusStocDialogComponent implements OnInit {
+export class ProdusStocDialogComponent implements OnInit, OnDestroy {
 
   public form!: FormGroup;
   produseStocList: comandaStocDTO[] =[];
@@ -17,7 +19,7 @@ export class ProdusStocDialogComponent implements OnInit {
   searchTextProdus: string = '';
   searchTextComanda: string = '';
   clientId: number = 0;
-  constructor(private formBuilder:FormBuilder, private comenziService: ComenziService, 
+  constructor(private formBuilder:FormBuilder, private comenziService: ComenziService, private unsubscribeService: UnsubscribeService,
     @Inject(MAT_DIALOG_DATA) data: { id: number },
     public dialogRef: MatDialogRef<ProdusStocDialogComponent>) {
       this.clientId = data.id; 
@@ -28,7 +30,9 @@ export class ProdusStocDialogComponent implements OnInit {
       comandaProdusId:[null, {validators:[Validators.required]}],
     })
     
-    this.comenziService.produseStoc(this.clientId).subscribe(produseStoc=>{
+    this.comenziService.produseStoc(this.clientId)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(produseStoc=>{
       this.filteredProduseStocList = this.produseStocList = produseStoc;
       //console.log('this.produseStocList:', this.produseStocList);      
     });
@@ -74,5 +78,7 @@ export class ProdusStocDialogComponent implements OnInit {
       form: selectedProdusList
     });
   }
+
+  ngOnDestroy(): void {}
 
 }

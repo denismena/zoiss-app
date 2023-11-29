@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RapoarteService } from '../rapoarte.service';
 import { depoziteComenziDTO } from './comenzi-depozite.model';
@@ -7,6 +7,8 @@ import { HttpResponse } from '@angular/common/http';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
 import HC_exportData from 'highcharts/modules/export-data';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 HC_exporting(Highcharts);
 HC_exportData(Highcharts);
 
@@ -15,7 +17,7 @@ HC_exportData(Highcharts);
   templateUrl: './comenzi-depozite.component.html',
   styleUrls: ['./comenzi-depozite.component.scss']
 })
-export class ComenziDepoziteComponent implements OnInit {
+export class ComenziDepoziteComponent implements OnInit, OnDestroy {
   loading$: boolean = true;
   comenziDepozite: depoziteComenziDTO[] = [];
   public form!: FormGroup;
@@ -52,7 +54,7 @@ export class ComenziDepoziteComponent implements OnInit {
     },
     /* Your initial chart options here */
   };
-  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder) {}
+  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService) {}
 
   ngOnInit(): void {
     let date: Date = new Date();
@@ -76,7 +78,9 @@ export class ComenziDepoziteComponent implements OnInit {
   }
   
   loadList(values: any){
-    this.reportService.comenziDepozite(values).subscribe((response: HttpResponse<depoziteComenziDTO[]>)=>{
+    this.reportService.comenziDepozite(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<depoziteComenziDTO[]>)=>{
       this.comenziDepozite = response.body??[];
       this.chartOptions.series = [{
         data: this.comenziDepozite.map(t => ({ y: t.valoare, name: t.depozit })),        
@@ -103,5 +107,7 @@ export class ComenziDepoziteComponent implements OnInit {
   }
   getTotalNumber() {
     return this.comenziDepozite.map(t => t.cantitate).reduce((acc, value) => Number(acc) + Number(value), 0).toFixed(2);
-  } 
+  }
+  
+  ngOnDestroy(): void {}
 }

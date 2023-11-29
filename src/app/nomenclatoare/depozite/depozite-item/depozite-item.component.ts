@@ -1,19 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { RegexValidator } from '@rxweb/reactive-form-validators/util';
 import { DepoziteService } from '../depozite.service';
 import { depoziteDTO } from './depozite.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-depozite-item',
   templateUrl: './depozite-item.component.html',
   styleUrls: ['./depozite-item.component.scss']
 })
-export class DepoziteItemComponent implements OnInit {
+export class DepoziteItemComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private depoztService: DepoziteService) { }
+  constructor(private formBuilder: FormBuilder, private depoztService: DepoziteService, private unsubscribeService: UnsubscribeService) { }
   public form!: FormGroup;
   @Input()
   model:depoziteDTO | undefined;
@@ -34,7 +35,9 @@ export class DepoziteItemComponent implements OnInit {
       active: true
     });
 
-    this.depoztService.getAll().subscribe(depozite=>{
+    this.depoztService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(depozite=>{
       this.depozitList=depozite;
     })
 
@@ -52,5 +55,7 @@ export class DepoziteItemComponent implements OnInit {
   selectParent(depozit: any){       
     this.form.get('parentId')?.setValue(depozit.value);
   }
+
+  ngOnDestroy(): void {}
 
 }

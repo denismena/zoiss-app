@@ -22,10 +22,7 @@ export class ClientiItemComponent implements OnInit {
   
   @Output()
   onSaveChanges: EventEmitter<clientiDTO> = new EventEmitter<clientiDTO>();
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
+  ngOnInit(): void {    
     this.form = this.formBuilder.group({
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:150 })]}],
       pfPj: 'PJ',

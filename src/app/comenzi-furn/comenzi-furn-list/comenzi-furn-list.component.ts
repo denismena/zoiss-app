@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comenzi-furn-list',
@@ -29,7 +31,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
     ]),
   ],
 })
-export class ComenziFurnListComponent implements OnInit {
+export class ComenziFurnListComponent implements OnInit, OnDestroy {
 
   comenziFurnizor: comenziFurnizorDTO[]
   expandedElement: comenziFurnizorDTO[];
@@ -49,7 +51,7 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
-  constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
+  constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService, private unsubscribeService: UnsubscribeService,
     private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService) { 
     this.comenziFurnizor = [];
     this.expandedElement = [];
@@ -95,7 +97,9 @@ export class ComenziFurnListComponent implements OnInit {
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
-    this.comenziFurnizorService.getAll(values).subscribe((response: HttpResponse<comenziFurnizorDTO[]>)=>{
+    this.comenziFurnizorService.getAll(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<comenziFurnizorDTO[]>)=>{
       this.comenziFurnizor = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
@@ -107,6 +111,7 @@ export class ComenziFurnListComponent implements OnInit {
 
   delete(id: number){
     this.comenziFurnizorService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
@@ -150,7 +155,9 @@ export class ComenziFurnListComponent implements OnInit {
     });
     
     if(selectedProd.length > 0){
-      this.transportService.fromComandaFurnizor(selectedProd).subscribe(id=>{
+      this.transportService.fromComandaFurnizor(selectedProd)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(id=>{
         console.log('comanda new id', id);
         this.router.navigate(['/transport/edit/' + id])
       }, 
@@ -192,7 +199,9 @@ selectFurnizor(furnizor: any){
  genereazaExcel(element:any)
  {
    this.loading$ = true;
-   this.exportService.comandaFurnizorReport(element.id).subscribe(blob => {
+   this.exportService.comandaFurnizorReport(element.id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+   .subscribe(blob => {
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.furnizor + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
@@ -204,6 +213,9 @@ selectFurnizor(furnizor: any){
  setPlatita(event: MatSlideToggleChange, comandaId: number){
   console.log('checkbox:', event);
   this.comenziFurnizorService.setPlatita(comandaId, event.checked)
+  .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {});  
  }
+
+  ngOnDestroy(): void {}
 }

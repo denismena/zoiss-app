@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import { userCredentials, UtilizatoriDTO } from 'src/app/security/security.models';
+import { UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { SucursaleService } from '../../sucursale/sucursala.service';
 import { sucursalaDTO } from '../../sucursale/sucursale-item/sucursala.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-utilizatori-edit',
   templateUrl: './utilizatori-edit.component.html',
   styleUrls: ['./utilizatori-edit.component.scss']
 })
-export class UtilizatoriEditComponent implements OnInit {
+export class UtilizatoriEditComponent implements OnInit, OnDestroy {
 
-  constructor(private securityService: SecurityService, private router: Router, 
+  constructor(private securityService: SecurityService, private router: Router, private unsubscribeService: UnsubscribeService, 
     private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private sucursaleService: SucursaleService) { 
       
     }
@@ -27,7 +29,10 @@ export class UtilizatoriEditComponent implements OnInit {
   ngOnInit(): void {   
 
     this.activatedRoute.params.subscribe(params => {
-      this.securityService.getById(params.id).subscribe(util => {
+      if(params.id == null) return;
+      this.securityService.getById(params.id)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(util => {
         this.model = util;
         if(this.model !== undefined)
         {
@@ -43,7 +48,9 @@ export class UtilizatoriEditComponent implements OnInit {
       sucursalaId: null
     })
 
-    this.sucursaleService.getAll().subscribe(sucursale=>{
+    this.sucursaleService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(sucursale=>{
       this.sucursaleList=sucursale;      
     })
   }
@@ -51,7 +58,9 @@ export class UtilizatoriEditComponent implements OnInit {
   edit(utilizatoriDTO: UtilizatoriDTO){
     this.errors=[];
     if(utilizatoriDTO.sucursalaId == 0) utilizatoriDTO.sucursalaId = null;
-    this.securityService.edit(this.model.id, utilizatoriDTO).subscribe(authenticationResponse=>{
+    this.securityService.edit(this.model.id, utilizatoriDTO)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(authenticationResponse=>{
       if(this.model.email == this.securityService.getFieldFromJwt('email'))
         this.securityService.saveToke(authenticationResponse);
       this.router.navigate(['/utilizatori']);
@@ -62,4 +71,5 @@ export class UtilizatoriEditComponent implements OnInit {
     this.form.get('sucursalaId')?.setValue(depozit.value);
   }
 
+  ngOnDestroy(): void {}
 }

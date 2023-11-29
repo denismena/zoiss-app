@@ -1,28 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { SucursaleService } from '../sucursala.service';
 import { sucursalaDTO } from '../sucursale-item/sucursala.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sucursale-list',
   templateUrl: './sucursale-list.component.html',
   styleUrls: ['./sucursale-list.component.scss']
 })
-export class SucursaleListComponent implements OnInit {
+export class SucursaleListComponent implements OnInit, OnDestroy {
 
   sucursala: sucursalaDTO[] = [];
   columnsToDisplay= ['nume', 'action'];
   errors: string[] = [];
   loading$: boolean = true;
-  constructor(private sucursalaService: SucursaleService) { }
+  constructor(private sucursalaService: SucursaleService, private unsubscribeService: UnsubscribeService) { }
 
   ngOnInit(): void {
     this.loadList();
   }
 
   loadList(){
-    this.sucursalaService.getAll().subscribe(sucursala=>{
+    this.sucursalaService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(sucursala=>{
       this.sucursala = sucursala;
       this.loading$ = false;
     }, error => {
@@ -32,6 +36,7 @@ export class SucursaleListComponent implements OnInit {
   }
   delete(id: number){
     this.sucursalaService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList();
     }, error => {
@@ -39,5 +44,7 @@ export class SucursaleListComponent implements OnInit {
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
+
+  ngOnDestroy(): void {}
 
 }

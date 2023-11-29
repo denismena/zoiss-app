@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { transportatorDTO } from '../transportator-item/transportator.model';
 import { TransporatorService } from '../transportator.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transportator-list',
   templateUrl: './transportator-list.component.html',
   styleUrls: ['./transportator-list.component.scss']
 })
-export class TransportatorListComponent implements OnInit {
+export class TransportatorListComponent implements OnInit, OnDestroy {
 
   transportator: transportatorDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  constructor(private transporatorService: TransporatorService) { 
+  constructor(private transporatorService: TransporatorService, private unsubscribeService: UnsubscribeService) { 
     this.transportator = [];
   }
 
@@ -24,7 +26,9 @@ export class TransportatorListComponent implements OnInit {
     this.loadList();
   }
   loadList(){
-    this.transporatorService.getAll().subscribe(transportator=>{
+    this.transporatorService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(transportator=>{
       this.transportator = transportator;
       this.loading$ = false;
     }, error => {
@@ -34,6 +38,7 @@ export class TransportatorListComponent implements OnInit {
   }
   delete(id: number){
     this.transporatorService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList();
     }, error => {
@@ -42,4 +47,5 @@ export class TransportatorListComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {}
 }

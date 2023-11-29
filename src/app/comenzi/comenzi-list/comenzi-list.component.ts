@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Router } from '@angular/router';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -19,6 +19,8 @@ import { ExportService } from 'src/app/utilities/export.service';
 import { ComenziFurnSelectDialogComponent } from '../comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { toExistingComenziFurnizoriDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comenzi-list',
@@ -32,7 +34,7 @@ import { toExistingComenziFurnizoriDTO } from 'src/app/comenzi-furn/comenzi-furn
     ]),
   ],
 })
-export class ComenziListComponent implements OnInit {
+export class ComenziListComponent implements OnInit, OnDestroy {
 
   comenzi: comenziDTO[];
   expandedElement: comenziDTO[];
@@ -56,7 +58,7 @@ export class ComenziListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent)
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
-  constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, 
+  constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, private unsubscribeService: UnsubscribeService, 
     private router:Router, private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService,
     public dialog: MatDialog) { 
     this.comenzi = [];
@@ -83,7 +85,9 @@ export class ComenziListComponent implements OnInit {
     this.initialFormValues = this.form.value
     this.loadList(this.form.value);
 
-    this.form.valueChanges.subscribe(values=>{
+    this.form.valueChanges
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(values=>{
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);      
@@ -168,7 +172,9 @@ export class ComenziListComponent implements OnInit {
   }
 
   genereazaComnada(selectedProd:any){
-    this.comenziFurnizorService.fromComanda(selectedProd).subscribe(id=>{
+    this.comenziFurnizorService.fromComanda(selectedProd)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(id=>{
       this.router.navigate(['/comenziFurnizor/edit/' + id])
     }, 
     error=> this.errors = parseWebAPIErrors(error));
@@ -248,7 +254,9 @@ export class ComenziListComponent implements OnInit {
     const dialogRef = this.dialog.open(ComenziFurnSelectDialogComponent,      
       { data:{ furnizorId : furnizorId}, width: '450px', height: '400px' });
 
-    dialogRef.afterClosed().subscribe((data) => {      
+    dialogRef.afterClosed()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((data) => {      
       if (data.clicked === 'submit') {
         var comandaFurnizorId = data.form.comandaFurnId;
 
@@ -258,7 +266,9 @@ export class ComenziListComponent implements OnInit {
         };
         
         if(selectedProd.length > 0){
-          this.comenziFurnizorService.addToExisting(paramObject).subscribe(()=>{
+          this.comenziFurnizorService.addToExisting(paramObject)
+          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .subscribe(()=>{
             this.router.navigate(['/comenziFurnizor/edit/' + comandaFurnizorId])
           }, 
           error=> this.errors = parseWebAPIErrors(error));
@@ -307,7 +317,9 @@ export class ComenziListComponent implements OnInit {
  genereazaExcel(element:any)
  {
    this.loading$ = true;
-   this.exportService.comandaReport(element.id).subscribe(blob => {
+   this.exportService.comandaReport(element.id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+   .subscribe(blob => {
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
@@ -318,7 +330,9 @@ export class ComenziListComponent implements OnInit {
  genereazaPDF(element:any)
   {    
     this.loading$ = true;
-    this.exportService.comandaReportPDF(element.id).subscribe(blob => {
+    this.exportService.comandaReportPDF(element.id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(blob => {
       //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
@@ -328,5 +342,7 @@ export class ComenziListComponent implements OnInit {
       console.log("Something went wrong");
     });
   }
+
+  ngOnDestroy(): void {}
 
 }

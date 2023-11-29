@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { NotificariItemComponent } from '../notificari-item/notificari-item.component';
 import { notificariDTO } from '../notificari.model';
 import { NotificariService } from '../notificari.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notificari-list',
@@ -18,15 +20,8 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   errors: string[] = [];
   intervalId: any | undefined;
   necitite: number = 0;
-  // get necitite():number{
-  //   return this.notificariService.necitite;
-  // }
-  // set necitite(val: number){
-  //   this.notificariService.necitite = val;
-  //   console.log
-  // }
   @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger | undefined;
-  constructor(private notificariService: NotificariService, public dialog: MatDialog) { 
+  constructor(private notificariService: NotificariService, public dialog: MatDialog, private unsubscribeService: UnsubscribeService) { 
     this.notificari=[];
   }
 
@@ -39,7 +34,9 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     }
   }
   loadList(){
-    this.notificariService.getAll().subscribe(notificari=>{
+    this.notificariService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(notificari=>{
       this.notificari = notificari;      
       let oldNecitite = this.necitite;
       this.necitite = this.notificari.filter(f=>f.read==false).length;      
@@ -51,12 +48,14 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   }
 
   view(itemNot: notificariDTO){
-    console.log('notif send:', itemNot);
     const dialogRef = this.dialog.open(NotificariItemComponent,      
       { data:{item: itemNot}, width: '500px', height: '300px' });
-      dialogRef.afterClosed().subscribe((data) => {        
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {        
         if (data.clicked === 'submit') {
           this.notificariService.read(itemNot.id)
+          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
           .subscribe(() => {this.loadList();}, error => {
             this.errors = parseWebAPIErrors(error);
             Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
@@ -72,8 +71,8 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   }
 
   delete(id: number){
-    console.log('delete:', id);
     this.notificariService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))    
     .subscribe(() => {
       this.loadList();
     }, error => {
@@ -84,6 +83,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   deleteAll(){
     console.log('delete all:');
     this.notificariService.deleteAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList();
     }, error => {
@@ -93,6 +93,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   }
   read(id: number){
     this.notificariService.read(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {this.loadList();}, error => {
       this.errors = parseWebAPIErrors(error);
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
@@ -101,6 +102,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   readAll(){
     console.log('read all:');
     this.notificariService.readAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList();
     }, error => {

@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-arhitecti-list',
   templateUrl: './arhitecti-list.component.html',
   styleUrls: ['./arhitecti-list.component.scss']
 })
-export class ArhitectiListComponent implements OnInit {
+export class ArhitectiListComponent implements OnInit, OnDestroy {
 
   arhitecti: arhitectiDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  constructor(private arhitectiService: ArhitectiService) { 
+  constructor(private arhitectiService: ArhitectiService, private unsubscribeService: UnsubscribeService) { 
     this.arhitecti = [];
   }
 
@@ -24,7 +26,9 @@ export class ArhitectiListComponent implements OnInit {
     this.loadList();
   }
   loadList(){
-    this.arhitectiService.getAll().subscribe(arhitecti=>{
+    this.arhitectiService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))    
+    .subscribe(arhitecti=>{
       this.arhitecti = arhitecti;
       this.loading$ = false;
     }, error => {
@@ -34,6 +38,7 @@ export class ArhitectiListComponent implements OnInit {
   }
   delete(id: number){
     this.arhitectiService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList();
     }, error => {
@@ -41,5 +46,7 @@ export class ArhitectiListComponent implements OnInit {
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
   }
+
+  ngOnDestroy(): void {}
 
 }

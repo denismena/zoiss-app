@@ -2,9 +2,10 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Outpu
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
   selector: 'app-utilizatori-autocomplete',
@@ -24,7 +25,7 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
   subscription: Subscription | undefined;
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
-  constructor(private securitySevice: SecurityService) {
+  constructor(private securitySevice: SecurityService, private unsubscribeService: UnsubscribeService) {
     this.utilizatori = [];
     this.selectedUtilizator = new Observable<UtilizatoriDTO[]>();
     this.selectedUtilizator = this.utilizatorCtrl.valueChanges
@@ -39,9 +40,10 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
   }
 
   loadUtilizatoriList(){
-    this.securitySevice.getUsers().subscribe(utilizatori=>{
+    this.securitySevice.getUsers()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(utilizatori=>{
       this.utilizatori = utilizatori;
-      console.log('utilizatori:', this.utilizatori);
       this.utilizatorCtrl.setValue(this.preselectUtilizator);
     });    
   }

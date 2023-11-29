@@ -3,10 +3,11 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, takeUntil} from 'rxjs/operators';
 import { FurnizoriCreateDialogComponent } from '../furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
   selector: 'app-furnizori-autocomplete',
@@ -16,7 +17,7 @@ import { FurnizoriService } from '../furnizori.service';
 export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   furnizori: furnizoriDTO[];
-  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog ) { 
+  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog, private unsubscribeService: UnsubscribeService ) { 
     this.furnizori = [];
     this.selectedFurnizor = new Observable<furnizoriDTO[]>();    
   }
@@ -44,7 +45,9 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     let searchTerm = '';
     searchTerm += event;
     if(searchTerm.length > 2){    
-      this.furnizorService.search(searchTerm).subscribe(furnizori=>{
+      this.furnizorService.search(searchTerm)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(furnizori=>{
         this.furnizori = furnizori;
         this.selectedFurnizor = this.furnizorCtrl.valueChanges
           .pipe(
@@ -108,7 +111,9 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     const dialogRef = this.dialog.open(FurnizoriCreateDialogComponent,      
       { data:{editId:0}, width: '800px', height: '750px' });
 
-      dialogRef.afterClosed().subscribe((data) => {      
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
@@ -124,7 +129,9 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     const dialogRef = this.dialog.open(FurnizoriCreateDialogComponent,      
       { data:{furnizor: this.preselectFurnizor, editId: this.preselectFurnizor?.id??0}, width: '800px', height: '750px' });
 
-      dialogRef.afterClosed().subscribe((data) => {      
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
@@ -133,5 +140,5 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
-  }
+  }  
 }

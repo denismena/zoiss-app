@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -9,15 +9,17 @@ import { UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
 import { ComenziService } from '../comenzi.service';
 import { comenziDTO, produseComandaDTO } from './comenzi.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comenzi-item',
   templateUrl: './comenzi-item.component.html',
   styleUrls: ['./comenzi-item.component.scss']
 })
-export class ComenziItemComponent implements OnInit {
+export class ComenziItemComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService,
     private comenziService: ComenziService, private clientiService: ClientiService, private securityService: SecurityService) { }
   @Input()
   model:comenziDTO | undefined;
@@ -66,25 +68,33 @@ export class ComenziItemComponent implements OnInit {
     else 
     {      
       //on add form get the next contract number
-      this.comenziService.getNextNumber().subscribe(data=>{
+      this.comenziService.getNextNumber()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
       });
     }
     if(this.form.get('clientId')?.value)
       this.loadAdrese(this.form.get('clientId')?.value);
     
-    this.securityService.getById(this.form.get('utilizatorId')?.value).subscribe(utilizator => {
-      this.preselectUtilizator = utilizator;
-      if(this.model !== undefined)
-      {
-        this.form.patchValue(this.model);
-      }
-    });
+    if(this.form.get('utilizatorId')?.value){
+      this.securityService.getById(this.form.get('utilizatorId')?.value)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(utilizator => {
+        this.preselectUtilizator = utilizator;
+        if(this.model !== undefined)
+        {
+          this.form.patchValue(this.model);
+        }
+      });
+    }
   }
 
   loadAdrese(clientId: number)
   {
-    this.clientiService.getById(clientId).subscribe(adresa=>{
+    this.clientiService.getById(clientId)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(adresa=>{
       this.adresa = adresa.adrese.filter(a=>a.livrare == true);
     });
   }
@@ -112,5 +122,5 @@ export class ComenziItemComponent implements OnInit {
   selectUtilizator(utilizator: any){    
     this.form.get('utilizatorId')?.setValue(utilizator?.id);
   }
-
+  ngOnDestroy(): void {}
 }

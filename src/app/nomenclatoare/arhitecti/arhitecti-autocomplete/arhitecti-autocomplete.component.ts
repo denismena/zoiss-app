@@ -3,10 +3,11 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { ArhitectiCreateDialogComponent } from '../arhitecti-item/arhitecti-create-dialog/arhitecti-create-dialog.component';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
   selector: 'app-arhitecti-autocomplete',
@@ -16,7 +17,7 @@ import { ArhitectiService } from '../arhitecti.service';
 export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   arhitecti: arhitectiDTO[];
-  constructor(private arhitectiService: ArhitectiService, public dialog: MatDialog) { 
+  constructor(private arhitectiService: ArhitectiService, public dialog: MatDialog, private unsubscribeService: UnsubscribeService) { 
     this.arhitecti = [];
     
     this.selectedArhitect = new Observable<arhitectiDTO[]>();
@@ -46,7 +47,9 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   }
 
   loadArhitectList(){
-    this.arhitectiService.getAll().subscribe(arhitecti=>{
+    this.arhitectiService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(arhitecti=>{
       this.arhitecti = arhitecti;
       this.arhitectCtrl.setValue(this.preselectArhitect);
     });    
@@ -102,7 +105,9 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
     const dialogRef = this.dialog.open(ArhitectiCreateDialogComponent,      
       { data:{editId:0}, width: '800px', height: '600px' });
 
-      dialogRef.afterClosed().subscribe((data) => {      
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
@@ -115,7 +120,9 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
     const dialogRef = this.dialog.open(ArhitectiCreateDialogComponent,      
       { data:{arhitect: this.preselectArhitect, editId: this.preselectArhitect?.id??0}, width: '800px', height: '600px' });
 
-      dialogRef.afterClosed().subscribe((data) => {      
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;

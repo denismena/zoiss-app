@@ -22,10 +22,6 @@ export class FurnizoriItemComponent implements OnInit {
   containerName: string = 'furnizor';
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
-
     this.form = this.formBuilder.group({
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:150 })]}],
       tara: ['', {validators:[RxwebValidators.maxLength({value:50 })]}],

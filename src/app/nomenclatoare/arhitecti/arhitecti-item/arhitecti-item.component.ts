@@ -11,7 +11,7 @@ import { arhitectiDTO } from './arhitecti.model';
 })
 export class ArhitectiItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private formBuilder: FormBuilder, private router:Router) { }
+  constructor(private formBuilder: FormBuilder, private router:Router) { }
 
   public form!: FormGroup;
   @Input()
@@ -22,10 +22,6 @@ export class ArhitectiItemComponent implements OnInit {
   onSaveChanges: EventEmitter<arhitectiDTO> = new EventEmitter<arhitectiDTO>();
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
-
     this.form = this.formBuilder.group({
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
       comision: [null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:true })]}],

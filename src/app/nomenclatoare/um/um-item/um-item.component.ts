@@ -19,11 +19,7 @@ export class UmItemComponent implements OnInit {
    @Output()
    onSaveChanges: EventEmitter<umCreationDTO> = new EventEmitter<umCreationDTO>();
 
-   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
-
+   ngOnInit(): void {    
     this.form = this.formBuilder.group({
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],      
     });    

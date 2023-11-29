@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -12,15 +12,17 @@ import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.mod
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { ProdusSplitDialogComponent } from '../produs-split-dialog/produs-split-dialog.component';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comenzi-furn-produse-autocomplete',
   templateUrl: './comenzi-furn-produse-autocomplete.component.html',
   styleUrls: ['./comenzi-furn-produse-autocomplete.component.scss']
 })
-export class ComenziFurnProduseAutocompleteComponent implements OnInit {
+export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private umService: UMService,
+  constructor(private umService: UMService, private unsubscribeService: UnsubscribeService,
     private formBuilder:FormBuilder, private produseService: ProduseService, public dialog: MatDialog) { 
     this.selectedProdus = [];
     //this.produsToDisplay = [];    
@@ -49,9 +51,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
   pretSet!: number;
   isEditMode: boolean=false;
 
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{      
-    });
+  ngOnInit(): void {    
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',
@@ -67,7 +67,9 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     });   
     
     
-    this.umService.getAll().subscribe(um=>{
+    this.umService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(um=>{
       this.umList=um;
     })
   }
@@ -87,12 +89,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     this.perCutieSet = produs?.perCutie;
     this.pretSet = produs?.pret;
  }
-
-  // private _filterStates(value: string): produseComandaFurnizorDTO[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.produsToDisplay.filter(p => p.produsNume.toLowerCase().includes(filterValue));
-  // }
-
+  
   saveChanges(){
     let index = this.selectedProdus.findIndex(a => a.id === Number(this.form.get('id')?.value));
       this.selectedProdus[index]=this.form.value;
@@ -132,7 +129,9 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
   edit(produs:any){    
     this.form.setValue(produs);
-    this.produseService.getById(produs.produsId).subscribe(produs=>{
+    this.produseService.getById(produs.produsId)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(produs=>{
       this.preselectedProdus = produs;
       this.perCutieSet = produs.perCutie;
       this.pretSet = produs.pret;
@@ -161,14 +160,15 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     let oldValoareValue = produs.valoare;
     const dialogRef = this.dialog.open(ProdusSplitDialogComponent,      
       { data:{produsSplit: produs}, width: '650px', height: '300px' });
-      dialogRef.afterClosed().subscribe((data) => {
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {
         if (data.clicked === 'submit') {
           const anotherProdus : produseComandaFurnizorDTO = {
             ...data.form,
             id: 0,
             isInTransport:0
           }
-          console.log('anotherProdus: ', anotherProdus);
           for (let object of this.selectedProdus) {
             if (object.id === produs.id) {
                 object.cutii = oldCutiiValue - anotherProdus.cutii;
@@ -189,4 +189,6 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit {
     moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
     this.table.renderRows();
   }
+
+  ngOnDestroy(): void {}
 }

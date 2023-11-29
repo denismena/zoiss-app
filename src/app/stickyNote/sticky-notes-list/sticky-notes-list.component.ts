@@ -1,21 +1,23 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { stickyNotesCreationDTO, stickyNotesDTO } from '../sticky-notes.model';
 import { StickyNotesService } from '../sticky-notes.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sticky-notes-list',
   templateUrl: './sticky-notes-list.component.html',
   styleUrls: ['./sticky-notes-list.component.scss']
 })
-export class StickyNotesListComponent implements OnInit {
+export class StickyNotesListComponent implements OnInit, OnDestroy {
 
   notes: stickyNotesDTO[];
   errors: string[] = [];
-  constructor(private stickyNotesService: StickyNotesService) { 
+  constructor(private stickyNotesService: StickyNotesService, private unsubscribeService: UnsubscribeService) { 
     this.notes=[];
   }
 
@@ -24,13 +26,17 @@ export class StickyNotesListComponent implements OnInit {
   }
 
   loadList(){
-    this.stickyNotesService.getAll().subscribe(notes=>{
+    this.stickyNotesService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(notes=>{
       this.notes = notes;
     });    
   }
 
   delete(id: number){
-    this.stickyNotesService.delete(id).subscribe(() => {
+    this.stickyNotesService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(() => {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
@@ -40,22 +46,23 @@ export class StickyNotesListComponent implements OnInit {
 
   saveChanges(id:number, stickyNotesDTO: any){
     const note: stickyNotesCreationDTO={descriere:stickyNotesDTO.target.innerHTML};    
-    this.stickyNotesService.edit(id, note).subscribe(()=>{    
+    this.stickyNotesService.edit(id, note)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(()=>{    
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
 
   addNotes(){
     const note: stickyNotesCreationDTO={descriere:''};    
-    this.stickyNotesService.create(note).subscribe(()=>{      
+    this.stickyNotesService.create(note)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(()=>{      
       this.loadList();
     }, 
     error=> this.errors = parseWebAPIErrors(error));
   }
-  // customTrackBy(index: number, obj: any): any {
-  //   return index;
-  // }
-
+  
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -93,4 +100,7 @@ export class StickyNotesListComponent implements OnInit {
       ]
     ]
   };
+
+  ngOnDestroy(): void {
+  }
 }

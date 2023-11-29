@@ -1,9 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { takeUntil } from 'rxjs/operators';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
@@ -12,6 +13,7 @@ import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/prod
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 
 @Component({
@@ -19,9 +21,10 @@ import { CookieService } from 'src/app/utilities/cookie.service';
   templateUrl: './oferte-produse-autocomplete.component.html',
   styleUrls: ['./oferte-produse-autocomplete.component.scss']
 })
-export class OferteProduseAutocompleteComponent implements OnInit {
+export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, public cookie: CookieService,
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, public cookie: CookieService, 
+    private unsubscribeService: UnsubscribeService,
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
@@ -60,8 +63,6 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   isEditMode: boolean=false;
   
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-    });
     this.form = this.formBuilder.group({
       produsId:[null, {validators:[Validators.required]}],
       produsNume:'',
@@ -100,18 +101,24 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     });
 
     this.produsCtrl.valueChanges.subscribe(value => {
-      this.produseService.searchByName(value).subscribe(produs => {
+      this.produseService.searchByName(value)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(produs => {
         this.produsToDisplay = produs;
       });
     });
 
-    this.umService.getAll().subscribe(um=>{
+    this.umService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(um=>{
       this.umList=um;
     });
   }
 
   loadProduseList(){
-    this.produseService.getProduseAutocomplete().subscribe(produse=>{
+    this.produseService.getProduseAutocomplete()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(produse=>{
       this.produsToDisplay = produse;
     });    
   }
@@ -133,7 +140,9 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     if(produs != undefined && produs.prefFurnizorId !=undefined){      
       this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
       this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
-      this.furnizorService.getById(produs.prefFurnizorId).subscribe(furnizor=>{
+      this.furnizorService.getById(produs.prefFurnizorId)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
       });
     }
@@ -177,13 +186,17 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   }
   edit(produs:any){
     this.form.setValue(produs);
-    this.produseService.getById(produs.produsId).subscribe(produs=>{
+    this.produseService.getById(produs.produsId)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(produs=>{
       this.preselectedProdus = produs;
       this.perCutieSet = produs.perCutie;
       this.pretSet = produs.pret;
     });
     if(produs.furnizorId > 0){
-      this.furnizorService.getById(produs.furnizorId).subscribe(furnizor=>{
+      this.furnizorService.getById(produs.furnizorId)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
       });
     }
@@ -253,5 +266,7 @@ export class OferteProduseAutocompleteComponent implements OnInit {
   changeDiscountAll(discoutAll: HTMLInputElement){    
     this.selectedProdusFiltered.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
+
+  ngOnDestroy(): void {}
 }
 

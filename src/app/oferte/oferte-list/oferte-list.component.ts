@@ -1,5 +1,5 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
@@ -17,6 +17,8 @@ import { PageEvent } from '@angular/material/paginator';
 import * as saveAs from 'file-saver';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-oferte-list',
@@ -30,7 +32,7 @@ import { ExportService } from 'src/app/utilities/export.service';
     ]),
   ],
 })
-export class OferteListComponent implements OnInit {
+export class OferteListComponent implements OnInit, OnDestroy {
 
   oferte: oferteDTO[]
   expandedElement: oferteDTO[];
@@ -51,7 +53,7 @@ export class OferteListComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
-  constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
+  constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router, private unsubscribeService: UnsubscribeService,
       private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { 
     this.oferte = [];
     this.expandedElement = [];
@@ -94,7 +96,9 @@ export class OferteListComponent implements OnInit {
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
-    this.oferteService.getAll(values).subscribe((response: HttpResponse<oferteDTO[]>)=>{
+    this.oferteService.getAll(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<oferteDTO[]>)=>{
       this.oferte = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
@@ -106,6 +110,7 @@ export class OferteListComponent implements OnInit {
 
   delete(id: number){
     this.oferteService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
@@ -152,7 +157,9 @@ export class OferteListComponent implements OnInit {
     this.errors = [];
 
     if(selectedProd.length > 0){
-      this.comenziService.fromOferta(selectedProd).subscribe(id=>{
+      this.comenziService.fromOferta(selectedProd)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(id=>{
         this.router.navigate(['/comenzi/edit/' + id])
       }, 
       error=> this.errors = parseWebAPIErrors(error));
@@ -203,7 +210,9 @@ export class OferteListComponent implements OnInit {
     this.loading$ = true;
     
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
-    this.exportService.ofertaReport(element.id, this.getSelectedProduse(element), neComandate).subscribe(blob => {
+    this.exportService.ofertaReport(element.id, this.getSelectedProduse(element), neComandate)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(blob => {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
@@ -216,7 +225,9 @@ export class OferteListComponent implements OnInit {
   {    
     this.loading$ = true;
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
-    this.exportService.ofertaReportPDF(element.id, this.getSelectedProduse(element), neComandate).subscribe(blob => {
+    this.exportService.ofertaReportPDF(element.id, this.getSelectedProduse(element), neComandate)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(blob => {
       //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
@@ -231,7 +242,9 @@ export class OferteListComponent implements OnInit {
   {    
     this.loading$ = true;
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
-    this.exportService.ofertaReportPDFcuPoza(element.id, this.getSelectedProduse(element), neComandate).subscribe(blob => {
+    this.exportService.ofertaReportPDFcuPoza(element.id, this.getSelectedProduse(element), neComandate)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(blob => {
       var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
@@ -241,4 +254,6 @@ export class OferteListComponent implements OnInit {
       console.log("Something went wrong");
     });
   }
+  
+  ngOnDestroy(): void {}
 }

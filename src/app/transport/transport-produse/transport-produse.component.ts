@@ -1,21 +1,20 @@
-import { formatDate } from '@angular/common';
-import { Component, Inject, Input, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozite.model';
-import { NotificariService } from 'src/app/notificari/notificari.service';
 import { DepoziteAllDialogComponent } from '../depozite-all-dialog/depozite-all-dialog.component';
 import { DepoziteDialogComponent } from '../depozite-dialog/depozite-dialog.component';
 import { transportProduseDepozitDTO, transportProduseDTO } from '../transport-item/transport.model';
 import { TransportService } from '../transport.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transport-produse',
   templateUrl: './transport-produse.component.html',
   styleUrls: ['./transport-produse.component.scss']
 })
-export class TransportProduseComponent implements OnInit {
+export class TransportProduseComponent implements OnInit, OnDestroy {
 
   @Input()
   selectedProdus: transportProduseDTO[]=[];
@@ -24,16 +23,13 @@ export class TransportProduseComponent implements OnInit {
   @Input()
   showModificaDepozit: boolean = false;
   id!: number;
-  
-  //public localID: string ='';
-
   columnsToDisplay = ['clientNume', 'produsCod', 'produsNume', 'cantitate', 'um', 'cutii', 'depozit']
 
   @ViewChild(MatTable)
   table!: MatTable<any>;
   dataFromDialog : any;
   
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, 
+  constructor(private activatedRoute: ActivatedRoute, private unsubscribeService: UnsubscribeService,
     public dialog: MatDialog, private transportService: TransportService) {     
   }
 
@@ -56,18 +52,20 @@ export class TransportProduseComponent implements OnInit {
     const dialogRef = this.dialog.open(DepoziteDialogComponent,      
       { data:{id: id, date:data, detalii:detalii, pozaPath:pozaPath}, width: '600px', height: '450px' });
 
-    dialogRef.afterClosed().subscribe((data) => {
+    dialogRef.afterClosed()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((data) => {
       if (data.clicked === 'submit') {
         this.dataFromDialog = data.form;
         this.transportService.saveDepozitArrival(data.form)
+        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
         .subscribe(() => {
           var currProDep = this.selectedProdus.find(f=>f.id === prodDepId)?.transportProduseDepozit.find(ff=>ff.id === id);
           if(currProDep !=null)
           {
             currProDep.data = data.form.data;
             currProDep.detalii = data.form.detalii;
-            currProDep.pozaPath = data.form.pozaPath;
-            //this.necitite = this.necitite+1;
+            currProDep.pozaPath = data.form.pozaPath;            
           }                    
         });
       }
@@ -78,11 +76,14 @@ export class TransportProduseComponent implements OnInit {
     const dialogRef = this.dialog.open(DepoziteAllDialogComponent,      
       { data:{id: this.id, depozit: depozit}, width: '450px', height: '400px' });
 
-    dialogRef.afterClosed().subscribe((data) => {      
+    dialogRef.afterClosed()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((data) => {      
       if (data.clicked === 'submit') {
         this.dataFromDialog = data.form;
         
         this.transportService.saveDepozitArrivalAll(data.form)
+            .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
             .subscribe(() => {
               this.selectedProdus.forEach(produs => {
                   var currProDep = produs.transportProduseDepozit.find(f=>f.depozit === depozit);                                     
@@ -90,12 +91,14 @@ export class TransportProduseComponent implements OnInit {
                     if(data.form.overwriteAll || (!data.form.overwriteAll && currProDep.data == null) )
                     {
                       currProDep.data = data.form.data;
-                      currProDep.detalii = data.form.detalii;
-                      //this.necitite = this.necitite+1;
+                      currProDep.detalii = data.form.detalii;                     
                     }
               });                    
             });
       }
     }); 
+  }
+
+  ngOnDestroy(): void {
   }
 }

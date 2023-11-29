@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -6,16 +6,18 @@ import { furnizoriDTO } from '../../furnizori/furnizori-item/furnizori.model';
 import { umDTO } from '../../um/um-item/um.model';
 import { UMService } from '../../um/um.service';
 import { produseCreationDTO, produseDTO } from './produse.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-produse-item',
   templateUrl: './produse-item.component.html',
   styleUrls: ['./produse-item.component.scss']
 })
-export class ProduseItemComponent implements OnInit {
+export class ProduseItemComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router
-    ,private formBuilder: FormBuilder, private umService: UMService) { }
+  constructor(private router:Router, private formBuilder: FormBuilder, private umService: UMService,
+    private unsubscribeService: UnsubscribeService) { }
   public form!: FormGroup;
   
   @Input() preselectFurnizor:furnizoriDTO|undefined;
@@ -25,10 +27,6 @@ export class ProduseItemComponent implements OnInit {
    @Output() onSaveChanges: EventEmitter<produseCreationDTO> = new EventEmitter<produseCreationDTO>();
   
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
-
     this.form = this.formBuilder.group({
       cod:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:50 })]}],
       nume:['', {validators:[RxwebValidators.required(), RxwebValidators.maxLength({value:255 })]}],
@@ -49,7 +47,9 @@ export class ProduseItemComponent implements OnInit {
       this.form.patchValue(this.model);
     }
 
-    this.umService.getAll().subscribe(um=>{
+    this.umService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(um=>{
       this.umList=um;
     })
   }
@@ -80,4 +80,6 @@ export class ProduseItemComponent implements OnInit {
      this.form.get('prefFurnizor')?.setValue(furnizor.nume);
     }
   }
+
+  ngOnDestroy(): void {}
 }

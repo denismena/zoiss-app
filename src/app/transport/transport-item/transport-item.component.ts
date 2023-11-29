@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -6,17 +6,19 @@ import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozi
 import { DepoziteService } from 'src/app/nomenclatoare/depozite/depozite.service';
 import { transportatorDTO } from 'src/app/nomenclatoare/transportator/transportator-item/transportator.model';
 import { TransporatorService } from 'src/app/nomenclatoare/transportator/transportator.service';
-import { TransportService } from '../transport.service';
 import { transportDTO, transportProduseDTO } from './transport.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { forkJoin } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transport-item',
   templateUrl: './transport-item.component.html',
   styleUrls: ['./transport-item.component.scss']
 })
-export class TransportItemComponent implements OnInit {
+export class TransportItemComponent implements OnInit, OnDestroy {
 
-  constructor(private formBuilder:FormBuilder, private transportatorService: TransporatorService,
+  constructor(private formBuilder:FormBuilder, private transportatorService: TransporatorService, private unsubscribeService: UnsubscribeService,
     private depoziteService: DepoziteService) { }
   @Input()
   model:transportDTO | undefined;
@@ -32,34 +34,31 @@ export class TransportItemComponent implements OnInit {
   @Output()
   onSaveChanges: EventEmitter<transportDTO> = new EventEmitter<transportDTO>();
     
-  ngOnInit(): void {
-    // this.activatedRoute.params.subscribe(params=>{
-    //   //alert(params.id);
-    // });
 
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
-      transportatorId:[null, {validators:[RxwebValidators.required()]}],
-      referinta:[null, {validators:[RxwebValidators.required()]}],
-      data:[new Date(), {validators:[RxwebValidators.required()]}],
+      transportatorId: [null, { validators: [RxwebValidators.required()] }],
+      referinta: [null, { validators: [RxwebValidators.required()] }],
+      data: [new Date(), { validators: [RxwebValidators.required()] }],
       adresa: null,
       detalii: null,
       transportProduse: '',
-      newDepozitId:null,
-    });    
-    
-    this.transportatorService.getAll().subscribe(trans=>{
-      this.transportatorList=trans;
-    })
+      newDepozitId: null,
+    });
 
-    this.depoziteService.getAll().subscribe(depozite=>{
-      this.depoziteList=depozite;
-    })
-    
-    if(this.model !== undefined)
-    {
-      //on edit form
-      this.form.patchValue(this.model);      
-    }
+    forkJoin([
+      this.transportatorService.getAll(),
+      this.depoziteService.getAll()
+    ])
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(([trans, depozite]) => {
+      this.transportatorList = trans;
+      this.depoziteList = depozite;
+      
+      if (this.model !== undefined) {
+        this.form.patchValue(this.model);
+      }
+    });
   }
 
   selectTransportator(trans: any){       
@@ -84,5 +83,8 @@ export class TransportItemComponent implements OnInit {
 
   modificaDepozitClick(){
     this.showModificaDepozit = !this.showModificaDepozit;
+  }
+
+  ngOnDestroy(): void {
   }
 }

@@ -79,7 +79,6 @@ $zoiss-app-theme: mat.define-light-theme((
 @include mat.core-theme($zoiss-app-theme);
 @include mat.all-component-themes($zoiss-app-theme);
 body{
-  // background-color: #eee;
   color: #3c4858;
   //font-weight: 300;
 }
@@ -164,6 +163,9 @@ th.mat-mdc-header-cell{
 /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-flex{
   padding-top: 0px !important;
+}
+.mat-mdc-dialog-actions {
+  justify-content: center !important;
 }
 // .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
 //   @include mat.form-field-density(-3);
@@ -290,4 +292,7 @@ h4{
 }
 .angular-editor-toolbar{
   padding: 0.2em !important;
+}
+.highcharts-credits{
+  display: none !important;
 }

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,16 +7,17 @@ import { depoziteDTO } from '../../depozite/depozite-item/depozite.model';
 import { DepoziteService } from '../../depozite/depozite.service';
 import { clientiAdresaDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clienti-adresa',
   templateUrl: './clienti-adresa.component.html',
   styleUrls: ['./clienti-adresa.component.scss']
 })
-export class ClientiAdresaComponent implements OnInit {
+export class ClientiAdresaComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, 
-    private clientService: ClientiService, private depoziteService: DepoziteService) { 
+  constructor(private formBuilder:FormBuilder, private depoziteService: DepoziteService, private unsubscribeService: UnsubscribeService) { 
    this.adreseList=[]; 
   }
 
@@ -51,7 +52,9 @@ export class ClientiAdresaComponent implements OnInit {
 
   loadDepozite()
   {
-    this.depoziteService.getAll().subscribe(depozite=>{
+    this.depoziteService.getAll()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(depozite=>{
       this.depozite = depozite;
       console.log(this.depozite);
     });
@@ -99,4 +102,6 @@ export class ClientiAdresaComponent implements OnInit {
   changeDepozit(depozit:any){
     this.form.get('depozit')?.setValue(depozit.selectedOptions[0].text);
   }
+
+  ngOnDestroy(): void {}
 }

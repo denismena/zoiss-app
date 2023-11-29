@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDateFormData } from 'src/app/utilities/utils';
 import { RapoarteService } from '../rapoarte.service';
@@ -7,6 +7,8 @@ import { HttpResponse } from '@angular/common/http';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
 import HC_exportData from 'highcharts/modules/export-data';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 HC_exporting(Highcharts);
 HC_exportData(Highcharts);
 @Component({
@@ -14,7 +16,7 @@ HC_exportData(Highcharts);
   templateUrl: './comenzi-utilizatori.component.html',
   styleUrls: ['./comenzi-utilizatori.component.scss']
 })
-export class ComenziUtilizatoriComponent implements OnInit{
+export class ComenziUtilizatoriComponent implements OnInit, OnDestroy{
   loading$: boolean = true;
   comenziUtilizatori: utilizatoriComenziDTO[] = [];
   public form!: FormGroup;
@@ -51,7 +53,7 @@ export class ComenziUtilizatoriComponent implements OnInit{
     },
     /* Your initial chart options here */
   };
-  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder) {}
+  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService) {}
   
   ngOnInit(): void {
     let date: Date = new Date();
@@ -75,7 +77,9 @@ export class ComenziUtilizatoriComponent implements OnInit{
   }
 
   loadList(values: any){
-    this.reportService.comenziUtilizatori(values).subscribe((response: HttpResponse<utilizatoriComenziDTO[]>)=>{
+    this.reportService.comenziUtilizatori(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<utilizatoriComenziDTO[]>)=>{
       this.comenziUtilizatori = response.body??[];      
       this.chartOptions.series = [{
         data: this.comenziUtilizatori.map(t => ({ y: t.valoare, name: t.utilizator })),        
@@ -103,4 +107,6 @@ export class ComenziUtilizatoriComponent implements OnInit{
   getTotalNumber() {
     return this.comenziUtilizatori.map(t => t.cantitate).reduce((acc, value) => Number(acc) + Number(value), 0).toFixed(2);
   }
+
+  ngOnDestroy(): void {}
 }

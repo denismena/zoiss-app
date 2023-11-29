@@ -4,10 +4,11 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, takeUntil} from 'rxjs/operators';
 import { ProduseCreateDialogComponent } from '../produse-item/produse-create-dialog/produse-create-dialog.component';
 import { produseDTO, produseOfertaDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
   selector: 'app-produse-autocomplete',
@@ -17,16 +18,10 @@ import { ProduseService } from '../produse.service';
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   produse: produseDTO[]
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private produseService: ProduseService,
-    public dialog: MatDialog) { 
+  constructor(private produseService: ProduseService, public dialog: MatDialog, private unSubscribeService: UnsubscribeService) { 
     this.produse = [];   
 
-    this.selectedProdus = new Observable<produseOfertaDTO[]>();
-    // this.selectedProdus = this.produsCtrl.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(state => state ? this._filterStates(state) : this.produse.slice())
-    //   ); 
+    this.selectedProdus = new Observable<produseOfertaDTO[]>();    
   }
 
   @ViewChild(MatAutocompleteTrigger) 
@@ -58,15 +53,16 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     searchTerm += event;
     console.log('searchTerm', searchTerm);
     if(searchTerm.length >= 2){    
-      this.produseService.search(searchTerm).subscribe(produse=>{
+      this.produseService.search(searchTerm)
+      .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
+      .subscribe(produse=>{
         this.produse = produse;
         console.log('load produse', produse);
         this.selectedProdus = this.produsCtrl.valueChanges
           .pipe(
             startWith(''),
             map(c => c ? this._filterStates(c) : this.produse.slice())
-          );
-        //this.produsCtrl.setValue(this.preselectClient);
+          );        
       });
     }
   }
@@ -125,7 +121,9 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     const dialogRef = this.dialog.open(ProduseCreateDialogComponent,      
       { data:{editId:0}, width: '800px', height: '750px' });
       
-      dialogRef.afterClosed().subscribe((data) => {      
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
@@ -140,7 +138,9 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     const dialogRef = this.dialog.open(ProduseCreateDialogComponent,      
       { data:{produs: this.preselectedProdus, editId: this.preselectedProdus?.id??0}, width: '800px', height: '750px' });
       
-      dialogRef.afterClosed().subscribe((data) => {      
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
+      .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;

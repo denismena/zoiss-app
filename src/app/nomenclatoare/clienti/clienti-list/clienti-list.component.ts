@@ -1,18 +1,20 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clienti-list',
   templateUrl: './clienti-list.component.html',
   styleUrls: ['./clienti-list.component.scss']
 })
-export class ClientiListComponent implements OnInit {
+export class ClientiListComponent implements OnInit, OnDestroy {
 
   clienti: clientiDTO[];
   errors: string[] = [];
@@ -23,7 +25,7 @@ export class ClientiListComponent implements OnInit {
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder) { 
+  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService) { 
     this.clienti = [];
   }
   columnsToDisplay= ['nume', 'pfPj', 'cuicnp', 'registruComert', 'action'];
@@ -48,7 +50,9 @@ export class ClientiListComponent implements OnInit {
   loadList(values:any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
-    this.clientiService.getAll(values).subscribe((response: HttpResponse<clientiDTO[]>)=>{
+    this.clientiService.getAll(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<clientiDTO[]>)=>{
       this.clienti = response.body??[];
       this.totalRecords = Number(response.headers.get("totalrecords"));
       this.loading$ = false;      
@@ -59,6 +63,7 @@ export class ClientiListComponent implements OnInit {
   }
   delete(id: number){
     this.clientiService.delete(id)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
@@ -79,5 +84,7 @@ export class ClientiListComponent implements OnInit {
   togglePanel(){
     this.panelOpenState = !this.panelOpenState;
   }
+
+  ngOnDestroy(): void {}
   
 }

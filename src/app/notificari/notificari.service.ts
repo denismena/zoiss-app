@@ -11,11 +11,7 @@ import { notificariDTO } from './notificari.model';
 
 export class NotificariService{    
     necitite: number = 0;
-    constructor(private http: HttpClient) { 
-        // this.getAll().subscribe(notificari=>{
-        //     this.necitite = notificari.filter(f=>f.read==false).length;
-        //   });    
-    }
+    constructor(private http: HttpClient) {}
     private apiUrl = environment.apiUrl + '/notificari';
 
     getAll(): Observable<notificariDTO[]>{

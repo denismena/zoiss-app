@@ -1,40 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ClientiService } from '../../clienti.service';
 import { clientiDTO, clientiCreationDTO, clientiAdresaDTO } from '../clienti.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clienti-edit',
   templateUrl: './clienti-edit.component.html',
   styleUrls: ['./clienti-edit.component.scss']
 })
-export class ClientiEditComponent implements OnInit {
+export class ClientiEditComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private clientiService: ClientiService) { }
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private clientiService: ClientiService, private unsubscribeService: UnsubscribeService) { }
 
   adreseList: clientiAdresaDTO[] = [];
   model!:clientiDTO;
   errors: string[] = [];
-  //model:clientiDTO = { nume:'ion', pf_pj: 1, cui_cnp: '21323432', registruComert:'dsadsa', active: true}
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      this.clientiService.putGet(params.id).subscribe(client => {
+      if(params.id == undefined) return;
+      this.clientiService.putGet(params.id)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(client => {
         this.model = client.client;
         this.adreseList = client.adrese;
-        console.log('edit', this.model);
       }, error => {
-        console.log('error: ',error);
         this.errors = parseWebAPIErrors(error);      
-        //this.loading$ = false;
       })
     });
   }
   saveChanges(clientiCreationDTO:clientiCreationDTO){
-    console.log('edit to:', clientiCreationDTO);
     this.clientiService.edit(this.model.id, clientiCreationDTO)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/clienti"]);
     });
   }
+
+  ngOnDestroy(): void {}
 }

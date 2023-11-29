@@ -30,7 +30,7 @@
         </div>
         <div class="row">
             <div class="col-md-2">
-                <mat-label>um</mat-label>                
+                <mat-label>UM</mat-label>                
                 <mat-form-field appearance="outline">        
                     <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
                         <mat-option *ngFor="let um of umList" [value]="um.id">
@@ -40,7 +40,7 @@
                 </mat-form-field> 
             </div>
             <div class="col-md-2"> 
-                <mat-label>cantitate</mat-label>        
+                <mat-label>Cantitate</mat-label>        
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="cantitate" #cantitate id="cantitate" (change)="onCantitateChange($event)"/>
                     <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
@@ -49,7 +49,7 @@
                 {{perCutieSet}} / cutie
             </div>
             <div class="col-md-2">
-                <mat-label>cutii</mat-label>
+                <mat-label>Cutii</mat-label>
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="cutii" readonly="true" />
                     <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
@@ -57,7 +57,7 @@
                 </mat-form-field> 
             </div>
             <div class="col-md-1">
-                <mat-label>pret Um</mat-label>
+                <mat-label>Pret UM</mat-label>
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="pretUm" (change)="onPretChange($event)"/>
                     <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
@@ -65,7 +65,7 @@
                 </mat-form-field> 
             </div>            
             <div class="col-md-1">
-                <mat-label>discount</mat-label>
+                <mat-label>Discount</mat-label>
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="discount" (change)="onPretChange($event)" class="table-text-right"/>        
                     <span matSuffix>%</span>            
@@ -73,7 +73,7 @@
                 </mat-form-field> 
             </div>
             <div class="col-md-2">
-                <mat-label>valoare</mat-label>
+                <mat-label>Valoare</mat-label>
                 <mat-form-field appearance="outline">                    
                     <input matInput formControlName="valoare" readonly="true"/>
                     <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>

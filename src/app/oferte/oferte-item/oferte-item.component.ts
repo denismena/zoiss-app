@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,15 +7,17 @@ import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.m
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { OferteService } from '../oferte.service';
 import { oferteDTO } from './oferte.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-oferte-item',
   templateUrl: './oferte-item.component.html',
   styleUrls: ['./oferte-item.component.scss']
 })
-export class OferteItemComponent implements OnInit {
+export class OferteItemComponent implements OnInit, OnDestroy {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private oferteService: OferteService) { }
+  constructor(private formBuilder:FormBuilder, private oferteService: OferteService, private unsubscribeService: UnsubscribeService ) { }
   @Input()
   model:oferteDTO | undefined;
   public form!: FormGroup;
@@ -35,10 +37,6 @@ export class OferteItemComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      //alert(params.id);
-    });
-
     this.form = this.formBuilder.group({
       numar:[null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:false })]}],
       data:[new Date(), {validators:[Validators.required]}],
@@ -63,7 +61,9 @@ export class OferteItemComponent implements OnInit {
     else 
     {      
       //on add form get the next contract number
-      this.oferteService.getNextNumber().subscribe(data=>{
+      this.oferteService.getNextNumber()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
         console.log('next number assigne', data);
       });
@@ -90,4 +90,6 @@ export class OferteItemComponent implements OnInit {
     this.form.get('arhitectId')?.setValue(arhitect?.id);    
     this.form.get('comision')?.setValue(arhitect?.comision);    
   }
+
+  ngOnDestroy(): void {}
 }

@@ -1,14 +1,15 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 import { RapoarteService } from '../rapoarte.service';
 import { arhitectiComisionDTO, comandaArhitectiDTO } from './comision-arhitecti.model';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comision-arhitecti',
@@ -22,7 +23,7 @@ import { arhitectiComisionDTO, comandaArhitectiDTO } from './comision-arhitecti.
     ]),
   ],
 })
-export class ComisionArhitectiComponent implements OnInit {
+export class ComisionArhitectiComponent implements OnInit, OnDestroy {
 
   loading$: boolean = true;
   checked = [];
@@ -31,8 +32,8 @@ export class ComisionArhitectiComponent implements OnInit {
   errors: string[] = [];
   public form!: FormGroup;
 
-  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, 
-      private router:Router, private exportService: ExportService) { 
+  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
+      private exportService: ExportService) { 
     this.comisioaneArhitecti = [];
     this.expandedElement = [];
   }
@@ -60,7 +61,9 @@ export class ComisionArhitectiComponent implements OnInit {
   }
 
   loadList(values: any){
-    this.reportService.comisionArhitecti(values).subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
+    this.reportService.comisionArhitecti(values)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
       console.log('response', response);
       this.comisioaneArhitecti = response.body??[];
       this.loading$ = false;
@@ -101,7 +104,9 @@ export class ComisionArhitectiComponent implements OnInit {
       Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o comanda!", icon: 'info' });
       return;
     }
-    this.reportService.plateste(selectedComenzi).subscribe(id=>{      
+    this.reportService.plateste(selectedComenzi)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(id=>{      
       this.loadList(this.form.value);
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
@@ -118,11 +123,15 @@ export class ComisionArhitectiComponent implements OnInit {
     this.loading$ = true;
     const dtfrom = new Date(this.form.controls['fromDate'].value);
     const dtTo = new Date(this.form.controls['toDate'].value);
-    this.exportService.comisionArhitectPDF(selectedComenziId, dtfrom, dtTo).subscribe(blob => {      
+    this.exportService.comisionArhitectPDF(selectedComenziId, dtfrom, dtTo)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(blob => {      
       saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
       this.loading$ = false;
     }, error => {
       console.log("Something went wrong");
     });
   }
+
+  ngOnDestroy(): void {}
 }
