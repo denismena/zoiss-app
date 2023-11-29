@@ -112,6 +112,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
           this.arhitectCtrl.setValue(this.dataFromDialog);
+          this.preselectArhitect = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
@@ -127,6 +128,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
           this.arhitectCtrl.setValue(this.dataFromDialog);
+          this.preselectArhitect = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });

@@ -113,6 +113,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
           this.clientCtrl.setValue(this.dataFromDialog);
+          this.preselectClient = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog.id);
         }
       });
@@ -129,6 +130,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
           this.clientCtrl.setValue(this.dataFromDialog);
+          this.preselectClient = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog.id);
         }
       });

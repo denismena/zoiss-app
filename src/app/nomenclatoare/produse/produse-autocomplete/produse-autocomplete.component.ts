@@ -129,6 +129,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
           this.dataFromDialog.id = data.id;
           console.log('data.form.data', this.dataFromDialog);
           this.produsCtrl.setValue(this.dataFromDialog);
+          this.preselectedProdus = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });      
@@ -146,6 +147,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
           this.dataFromDialog.id = data.id;
           console.log('data.form.data', this.dataFromDialog);
           this.produsCtrl.setValue(this.dataFromDialog);
+          this.preselectedProdus = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });      

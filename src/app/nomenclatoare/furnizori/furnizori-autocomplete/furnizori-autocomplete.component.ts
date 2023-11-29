@@ -119,6 +119,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
           this.dataFromDialog.id = data.id;
           console.log('data.form.data', this.dataFromDialog);
           this.furnizorCtrl.setValue(this.dataFromDialog);
+          this.preselectFurnizor = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
@@ -137,6 +138,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
           this.dataFromDialog.id = data.id;
           console.log('data.form.data', this.dataFromDialog);
           this.furnizorCtrl.setValue(this.dataFromDialog);
+          this.preselectFurnizor = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
         }
       });
