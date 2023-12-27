@@ -32,6 +32,7 @@
                     <input id="cantitate" matInput #cantitate formControlName="cantitate" (change)="onCantitateChange($event)"/>
                     <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
+                    <mat-error>{{form.get("cantitate")?.getError("lessThan")?.message}}</mat-error>
                 </mat-form-field> 
                 {{perCutieSet}} / cutie
             </div>

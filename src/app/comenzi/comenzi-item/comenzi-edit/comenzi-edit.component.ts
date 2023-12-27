@@ -9,6 +9,7 @@ import { comenziCreationDTO, comenziDTO, produseComandaDTO } from '../comenzi.mo
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-comenzi-edit',
@@ -20,6 +21,7 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService, 
     private comenziService: ComenziService, private clientiService: ClientiService, private arhitectService: ArhitectiService) { }
   
+    errors: string[] = [];
   model!:comenziDTO;
   selectedProdus: produseComandaDTO[] = [];
   preselectClient: clientiDTO | undefined;
@@ -79,6 +81,10 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/comenzi"]);
+    }, 
+    error => {
+      console.error('error', error);
+      this.errors = parseWebAPIErrors(error);
     });
   }
   ngOnDestroy(): void {}

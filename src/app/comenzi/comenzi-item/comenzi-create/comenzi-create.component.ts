@@ -27,7 +27,10 @@ export class ComenziCreateComponent implements OnInit, OnDestroy {
     .subscribe(()=>{
       this.router.navigate(['/comenzi'])
     }, 
-    error=> this.errors = parseWebAPIErrors(error));    
+    error => {
+      console.error('error', error);
+      this.errors = parseWebAPIErrors(error);
+    });
   }
   ngOnDestroy(): void {}
 }

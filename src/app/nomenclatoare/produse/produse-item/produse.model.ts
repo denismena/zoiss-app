@@ -12,6 +12,7 @@ export interface produseDTO{
     prefFurnizor: string;
     poza: any;
     pozaPath: string;
+    stoc: number;
     active: boolean;
     isCategory: boolean;
 }
@@ -29,6 +30,7 @@ export interface produseCreationDTO{
     prefFurnizor: string;
     poza: any;
     pozaPath: string;
+    stoc: number;
     active: boolean; 
     isCategory: boolean;
 }
@@ -52,4 +54,5 @@ export interface produseOfertaDTO{
     addToComanda: boolean;
     isCategory: boolean;
     isStoc: boolean;
+    stoc: number;
 }

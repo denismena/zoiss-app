@@ -33,12 +33,13 @@ export class ProduseListComponent implements OnInit, OnDestroy {
     this.produse = [];
   }
   
-  columnsToDisplay= ['cod', 'nume', 'perCutie', 'pret', 'um', 'action'];
+  columnsToDisplay= ['cod', 'nume', 'stoc', 'perCutie', 'pret', 'um', 'action'];
 
   ngOnInit(): void {  
     this.form = this.formBuilder.group({            
       nume: '',
-      cod: '',      
+      cod: '',
+      stoc: 0,      
       active: 0,
       umId:0,
     });  
