@@ -43,18 +43,25 @@
                     <mat-error>{{form.get("pret")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Cod vamal</mat-label>
                     <input formControlName="codVamal" matInput>
                     <mat-error>{{form.get("codVamal")?.getError("maxLength")?.message}}</mat-error>
                 </mat-form-field>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <mat-form-field appearance="outline">
                     <mat-label>Greutate per UM</mat-label>
                     <input formControlName="greutatePerUm" matInput>
                     <mat-error>{{form.get("greutatePerUm")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                    <mat-label>Stoc</mat-label>
+                    <input formControlName="stoc" matInput>
+                    <mat-error>{{form.get("stoc")?.getError("numeric")?.message}}</mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-12">

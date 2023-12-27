@@ -64,12 +64,19 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
       furnizorNume:'',
       um: '',
       umId: ['', {validators:[RxwebValidators.required()]}],
-      cantitate: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
+      cantitate: [null, {
+        validators: [
+          RxwebValidators.required({ conditionalExpression: (x: any) => x.isCategory == false }),
+          RxwebValidators.numeric({ acceptValue: NumericValueType.Both, allowDecimal: true }),
+          RxwebValidators.lessThan({fieldName:'produsStoc', message: 'Cantitatea nu poate fi mai mare decat stocul disponibil', conditionalExpression:(x: any) => x.isStoc == true }),          
+        ]
+      }],
       cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
       pretUm: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
       discount: null,
       codProdus:'',
+      produsStoc: 0,
       id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null, isStoc: false, discountValoare: null
     });    
     
@@ -130,8 +137,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
   this.form.controls['umId']?.setValue(produs?.umId);
   this.form.controls['um']?.setValue(produs?.um);
   this.form.controls['isCategory']?.setValue(produs?.isCategory);
+  this.form.controls['produsStoc']?.setValue(produs?.stoc);
   this.perCutieSet = produs?.perCutie;
-  this.pretSet = produs?.pret;
+  this.pretSet = produs?.pret;  
 }
 
   private _filterStates(value: string): produseComandaDTO[] {

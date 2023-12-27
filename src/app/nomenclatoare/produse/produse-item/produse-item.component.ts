@@ -38,6 +38,7 @@ export class ProduseItemComponent implements OnInit, OnDestroy {
       prefFurnizorId: null,
       prefFurnizor: '',
       poza: '',
+      stoc:'',
       pozaPath: '',
       active: true,
       isCategory: false

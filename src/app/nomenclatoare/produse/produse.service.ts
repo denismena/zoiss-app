@@ -97,6 +97,9 @@ export class ProduseService {
     if (produs.prefFurnizorId){
       formData.append('prefFurnizorId', produs.prefFurnizorId.toString());
     }
+    if (produs.stoc){
+      formData.append('stoc', produs.stoc.toString());
+    }
     
     if (produs.active){
       formData.append('active', produs.active.toString());
