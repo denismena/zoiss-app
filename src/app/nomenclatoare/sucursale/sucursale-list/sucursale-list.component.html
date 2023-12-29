@@ -1,7 +1,18 @@
-<h2>Lista Sucursale
-    <button type="button" routerLink="/sucursale/create" mat-flat-button color="primary">
-        <mat-icon class="greenIcon">add_circle</mat-icon></button> 
-</h2> 
+<div class="container">
+<mat-accordion>
+    <mat-expansion-panel hideToggle class="mat-elevation-z0">
+      <mat-expansion-panel-header>
+        <mat-panel-description (click)="$event.stopPropagation();">            
+            <h2>Lista Sucursale
+                <button type="button" routerLink="/sucursale/create" mat-flat-button color="primary">
+                    <mat-icon class="greenIcon">add_circle</mat-icon></button> 
+            </h2> 
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>    
+</mat-accordion>
+
+<app-display-errors [errors]="errors"></app-display-errors>
 
 <app-generic-list [list]="sucursala">
     <ng-container content>
@@ -29,4 +40,4 @@
     </table>
 </ng-container>
 </app-generic-list>
-<app-display-errors [errors]="errors"></app-display-errors>
+</div>

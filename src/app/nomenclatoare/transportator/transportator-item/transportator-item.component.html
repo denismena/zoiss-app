@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bordered">
     <form (submit) = "saveChanges()" [formGroup]="form">
         <mat-form-field appearance="outline">
             <mat-label>Nume</mat-label>
@@ -27,10 +27,12 @@
             <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
             <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
         </mat-form-field>
-        <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
-        <div>
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button routerLink="/transportator" mat-flat-button color="primary">Renunta</a>
-        </div>
+        <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>        
     </form>
+</div>
+<div class="container">
+    <div class="form-footer">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/transportator" mat-flat-button color="primary">Renunta</a>
     </div>
+</div>

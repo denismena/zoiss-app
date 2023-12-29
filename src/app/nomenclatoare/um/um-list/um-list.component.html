@@ -1,7 +1,18 @@
-<h2>Lista UM
-    <button type="button" routerLink="/um/create" mat-flat-button color="primary">
-        <mat-icon class="greenIcon">add_circle</mat-icon></button> 
-</h2>
+
+<mat-accordion>
+    <mat-expansion-panel hideToggle class="mat-elevation-z0">
+      <mat-expansion-panel-header>
+        <mat-panel-description (click)="$event.stopPropagation();">            
+            <h2>Lista UM
+                <button type="button" routerLink="/um/create" mat-flat-button color="primary">
+                    <mat-icon class="greenIcon">add_circle</mat-icon></button> 
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>    
+</mat-accordion>
+
+<app-display-errors [errors]="errors"></app-display-errors>
 <app-generic-list [list]="um">
     <ng-container content>
     <table mat-table *ngIf="um.length > 0" [dataSource]="um" class="table-index">        
@@ -28,4 +39,3 @@
     </table>
 </ng-container>
 </app-generic-list>
-<app-display-errors [errors]="errors"></app-display-errors>

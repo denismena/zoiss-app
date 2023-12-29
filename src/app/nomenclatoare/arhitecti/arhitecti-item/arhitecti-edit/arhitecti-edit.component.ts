@@ -4,6 +4,7 @@ import { ArhitectiService } from '../../arhitecti.service';
 import { arhitectiCreationDTO, arhitectiDTO } from '../arhitecti.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-arhitecti-edit',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./arhitecti-edit.component.scss']
 })
 export class ArhitectiEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private arhitectiService: ArhitectiService,
     private unsubscribeService: UnsubscribeService) { }
   
@@ -22,9 +23,9 @@ export class ArhitectiEditComponent implements OnInit, OnDestroy {
       this.arhitectiService.getById(params.id)
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
       .subscribe(arhitect => {
-        this.model = arhitect;
-        console.log(this.model);
-      })
+        this.model = arhitect;        
+      },
+      error=> this.errors = parseWebAPIErrors(error));
     });
   }
 
@@ -33,7 +34,8 @@ export class ArhitectiEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/arhitecti"]);
-    });
+    },
+    error => this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

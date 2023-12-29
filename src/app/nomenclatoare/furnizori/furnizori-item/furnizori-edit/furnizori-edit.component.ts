@@ -4,6 +4,7 @@ import { FurnizoriService } from '../../furnizori.service';
 import { furnizoriDTO, furnizoriCreationDTO } from '../furnizori.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-furnizori-edit',
@@ -12,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class FurnizoriEditComponent implements OnInit, OnDestroy {
 
+  errors:string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private furnizoriService: FurnizoriService,
     private unsubscribeService: UnsubscribeService) { }
 
@@ -24,7 +26,7 @@ export class FurnizoriEditComponent implements OnInit, OnDestroy {
       .subscribe(furnizor => {
         this.model = furnizor;
         console.log(this.model);
-      })
+      },error=> this.errors = parseWebAPIErrors(error))
     });
   }
   saveChanges(furnizoriCreationDTO:furnizoriCreationDTO){
@@ -32,7 +34,8 @@ export class FurnizoriEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/furnizori"]);
-    });
+    },
+    error => this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

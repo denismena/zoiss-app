@@ -1,5 +1,5 @@
 <form (submit)="saveChanges()" [formGroup]="form">
-    <div class="container">            
+    <div class="container bordered">            
         <div class="row">
             <div class="col-md-4">                
                 <mat-label>Referinta</mat-label>
@@ -43,31 +43,37 @@
     </div>
     </div>    
     <div class="col-md-12">
+        <mat-divider></mat-divider>
         <app-transport-produse *ngIf="selectedProdus" [selectedProdus]="selectedProdus" [depoziteLista]="depoziteLista"
             [showModificaDepozit]="showModificaDepozit"></app-transport-produse>
     </div>
     <div class="row">
-    <div class="col-md-6">
-        <br />
-        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-        <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
+    
     </div>
-    <div class="col-md-4">
-        <br />
-        <mat-form-field appearance="fill" *ngIf="showModificaDepozit">
-            <mat-label>Depozit nou:</mat-label>
-            <mat-select formControlName="newDepozitId" (selectionChange)="selectNewDepozit($event)">
-                <mat-option *ngFor="let depozit of depoziteList" [value]="depozit.id">
-                    {{depozit.nume}}
-                </mat-option>            
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div class="col-md-2">
-        <br />
-        <button type="button" mat-flat-button color="primary" (click)="modificaDepozitClick()">
-            {{ showModificaDepozit == true ? 'Renunta' : 'Modifica depozit' }}</button>
-    </div>
+</div>
+<div class="container">
+    <div class="row form-footer">
+        <div class="col-md-6">
+            <br />
+            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+            <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
+        </div>
+        <div class="col-md-4">
+            <br />
+            <mat-form-field appearance="fill" *ngIf="showModificaDepozit">
+                <mat-label>Depozit nou:</mat-label>
+                <mat-select formControlName="newDepozitId" (selectionChange)="selectNewDepozit($event)">
+                    <mat-option *ngFor="let depozit of depoziteList" [value]="depozit.id">
+                        {{depozit.nume}}
+                    </mat-option>            
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <br />
+            <button type="button" mat-flat-button color="primary" (click)="modificaDepozitClick()">
+                {{ showModificaDepozit == true ? 'Renunta' : 'Modifica depozit' }}</button>
+        </div>
     </div>
 </div>    
 </form>

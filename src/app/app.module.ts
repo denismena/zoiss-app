@@ -122,6 +122,7 @@ import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/come
 import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { IconsService } from './utilities/icons.service';
 
 @NgModule({
   declarations: [
@@ -248,8 +249,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: JwtInterceptorService,
-    multi: true
-  }, CookieService],
+    multi: true,
+    //useValue: IconsService
+  },
+  IconsService, 
+  CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

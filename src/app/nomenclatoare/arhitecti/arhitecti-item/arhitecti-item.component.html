@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bordered">
 <form (submit) = "saveChanges()" [formGroup]="form">
     <mat-form-field appearance="outline">
         <mat-label>Nume</mat-label>
@@ -28,10 +28,12 @@
         <mat-error>{{form.get("comision")?.getError("required")?.message}}</mat-error>
         <mat-error>{{form.get("comision")?.getError("numeric")?.message}}</mat-error>
     </mat-form-field>
-    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
-    <div>
+    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>    
+</form>
+</div>
+<div class="container">
+    <div class="form-footer">
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
     </div>
-</form>
 </div>

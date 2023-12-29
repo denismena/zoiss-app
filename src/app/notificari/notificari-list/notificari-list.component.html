@@ -1,8 +1,11 @@
 <mat-icon [matBadgeHidden] = "necitite == 0" [matBadge]="necitite" #languageMenuTrigger="matMenuTrigger" matBadgeColor="warn" [matMenuTriggerFor]="beforeMenu">notifications</mat-icon>
 <mat-menu #beforeMenu="matMenu" xPosition="before" class="container-sm container-sm">
     <div class="row">
-        <div class="col-7 col-md-10 fw-bold">Notificatari</div>
-        <div class="col-5 col-md-2">
+        <div class="col-5 col-md-5 fw-bold">Notificatari</div>
+        <div class="col-5 col-md-5">
+            <mat-slide-toggle #comenzileMele [checked]="comenzileMeleValue" (change)="setNotificationStyle($event)">Toate comenzile</mat-slide-toggle>
+        </div>
+        <div class="col-2 col-md-2">
             <mat-icon [ngStyle]="{'color':'white'}" (click)="readAll()" matTooltip="Marcheaza pe toate ca citite"> clear_all</mat-icon>
             <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="deleteAll()"  matTooltip="Delete toate">close</mat-icon>
         </div>

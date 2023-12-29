@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bordered">
 <form (submit) = "saveProduse()" [formGroup]="form">
     <div class="container">
         <div class="row">
@@ -91,11 +91,13 @@
                     [scale]="1"                    
                     [width]="150"></qrcode>
             </div>
-        </div>
-        <div class="col-md-12">
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
-        </div>
+        </div>        
     </div>
 </form>
+</div>
+<div class="container">
+    <div class="form-footer">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
+    </div>
 </div>

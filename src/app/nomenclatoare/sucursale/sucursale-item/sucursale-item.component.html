@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bordered">
     <form (submit) = "saveProduse()" [formGroup]="form">        
         <mat-form-field appearance="outline">
             <mat-label>Nume</mat-label>
@@ -6,10 +6,12 @@
             <!-- <mat-error *ngIf="form.invalid">{{getErrorMessageFieldName()}}</mat-error> -->
             <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
             <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>        
-        <div>
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button routerLink="/sucursale" mat-flat-button color="primary">Renunta</a>
-        </div>
+        </mat-form-field>                
     </form>
+</div>
+<div class="container">
+    <div class="form-footer">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/sucursale" mat-flat-button color="primary">Renunta</a>
     </div>
+</div>

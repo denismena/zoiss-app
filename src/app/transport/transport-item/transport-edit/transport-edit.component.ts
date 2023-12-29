@@ -5,6 +5,7 @@ import { TransportService } from '../../transport.service';
 import { transportCreationDTO, transportDTO, transportEditDTO, transportProduseDTO } from '../transport.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-transport-edit',
@@ -12,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./transport-edit.component.scss']
 })
 export class TransportEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private transportService: TransportService,
     private unsubscribeService: UnsubscribeService) { }
   model!:transportDTO;
@@ -30,7 +31,8 @@ export class TransportEditComponent implements OnInit, OnDestroy {
         transport.depoziteLista.forEach(d=>{
           this.depoziteLista.push(d.nume);
         })
-      })
+      },
+      error=> this.errors = parseWebAPIErrors(error))
     });
   }
 
@@ -39,7 +41,8 @@ export class TransportEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/transport"]);
-    });
+    },
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {

@@ -9,6 +9,7 @@ import { OferteService } from '../../oferte.service';
 import { oferteCreationDTO, oferteDTO } from '../oferte.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-oferte-edit',
@@ -24,6 +25,7 @@ export class OferteEditComponent implements OnInit, OnDestroy {
   selectedProdus: produseOfertaDTO[] = [];
   preselectClient: clientiDTO | undefined;
   preselectArhitect: arhitectiDTO | undefined;
+  errors: string[] = [];
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -57,7 +59,8 @@ export class OferteEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/oferte"]);
-    });
+    }, 
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

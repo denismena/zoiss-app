@@ -1,2 +1,5 @@
-<h2>Editeaza Transportator</h2>
+<div class="container bordered">
+    <h2>Editeaza Transportator</h2>
+</div>
 <app-transportator-item *ngIf="model" [model]="model" (onSaveChanges)="saveChanges($event)"></app-transportator-item>
+<app-display-errors [errors]="errors"></app-display-errors>

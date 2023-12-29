@@ -1,9 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img src="assets/images/zoiss.png"> </a>
+    <a class="navbar-brand" href="#"><img src="assets/images/zoiss.png"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <!-- <div class="space"></div> -->
     <app-authorize-view>
       <ng-container authorize>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -44,8 +45,8 @@
     </div>
       </ng-container>
     </app-authorize-view>
-    <div class="space">
-    </div>
+    <!-- <div class="space">
+    </div> -->
     <app-authorize-view>
       <ng-container authorize>
         <span class="text-light">{{securityService.getFieldFromJwt('name')}}</span>

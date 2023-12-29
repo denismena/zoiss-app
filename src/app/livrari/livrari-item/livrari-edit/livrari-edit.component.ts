@@ -6,6 +6,7 @@ import { LivrariService } from '../../livrari.service';
 import { LivrariDTO, livrariProduseDTO } from '../livrari.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-livrari-edit',
@@ -13,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./livrari-edit.component.scss']
 })
 export class LivrariEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService,
     private livrareService: LivrariService) { }
   model!:LivrariDTO;
@@ -33,7 +34,8 @@ export class LivrariEditComponent implements OnInit, OnDestroy {
         
         this.client=livrare.livrare.client;
         this.clientId=livrare.livrare.clientId;       
-      })
+      },
+      error=> this.errors = parseWebAPIErrors(error))
     });
   }
 
@@ -42,7 +44,8 @@ export class LivrariEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/livrari"]);
-    });
+    },
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

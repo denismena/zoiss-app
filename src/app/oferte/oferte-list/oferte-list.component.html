@@ -3,16 +3,20 @@
       <mat-expansion-panel-header>
         <mat-panel-description (click)="$event.stopPropagation();">
             <div (click)="togglePanel()">
-                <mat-icon class="greenIcon">
+                <mat-icon class="greenIcon display-7">
                     {{ panelOpenState ? 'expand_less' : 'expand_more' }}
                 </mat-icon>
             </div>
             <h2>Lista Oferte
                 <button type="button" routerLink="/oferte/create" mat-flat-button color="primary" matTooltip="Oferta noua">
-                    <mat-icon class="greenIcon">add_circle</mat-icon></button>
+                    <mat-icon class="greenIcon">add_circle</mat-icon>Adauga
+                    <mat-icon svgIcon="mat:edit"></mat-icon>
+                </button>
                 <button mat-flat-button color="primary" (click)="genereazaComanda()" matTooltip="Genereaza comanda">
                     <mat-icon>local_offer</mat-icon></button>
                 <span class="material-icons customAddIcon">add_circle</span>
+                <mat-icon class="mat-icon-rtl-mirror" svgIcon="thumb-up"></mat-icon>
+                <!-- <img src="assets/img/icon/material-design-icons/two-tone/edit.svg" alt="Romania" height="30" width="30"> -->
             </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>

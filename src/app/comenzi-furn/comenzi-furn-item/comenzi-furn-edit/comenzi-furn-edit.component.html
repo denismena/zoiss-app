@@ -1,4 +1,7 @@
-<h2>Editeaza Comanda Furnizor {{this.furnizorName}}</h2>
+<div class="container bordered">
+    <h2>Editeaza Comanda Furnizor {{this.furnizorName}}</h2>
+</div>
+<app-display-errors [errors]="errors"></app-display-errors>    
 <app-comenzi-furn-item *ngIf="model"
 [selectedProdus]="selectedProdus"
 [model]="model" 

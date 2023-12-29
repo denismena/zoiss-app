@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container bordered">
 <form (submit) = "saveChanges()" [formGroup]="form">
     <div class="container">    
         <div class="row">
@@ -57,14 +57,16 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                <mat-divider></mat-divider>
                 <app-clienti-adresa [adreseList]="adreseList"></app-clienti-adresa>
             </div>
-        </div>
-    <div>
-        <br />
+        </div>    
+    </div>    
+</form>
+</div>
+<div class="container">
+    <div class="form-footer">
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
-    </div>
-    </div>
-</form>
+</div>
 </div>

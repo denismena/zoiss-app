@@ -1,56 +1,56 @@
 <form (submit)="saveChanges()" [formGroup]="form">
-<div class="container">           
-<div class="row">
-    <div class="col-md-2">
-        <span>Numar</span>
-        <mat-form-field appearance="outline">            
-            <input formControlName="numar" matInput>
-            <mat-error>Completati numarul!</mat-error>
-        </mat-form-field>
-    </div>
-    <div class="col-md-2">
-        <mat-label>Data</mat-label>            
-        <mat-form-field appearance="outline">            
-            <input formControlName="data" matInput [matDatepicker]="dataPicker">
-            <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
-            <mat-datepicker #dataPicker></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>  
-    </div>
-    <div class="col-md-4">
-        <span>Curier</span>
-        <mat-form-field appearance="outline">            
-            <input formControlName="curier" matInput>            
-        </mat-form-field>
-    </div>
-    <div class="col-md-4">
-        <span>Receptionat De</span>
-        <mat-form-field appearance="outline">            
-            <input formControlName="receptionatDe" matInput>
-        </mat-form-field>
-    </div>
-    <div class="col-md-4" *ngIf="!model">
-        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
-        <input type="hidden" formControlName="clientId" #hdnClientId>
-    </div>
-    <div [ngClass]="{'col-md-12': model, 'col-md-8': !model}">
-        <span>Detalii</span>
-        <mat-form-field appearance="outline">            
-            <input formControlName="detalii" matInput>
-        </mat-form-field>
+<div class="container bordered">           
+    <div class="row">
+        <div class="col-md-2">
+            <span>Numar</span>
+            <mat-form-field appearance="outline">            
+                <input formControlName="numar" matInput>
+                <mat-error>Completati numarul!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-2">
+            <mat-label>Data</mat-label>            
+            <mat-form-field appearance="outline">            
+                <input formControlName="data" matInput [matDatepicker]="dataPicker">
+                <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+                <mat-datepicker #dataPicker></mat-datepicker>
+                <mat-error>Completati data!</mat-error>
+            </mat-form-field>  
+        </div>
+        <div class="col-md-4">
+            <span>Curier</span>
+            <mat-form-field appearance="outline">            
+                <input formControlName="curier" matInput>            
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <span>Receptionat De</span>
+            <mat-form-field appearance="outline">            
+                <input formControlName="receptionatDe" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-md-4" *ngIf="!model">
+            <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+            <input type="hidden" formControlName="clientId" #hdnClientId>
+        </div>
+        <div [ngClass]="{'col-md-12': model, 'col-md-8': !model}">
+            <span>Detalii</span>
+            <mat-form-field appearance="outline">            
+                <input formControlName="detalii" matInput>
+            </mat-form-field>
+        </div>    
     </div>    
-</div>    
-<div class="row">
-    <div class="col-md-12">
-        <app-livrari-produse [selectedProdus]="selectedProdus" [clientId]="clientId"></app-livrari-produse>    
+    <div class="row">
+        <div class="col-md-12">
+            <mat-divider></mat-divider>
+            <app-livrari-produse [selectedProdus]="selectedProdus" [clientId]="clientId"></app-livrari-produse>    
+        </div>
     </div>
 </div>
-<div class="row">
-<div class="col-md-12">
-    <br />
-    <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-    <a mat-stroke-button routerLink="/livrari" mat-flat-button color="primary">Renunta</a>
-</div>
-</div>
+<div class="container">
+    <div class="form-footer">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/livrari" mat-flat-button color="primary">Renunta</a>
+    </div>
 </div>
 </form>

@@ -35,7 +35,8 @@ export class ProduseEditComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
           .subscribe(furnizor=>{
             this.preselectFurnizor = furnizor;
-          });
+          },
+          error => this.errors = parseWebAPIErrors(error));
         }
       });      
     });

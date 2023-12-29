@@ -1,7 +1,17 @@
-<h2>Lista Depozite
-<button type="button" routerLink="/depozite/create" mat-flat-button color="primary">
-    <mat-icon class="greenIcon">add_circle</mat-icon></button>
-</h2>
+<mat-accordion>
+    <mat-expansion-panel hideToggle class="mat-elevation-z0">
+      <mat-expansion-panel-header>
+        <mat-panel-description (click)="$event.stopPropagation();">            
+            <h2>Lista Depozite
+                <button type="button" routerLink="/depozite/create" mat-flat-button color="primary">
+                    <mat-icon class="greenIcon">add_circle</mat-icon></button>
+                </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>    
+</mat-accordion>
+
+<app-display-errors [errors]="errors"></app-display-errors>
 <app-generic-list [list]="depozite">
     <ng-container content>
     <table mat-table *ngIf="depozite.length > 0" [dataSource]="depozite" class="table-index">        
@@ -70,4 +80,3 @@
     </table>
 </ng-container>
 </app-generic-list>
-<app-display-errors [errors]="errors"></app-display-errors>

@@ -94,4 +94,7 @@ export class SecurityService {
   confirmEmail(email: forgetPass){
     return this.http.post(this.apiUrl+"/confirmEmail", email);    
   }
+  setNotificationStyle(style: string){
+    return this.http.post(this.apiUrl+"/setNotificationStyle", style);
+  }
 }

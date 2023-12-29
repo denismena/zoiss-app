@@ -1,6 +1,9 @@
-<h2>Editeaza Oferta</h2>
+<div class="container bordered">
+    <h2>Modifica oferta</h2>    
+</div>
 <app-oferte-item *ngIf="model" 
-[selectedProdus] = "selectedProdus"
-[preselectClient] = "preselectClient"
-[preselectArhitect] = "preselectArhitect"
-[model]="model" (onSaveChanges)="saveChanges($event)"></app-oferte-item>
+    [selectedProdus] = "selectedProdus"
+    [preselectClient] = "preselectClient"
+    [preselectArhitect] = "preselectArhitect"
+    [model]="model" (onSaveChanges)="saveChanges($event)"></app-oferte-item>
+<app-display-errors [errors]="errors"></app-display-errors>    

@@ -18,13 +18,13 @@ export class IconsService {
         name: string,
         namespace: string
       ): SafeResourceUrl | SafeResourceUrlWithIconOptions | null => {
-        console.log('logo inter', name);
+        console.log('logo inter', name, namespace);
         switch (namespace) {
           case 'mat':            
             return this.domSanitizer.bypassSecurityTrustResourceUrl(
               `assets/img/icons/material-design-icons/two-tone/${name}.svg`
             );
-
+          //`..\node_modules\@material-design-icons\svg\two-tone/${name}.svg`
           case 'logo':
             return this.domSanitizer.bypassSecurityTrustResourceUrl(
               `assets/img/icons/logos/${name}.svg`
