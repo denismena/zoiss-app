@@ -1,6 +1,6 @@
 <mat-icon [matBadgeHidden] = "necitite == 0" [matBadge]="necitite" #languageMenuTrigger="matMenuTrigger" matBadgeColor="warn" [matMenuTriggerFor]="beforeMenu">notifications</mat-icon>
-<mat-menu #beforeMenu="matMenu" xPosition="before" class="container-sm container-sm">
-    <div class="row">
+<mat-menu #beforeMenu="matMenu" xPosition="before" class="container-sm">
+    <div class="row menuHeader">
         <div class="col-5 col-md-5 fw-bold">Notificatari</div>
         <div class="col-5 col-md-5">
             <mat-slide-toggle #comenzileMele [checked]="comenzileMeleValue" (change)="setNotificationStyle($event)">Toate comenzile</mat-slide-toggle>
@@ -10,10 +10,18 @@
             <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="deleteAll()"  matTooltip="Delete toate">close</mat-icon>
         </div>
     </div>
-    <div class="row" *ngFor="let item of notificari">
-        <div class="col-7 col-md-10" [ngClass]="{'fw-bold':item.read===false }"><div [innerHtml]="item.descriere" (click)="view(item)"></div></div>
-        <div class="col-5 col-md-2">
-            <mat-icon [ngStyle]="{'color':'white'}" (click)="read(item.id)" matTooltip="Marcheaza ca citit"> clear_all</mat-icon>
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="delete(item.id)"  title="Delete">close</mat-icon></div>
-    </div>    
+    <div class="row max-height-scroll">
+        <div class="col-12">
+            <div class="row" *ngFor="let item of notificari">
+                <div class="col-7 col-md-10" [ngClass]="{'fw-bold':item.read===false }"><div [innerHtml]="item.descriere" (click)="view(item)"></div></div>
+                <div class="col-5 col-md-2">
+                    <mat-icon [ngStyle]="{'color':'white'}" (click)="read(item.id)" matTooltip="Marcheaza ca citit"> clear_all</mat-icon>
+                    <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="delete(item.id)"  title="Delete">close</mat-icon></div>
+            </div>
+    </div></div>
+    <!-- <div class="row">
+        <div class="col-12">
+            <button mat-raised-button color="primary" (click)="readAll()">Vezi toate</button>
+        </div>
+    </div> -->
 </mat-menu>

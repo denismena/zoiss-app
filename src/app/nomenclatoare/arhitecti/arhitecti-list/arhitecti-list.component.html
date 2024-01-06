@@ -3,9 +3,10 @@
       <mat-expansion-panel-header>
         <mat-panel-description (click)="$event.stopPropagation();">            
             <h2>Lista Arhitecti
-                <button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary">
-                    <mat-icon class="greenIcon">add_circle</mat-icon></button>
-                </h2>
+                <button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary" matTooltip="Adauga">
+                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
+                </button>                    
+            </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>
     </mat-expansion-panel>    

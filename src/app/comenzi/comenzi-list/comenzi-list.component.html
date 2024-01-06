@@ -7,17 +7,16 @@
                     {{ panelOpenState ? 'expand_less' : 'expand_more' }}
                 </mat-icon>
             </div>
-            <h2>Lista Comenzi
-                <button type="button" routerLink="/comenzi/create" mat-flat-button color="primary" matTooltip="Comanda noua">
-                    <mat-icon class="greenIcon">add_circle</mat-icon></button>
+            <h2>Lista Comenzi                
+                <button type="button" color="primary" routerLink="/comenzi/create" mat-flat-button matTooltip="Comanda noua">
+                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Comanda noua" height="30" width="30" class="greenIcon">
+                </button>
                 <button mat-flat-button color="primary" (click)="genereazaComandaFurnizor()" matTooltip="Genereaza comanda furnizor">
-                    <mat-icon>shop</mat-icon></button>
-                <span class="material-icons customAddIcon">add_circle</span>            
-                <span style="position: relative; left: -20px;">
-                    <button mat-flat-button color="primary" (click)="adaugaLaComandaFurnizor()" matTooltip="Adauga la comanda furnizor existenta">
-                        <mat-icon>shop</mat-icon></button>
-                    <span class="material-icons customAddIcon">edit</span>
-                </span>
+                    <img src="assets/img/icons/material-design-icons/two-tone/local_offer.svg" alt="Genereaza comanda furnizor" height="30" width="30" class="greenIcon">
+                </button>
+                <button mat-flat-button color="primary" (click)="adaugaLaComandaFurnizor()" matTooltip="Adauga la comanda furnizor existenta">
+                    <img src="assets/img/icons/material-design-icons/two-tone/shop.svg" alt="Adauga la comanda furnizor existenta" height="30" width="30" class="greenIcon">
+                </button>                
             </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>

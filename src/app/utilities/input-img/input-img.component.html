@@ -1,25 +1,26 @@
 <div>
-    <button type="button" mat-raised-button (click)="fileInput.click()">Select Image</button>
+    <button type="button" mat-raised-button (click)="fileInput.click()" color="primary">Select image</button>
     <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="change($event)" />
+    <button type="button" mat-raised-button (click)="delete()" *ngIf="imageBase64 || urlCurrentImage" color="primary">Delete image</button>
 
     <div>
         <div *ngIf="imageBase64" id="divImgBase64" class="produsImgContent">
             <img [src]="imageBase64"  image-resizing image-Height="100px" image-Width="100px" />
 
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" 
+            <!-- <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" 
                 [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti poza?', showCancelButton: true}" 
                 title="Delete" (confirm)="delete()" *ngIf="imageBase64 || urlCurrentImage">
                 close
-            </mat-icon>
+            </mat-icon> -->
         </div>
         <div *ngIf="urlCurrentImage" id="divCurrImage" class="produsImgContent">
             <img [src]="urlCurrentImage"  image-resizing image-Height="100px" image-Width="100px"/>
 
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" 
+            <!-- <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" 
                 [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti poza?', showCancelButton: true}" 
                 title="Delete" (confirm)="delete()" *ngIf="imageBase64 || urlCurrentImage">
                 close
-            </mat-icon>
+            </mat-icon> -->
         </div>
     </div>    
 </div>
