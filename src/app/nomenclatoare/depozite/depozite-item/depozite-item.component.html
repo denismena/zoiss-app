@@ -1,5 +1,5 @@
-<div class="container bordered">
-    <form (submit) = "saveChanges()" [formGroup]="form">
+<form (submit) = "saveChanges()" [formGroup]="form">
+<div class="container bordered">    
         <mat-form-field appearance="outline">
             <mat-label>Nume</mat-label>
             <input formControlName="nume" matInput>
@@ -44,8 +44,7 @@
         </mat-form-field>
         <div>            
             <mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle>
-        </div>        
-    </form>
+        </div>
 </div>
 <div class="container">
     <div class="form-footer">
@@ -53,3 +52,4 @@
         <a mat-stroke-button routerLink="/depozite" mat-flat-button color="primary">Renunta</a>
     </div>
 </div>
+</form>

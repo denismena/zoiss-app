@@ -58,6 +58,17 @@ export class ProduseItemComponent implements OnInit, OnDestroy {
   saveProduse(){
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
+    else 
+    {
+      this.form.markAllAsTouched();
+      Object.keys(this.form.controls).forEach(controlName => {
+        const control = this.form.get(controlName);
+        if (control?.invalid) {
+          console.log('Invalid field:', controlName);
+          console.log('Validation errors:', control?.errors);
+        }
+      });
+    }
   }
 
   onImageSelected(image: any){

@@ -1,13 +1,12 @@
-<div class="container bordered">
-    <form (submit) = "saveProduse()" [formGroup]="form">        
-        <mat-form-field appearance="outline">
-            <mat-label>Nume</mat-label>
-            <input formControlName="nume" matInput>
-            <!-- <mat-error *ngIf="form.invalid">{{getErrorMessageFieldName()}}</mat-error> -->
-            <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
-            <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-    </form>
+<form (submit) = "saveProduse()" [formGroup]="form">
+<div class="container bordered">            
+    <mat-form-field appearance="outline">
+        <mat-label>Nume</mat-label>
+        <input formControlName="nume" matInput>
+        <!-- <mat-error *ngIf="form.invalid">{{getErrorMessageFieldName()}}</mat-error> -->
+        <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>    
 </div>
 <div class="container">
     <div class="form-footer">
@@ -15,3 +14,4 @@
         <a mat-stroke-button routerLink="/um" mat-flat-button color="primary">Renunta</a>
 </div>
 </div>
+</form>

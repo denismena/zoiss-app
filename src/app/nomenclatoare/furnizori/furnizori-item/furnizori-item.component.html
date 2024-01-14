@@ -1,5 +1,5 @@
-<div class="container bordered">
 <form (submit) = "saveChanges()" [formGroup]="form">
+<div class="container bordered">
     <mat-form-field appearance="outline">
         <mat-label>Nume</mat-label>
         <input formControlName="nume" matInput>
@@ -61,8 +61,7 @@
             <mat-icon color="primary" (click)="viewFile($event, file)">pageview</mat-icon>
             <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="deleteFile($event, file)">close</mat-icon>
         </div>        
-    </div>    
-</form>
+    </div>
 </div>
 <div class="container">
     <div class="form-footer">
@@ -70,3 +69,4 @@
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
 </div>
 </div>
+</form>

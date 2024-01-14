@@ -193,7 +193,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //#region Trend comenzi clienti noi
   chartOptionsTrendComenziClientiNoi: Highcharts.Options = {
     chart: {
-      type: 'column'
+      type: 'line'
     },
     title: {
       text: 'Trend comenzi clienti noi'
@@ -241,7 +241,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.log('trendComenziClientNou', chartSerie);
       this.chartOptionsTrendComenziClientiNoi.series = [{
         data: chartSerie.map(t => ({ y: t.valoare, name: t.luna })),        
-        type: 'column',
+        type: 'line',
         dataLabels: {
           enabled: true,
           format: '{point.y:,.0f}', // Display the Y value as the label

@@ -1,8 +1,9 @@
 <div class="container bordered">
     <h2>Edit Utilizator</h2>
 </div>
-<div class="container bordered">
+<app-display-errors [errors]="errors"></app-display-errors>
 <form (submit)="edit(form.value)" [formGroup]="form" >
+<div class="container bordered">
     <mat-form-field appearance="outline">
         <mat-label>Nume</mat-label>
         <input formControlName="name" matInput>
@@ -28,7 +29,6 @@
             </mat-option>            
         </mat-select>        
     </mat-form-field>    
-</form>
 </div>
 <div class="container">
     <div class="form-footer">
@@ -36,4 +36,4 @@
         <a mat-stroke-button routerLink="/utilizatori" mat-flat-button color="primary">Renunta</a>
     </div>
 </div>
-<app-display-errors [errors]="errors"></app-display-errors>
+</form>
