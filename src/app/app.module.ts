@@ -123,6 +123,12 @@ import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-de
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { IconsService } from './utilities/icons.service';
+import { NirItemComponent } from './nir/nir-item/nir-item.component';
+import { NirCreateComponent } from './nir/nir-item/nir-create/nir-create.component';
+import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
+import { NirListComponent } from './nir/nir-list/nir-list.component';
+import { NirProduseAutocompleteComponent } from './nir/nir-produse-autocomplete/nir-produse-autocomplete.component';
+import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
 
 @NgModule({
   declarations: [
@@ -229,7 +235,13 @@ import { IconsService } from './utilities/icons.service';
     LivrariCreateComponent,
     ComenziUtilizatoriComponent,
     ComenziDepoziteComponent,
-    DashboardComponent    
+    DashboardComponent,
+    NirItemComponent,
+    NirCreateComponent,
+    NirEditComponent,
+    NirListComponent,
+    NirProduseAutocompleteComponent,
+    TimelineStockComponent    
   ],
   imports: [
     BrowserModule,

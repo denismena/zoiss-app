@@ -1,0 +1,147 @@
+<mat-accordion>
+    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
+      <mat-expansion-panel-header>
+        <mat-panel-description (click)="$event.stopPropagation();">
+            <div (click)="togglePanel()">
+                <mat-icon class="greenIcon display-7">
+                    {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+                </mat-icon>
+            </div>
+            <h2>Lista NIR
+                <button type="button" color="primary" routerLink="/nir/create" mat-flat-button matTooltip="NIR nou">                    
+                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="NIR nou" height="30" width="30" class="greenIcon">                    
+                </button>                
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form">
+        <div class="">    
+            <div class="row">
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>De la data</mat-label>
+                        <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+                        <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+                        <mat-datepicker #dataPickerFrom></mat-datepicker>
+                        <mat-error>Completati data!</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>La data</mat-label>
+                        <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+                        <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+                        <mat-datepicker #dataPickerTo></mat-datepicker>
+                        <mat-error>Completati data!</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">            
+                    <mat-form-field appearance="outline">
+                        <mat-label>Numar</mat-label>
+                        <input formControlName="numar" value=""  matInput class="table-text-right">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-slide-toggle formControlName="mine">Doar Nir-urile mele</mat-slide-toggle>    
+                </div>        
+                <div class="col-md-1">        
+                    <div style="float: right;">
+                        <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
+                    </div>                
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+                    <input type="hidden" formControlName="produsId" #produsId>
+                </div>        
+                <div class="col-md-3">
+                    <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
+                    <input type="hidden" formControlName="furnizorId" #furnizorId>
+                </div>
+            </div>            
+        </div>
+    </form>
+    </mat-expansion-panel>    
+</mat-accordion>
+
+<app-display-errors [errors]="errors"></app-display-errors>
+<div class="spinner-container" *ngIf="loading$">
+    <mat-spinner></mat-spinner>
+</div>
+
+<table mat-table *ngIf="nirList.length > 0" [dataSource]="nirList" multiTemplateDataRows class="table-index">
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element" (click)="expand(element)">
+            <mat-icon>
+                {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="numar">
+        <th mat-header-cell *matHeaderCellDef>Numar</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.numar}}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="data">
+        <th mat-header-cell *matHeaderCellDef>Data</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.data|customDate}}
+        </td>
+    </ng-container>    
+    <ng-container matColumnDef="utilizator">
+        <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.utilizator}}
+        </td>
+    </ng-container>    
+    <ng-container matColumnDef="action" class="w-5">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">
+            <a routerLink="/nir/edit/{{element.id}}" title="Edit">
+                <mat-icon color="primary">edit</mat-icon>
+            </a>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(element.id)" [swal]="{
+                    title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
+                    close
+            </mat-icon>
+        </td>
+    </ng-container>        
+    
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+        <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
+            <table class="table table-striped table-sm" *ngIf="element.produse.length > 0">
+                <thead>
+                  <tr>
+                    <th scope="col">Produs</th>
+                    <th scope="col">Cod</th>
+                    <th scope="col">Furnizor</th>
+                    <th scope="col">UM</th>
+                    <th scope="col" class="table-text-right">Cant</th>                    
+                  </tr>
+                </thead>
+                <tbody>                        
+                  <tr *ngFor="let prod of element.produse">                    
+                    <td>{{prod.produsNume}}</td>
+                    <td>{{prod.codProdus}}</td>
+                    <td>{{prod.furnizorNume}}</td>
+                    <td>{{prod.um}}</td>
+                    <td class="table-text-right">{{prod.cantitate| number: '1.0-2'}}</td>                    
+                  </tr>                      
+                </tbody>
+              </table>
+        </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>    
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+    (page)="updatePagination($event)">
+</mat-paginator>

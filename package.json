@@ -23,6 +23,7 @@
     "@angular/router": "^16.2.9",
     "@ericblade/quagga2": "^1.6.0",
     "@kolkov/angular-editor": "^2.1.0",
+    "@material-design-icons/svg": "^0.14.13",
     "@popperjs/core": "^2.9.2",
     "@rxweb/reactive-form-validators": "^13.0.1",
     "@sweetalert2/ngx-sweetalert2": "^12.2.0",
