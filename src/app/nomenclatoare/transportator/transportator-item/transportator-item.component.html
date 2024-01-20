@@ -1,36 +1,38 @@
+<form (submit) = "saveChanges()" [formGroup]="form">
+<div class="container bordered">    
+    <mat-form-field appearance="outline">
+        <mat-label>Nume</mat-label>
+        <input formControlName="nume" matInput>
+        <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
+        <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Nr Inmatriculare</mat-label>
+        <input formControlName="nrInmatriculare" matInput>
+        <mat-error>{{form.get("nrInmatriculare")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Adresa</mat-label>
+        <input formControlName="adresa" matInput>
+        <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Telefon</mat-label>
+        <input formControlName="tel" matInput>
+        <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput>
+        <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+        <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+</div>
 <div class="container">
-    <form (submit) = "saveChanges()" [formGroup]="form">
-        <mat-form-field appearance="outline">
-            <mat-label>Nume</mat-label>
-            <input formControlName="nume" matInput>
-            <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
-            <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Nr Inmatriculare</mat-label>
-            <input formControlName="nrInmatriculare" matInput>
-            <mat-error>{{form.get("nrInmatriculare")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Adresa</mat-label>
-            <input formControlName="adresa" matInput>
-            <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Telefon</mat-label>
-            <input formControlName="tel" matInput>
-            <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input formControlName="email" matInput>
-            <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
-            <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
-        <div>
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button routerLink="/transportator" mat-flat-button color="primary">Renunta</a>
-        </div>
-    </form>
+    <div class="form-footer">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/transportator" mat-flat-button color="primary">Renunta</a>
     </div>
+</div>
+</form>

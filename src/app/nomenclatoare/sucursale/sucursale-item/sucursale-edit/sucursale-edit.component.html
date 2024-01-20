@@ -1,2 +1,5 @@
-<h2>Edit Sucursala</h2>
+<div class="container bordered">
+    <h2>Edit Sucursala</h2>
+</div>
 <app-sucursale-item *ngIf="model" [model]="model" (onSaveChanges)="saveChanges($event)"></app-sucursale-item>
+<app-display-errors [errors]="errors"></app-display-errors>

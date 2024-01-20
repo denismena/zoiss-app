@@ -4,6 +4,7 @@ import { UMService } from '../../um.service';
 import { umCreationDTO, umDTO } from '../um.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-um-edit',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./um-edit.component.scss']
 })
 export class UmEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private umService: UMService,
     private unsubscribeService: UnsubscribeService) { }
 
@@ -22,9 +23,9 @@ export class UmEditComponent implements OnInit, OnDestroy {
       this.umService.getById(params.id)
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
       .subscribe(um => {
-        this.model = um;
-        console.log(this.model);
-      })
+        this.model = um;        
+      },
+      error=> this.errors = parseWebAPIErrors(error));
     });
   }
   saveChanges(umCreationDTO:umCreationDTO){
@@ -32,7 +33,8 @@ export class UmEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/um"]);
-    });
+    },
+    error => this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

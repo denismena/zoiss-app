@@ -1,6 +1,9 @@
-<h2>Editeaza Transport</h2>
+<div class="container bordered">
+    <h2>Editeaza Transport</h2>
+</div>
 <app-transport-item *ngIf="model"
 [selectedProdus]="selectedProdus"
 [depoziteLista]="depoziteLista"
 [model]="model" 
 (onSaveChanges)="saveChanges($event)"></app-transport-item>
+<app-display-errors [errors]="errors"></app-display-errors>

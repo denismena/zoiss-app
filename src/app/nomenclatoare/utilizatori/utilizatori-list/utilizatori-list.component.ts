@@ -27,7 +27,8 @@ export class UtilizatoriListComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(utilizatori=>{
       this.utilizatori = utilizatori;
-    });    
+    },
+    error => this.errors = parseWebAPIErrors(error));    
   }
   delete(id: string){
     this.securitySevice.markAsInactive(id)

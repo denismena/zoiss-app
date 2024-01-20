@@ -56,7 +56,8 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
             });
           }
         }
-      })
+      },
+      error=> this.errors = parseWebAPIErrors(error))
     });
   }
   // ngOnInit(): void {
@@ -82,8 +83,7 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
     .subscribe(() => {
       this.router.navigate(["/comenzi"]);
     }, 
-    error => {
-      console.error('error', error);
+    error => {      
       this.errors = parseWebAPIErrors(error);
     });
   }

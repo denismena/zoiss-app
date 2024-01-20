@@ -46,4 +46,9 @@ export class RapoarteService{
       const params = new HttpParams({fromObject: values});      
       return this.http.get<comenziPerLuna[]>(`${this.apiUrl}/trendComenziClientNou`, {observe:'response', params});
     }
+
+    timelineStockProduse(values: any): Observable<any>{
+      const params = new HttpParams({fromObject: values});      
+      return this.http.get<comenziPerLuna[]>(`${this.apiUrl}/timelineStock`, {observe:'response', params});
+    }
 }

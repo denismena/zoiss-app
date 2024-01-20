@@ -51,13 +51,11 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   search(event: any){
     let searchTerm = '';
     searchTerm += event;
-    console.log('searchTerm', searchTerm);
     if(searchTerm.length >= 2){    
       this.produseService.search(searchTerm)
       .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
       .subscribe(produse=>{
         this.produse = produse;
-        console.log('load produse', produse);
         this.selectedProdus = this.produsCtrl.valueChanges
           .pipe(
             startWith(''),
@@ -67,7 +65,6 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     }
   }
   optionSelected(event: MatAutocompleteSelectedEvent){    
-    console.log('event.option.value', event.option.value);
     this.preselectedProdus = event.option.value;
     this.onOptionSelected.emit(event.option.value);
   }
@@ -99,12 +96,8 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
         if (!e || !e.source) {
-          console.log('this.preselectedProdus', this.preselectedProdus);
-          console.log('this.produsCtrl.value', this.produsCtrl.value);
-          console.log('this.produsCtrl', this.produsCtrl);
           if(this.preselectedProdus == undefined)//daca nu are nimic selectat, scrisul este sters
             this.produsCtrl.setValue(null);
-          console.log('this.produsCtrl2', this.produsCtrl);
           if(this.produsCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
             this.onOptionSelected.emit(undefined);
         }
@@ -127,7 +120,6 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.produsCtrl.setValue(this.dataFromDialog);
           this.preselectedProdus = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
@@ -145,7 +137,6 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.produsCtrl.setValue(this.dataFromDialog);
           this.preselectedProdus = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);

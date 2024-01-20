@@ -38,7 +38,8 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
         {
           this.form.patchValue(this.model);
         }
-      })
+      },
+      error => this.errors = parseWebAPIErrors(error))
     });
 
     this.form = this.formBuilder.group({     
@@ -52,7 +53,8 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(sucursale=>{
       this.sucursaleList=sucursale;      
-    })
+    },
+    error => this.errors = parseWebAPIErrors(error));
   }
 
   edit(utilizatoriDTO: UtilizatoriDTO){

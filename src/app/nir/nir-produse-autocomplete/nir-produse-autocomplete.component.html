@@ -1,0 +1,104 @@
+<div class="container">    
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Produse</h4>
+        </div>        
+    </div>
+</div>
+
+<form (submit)="saveChanges()" [formGroup]="form">
+    <div class="container">    
+        <div class="row">
+            <div class="col-md-5"> 
+                <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" [preselectedProdus]="preselectedProdus" #produsAuto></app-produse-autocomplete>
+                <input type="hidden" formControlName="produsId" #produsId>
+            </div>
+            <div class="col-md-4">
+                <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
+                <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF">
+            </div>
+            <div class="col-md-1">
+                <mat-label>UM</mat-label>                
+                <mat-form-field appearance="outline">        
+                    <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
+                        <mat-option *ngFor="let um of umList" [value]="um.id">
+                            {{um.nume}}
+                        </mat-option>            
+                    </mat-select>
+                </mat-form-field> 
+            </div>
+            <div class="col-md-1"> 
+                <mat-label>Cantitate</mat-label>        
+                <mat-form-field appearance="outline">                    
+                    <input matInput formControlName="cantitate" #cantitate id="cantitate"/>
+                    <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
+                    <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
+                </mat-form-field>                
+            </div>
+            <div class="col-md-1 d-none d-sm-block">
+                <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+                <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
+            </div>
+        </div>        
+        <div class="row d-block d-sm-none">
+            <div class="col">
+                <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+                <a mat-stroke-button mat-flat-button color="primary" style="margin-left: 1rem;" (click)="clearForm()">Renunta</a>
+            </div>            
+        </div>
+</div>
+</form>
+
+<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0"[dataSource]="selectedProdus"
+    cdkDropList [cdkDropListData]="selectedProdus" (cdkDropListDropped)="dropped($event)">
+
+    <ng-container matColumnDef="codProdus">
+        <th mat-header-cell *matHeaderCellDef>Cod</th>
+        <td mat-cell *matCellDef="let element">{{element.codProdus}}</td>
+        <td mat-footer-cell *matFooterCellDef> Total </td>
+    </ng-container>
+
+    <ng-container matColumnDef="produsNume">
+        <th mat-header-cell *matHeaderCellDef>Produs</th>
+        <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <ng-container matColumnDef="furnizorNume">
+        <th mat-header-cell *matHeaderCellDef>Furnizor</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.furnizorNume}}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <ng-container matColumnDef="um">
+        <th mat-header-cell *matHeaderCellDef>UM</th>
+        <td mat-cell *matCellDef="let element" style="text-align: left;">
+            {{element.um}}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <ng-container matColumnDef="cantitate">
+        <th mat-header-cell *matHeaderCellDef class="table-text-right">Cant</th>
+        <td mat-cell *matCellDef="let element" class="table-text-right">
+            {{element.cantitate| number: '1.0-3'}}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>    
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
+        <td mat-cell *matCellDef="let element" class="table-text-center">
+            <mat-icon color="primary" (click)="edit(element)" *ngIf="element.id !=null">edit</mat-icon>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">close</mat-icon>            
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let entry" cdkDrag [cdkDragData]="row"></tr>
+    <tr mat-footer-row *matFooterRowDef="columnsToDisplay" ngClass="tableFooter"></tr>
+
+</table>

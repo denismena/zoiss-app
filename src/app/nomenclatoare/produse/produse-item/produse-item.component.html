@@ -1,101 +1,103 @@
-<div class="container">
-<form (submit) = "saveProduse()" [formGroup]="form">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Cod</mat-label>
-                    <input formControlName="cod" matInput>
-                    <mat-error>{{form.get("cod")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("cod")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-12">
-                <mat-form-field appearance="outline">
-                    <mat-label>Nume</mat-label>
-                    <input formControlName="nume" matInput>
-                    <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="outline">
-                    <mat-label>um</mat-label>                
-                    <mat-select formControlName="umId">
-                        <mat-option *ngFor="let um of umList" [value]="um.id">
-                            {{um.nume}}
-                          </mat-option>            
-                      </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="outline">
-                    <mat-label>Cantitate per cutie</mat-label>
-                    <input formControlName="perCutie" matInput>
-                    <mat-error>{{form.get("perCutie")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("perCutie")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="outline">
-                    <mat-label>Pret</mat-label>
-                    <input formControlName="pret" matInput>
-                    <mat-error>{{form.get("pret")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="outline">
-                    <mat-label>Cod vamal</mat-label>
-                    <input formControlName="codVamal" matInput>
-                    <mat-error>{{form.get("codVamal")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="outline">
-                    <mat-label>Greutate per UM</mat-label>
-                    <input formControlName="greutatePerUm" matInput>
-                    <mat-error>{{form.get("greutatePerUm")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-form-field appearance="outline">
-                    <mat-label>Stoc</mat-label>
-                    <input formControlName="stoc" matInput>
-                    <mat-error>{{form.get("stoc")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-12">
-                <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
-                <input type="hidden" formControlName="prefFurnizorId" #furnizorId class="clsF"> 
-                <input type="hidden" formControlName="pozaPath" #pozaPath> 
-            </div>
+<form (ngSubmit)="saveProduse()" [formGroup]="form">
+<div class="container bordered">    
+    <div class="row">
+        <div class="col-md-4">
+            <app-input-img [urlCurrentImage]="model?.pozaPath" [containerName]="'produse'"
+                (onImageSelected)="onImageSelected($event)" (onImageDeleted)="onImageDeleted()"></app-input-img>
+            <qrcode
+                [qrdata]="form.get('cod')?.value"
+                [allowEmptyString]="true"
+                [ariaLabel]="'QR Code image with the following content...'"
+                [cssClass]="'center'"
+                [colorDark]="'#000000ff'"
+                [colorLight]="'#ffffffff'"
+                [elementType]="'img'"
+                [errorCorrectionLevel]="'L'"
+                [margin]="4"
+                [scale]="1"                    
+                [width]="150"></qrcode>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <app-input-img [urlCurrentImage]="model?.pozaPath" [containerName]="'produse'"
-                    (onImageSelected)="onImageSelected($event)" (onImageDeleted)="onImageDeleted()"></app-input-img>
-                <div><mat-slide-toggle class="example-margin" color="primary" formControlName="isCategory">Este Categorie</mat-slide-toggle></div>
-                <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cod</mat-label>
+                        <input formControlName="cod" matInput>
+                        <mat-error>{{form.get("cod")?.getError("required")?.message}}</mat-error>
+                        <mat-error>{{form.get("cod")?.getError("maxLength")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nume</mat-label>
+                        <input formControlName="nume" matInput>
+                        <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
+                        <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>um</mat-label>                
+                        <mat-select formControlName="umId">
+                            <mat-option *ngFor="let um of umList" [value]="um.id">
+                                {{um.nume}}
+                            </mat-option>            
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cantitate per cutie</mat-label>
+                        <input formControlName="perCutie" matInput>
+                        <mat-error>{{form.get("perCutie")?.getError("required")?.message}}</mat-error>
+                        <mat-error>{{form.get("perCutie")?.getError("numeric")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Pret</mat-label>
+                        <input formControlName="pret" matInput>
+                        <mat-error>{{form.get("pret")?.getError("numeric")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cod vamal</mat-label>
+                        <input formControlName="codVamal" matInput>
+                        <mat-error>{{form.get("codVamal")?.getError("maxLength")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Greutate per UM</mat-label>
+                        <input formControlName="greutatePerUm" matInput>
+                        <mat-error>{{form.get("greutatePerUm")?.getError("numeric")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Stoc</mat-label>
+                        <input formControlName="stoc" matInput>
+                        <mat-error>{{form.get("stoc")?.getError("numeric")?.message}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-12">
+                    <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
+                    <input type="hidden" formControlName="prefFurnizorId" #furnizorId class="clsF"> 
+                    <input type="hidden" formControlName="pozaPath" #pozaPath> 
+                </div>
+                <div class="col-md-12">
+                    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="isCategory">Este Categorie</mat-slide-toggle></div>
+                    <div><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <qrcode
-                    [qrdata]="form.get('cod')?.value"
-                    [allowEmptyString]="true"
-                    [ariaLabel]="'QR Code image with the following content...'"
-                    [cssClass]="'center'"
-                    [colorDark]="'#000000ff'"
-                    [colorLight]="'#ffffffff'"
-                    [elementType]="'img'"
-                    [errorCorrectionLevel]="'L'"
-                    [margin]="4"
-                    [scale]="1"                    
-                    [width]="150"></qrcode>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
         </div>
     </div>
-</form>
 </div>
+<div class="container">
+    <div class="form-footer">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
+    </div>
+</div>
+</form>

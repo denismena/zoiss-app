@@ -71,6 +71,7 @@ export interface produseComandaDTO{
     addToComandaFurnizor: boolean;
     isCategory: boolean;
     isStoc: boolean;
+    produsStocValoare: number;
 }
 export interface comenziPutGetDTO{
     comanda: comenziDTO;

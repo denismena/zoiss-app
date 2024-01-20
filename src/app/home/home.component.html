@@ -8,6 +8,12 @@
                 <div class="col-md-3">
                     <h2>Stick notes</h2>
                     <app-sticky-notes-list></app-sticky-notes-list>
+                    <div class="mt-md">
+                        Scaneaza produs <br>            
+                        <app-scan-qr *ngIf="scannerEnabled"></app-scan-qr>
+                        <mat-icon class="greenIcon" (click)="scan()">camera_alt</mat-icon>
+                        <mat-icon class="redIcon" (click)="stop()">stop</mat-icon>
+                    </div>
                 </div>
             </div>            
         </div>        

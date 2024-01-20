@@ -1,0 +1,43 @@
+<form (submit)="saveChanges()" [formGroup]="form">
+    <div class="container bordered">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <mat-label>Numar</mat-label>
+                        <mat-form-field appearance="outline">                        
+                            <input formControlName="numar" matInput>
+                            <mat-error>{{form.get("numar")?.getError("required")?.message}}</mat-error>
+                            <mat-error>{{form.get("numar")?.getError("numeric")?.message}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-label>Data</mat-label>
+                        <mat-form-field appearance="outline">                        
+                            <input formControlName="data" matInput [matDatepicker]="dataPicker">
+                            <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataPicker></mat-datepicker>
+                            <mat-error>Completati data!</mat-error>
+                        </mat-form-field>
+                    </div>                                   
+                    <div class="col-md-6">
+                        <mat-label>Observatii</mat-label>
+                        <mat-form-field appearance="outline">                        
+                            <input formControlName="detalii" matInput>                        
+                        </mat-form-field>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-md-12">
+                <mat-divider></mat-divider>        
+                <app-nir-produse-autocomplete [selectedProdus]="selectedProdus"></app-nir-produse-autocomplete>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-footer">
+            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+            <a mat-stroke-button routerLink="/nir" mat-flat-button color="primary">Renunta</a>
+        </div>
+    </div>
+</form>

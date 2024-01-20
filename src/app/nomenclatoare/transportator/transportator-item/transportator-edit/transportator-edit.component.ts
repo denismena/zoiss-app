@@ -4,6 +4,7 @@ import { TransporatorService } from '../../transportator.service';
 import { transportatorCreationDTO, transportatorDTO } from '../transportator.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-transportator-edit',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./transportator-edit.component.scss']
 })
 export class TransportatorEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService,
     private transporatorService: TransporatorService) { }
 
@@ -22,9 +23,9 @@ export class TransportatorEditComponent implements OnInit, OnDestroy {
       this.transporatorService.getById(params.id)
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
       .subscribe(transportator => {
-        this.model = transportator;
-        console.log(this.model);
-      })
+        this.model = transportator;        
+      },
+      error => this.errors = parseWebAPIErrors(error))
     });
   }
   saveChanges(transportatorCreationDTO:transportatorCreationDTO){
@@ -32,7 +33,8 @@ export class TransportatorEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/transportator"]);
-    });
+    },
+    error => this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

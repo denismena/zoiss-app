@@ -68,7 +68,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
         validators: [
           RxwebValidators.required({ conditionalExpression: (x: any) => x.isCategory == false }),
           RxwebValidators.numeric({ acceptValue: NumericValueType.Both, allowDecimal: true }),
-          RxwebValidators.lessThan({fieldName:'produsStoc', message: 'Cantitatea nu poate fi mai mare decat stocul disponibil', conditionalExpression:(x: any) => x.isStoc == true }),          
+          RxwebValidators.lessThanEqualTo({fieldName:'produsStocValoare', message: 'Stoc prea mic', conditionalExpression:(x: any) => x.isStoc == true }),          
         ]
       }],
       cutii: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
@@ -76,7 +76,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
       valoare: [null, {validators:[RxwebValidators.required({conditionalExpression:(x: any) => x.isCategory == false  }), RxwebValidators.numeric({acceptValue:NumericValueType.Both  ,allowDecimal:true })]}],
       discount: null,
       codProdus:'',
-      produsStoc: 0,
+      produsStocValoare: 0,
       id: null, oferteProdusId:null, isInComandaFurnizor: false, disponibilitate:null, isCategory: false, depozit:null, sort: null, isStoc: false, discountValoare: null
     });    
     
@@ -98,7 +98,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
     .subscribe(um=>{
       this.umList=um;
     })
-
+    console.log('selectedProdus', this.selectedProdus);
   }
 
   loadProduseList(){
@@ -137,7 +137,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
   this.form.controls['umId']?.setValue(produs?.umId);
   this.form.controls['um']?.setValue(produs?.um);
   this.form.controls['isCategory']?.setValue(produs?.isCategory);
-  this.form.controls['produsStoc']?.setValue(produs?.stoc);
+  this.form.controls['produsStocValoare']?.setValue(produs?.stoc);
   this.perCutieSet = produs?.perCutie;
   this.pretSet = produs?.pret;  
 }
@@ -153,7 +153,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
       this.selectedProdus[index]=this.form.value;
     }
     else this.selectedProdus.push(this.form.value);
-
+    console.log('selectedProdus', this.selectedProdus, this.form.controls['isInComandaFurnizor'].value);
     if (this.table !== undefined){
       this.table.renderRows();
     }
@@ -206,7 +206,7 @@ export class ComenziProduseAutocompleteComponent implements OnInit, OnDestroy {
   edit(produs:any){
     // Remove the 'isLivrat' property from produs
     delete produs.isLivrat;
-
+    produs.produsStocValoare = produs.produsStocValoare;
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId)
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))

@@ -23,18 +23,17 @@
                         <mat-option *ngFor="let um of umList" [value]="um.id">
                             {{um.nume}}
                           </mat-option>            
-                      </mat-select>
+                      </mat-select>                      
                 </mat-form-field> 
             </div>
             <div class="col-md-2">
-                <mat-label>Cantitate</mat-label>        
+                <mat-label>Cantitate  <span class="ms-md-3 fw-bold">{{perCutieSet}} / cutie</span></mat-label>
                 <mat-form-field appearance="outline">                    
                     <input id="cantitate" matInput #cantitate formControlName="cantitate" (change)="onCantitateChange($event)"/>
-                    <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
-                    <mat-error>{{form.get("cantitate")?.getError("lessThan")?.message}}</mat-error>
-                </mat-form-field> 
-                {{perCutieSet}} / cutie
+                    <mat-error>{{form.get("cantitate")?.getError("lessThanEqualTo")?.message}}</mat-error>
+                    <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>                    
+                </mat-form-field>                 
             </div>
             <div class="col-md-2">
                 <mat-label>Cutii</mat-label>
@@ -42,7 +41,7 @@
                     <input matInput formControlName="cutii" readonly="true"/>
                     <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
                     <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field> 
+                </mat-form-field>                
             </div>
             <div class="col-md-1">
                 <mat-label>Pret UM</mat-label>
@@ -84,7 +83,7 @@
     </div>
 </form>
 
-<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0"[dataSource]="selectedProdus"
+<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdus.length > 0"[dataSource]="selectedProdus" class="mt-md-3"
     cdkDropList [cdkDropListData]="selectedProdus" (cdkDropListDropped)="dropped($event)">
     
     <ng-container matColumnDef="codProdus">
@@ -161,8 +160,8 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
         <td mat-cell *matCellDef="let element" class="table-text-center">
-            <mat-icon color="primary" (click)="edit(element)" *ngIf="element.id !=null && element.isInComandaFurnizor==false">edit</mat-icon>
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)" *ngIf="element.isInComandaFurnizor==false">
+            <mat-icon color="primary" (click)="edit(element)"  *ngIf="element.id !=null && element.isInComandaFurnizor==false">edit</mat-icon>
+            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)" *ngIf="element.isInComandaFurnizor !=true">
                 close
             </mat-icon>
             <mat-icon matTooltip="Produsul este deja intr-o comanda furnizor" *ngIf="element.isInComandaFurnizor==true">info</mat-icon>

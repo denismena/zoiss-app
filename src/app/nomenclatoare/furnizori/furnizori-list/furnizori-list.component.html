@@ -8,8 +8,9 @@
                   </mat-icon>
               </div>
             <h2>Lista Furnizori
-            <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary">
-                <mat-icon class="greenIcon">add_circle</mat-icon></button>
+                <button type="button" routerLink="/furnizori/create" mat-flat-button color="primary" matTooltip="Adauga">
+                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
+                </button>            
             </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>
@@ -52,6 +53,7 @@
       </form>
     </mat-expansion-panel>    
 </mat-accordion>
+<app-display-errors [errors]="errors"></app-display-errors>
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
@@ -121,4 +123,4 @@
     <mat-paginator [pageSizeOptions]="[10,50, 100, 500]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
         (page)="updatePagination($event)">
     </mat-paginator>
-    <app-display-errors [errors]="errors"></app-display-errors>
+    

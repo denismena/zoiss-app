@@ -122,6 +122,13 @@ import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/come
 import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { IconsService } from './utilities/icons.service';
+import { NirItemComponent } from './nir/nir-item/nir-item.component';
+import { NirCreateComponent } from './nir/nir-item/nir-create/nir-create.component';
+import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
+import { NirListComponent } from './nir/nir-list/nir-list.component';
+import { NirProduseAutocompleteComponent } from './nir/nir-produse-autocomplete/nir-produse-autocomplete.component';
+import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
 
 @NgModule({
   declarations: [
@@ -228,7 +235,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     LivrariCreateComponent,
     ComenziUtilizatoriComponent,
     ComenziDepoziteComponent,
-    DashboardComponent    
+    DashboardComponent,
+    NirItemComponent,
+    NirCreateComponent,
+    NirEditComponent,
+    NirListComponent,
+    NirProduseAutocompleteComponent,
+    TimelineStockComponent    
   ],
   imports: [
     BrowserModule,
@@ -248,8 +261,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: JwtInterceptorService,
-    multi: true
-  }, CookieService],
+    multi: true,
+    //useValue: IconsService
+  },
+  IconsService, 
+  CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

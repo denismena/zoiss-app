@@ -36,7 +36,8 @@ export class ClientiEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/clienti"]);
-    });
+    },
+    error => this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

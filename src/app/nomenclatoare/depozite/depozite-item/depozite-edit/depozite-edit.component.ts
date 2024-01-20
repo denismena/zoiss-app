@@ -4,6 +4,7 @@ import { DepoziteService } from '../../depozite.service';
 import { depoziteCreationDTO, depoziteDTO } from '../depozite.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-depozite-edit',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./depozite-edit.component.scss']
 })
 export class DepoziteEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute, private router:Router, private unsubscribeService: UnsubscribeService, 
     private depoziteService: DepoziteService) { }
 
@@ -22,9 +23,9 @@ export class DepoziteEditComponent implements OnInit, OnDestroy {
       this.depoziteService.getById(params.id)
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
       .subscribe(depozit => {
-        this.model = depozit;
-        console.log(this.model);
-      })
+        this.model = depozit;        
+      },
+      error=> this.errors = parseWebAPIErrors(error))
     });
   }
   saveChanges(depoziteCreationDTO:depoziteCreationDTO){
@@ -32,7 +33,8 @@ export class DepoziteEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/depozite"]);
-    });
+    },
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

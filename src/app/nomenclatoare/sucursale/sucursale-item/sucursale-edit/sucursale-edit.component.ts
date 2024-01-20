@@ -4,6 +4,7 @@ import { SucursaleService } from '../../sucursala.service';
 import { sucursalaCreationDTO, sucursalaDTO } from '../sucursala.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-sucursale-edit',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./sucursale-edit.component.scss']
 })
 export class SucursaleEditComponent implements OnInit, OnDestroy {
-
+  errors: string[] = [];
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private sucursaleService: SucursaleService,
     private unsubscribeService: UnsubscribeService) { }
 
@@ -23,7 +24,8 @@ export class SucursaleEditComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
       .subscribe(um => {
         this.model = um;
-      })
+      },
+      error=> this.errors = parseWebAPIErrors(error))
     });
   }
   saveChanges(sucursalaCreationDTO:sucursalaCreationDTO){
@@ -31,7 +33,8 @@ export class SucursaleEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/sucursale"]);
-    });
+    },
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

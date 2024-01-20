@@ -1,5 +1,5 @@
-<div class="container">
 <form (submit) = "saveChanges()" [formGroup]="form">
+<div class="container bordered">
     <mat-form-field appearance="outline">
         <mat-label>Nume</mat-label>
         <input formControlName="nume" matInput>
@@ -26,12 +26,12 @@
         <input formControlName="adresa" matInput>
         <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline" style="width: 40%;">
+    <mat-form-field appearance="outline" style="width: 50%;">
         <mat-label>Telefon</mat-label>
         <input formControlName="tel" matInput>
         <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline" style="width: 60%;">
+    <mat-form-field appearance="outline" style="width: 50%;">
         <mat-label>Email</mat-label>
         <input formControlName="email" matInput>
         <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
@@ -62,10 +62,11 @@
             <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="deleteFile($event, file)">close</mat-icon>
         </div>        
     </div>
-    <br />
-    <div>
+</div>
+<div class="container">
+    <div class="form-footer">
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
-    </div>
-</form>
 </div>
+</div>
+</form>

@@ -1,5 +1,7 @@
-<h2>Edit Client</h2>
+<div class="container bordered">
+    <h2>Edit Client</h2>
+</div>
 <app-clienti-item *ngIf="model" [model]="model" 
-[adreseList]="adreseList"
-(onSaveChanges)="saveChanges($event)"></app-clienti-item>
+    [adreseList]="adreseList"
+    (onSaveChanges)="saveChanges($event)"></app-clienti-item>
 <app-display-errors [errors]="errors"></app-display-errors>

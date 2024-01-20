@@ -1,70 +1,70 @@
-<div class="container">
 <form (submit) = "saveChanges()" [formGroup]="form">
-    <div class="container">    
-        <div class="row">
-            <div class="col-md-4">
-                <mat-label>Nume</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input formControlName="nume" matInput>
-                    <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-2">
-                <mat-radio-group aria-label="Select an option" formControlName="pfPj" color="primary" class="example-radio-group">
-                    <mat-radio-button value='PF'>PF</mat-radio-button>
-                    <mat-radio-button value='PJ'>PJ</mat-radio-button>
-                </mat-radio-group>                
-            </div>
-            <div class="col-md-4">
-                <mat-label>CNP/CUI</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input formControlName="cuiCnp" matInput>
-                </mat-form-field>
-            </div>
-            <div class="col-md-2"><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+<div class="container bordered">    
+    <div class="row">
+        <div class="col-md-4">
+            <mat-label>Nume</mat-label>
+            <mat-form-field appearance="outline">                    
+                <input formControlName="nume" matInput>
+                <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
+                <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
+            </mat-form-field>
         </div>
-        <div class="row" *ngIf="!isPF">
-            <div class="col-md-3">
-                <mat-label>Registru Comertului</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input formControlName="registruComert" matInput>
-                    <mat-error>{{form.get("registruComert")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-3">
-                <mat-label>Persoana Contact</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input formControlName="persoanaContact" matInput>
-                    <mat-error>{{form.get("persoanaContact")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-3">
-                <mat-label>Persoana Contact Tel</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input formControlName="persoanaContactTel" matInput>
-                    <mat-error>{{form.get("persoanaContactTel")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-3">
-                <mat-label>Persoana Contact Email</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input formControlName="persoanaContactEmail" matInput>
-                    <mat-error>{{form.get("persoanaContactEmail")?.getError("email")?.message}}</mat-error>
-                    <mat-error>{{form.get("persoanaContactEmail")?.getError("maxLength")?.message}}</mat-error>
-                </mat-form-field>
-            </div>           
+        <div class="col-md-2">
+            <mat-radio-group aria-label="Select an option" formControlName="pfPj" color="primary" class="example-radio-group">
+                <mat-radio-button value='PF'>PF</mat-radio-button>
+                <mat-radio-button value='PJ'>PJ</mat-radio-button>
+            </mat-radio-group>                
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <app-clienti-adresa [adreseList]="adreseList"></app-clienti-adresa>
-            </div>
+        <div class="col-md-4">
+            <mat-label>CNP/CUI</mat-label>
+            <mat-form-field appearance="outline">                    
+                <input formControlName="cuiCnp" matInput>
+            </mat-form-field>
         </div>
-    <div>
-        <br />
+        <div class="col-md-2"><mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle></div>
+    </div>
+    <div class="row" *ngIf="!isPF">
+        <div class="col-md-3">
+            <mat-label>Registru Comertului</mat-label>
+            <mat-form-field appearance="outline">                    
+                <input formControlName="registruComert" matInput>
+                <mat-error>{{form.get("registruComert")?.getError("maxLength")?.message}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-3">
+            <mat-label>Persoana Contact</mat-label>
+            <mat-form-field appearance="outline">                    
+                <input formControlName="persoanaContact" matInput>
+                <mat-error>{{form.get("persoanaContact")?.getError("maxLength")?.message}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-3">
+            <mat-label>Persoana Contact Tel</mat-label>
+            <mat-form-field appearance="outline">                    
+                <input formControlName="persoanaContactTel" matInput>
+                <mat-error>{{form.get("persoanaContactTel")?.getError("maxLength")?.message}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-3">
+            <mat-label>Persoana Contact Email</mat-label>
+            <mat-form-field appearance="outline">                    
+                <input formControlName="persoanaContactEmail" matInput>
+                <mat-error>{{form.get("persoanaContactEmail")?.getError("email")?.message}}</mat-error>
+                <mat-error>{{form.get("persoanaContactEmail")?.getError("maxLength")?.message}}</mat-error>
+            </mat-form-field>
+        </div>           
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <mat-divider></mat-divider>
+            <app-clienti-adresa [adreseList]="adreseList"></app-clienti-adresa>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="form-footer">
         <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
         <a mat-stroke-button mat-flat-button color="primary" (click)="cancel()" >Renunta</a>
-    </div>
-    </div>
-</form>
 </div>
+</div>
+</form>

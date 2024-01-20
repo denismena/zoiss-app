@@ -56,6 +56,10 @@ import { ConfirmEmailComponent } from './security/confirm-email/confirm-email.co
 import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
 import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/comenzi-utilizatori.component';
 import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
+import { NirListComponent } from './nir/nir-list/nir-list.component';
+import { NirCreateComponent } from './nir/nir-item/nir-create/nir-create.component';
+import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
+import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -124,6 +128,11 @@ const routes: Routes = [
   {path: "rapoarte/comisionArhitect", component: ComisionArhitectiComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "rapoarte/comenziUtilizatori", component: ComenziUtilizatoriComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "rapoarte/comenziDepozite", component: ComenziDepoziteComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "rapoarte/timelineStoc/:id", component: TimelineStockComponent, canActivate:[IsAuthenticatedGuard]},
+
+  {path: "nir", component: NirListComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "nir/create", component: NirCreateComponent, canActivate:[IsAuthenticatedGuard]} ,  
+  {path: "nir/edit/:id", component: NirEditComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},

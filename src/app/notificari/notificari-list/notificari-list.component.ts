@@ -8,6 +8,8 @@ import { notificariDTO } from '../notificari.model';
 import { NotificariService } from '../notificari.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { SecurityService } from 'src/app/security/security.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-notificari-list',
@@ -20,8 +22,10 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   errors: string[] = [];
   intervalId: any | undefined;
   necitite: number = 0;
+  comenzileMeleValue: boolean = false;
   @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger | undefined;
-  constructor(private notificariService: NotificariService, public dialog: MatDialog, private unsubscribeService: UnsubscribeService) { 
+  constructor(private notificariService: NotificariService, public dialog: MatDialog, private securityService: SecurityService, 
+    private unsubscribeService: UnsubscribeService) { 
     this.notificari=[];
   }
 
@@ -33,18 +37,24 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       }, 600000); //10min - 600000
     }
   }
-  loadList(){
-    this.notificariService.getAll()
+  loadList(){    
+    forkJoin([
+      this.notificariService.getAll(),
+      this.securityService.getByEmail(this.securityService.getFieldFromJwt('email') as string) //this.securityService.currentUser$
+    ])
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-    .subscribe(notificari=>{
-      this.notificari = notificari;      
+    .subscribe(([notificari, utilizator]) => {
+        this.notificari = notificari;      
       let oldNecitite = this.necitite;
       this.necitite = this.notificari.filter(f=>f.read==false).length;      
       if(oldNecitite < this.necitite){        
         if(this.languageMenuTrigger) this.languageMenuTrigger.openMenu();
         //else console.log('menul e undefined')
       }
-    });    
+
+      this.comenzileMeleValue = utilizator.showNotificationsForAllOrders;
+    });
+
   }
 
   view(itemNot: notificariDTO){
@@ -109,5 +119,10 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       this.errors = parseWebAPIErrors(error);
       Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
     });
+  }
+
+  setNotificationStyle(item: any){
+    console.log('setNotificationStyle', item);
+    this.securityService.setNotificationStyle(item.checked);
   }
 }

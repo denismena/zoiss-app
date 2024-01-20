@@ -4,6 +4,7 @@ import { ComenziFurnizorService } from '../../comenzi-furn.service';
 import { comenziFurnizorCreationDTO, comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
   selector: 'app-comenzi-furn-edit',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./comenzi-furn-edit.component.scss']
 })
 export class ComenziFurnEditComponent implements OnInit, OnDestroy {
-  
+  errors: string[] = [];
   public furnizorName: string='';
   constructor(private activatedRoute: ActivatedRoute,private router:Router, private comenziFurnizorService: ComenziFurnizorService,
     private unsubscribeService: UnsubscribeService) { }
@@ -27,11 +28,9 @@ export class ComenziFurnEditComponent implements OnInit, OnDestroy {
         console.log('comanda:', comanda);
         this.model = comanda.comandaFurnizor;
         this.selectedProdus = comanda.comenziFurnizoriProduse;
-        this.furnizorName = this.model.furnizor;
-        console.log('comenzi edit model', this.model);
-        console.log('comenzi edit model selectedProdus', this.selectedProdus);        
-        console.log('furnizorName', this.furnizorName);
-      })
+        this.furnizorName = this.model.furnizor;        
+      },
+      error=> this.errors = parseWebAPIErrors(error))
     });
   }
 
@@ -40,7 +39,8 @@ export class ComenziFurnEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {
       this.router.navigate(["/comenziFurnizor"]);
-    });
+    },
+    error=> this.errors = parseWebAPIErrors(error));
   }
 
   ngOnDestroy(): void {}

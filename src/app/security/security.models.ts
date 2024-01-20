@@ -16,6 +16,9 @@ export interface UtilizatoriDTO{
     phoneNumber: string;
     sucursalaId: number | null;
     sucursala: string;
+    //role: string;
+    active: boolean;
+    showNotificationsForAllOrders: boolean;
 }
 
 export interface forgetPass{

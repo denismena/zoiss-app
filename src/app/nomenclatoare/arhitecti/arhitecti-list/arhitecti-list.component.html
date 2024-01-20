@@ -1,7 +1,23 @@
-<h2>Lista Arhitecti
-<button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary">
-    <mat-icon class="greenIcon">add_circle</mat-icon></button>
-</h2>
+<mat-accordion>
+    <mat-expansion-panel hideToggle class="mat-elevation-z0">
+      <mat-expansion-panel-header>
+        <mat-panel-description (click)="$event.stopPropagation();">            
+            <h2>Lista Arhitecti
+                <button type="button" routerLink="/arhitecti/create" mat-flat-button color="primary" matTooltip="Adauga">
+                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
+                </button>                    
+            </h2>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>    
+</mat-accordion>
+
+<app-display-errors [errors]="errors"></app-display-errors>
+
+<div class="spinner-container" *ngIf="loading$">
+    <mat-spinner></mat-spinner>
+</div>
+
 <app-generic-list [list]="arhitecti">
     <ng-container content>
     <table mat-table *ngIf="arhitecti.length > 0" [dataSource]="arhitecti" class="table-index">        
@@ -52,4 +68,3 @@
     </table>
 </ng-container>
 </app-generic-list>
-<app-display-errors [errors]="errors"></app-display-errors>

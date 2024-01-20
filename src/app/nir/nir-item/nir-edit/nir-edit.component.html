@@ -1,0 +1,5 @@
+<div class="container bordered">
+    <h2>Modifica NIR</h2>    
+</div>
+<app-nir-item *ngIf="model" [selectedProdus] = "selectedProdus" [model]="model" (onSaveChanges)="saveChanges($event)"></app-nir-item>
+<app-display-errors [errors]="errors"></app-display-errors>    
