@@ -48,7 +48,17 @@ export class RapoarteService{
     }
 
     timelineStockProduse(values: any): Observable<any>{
-      const params = new HttpParams({fromObject: values});      
+      const params = new HttpParams({fromObject: values});
       return this.http.get<comenziPerLuna[]>(`${this.apiUrl}/timelineStock`, {observe:'response', params});
+    }
+
+    removeDuplicatesProduse(values:any): Observable<any>{
+      const params = new HttpParams({fromObject: values}); 
+      return this.http.get<number>(`${this.apiUrl}/removeProduseDuplicate`, {observe:'response', params});      
+    }
+
+    removeDuplicatesFurnizori(values: any): Observable<any>{
+      const params = new HttpParams({fromObject: values});
+      return this.http.get<number>(`${this.apiUrl}/removeFurnizoriDuplicate`, {observe:'response', params});
     }
 }

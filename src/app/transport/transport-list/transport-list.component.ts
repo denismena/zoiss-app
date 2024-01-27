@@ -60,7 +60,7 @@ export class TransportListComponent implements OnInit, OnDestroy {
     this.expandedElement = [];
   }
 
-  columnsToDisplay= ['expand','referinta', 'data', 'transportator', 'utilizator', 'livrate', 'select', 'action'];
+  columnsToDisplay= ['expand','referinta', 'data', 'transportator', 'detalii', 'utilizator', 'livrate', 'select', 'action'];
 
   ngOnInit(): void {
 

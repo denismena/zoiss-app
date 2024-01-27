@@ -129,6 +129,8 @@ import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
 import { NirListComponent } from './nir/nir-list/nir-list.component';
 import { NirProduseAutocompleteComponent } from './nir/nir-produse-autocomplete/nir-produse-autocomplete.component';
 import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
+import { RemoveDuplicatesComponent} from './rapoarte/remove-duplicates/remove-duplicates.component';
+import { ReadMoreComponent } from './utilities/read-more/read-more.component';
 
 @NgModule({
   declarations: [
@@ -241,7 +243,9 @@ import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock
     NirEditComponent,
     NirListComponent,
     NirProduseAutocompleteComponent,
-    TimelineStockComponent    
+    TimelineStockComponent,
+    RemoveDuplicatesComponent,
+    ReadMoreComponent
   ],
   imports: [
     BrowserModule,

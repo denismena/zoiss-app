@@ -60,6 +60,7 @@ import { NirListComponent } from './nir/nir-list/nir-list.component';
 import { NirCreateComponent } from './nir/nir-item/nir-create/nir-create.component';
 import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
 import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
+import { RemoveDuplicatesComponent } from './rapoarte/remove-duplicates/remove-duplicates.component';
 
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
@@ -129,6 +130,7 @@ const routes: Routes = [
   {path: "rapoarte/comenziUtilizatori", component: ComenziUtilizatoriComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "rapoarte/comenziDepozite", component: ComenziDepoziteComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "rapoarte/timelineStoc/:id", component: TimelineStockComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "rapoarte/removeFurnizoriDuplicate", component: RemoveDuplicatesComponent, canActivate:[IsAuthenticatedGuard]},
 
   {path: "nir", component: NirListComponent, canActivate:[IsAuthenticatedGuard]},
   {path: "nir/create", component: NirCreateComponent, canActivate:[IsAuthenticatedGuard]} ,  

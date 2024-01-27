@@ -1,0 +1,7 @@
+<div>
+    <p #textbox [class.show-less]="expand === false">
+      <ng-content></ng-content>
+    </p>
+    <a (click)="toggle()" *ngIf="textbox.offsetHeight < textbox.scrollHeight || (expand === true && textbox.offsetHeight > 40)">{{ anchor }}</a>
+  </div>
+  

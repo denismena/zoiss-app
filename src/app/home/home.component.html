@@ -8,11 +8,21 @@
                 <div class="col-md-3">
                     <h2>Stick notes</h2>
                     <app-sticky-notes-list></app-sticky-notes-list>
-                    <div class="mt-md">
+                    <div class="my-md-3">
                         Scaneaza produs <br>            
                         <app-scan-qr *ngIf="scannerEnabled"></app-scan-qr>
                         <mat-icon class="greenIcon" (click)="scan()">camera_alt</mat-icon>
                         <mat-icon class="redIcon" (click)="stop()">stop</mat-icon>
+                    </div>
+                    <div class="my-md-3">
+                        <h2>Updates</h2>
+                        <h3>Update 23 Jan</h3>
+                        <ul>
+                            <li>Fix - Sters comanda unde acelasi produc de stoc exista de mai multe ori</li>
+                            <li>Fix - Creare comanda din oferta unde acelasi produc de stoc exista de mai multe ori</li>
+                            <li>Raport nou - Nomenclatoare->Produse->Lista->buton cu raport 'Timeline stoc'</li>
+                            <li>Functionalitate noua - Rapoarte->Sterge duplicate - optiune de a sterge unul sau mai multe produse sau furnizori duplicati</li>
+                        </ul>
                     </div>
                 </div>
             </div>            
