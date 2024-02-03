@@ -41,5 +41,17 @@ export class UtilizatoriListComponent implements OnInit, OnDestroy {
     });
   }
 
+  changeStatus(user: UtilizatoriDTO){
+    this.securitySevice.changeStatus(user.id, !user.active)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(() => {
+      this.loadList();
+    }, error => {
+      this.errors = parseWebAPIErrors(error);
+      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+    });    
+
+  }
+
   ngOnDestroy(): void {}
 }

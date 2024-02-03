@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(authenticatorResponse=>{
       this.securityservice.saveToke(authenticatorResponse);
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     }, error=> this.errors = parseWebAPIErrors(error));
   }
 

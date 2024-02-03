@@ -8,7 +8,14 @@ export interface userCredentials{
 export interface authentificationResponse{
     token: string;
     expiration: Date;
+    refreshToken: string;
 }
+
+export interface tokenModel{
+    token: string;
+    refreshToken: string;
+}
+
 export interface UtilizatoriDTO{
     id: string;
     email: string;

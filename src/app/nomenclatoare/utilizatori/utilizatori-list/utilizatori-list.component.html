@@ -51,17 +51,14 @@
         </ng-container>
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element">                
                 <a routerLink="/utilizatori/edit/{{element.id}}" title="Edit">
-                <mat-icon color="primary">edit</mat-icon>
-                </a>                
-                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" [swal]="{
-                    title: 'Confirmare',
-                    text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',
-                    showCancelButton: true
-                }" title="Delete" (confirm)="delete(element.id)">
-                    close
-                </mat-icon>                
+                    <mat-icon color="primary">edit</mat-icon>
+                </a>
+                <mat-icon *ngIf="element.active" color="primary" class="redIcon" (confirm)="changeStatus(element)" title="Schimba status in inactiv"
+                    [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa schimbati statusul in inactiv?',showCancelButton: true}">lock_person</mat-icon>
+                <mat-icon *ngIf="!element.active" color="primary" class="greenIcon" (confirm)="changeStatus(element)" title="Schimba status in activ"
+                    [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa schimbati statusul in activ?',showCancelButton: true}">lock_open</mat-icon>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

@@ -62,87 +62,88 @@ import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
 import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
 import { RemoveDuplicatesComponent } from './rapoarte/remove-duplicates/remove-duplicates.component';
 
+const isAuthenticatedGuard = IsAuthenticatedGuard;
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
-  {path: "home", component: HomeComponent},
+  {path: "home", component: HomeComponent, canActivate:[isAuthenticatedGuard]},
 
   //{path: "produse", component: ProduseListComponent, canActivate:[IsAdminGuard]},
-  {path: "produse", component: ProduseListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "produse/create", component: ProduseCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "produse/edit/:id", component: ProduseEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "produse", component: ProduseListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "produse/create", component: ProduseCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "produse/edit/:id", component: ProduseEditComponent, canActivate:[isAuthenticatedGuard]},
   
-  {path: "furnizori", component: FurnizoriListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "furnizori/create", component: FurnizoriCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "furnizori/edit/:id", component: FurnizoriEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "furnizori", component: FurnizoriListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "furnizori/create", component: FurnizoriCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "furnizori/edit/:id", component: FurnizoriEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "arhitecti", component: ArhitectiListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "arhitecti/create", component: ArhitectiCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "arhitecti/edit/:id", component: ArhitectiEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "arhitecti", component: ArhitectiListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "arhitecti/create", component: ArhitectiCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "arhitecti/edit/:id", component: ArhitectiEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "clienti", component: ClientiListComponent, canActivate:[IsAuthenticatedGuard]} ,
-  {path: "clienti/create", component: ClientiCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "clienti/edit/:id", component: ClientiEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "clienti", component: ClientiListComponent, canActivate:[isAuthenticatedGuard]} ,
+  {path: "clienti/create", component: ClientiCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "clienti/edit/:id", component: ClientiEditComponent, canActivate:[isAuthenticatedGuard]},
   {path: "clienti/filter", component: ClientiFilterComponent},
 
-  {path: "oferte", component: OferteListComponent, canActivate:[IsAuthenticatedGuard]} ,
-  {path: "oferte/create", component: OferteCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "oferte/edit/:id", component: OferteEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "oferte", component: OferteListComponent, canActivate:[isAuthenticatedGuard]} ,
+  {path: "oferte/create", component: OferteCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "oferte/edit/:id", component: OferteEditComponent, canActivate:[isAuthenticatedGuard]},
   {path: "oferte/filter", component: OferteFilterComponent},
 
-  {path: "comenzi", component: ComenziListComponent, canActivate:[IsAuthenticatedGuard]} ,
-  {path: "comenzi/create", component: ComenziCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "comenzi/edit/:id", component: ComenziEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "comenzi", component: ComenziListComponent, canActivate:[isAuthenticatedGuard]} ,
+  {path: "comenzi/create", component: ComenziCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "comenzi/edit/:id", component: ComenziEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "transport", component: TransportListComponent, canActivate:[IsAuthenticatedGuard]} ,
-  {path: "transport/create", component: TransportatorCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "transport/edit/:id", component: TransportEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "transport", component: TransportListComponent, canActivate:[isAuthenticatedGuard]} ,
+  {path: "transport/create", component: TransportatorCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "transport/edit/:id", component: TransportEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "comenziFurnizor", component: ComenziFurnListComponent, canActivate:[IsAuthenticatedGuard]} ,
-  {path: "comenziFurnizor/create", component: ComenziFurnCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "comenziFurnizor/edit/:id", component: ComenziFurnEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "comenziFurnizor", component: ComenziFurnListComponent, canActivate:[isAuthenticatedGuard]} ,
+  {path: "comenziFurnizor/create", component: ComenziFurnCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "comenziFurnizor/edit/:id", component: ComenziFurnEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "um", component:UmListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "um/create", component: UmCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "um/edit/:id", component: UmEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "um", component:UmListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "um/create", component: UmCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "um/edit/:id", component: UmEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "transportator", component:TransportatorListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "transportator/create", component: TransportatorCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "transportator/edit/:id", component: TransportatorEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "transportator", component:TransportatorListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "transportator/create", component: TransportatorCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "transportator/edit/:id", component: TransportatorEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "depozite", component:DepoziteListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "depozite/create", component: DepoziteCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "depozite/edit/:id", component: DepoziteEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "depozite", component:DepoziteListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "depozite/create", component: DepoziteCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "depozite/edit/:id", component: DepoziteEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "livrari", component: LivrariListComponent, canActivate:[IsAuthenticatedGuard]} ,  
-  {path: "livrari/create", component: LivrariCreateComponent, canActivate:[IsAuthenticatedGuard]} ,  
-  {path: "livrari/edit/:id", component: LivrariEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "livrari", component: LivrariListComponent, canActivate:[isAuthenticatedGuard]} ,  
+  {path: "livrari/create", component: LivrariCreateComponent, canActivate:[isAuthenticatedGuard]} ,  
+  {path: "livrari/edit/:id", component: LivrariEditComponent, canActivate:[isAuthenticatedGuard]},
 
   {path: "notes", component: StickyNotesListComponent} ,  
 
   {path: "notificari", component: NotificariListComponent} ,  
   {path: "notificari/edit/:id", component: NotificariItemComponent},
 
-  {path: "sucursale", component:SucursaleListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "sucursale/create", component: SucursaleCreateComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "sucursale/edit/:id", component: SucursaleEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "sucursale", component:SucursaleListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "sucursale/create", component: SucursaleCreateComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "sucursale/edit/:id", component: SucursaleEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "rapoarte/comisionArhitect", component: ComisionArhitectiComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "rapoarte/comenziUtilizatori", component: ComenziUtilizatoriComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "rapoarte/comenziDepozite", component: ComenziDepoziteComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "rapoarte/timelineStoc/:id", component: TimelineStockComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "rapoarte/removeFurnizoriDuplicate", component: RemoveDuplicatesComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "rapoarte/comisionArhitect", component: ComisionArhitectiComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "rapoarte/comenziUtilizatori", component: ComenziUtilizatoriComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "rapoarte/comenziDepozite", component: ComenziDepoziteComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "rapoarte/timelineStoc/:id", component: TimelineStockComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "rapoarte/removeFurnizoriDuplicate", component: RemoveDuplicatesComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "nir", component: NirListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "nir/create", component: NirCreateComponent, canActivate:[IsAuthenticatedGuard]} ,  
-  {path: "nir/edit/:id", component: NirEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "nir", component: NirListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "nir/create", component: NirCreateComponent, canActivate:[isAuthenticatedGuard]} ,  
+  {path: "nir/edit/:id", component: NirEditComponent, canActivate:[isAuthenticatedGuard]},
 
   {path: "login", component: LoginComponent},
   {path: "register", component: RegisterComponent},
   {path: "forgetPass", component: ForgetPassComponent},
   {path: "resetPass", component: ResetPassComponent},
   {path: "confirmEmail", component: ConfirmEmailComponent},
-  {path: "utilizatori", component: UtilizatoriListComponent, canActivate:[IsAuthenticatedGuard]},
-  {path: "utilizatori/edit/:id", component: UtilizatoriEditComponent, canActivate:[IsAuthenticatedGuard]},
+  {path: "utilizatori", component: UtilizatoriListComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "utilizatori/edit/:id", component: UtilizatoriEditComponent, canActivate:[isAuthenticatedGuard]},
   {path: '**', redirectTo:''}
 ];
 

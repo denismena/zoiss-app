@@ -88,7 +88,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe((response: HttpResponse<comenziPerLuna[]>)=>{
       let chartSerie = response.body ?? [];
-      console.log('chartSerie', chartSerie);
       
       this.chartOptionsTrendComenziPerUtilizator.series = this.mapChartData(chartSerie);
       this.chartOptionsTrendComenziPerUtilizator.xAxis = {  
@@ -116,7 +115,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
   updateChartTrendComenziPerUtilizator(): void {
-    console.log('this.chartOptionsTrendComenziPerUtilizator ss', this.chartOptionsTrendComenziPerUtilizator);
     Highcharts.chart('trendComenziPerUtilizator', this.chartOptionsTrendComenziPerUtilizator);
   }
   //#endregion
@@ -169,7 +167,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe((response: HttpResponse<comenziPerLuna[]>)=>{
       let chartSerie = response.body??[];
-      console.log('trendComenzi', chartSerie);
       this.chartOptionsTrendComenzi.series = [{
         data: chartSerie.map(t => ({ y: t.cantitate, name: t.luna })),        
         type: 'column',
@@ -238,7 +235,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe((response: HttpResponse<comenziPerLuna[]>)=>{
       let chartSerie = response.body??[];
-      console.log('trendComenziClientNou', chartSerie);
       this.chartOptionsTrendComenziClientiNoi.series = [{
         data: chartSerie.map(t => ({ y: t.valoare, name: t.luna })),        
         type: 'line',
