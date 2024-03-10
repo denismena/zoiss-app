@@ -69,6 +69,23 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
           }                    
         });
       }
+      if (data.clicked === 'delete') {
+        console.log('delete', data.form);
+        //return;          
+        this.transportService.deleteProdusDepozit(data.form?.id)
+        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+        .subscribe(() => {
+          var currProDep = this.selectedProdus.find(f=>f.id === prodDepId)?.transportProduseDepozit.find(ff=>ff.id === id);
+          if(currProDep !=null)
+          {
+            //currProDep = undefined;
+            currProDep.data = null;
+            currProDep.detalii = '';
+            currProDep.pozaPath = '';
+          }
+          this.dataFromDialog = null;
+        });
+      }
     });
   }
 
@@ -95,6 +112,24 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
                     }
               });                    
             });
+      }
+      if (data.clicked === 'delete') {        
+        console.log('delete', data.form);
+        //return;
+        this.transportService.deleteDepozit(data.form?.transportId, data.form?.depozit)
+            .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+            .subscribe(() => {
+              this.selectedProdus.forEach(produs => {
+                var currProDep = produs.transportProduseDepozit.find(f=>f.depozit === depozit);                                     
+                if(currProDep !=null)                  
+                {
+                  currProDep.data = null;
+                  currProDep.detalii = '';
+                  currProDep.pozaPath = ''; 
+                }
+              });
+              this.dataFromDialog = null;
+        });
       }
     }); 
   }

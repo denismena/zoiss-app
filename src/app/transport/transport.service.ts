@@ -47,12 +47,18 @@ export class TransportService{
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  deleteProdusDepozit(id: number) {
+    return this.http.delete(`${this.apiUrl}/produsDepozit/${id}`);
+  }
+
+  deleteDepozit(transportId: number, depozit: string) {
+    return this.http.delete(`${this.apiUrl}/transportId/${transportId}/depozit/${depozit}`);
+  }
+
   saveDepozitArrival(produsInDepozit: transportProduseDepozitDTO){
     console.log('produsInDepozit:', produsInDepozit);
     const formData = this.buildFormData(produsInDepozit);
-    return this.http.post(`${this.apiUrl}/produsInDepozit`, formData);
-    //console.log('produsInDepozit:', produsInDepozit);
-    //return this.http.post(`${this.apiUrl}/produsInDepozit`, produsInDepozit);
+    return this.http.post(`${this.apiUrl}/produsInDepozit`, formData);    
   }
 
   saveDepozitArrivalAll(produsInDepozit: transportProduseDepozitAllDTO){
@@ -65,7 +71,7 @@ export class TransportService{
 
     formData.append('detalii', produs.detalii);
     formData.append('depozit', produs.depozit);
-    formData.append('data', formatDateFormData(produs.data));
+    formData.append('data', produs.data ? formatDateFormData(produs.data) : '');
     formData.append('id', produs.id.toString());
 
     if (produs.transportProdusId){

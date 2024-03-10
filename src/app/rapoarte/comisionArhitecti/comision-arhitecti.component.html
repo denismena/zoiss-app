@@ -1,7 +1,9 @@
 <h2>
     Comisioane arhitecti    
     <button type="button" (click)="plateste()" mat-flat-button color="primary" matTooltip="Marcheaza ca platit">
-        <mat-icon class="greenIcon">attach_money</mat-icon></button>
+        <!-- <mat-icon class="greenIcon">attach_money</mat-icon> -->
+        <img src="assets/img/icons/material-design-icons/two-tone/attach_money.svg" alt="Adauga" height="30" width="30">
+    </button>
 </h2>
 <div class="container">
     <form [formGroup]="form">
@@ -43,7 +45,8 @@
 <div class="spinner-container" *ngIf="loading$">
     <mat-spinner></mat-spinner>
 </div>
-<table mat-table *ngIf="comisioaneArhitecti.length > 0" [dataSource]="comisioaneArhitecti" multiTemplateDataRows class="table-index">
+<table mat-table matSort (matSortChange)="sortData($event)"
+    *ngIf="comisioaneArhitecti.length > 0" [dataSource]="sortedData" multiTemplateDataRows class="table-index">
     <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element" (click)="expand(element)">
@@ -51,24 +54,28 @@
                 {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
               </mat-icon>
         </td>
+        <td mat-footer-cell *matFooterCellDef>Total</td>
     </ng-container>
     <ng-container matColumnDef="arhitect">
-        <th mat-header-cell *matHeaderCellDef>Arhitect</th>
+        <th mat-header-cell mat-sort-header="arhitect" *matHeaderCellDef>Arhitect</th>
         <td mat-cell *matCellDef="let element">
             {{element.arhitect}}
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     <ng-container matColumnDef="cantitate">
-        <th mat-header-cell *matHeaderCellDef>Platite / Total</th>
+        <th mat-header-cell mat-sort-header="cantitate" *matHeaderCellDef>Platite / Total</th>
         <td mat-cell *matCellDef="let element">
             <div class="w-25 table-text-right">{{element.cantitatePlatite}} / {{element.cantitate}}</div>
         </td>
-    </ng-container>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>    
     <ng-container matColumnDef="valoare">
-        <th mat-header-cell *matHeaderCellDef>Valoare</th>
+        <th mat-header-cell mat-sort-header="valoare" *matHeaderCellDef>Valoare</th>
         <td mat-cell *matCellDef="let element">
-            <div class="w-25 table-text-right">{{element.valoare | number: '1.2-2'}}</div>
+            <div>{{element.valoare| number: '1.2-2'}}</div>
         </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalCost()| number: '1.2-2'}} </td>
     </ng-container>
     <ng-container matColumnDef="select">            
         <th mat-header-cell *matHeaderCellDef class="text-center">Select</th>
@@ -76,12 +83,14 @@
           <input #checkBox type="checkbox" *ngIf="element.existaNeplatite"
             [(ngModel)]="element.selectAllSprePlata" (change)="getCheckbox(checkBox, element)"/>
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element">
             <mat-icon class="redIcon" (click)="genereazaPDF(element)" title="Genereaza pdf">picture_as_pdf</mat-icon>                
         </td>
+        <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail">
@@ -123,11 +132,8 @@
         </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
-    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-        class="example-element-row"
-        >
-    </tr>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>    
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <tr mat-footer-row *matFooterRowDef="columnsToDisplay" ngClass="tableFooter"></tr>
 </table>

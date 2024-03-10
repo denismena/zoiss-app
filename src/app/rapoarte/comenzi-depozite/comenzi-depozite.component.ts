@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RapoarteService } from '../rapoarte.service';
-import { depoziteComenziDTO } from './comenzi-depozite.model';
+import { sucursaleComenziDTO } from './comenzi-depozite.model';
 import { formatDateFormData } from 'src/app/utilities/utils';
 import { HttpResponse } from '@angular/common/http';
 import * as Highcharts from 'highcharts';
@@ -19,16 +19,16 @@ HC_exportData(Highcharts);
 })
 export class ComenziDepoziteComponent implements OnInit, OnDestroy {
   loading$: boolean = true;
-  comenziDepozite: depoziteComenziDTO[] = [];
+  comenziDepozite: sucursaleComenziDTO[] = [];
   public form!: FormGroup;
 
-  columnsToDisplay= ['depozit', 'cantitate', 'valoare'];
+  columnsToDisplay= ['sucursala', 'cantitate', 'valoare'];
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'pie'
     },
     title: {
-      text: 'Comenzi per depozite'
+      text: 'Comenzi per sucursale'
     },
     tooltip: {
       pointFormat: 'Valoarea comenzilor: <b>{point.y} millions</b>'
@@ -69,8 +69,8 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
     this.loadList(this.form.value);
 
     this.form.valueChanges.subscribe(values=>{
-      values.arhitectId = values.arhitectId;
-      values.status = values.status;
+      // values.arhitectId = values.arhitectId;
+      // values.status = values.status;
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
       this.loadList(values);            
@@ -78,12 +78,12 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
   }
   
   loadList(values: any){
-    this.reportService.comenziDepozite(values)
+    this.reportService.comenziSucursale(values)
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-    .subscribe((response: HttpResponse<depoziteComenziDTO[]>)=>{
+    .subscribe((response: HttpResponse<sucursaleComenziDTO[]>)=>{
       this.comenziDepozite = response.body??[];
       this.chartOptions.series = [{
-        data: this.comenziDepozite.map(t => ({ y: t.valoare, name: t.depozit })),        
+        data: this.comenziDepozite.map(t => ({ y: t.valoare, name: t.sucursala })),        
         type: 'pie',
         dataLabels: {
           enabled: true,

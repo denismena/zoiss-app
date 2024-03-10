@@ -47,4 +47,10 @@ export class DepoziteDialogComponent implements OnInit {
     });
   }
 
+  delete(form: NgForm) {    
+    this.dialogRef.close({
+      clicked: 'delete',
+      form: form      
+    });
+  }
 }

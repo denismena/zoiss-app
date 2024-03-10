@@ -129,7 +129,7 @@ const routes: Routes = [
 
   {path: "rapoarte/comisionArhitect", component: ComisionArhitectiComponent, canActivate:[isAuthenticatedGuard]},
   {path: "rapoarte/comenziUtilizatori", component: ComenziUtilizatoriComponent, canActivate:[isAuthenticatedGuard]},
-  {path: "rapoarte/comenziDepozite", component: ComenziDepoziteComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "rapoarte/comenziSucursale", component: ComenziDepoziteComponent, canActivate:[isAuthenticatedGuard]},
   {path: "rapoarte/timelineStoc/:id", component: TimelineStockComponent, canActivate:[isAuthenticatedGuard]},
   {path: "rapoarte/removeFurnizoriDuplicate", component: RemoveDuplicatesComponent, canActivate:[isAuthenticatedGuard]},
 

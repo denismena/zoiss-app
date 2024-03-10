@@ -29,13 +29,14 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
   checked = [];
   comisioaneArhitecti: arhitectiComisionDTO[];
   expandedElement: arhitectiComisionDTO[];
+  sortedData: arhitectiComisionDTO[] = [];
   errors: string[] = [];
   public form!: FormGroup;
 
   constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
       private exportService: ExportService) { 
     this.comisioaneArhitecti = [];
-    this.expandedElement = [];
+    this.expandedElement = [];    
   }
 
   columnsToDisplay= ['expand', 'arhitect', 'cantitate', 'valoare', 'select', 'action'];
@@ -66,6 +67,7 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
     .subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
       console.log('response', response);
       this.comisioaneArhitecti = response.body??[];
+      this.sortedData = this.comisioaneArhitecti.slice();
       this.loading$ = false;
     });    
   }
@@ -131,6 +133,37 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
     }, error => {
       console.log("Something went wrong");
     });
+  }
+
+  getTotalCost() {
+    return this.comisioaneArhitecti.map(t => t.valoare).reduce((acc, value) => Number(acc) + Number(value), 0).toFixed(2);
+  }
+
+  sortData(sort: any) {
+    console.log('sort', sort);
+    const data = this.comisioaneArhitecti.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'arhitect':
+          return this.compare(a.arhitect, b.arhitect, isAsc);
+        case 'cantitate':
+          return this.compare(a.cantitate, b.cantitate, isAsc);
+        case 'valoare':
+          return this.compare(a.valoare, b.valoare, isAsc);        
+        default:
+          return 0;
+      }
+    });
+  }
+
+  private compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   ngOnDestroy(): void {}

@@ -26,6 +26,7 @@ import {MatCardModule} from "@angular/material/card"
 import {MatBadgeModule} from "@angular/material/badge"
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDividerModule} from '@angular/material/divider';
+import { MatSortModule } from '@angular/material/sort';
 
 const MY_FORMATS = {
   parse: {
@@ -65,7 +66,8 @@ const MY_FORMATS = {
     MatCardModule,
     MatBadgeModule,
     MatMenuModule,
-    MatDividerModule, 
+    MatDividerModule,
+    MatSortModule 
   ],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },

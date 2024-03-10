@@ -22,7 +22,7 @@
           <ul class="dropdown-menu bg-dark" aria-labelledby="navbarRapoarte">
             <li class="nav-item"><a class="nav-link" href="/rapoarte/comisionArhitect">Comisioane arhitecti</a></li>
             <li class="nav-item"><a class="nav-link" href="/rapoarte/comenziUtilizatori">Comenzi utilizatori</a></li>
-            <li class="nav-item"><a class="nav-link" href="/rapoarte/comenziDepozite">Comenzi depozite</a></li>
+            <li class="nav-item"><a class="nav-link" href="/rapoarte/comenziSucursale">Comenzi sucursale</a></li>
             <li class="nav-item"><a class="nav-link" href="/rapoarte/removeFurnizoriDuplicate">Sterge duplicate</a></li>
           </ul>
         </li>
@@ -52,7 +52,7 @@
     <app-authorize-view>
       <ng-container authorize>
         <span class="text-light">{{securityService.getFieldFromJwt('name')}}</span>
-        <app-notificari-list></app-notificari-list>
+        <!-- <app-notificari-list></app-notificari-list> -->
         <a mat-button (click)="securityService.logout()" class="text-light">Logout</a>
       </ng-container>
       <ng-container notAuthorize class="text-light">

@@ -1,6 +1,6 @@
-export interface depoziteComenziDTO{
-    depozitId: number;
-    depozit: string;
+export interface sucursaleComenziDTO{
+    sucursalaId: number;
+    sucursala: string;
     valoare: number;
     cantitate: number;
 }

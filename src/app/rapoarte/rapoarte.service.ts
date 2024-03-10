@@ -27,9 +27,9 @@ export class RapoarteService{
       return this.http.get<comenziDTO[]>(`${this.apiUrl}/comenziUtilizatori`, {observe:'response', params});
     }
     
-    comenziDepozite(values: any): Observable<any>{
+    comenziSucursale(values: any): Observable<any>{
       const params = new HttpParams({fromObject: values});
-      return this.http.get<comenziDTO[]>(`${this.apiUrl}/comenziDepozite`, {observe:'response', params});
+      return this.http.get<comenziDTO[]>(`${this.apiUrl}/comenziSucursale`, {observe:'response', params});
     }
 
     trendComenziPerUtilizator(values: any): Observable<any>{
