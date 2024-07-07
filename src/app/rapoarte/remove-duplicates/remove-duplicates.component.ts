@@ -8,9 +8,10 @@ import { RapoarteService } from '../rapoarte.service';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import { Router } from '@angular/router';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
+import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
+import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 @Component({
   selector: 'app-remove-duplicates',  
   templateUrl: './remove-duplicates.component.html',
@@ -19,22 +20,29 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) produseTable!: MatTable<any>;
   @ViewChild(MatTable) furnizorTable!: MatTable<any>;
+  @ViewChild(MatTable) clientTable!: MatTable<any>;
   @ViewChild('produsAuto') produsAuto!: ProduseAutocompleteComponent;
   @ViewChild('produsSters') produsSters!: ProduseAutocompleteComponent;
   @ViewChild('furnizoriAuto') furnizoriAuto!: FurnizoriAutocompleteComponent;
   @ViewChild('furnizorSters') furnizorSters!: FurnizoriAutocompleteComponent;
+  @ViewChild('clientAuto') clientAuto!: ClientiAutocompleteComponent;
+  @ViewChild('clientSters') clientSters!: ClientiAutocompleteComponent;
   errors: string[] = [];
   public formProduse!: FormGroup;
   public formFurnizor!: FormGroup;
+  public fromClienti!: FormGroup;
   duplicatesProduse: number[] = [];
-  duplicatesProduseDTO: produseDTO[] = [];
+  duplicatesProduseDTO: produseDTO[] = [];  
   duplicatesFurnizor: number[] = [];
   duplicatesFurnizorDTO: furnizoriDTO[] = [];
+  duplicatesClienti: number[] = [];
+  duplicatesClientiDTO: any[] = [];
   columnsToDisplay = ['codProdus', 'produsNume', 'furnizorNume', 'actions']
   columnsToDisplayFurn = ['#', 'nume', 'adresa', 'actions']
+  columnsToDisplayClient = ['#', 'nume', 'cnp/cui', 'adresa', 'actions']
  
   constructor(private formBuilder:FormBuilder, private rapoarteService: RapoarteService, private unsubscribeService: UnsubscribeService,
-    private router:Router) { }
+    private clientiService: ClientiService) { }
   
   ngOnInit(): void {
     this.formProduse = this.formBuilder.group({
@@ -45,9 +53,15 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
     this.formFurnizor = this.formBuilder.group({
       keepId:[null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:false })]}],
       removeListId: [null, {validators:[RxwebValidators.required()]}],
-    });    
+    });
+    
+    this.fromClienti = this.formBuilder.group({
+      keepId:[null, {validators:[RxwebValidators.required(), RxwebValidators.numeric({acceptValue:NumericValueType.PositiveNumber  ,allowDecimal:false })]}],
+      removeListId: [null, {validators:[RxwebValidators.required()]}],
+    });
   }
 
+  //Produse
   selectProdusPastrat(produs: any) {
     this.formProduse.patchValue({keepId: produs.id});
   }
@@ -81,7 +95,9 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
     }, 
     error=> this.errors = parseWebAPIErrors(error));  
   }
+  //end Produse
 
+  //Furnizori
   selectFurnizorPastrat(furnizor: any) {
     this.formFurnizor.patchValue({keepId: furnizor.id});
   }
@@ -115,6 +131,53 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
     }, 
     error=> this.errors = parseWebAPIErrors(error));
   }
+  //end Furnizori
+  
+  //Clienti
+  selectClientPastrat(client: any) {
+    this.fromClienti.patchValue({keepId: client});
+  }
+
+  selectClientSters(client: any) {
+    console.log('client', client);
+    this.duplicatesClienti.push(client);
+    this.loadAdrese(client).subscribe((detaliiClient:any)=>{
+      this.duplicatesClientiDTO.push(detaliiClient);
+      this.fromClienti.patchValue({removeListId: this.duplicatesClienti});
+      this.clientSters.clearSelection();
+      console.log('this.fromClienti', this.fromClienti.value, this.fromClienti);
+      if(this.clientTable !== undefined)
+        this.clientTable.renderRows();
+    });
+  }
+
+  loadAdrese(clientId: number) {
+    return this.clientiService.getById(clientId)
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$));
+  }
+
+  removeClient(client:any) {
+    const index = this.duplicatesClientiDTO.findIndex(a => a.id === client.id);
+    this.duplicatesClientiDTO.splice(index, 1);
+    this.duplicatesClienti.splice(index, 1);
+    this.fromClienti.patchValue({removeListId: this.duplicatesClienti});
+    this.clientTable.renderRows();
+  }
+
+  saveChangesClienti() {
+    this.rapoarteService.removeDuplicatesClienti(this.fromClienti.value)
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe(()=>{
+      this.fromClienti.reset();
+      this.duplicatesClientiDTO = [];
+      this.clientAuto.clearSelection();
+      this.clientSters.clearSelection();
+      this.clientTable.renderRows();
+    }, 
+    error=> this.errors = parseWebAPIErrors(error)); 
+  }  
+  //end Clienti
 
   ngOnDestroy(): void {}
+
 }

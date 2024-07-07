@@ -61,4 +61,9 @@ export class RapoarteService{
       const params = new HttpParams({fromObject: values});
       return this.http.get<number>(`${this.apiUrl}/removeFurnizoriDuplicate`, {observe:'response', params});
     }
+
+    removeDuplicatesClienti(values: any): Observable<any>{
+      const params = new HttpParams({fromObject: values});
+      return this.http.get<number>(`${this.apiUrl}/removeClientiDuplicate`, {observe:'response', params});
+    }
 }

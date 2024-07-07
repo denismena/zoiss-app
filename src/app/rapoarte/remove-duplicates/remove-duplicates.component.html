@@ -120,3 +120,68 @@
         </div>
     </div>
 </form>
+<div class="container bordered">
+    <h2>Sterge duplicate clienti</h2>
+</div>
+<form (submit)="saveChangesClienti()" [formGroup]="fromClienti">
+    <div class="container bordered">
+        <div class="row">
+            <div class="col-md-4">
+                <mat-label>Client de pastrat</mat-label>                
+            </div>
+            <div class="col-md-8">
+                <app-clienti-autocomplete (onOptionSelected)="selectClientPastrat($event)" #clientAuto></app-clienti-autocomplete>
+                <mat-error>{{fromClienti.get("furnizorId")?.getError("required")?.message}}</mat-error>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <mat-label>Client de sters</mat-label>                
+            </div>
+            <div class="col-md-8">
+                <app-clienti-autocomplete (onOptionSelected)="selectClientSters($event)" #clientSters></app-clienti-autocomplete>
+                <mat-error>{{fromClienti.get("clientRemoveListId")?.getError("required")?.message}}</mat-error>
+                <table #clientTable style="width: 100%;" mat-table *ngIf="duplicatesClientiDTO.length > 0"[dataSource]="duplicatesClientiDTO">
+                    <ng-container matColumnDef="#">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="nume">
+                        <th mat-header-cell *matHeaderCellDef>Client</th>
+                        <td mat-cell *matCellDef="let element">{{element.nume}}</td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <ng-container matColumnDef="cnp/cui">
+                        <th mat-header-cell *matHeaderCellDef>cnp/cui</th>
+                        <td mat-cell *matCellDef="let element">{{element.cuiCnp}}</td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="adresa">
+                        <th mat-header-cell *matHeaderCellDef>Adresa</th>
+                        <td mat-cell *matCellDef="let element">{{element.adrese[0]?.tara}} {{element.adrese[0]?.judet}} {{element.adrese[0]?.oras}} {{element.adrese[0]?.adresa}}</td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
+                        <td mat-cell *matCellDef="let element" class="table-text-center">
+                            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="removeClient(element)">close</mat-icon>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayClient"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsToDisplayClient;let entry" cdkDrag [cdkDragData]="row"></tr>
+                    <tr mat-footer-row *matFooterRowDef="columnsToDisplayClient" ngClass="tableFooter"></tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-footer mt-md-3">
+                <button mat-flat-button color="primary" [disabled]="fromClienti.invalid">Save</button>                
+            </div>            
+        </div>
+    </div>
+</form>
