@@ -221,18 +221,16 @@ export class OferteListComponent implements OnInit, OnDestroy {
     });
   }
   
-  genereazaPDF(element:any)
+  genereazaPDF(element:any, showPrice: boolean)
   {    
     this.loading$ = true;
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
-    this.exportService.ofertaReportPDF(element.id, this.getSelectedProduse(element), neComandate)
+    this.exportService.ofertaReportPDF(element.id, this.getSelectedProduse(element), neComandate, showPrice)
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(blob => {
-      //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
-      //window.open(fileURL, "_blank");
     }, error => {
       console.log("Something went wrong");
     });

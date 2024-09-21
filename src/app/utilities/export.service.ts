@@ -21,11 +21,12 @@ export class ExportService{
     .set('doarNecomandate', doarNecomandate);
     return this.http.get<Blob>(`${this.apiUrl}/oferta`, { responseType: 'blob' as 'json', params });
   }
-  ofertaReportPDF(id:number, values:number[], doarNecomandate:string): Observable<Blob>{
+  ofertaReportPDF(id:number, values:number[], doarNecomandate:string, showPrice: boolean): Observable<Blob>{
     const params = new HttpParams()
     .set('id', id)
     .set('selectedId', values.join(','))
-    .set('doarNecomandate', doarNecomandate);
+    .set('doarNecomandate', doarNecomandate)
+    .set('afiseazaPret', showPrice);
     return this.http.get<Blob>(`${this.apiUrl}/ofertaPDF`, { responseType: 'blob' as 'json', params });
   }
   ofertaReportPDFcuPoza(id:number, values:number[], doarNecomandate:string): Observable<Blob>{

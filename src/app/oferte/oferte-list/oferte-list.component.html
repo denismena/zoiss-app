@@ -174,8 +174,9 @@
                 <mat-icon class="greenIcon" title="Genereaza Excel" (click)="genereazaExcel(element)">assignment</mat-icon>
                 <mat-icon class="redIcon" [matMenuTriggerFor]="selecteazaRaport">picture_as_pdf</mat-icon>
                 <mat-menu #selecteazaRaport class="container-sm mpanel">
-                    <menu mat-menu-item (click)="genereazaPDF(element)">Oferta</menu>
+                    <menu mat-menu-item (click)="genereazaPDF(element, true)">Oferta</menu>
                     <menu mat-menu-item (click)="genereazaPDFcuPoza(element)">Oferta cu poze</menu>
+                    <menu mat-menu-item (click)="genereazaPDF(element, false)">Oferta fara pret</menu>
                 </mat-menu>
             </td>
         </ng-container>        
