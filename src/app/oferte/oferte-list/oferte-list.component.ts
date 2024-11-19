@@ -14,7 +14,7 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import * as saveAs from 'file-saver';
+import saveAs from 'file-saver';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';

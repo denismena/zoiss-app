@@ -14,7 +14,7 @@ import { ArhitectiAutocompleteComponent } from 'src/app/nomenclatoare/arhitecti/
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { CookieService } from 'src/app/utilities/cookie.service';
-import * as saveAs from 'file-saver';
+import saveAs from 'file-saver';
 import { ExportService } from 'src/app/utilities/export.service';
 import { ComenziFurnSelectDialogComponent } from '../comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
