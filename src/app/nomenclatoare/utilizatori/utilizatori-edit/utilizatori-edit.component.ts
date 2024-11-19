@@ -64,7 +64,7 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(authenticationResponse=>{
       if(this.model.email == this.securityService.getFieldFromJwt('email'))
-        this.securityService.saveToke(authenticationResponse);
+        this.securityService.saveToken(authenticationResponse);
       this.router.navigate(['/utilizatori']);
     }, error=> this.errors = parseWebAPIErrors(error));
   }

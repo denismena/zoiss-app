@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.securityservice.login(userCredentials)
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(authenticatorResponse=>{
-      this.securityservice.saveToke(authenticatorResponse);
+      this.securityservice.saveToken(authenticatorResponse);
       this.router.navigate(['/home']);
     }, error=> this.errors = parseWebAPIErrors(error));
   }
