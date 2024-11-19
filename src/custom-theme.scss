@@ -57,15 +57,15 @@ $md-mcgpalette0: (
     )
 );
 
-$zoiss-app-primary: mat.define-palette($md-mcgpalette0);
-$zoiss-app-accent: mat.define-palette($md-mcgpalette0, A200, A100, A400);
+$zoiss-app-primary: mat.m2-define-palette($md-mcgpalette0);
+$zoiss-app-accent: mat.m2-define-palette($md-mcgpalette0, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$zoiss-app-warn: mat.define-palette($md-mcgpalette0);
+$zoiss-app-warn: mat.m2-define-palette($md-mcgpalette0);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$zoiss-app-theme: mat.define-light-theme((
+$zoiss-app-theme: mat.m2-define-light-theme((
   color: (
     primary: $zoiss-app-primary,
     accent: $zoiss-app-accent,
