@@ -11,9 +11,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-utilizatori-edit',
-  templateUrl: './utilizatori-edit.component.html',
-  styleUrls: ['./utilizatori-edit.component.scss']
+    selector: 'app-utilizatori-edit',
+    templateUrl: './utilizatori-edit.component.html',
+    styleUrls: ['./utilizatori-edit.component.scss'],
+    standalone: false
 })
 export class UtilizatoriEditComponent implements OnInit, OnDestroy {
 

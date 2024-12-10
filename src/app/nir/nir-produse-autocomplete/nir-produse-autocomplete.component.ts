@@ -17,9 +17,10 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: 'app-nir-produse-autocomplete',
-  templateUrl: './nir-produse-autocomplete.component.html',
-  styleUrls: ['./nir-produse-autocomplete.component.scss']
+    selector: 'app-nir-produse-autocomplete',
+    templateUrl: './nir-produse-autocomplete.component.html',
+    styleUrls: ['./nir-produse-autocomplete.component.scss'],
+    standalone: false
 })
 export class NirProduseAutocompleteComponent {
   @Input() preselectedProdus:produseDTO|undefined;

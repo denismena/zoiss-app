@@ -13,9 +13,10 @@ HC_exporting(Highcharts);
 HC_exportData(Highcharts);
 
 @Component({
-  selector: 'app-comenzi-depozite',
-  templateUrl: './comenzi-depozite.component.html',
-  styleUrls: ['./comenzi-depozite.component.scss']
+    selector: 'app-comenzi-depozite',
+    templateUrl: './comenzi-depozite.component.html',
+    styleUrls: ['./comenzi-depozite.component.scss'],
+    standalone: false
 })
 export class ComenziDepoziteComponent implements OnInit, OnDestroy {
   loading$: boolean = true;

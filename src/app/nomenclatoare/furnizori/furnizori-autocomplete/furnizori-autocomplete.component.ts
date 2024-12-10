@@ -10,9 +10,10 @@ import { FurnizoriService } from '../furnizori.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-furnizori-autocomplete',
-  templateUrl: './furnizori-autocomplete.component.html',
-  styleUrls: ['./furnizori-autocomplete.component.scss']
+    selector: 'app-furnizori-autocomplete',
+    templateUrl: './furnizori-autocomplete.component.html',
+    styleUrls: ['./furnizori-autocomplete.component.scss'],
+    standalone: false
 })
 export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 

@@ -9,9 +9,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-sticky-notes-list',
-  templateUrl: './sticky-notes-list.component.html',
-  styleUrls: ['./sticky-notes-list.component.scss']
+    selector: 'app-sticky-notes-list',
+    templateUrl: './sticky-notes-list.component.html',
+    styleUrls: ['./sticky-notes-list.component.scss'],
+    standalone: false
 })
 export class StickyNotesListComponent implements OnInit, OnDestroy {
 

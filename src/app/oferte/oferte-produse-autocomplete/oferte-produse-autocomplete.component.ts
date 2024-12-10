@@ -17,9 +17,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 
 @Component({
-  selector: 'app-oferte-produse-autocomplete',
-  templateUrl: './oferte-produse-autocomplete.component.html',
-  styleUrls: ['./oferte-produse-autocomplete.component.scss']
+    selector: 'app-oferte-produse-autocomplete',
+    templateUrl: './oferte-produse-autocomplete.component.html',
+    styleUrls: ['./oferte-produse-autocomplete.component.scss'],
+    standalone: false
 })
 export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
 
@@ -223,13 +224,13 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
     }else{      
       this.form.controls['cantitate']?.setValue(cantDecimal);
       this.form.controls['cutii']?.setValue(cutii??0);
-      this.form.controls['valoare']?.setValue((Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000)??0);
+      this.form.controls['valoare']?.setValue(Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000);
     }
   }
   onPretChange(event: any){    
     const pret = this.form.controls['pretUm'].value??0;    
     const discount = this.form.controls['discount'].value??0;    
-    var val = Number(pret * this.form.controls['cantitate'].value??0);
+    var val = Number(pret * this.form.controls['cantitate'].value);
     val = discount > 0 ? val - (val * discount / 100) : val;
     if(pret == ''){
       this.form.controls['valoare']?.setValue('');

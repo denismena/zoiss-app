@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-um-list',
-  templateUrl: './um-list.component.html',
-  styleUrls: ['./um-list.component.scss']
+    selector: 'app-um-list',
+    templateUrl: './um-list.component.html',
+    styleUrls: ['./um-list.component.scss'],
+    standalone: false
 })
 export class UmListComponent implements OnInit, OnDestroy {
 

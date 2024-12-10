@@ -12,9 +12,10 @@ import { forkJoin } from 'rxjs';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-comenzi-edit',
-  templateUrl: './comenzi-edit.component.html',
-  styleUrls: ['./comenzi-edit.component.scss']
+    selector: 'app-comenzi-edit',
+    templateUrl: './comenzi-edit.component.html',
+    styleUrls: ['./comenzi-edit.component.scss'],
+    standalone: false
 })
 export class ComenziEditComponent implements OnInit, OnDestroy {
 

@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-transportator-edit',
-  templateUrl: './transportator-edit.component.html',
-  styleUrls: ['./transportator-edit.component.scss']
+    selector: 'app-transportator-edit',
+    templateUrl: './transportator-edit.component.html',
+    styleUrls: ['./transportator-edit.component.scss'],
+    standalone: false
 })
 export class TransportatorEditComponent implements OnInit, OnDestroy {
   errors: string[] = [];

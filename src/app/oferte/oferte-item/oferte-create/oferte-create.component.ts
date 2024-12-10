@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-oferte-create',
-  templateUrl: './oferte-create.component.html',
-  styleUrls: ['./oferte-create.component.scss']
+    selector: 'app-oferte-create',
+    templateUrl: './oferte-create.component.html',
+    styleUrls: ['./oferte-create.component.scss'],
+    standalone: false
 })
 export class OferteCreateComponent implements OnInit, OnDestroy {
 

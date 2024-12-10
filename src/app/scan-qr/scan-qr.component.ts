@@ -7,9 +7,10 @@ import { UnsubscribeService } from '../unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-scan-qr',
-  templateUrl: './scan-qr.component.html',
-  styleUrls: ['./scan-qr.component.scss']
+    selector: 'app-scan-qr',
+    templateUrl: './scan-qr.component.html',
+    styleUrls: ['./scan-qr.component.scss'],
+    standalone: false
 })
 export class ScanQRComponent implements OnInit, OnDestroy {
 

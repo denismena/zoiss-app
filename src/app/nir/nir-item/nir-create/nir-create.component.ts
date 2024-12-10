@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-nir-create',
-  templateUrl: './nir-create.component.html',
-  styleUrls: ['./nir-create.component.scss']
+    selector: 'app-nir-create',
+    templateUrl: './nir-create.component.html',
+    styleUrls: ['./nir-create.component.scss'],
+    standalone: false
 })
 export class NirCreateComponent implements OnInit, OnDestroy{
   errors: string[] = [];

@@ -8,9 +8,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-depozite-item',
-  templateUrl: './depozite-item.component.html',
-  styleUrls: ['./depozite-item.component.scss']
+    selector: 'app-depozite-item',
+    templateUrl: './depozite-item.component.html',
+    styleUrls: ['./depozite-item.component.scss'],
+    standalone: false
 })
 export class DepoziteItemComponent implements OnInit, OnDestroy {
 

@@ -7,9 +7,10 @@ import { LivrariService } from 'src/app/livrari/livrari.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-livrari-number-dialog',
-  templateUrl: './livrari-number-dialog.component.html',
-  styleUrls: ['./livrari-number-dialog.component.scss']
+    selector: 'app-livrari-number-dialog',
+    templateUrl: './livrari-number-dialog.component.html',
+    styleUrls: ['./livrari-number-dialog.component.scss'],
+    standalone: false
 })
 export class LivrariNumberDialogComponent implements OnInit, OnDestroy {
 

@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-depozite-edit',
-  templateUrl: './depozite-edit.component.html',
-  styleUrls: ['./depozite-edit.component.scss']
+    selector: 'app-depozite-edit',
+    templateUrl: './depozite-edit.component.html',
+    styleUrls: ['./depozite-edit.component.scss'],
+    standalone: false
 })
 export class DepoziteEditComponent implements OnInit, OnDestroy {
   errors: string[] = [];

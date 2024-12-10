@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-comenzi-create',
-  templateUrl: './comenzi-create.component.html',
-  styleUrls: ['./comenzi-create.component.scss']
+    selector: 'app-comenzi-create',
+    templateUrl: './comenzi-create.component.html',
+    styleUrls: ['./comenzi-create.component.scss'],
+    standalone: false
 })
 export class ComenziCreateComponent implements OnInit, OnDestroy {
 

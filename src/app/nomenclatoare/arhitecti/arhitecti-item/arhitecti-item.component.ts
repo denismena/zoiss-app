@@ -5,9 +5,10 @@ import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validato
 import { arhitectiDTO } from './arhitecti.model';
 
 @Component({
-  selector: 'app-arhitecti-item',
-  templateUrl: './arhitecti-item.component.html',
-  styleUrls: ['./arhitecti-item.component.scss']
+    selector: 'app-arhitecti-item',
+    templateUrl: './arhitecti-item.component.html',
+    styleUrls: ['./arhitecti-item.component.scss'],
+    standalone: false
 })
 export class ArhitectiItemComponent implements OnInit {
 

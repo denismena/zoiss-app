@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-furnizori-create',
-  templateUrl: './furnizori-create.component.html',
-  styleUrls: ['./furnizori-create.component.scss']
+    selector: 'app-furnizori-create',
+    templateUrl: './furnizori-create.component.html',
+    styleUrls: ['./furnizori-create.component.scss'],
+    standalone: false
 })
 export class FurnizoriCreateComponent implements OnInit, OnDestroy {
   errors: string[] = [];

@@ -4,9 +4,10 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { userCredentials } from '../security.models';
 
 @Component({
-  selector: 'app-authentication-form',
-  templateUrl: './authentication-form.component.html',
-  styleUrls: ['./authentication-form.component.scss']
+    selector: 'app-authentication-form',
+    templateUrl: './authentication-form.component.html',
+    styleUrls: ['./authentication-form.component.scss'],
+    standalone: false
 })
 export class AuthenticationFormComponent implements OnInit {
 

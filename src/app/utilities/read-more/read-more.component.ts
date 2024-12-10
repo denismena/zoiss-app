@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'app-read-more',
-  templateUrl: './read-more.component.html',
-  styleUrls: ['./read-more.component.scss']
+    selector: 'app-read-more',
+    templateUrl: './read-more.component.html',
+    styleUrls: ['./read-more.component.scss'],
+    standalone: false
 })
 export class ReadMoreComponent implements OnInit{
   expand: boolean = false;

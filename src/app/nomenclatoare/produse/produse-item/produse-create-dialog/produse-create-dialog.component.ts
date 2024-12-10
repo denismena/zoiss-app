@@ -8,9 +8,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-produse-create-dialog',
-  templateUrl: './produse-create-dialog.component.html',
-  styleUrls: ['./produse-create-dialog.component.scss']
+    selector: 'app-produse-create-dialog',
+    templateUrl: './produse-create-dialog.component.html',
+    styleUrls: ['./produse-create-dialog.component.scss'],
+    standalone: false
 })
 export class ProduseCreateDialogComponent implements OnInit, OnDestroy {
 

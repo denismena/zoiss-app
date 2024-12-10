@@ -5,9 +5,10 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { sucursalaCreationDTO } from './sucursala.model';
 
 @Component({
-  selector: 'app-sucursale-item',
-  templateUrl: './sucursale-item.component.html',
-  styleUrls: ['./sucursale-item.component.scss']
+    selector: 'app-sucursale-item',
+    templateUrl: './sucursale-item.component.html',
+    styleUrls: ['./sucursale-item.component.scss'],
+    standalone: false
 })
 export class SucursaleItemComponent implements OnInit {
 

@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-furnizori-edit',
-  templateUrl: './furnizori-edit.component.html',
-  styleUrls: ['./furnizori-edit.component.scss']
+    selector: 'app-furnizori-edit',
+    templateUrl: './furnizori-edit.component.html',
+    styleUrls: ['./furnizori-edit.component.scss'],
+    standalone: false
 })
 export class FurnizoriEditComponent implements OnInit, OnDestroy {
 

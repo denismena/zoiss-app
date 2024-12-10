@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-sucursale-list',
-  templateUrl: './sucursale-list.component.html',
-  styleUrls: ['./sucursale-list.component.scss']
+    selector: 'app-sucursale-list',
+    templateUrl: './sucursale-list.component.html',
+    styleUrls: ['./sucursale-list.component.scss'],
+    standalone: false
 })
 export class SucursaleListComponent implements OnInit, OnDestroy {
 

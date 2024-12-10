@@ -13,9 +13,10 @@ import { ProduseService } from '../produse.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-produse-list',
-  templateUrl: './produse-list.component.html',
-  styleUrls: ['./produse-list.component.scss']
+    selector: 'app-produse-list',
+    templateUrl: './produse-list.component.html',
+    styleUrls: ['./produse-list.component.scss'],
+    standalone: false
 })
 export class ProduseListComponent implements OnInit, OnDestroy {
 

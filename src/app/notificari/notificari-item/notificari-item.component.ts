@@ -3,9 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { notificariDTO } from '../notificari.model';
 
 @Component({
-  selector: 'app-notificari-item',
-  templateUrl: './notificari-item.component.html',
-  styleUrls: ['./notificari-item.component.scss']
+    selector: 'app-notificari-item',
+    templateUrl: './notificari-item.component.html',
+    styleUrls: ['./notificari-item.component.scss'],
+    standalone: false
 })
 export class NotificariItemComponent implements OnInit {
 

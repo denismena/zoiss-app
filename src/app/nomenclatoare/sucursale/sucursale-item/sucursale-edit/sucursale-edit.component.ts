@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-sucursale-edit',
-  templateUrl: './sucursale-edit.component.html',
-  styleUrls: ['./sucursale-edit.component.scss']
+    selector: 'app-sucursale-edit',
+    templateUrl: './sucursale-edit.component.html',
+    styleUrls: ['./sucursale-edit.component.scss'],
+    standalone: false
 })
 export class SucursaleEditComponent implements OnInit, OnDestroy {
   errors: string[] = [];

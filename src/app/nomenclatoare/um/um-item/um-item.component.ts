@@ -5,9 +5,10 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { umCreationDTO } from './um.model';
 
 @Component({
-  selector: 'app-um-item',
-  templateUrl: './um-item.component.html',
-  styleUrls: ['./um-item.component.scss']
+    selector: 'app-um-item',
+    templateUrl: './um-item.component.html',
+    styleUrls: ['./um-item.component.scss'],
+    standalone: false
 })
 export class UmItemComponent implements OnInit {
 

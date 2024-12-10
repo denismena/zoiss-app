@@ -12,9 +12,10 @@ import { forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-transport-item',
-  templateUrl: './transport-item.component.html',
-  styleUrls: ['./transport-item.component.scss']
+    selector: 'app-transport-item',
+    templateUrl: './transport-item.component.html',
+    styleUrls: ['./transport-item.component.scss'],
+    standalone: false
 })
 export class TransportItemComponent implements OnInit, OnDestroy {
 

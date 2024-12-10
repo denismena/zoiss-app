@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-transportator-list',
-  templateUrl: './transportator-list.component.html',
-  styleUrls: ['./transportator-list.component.scss']
+    selector: 'app-transportator-list',
+    templateUrl: './transportator-list.component.html',
+    styleUrls: ['./transportator-list.component.scss'],
+    standalone: false
 })
 export class TransportatorListComponent implements OnInit, OnDestroy {
 

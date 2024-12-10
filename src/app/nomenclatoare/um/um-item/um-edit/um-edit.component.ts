@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-um-edit',
-  templateUrl: './um-edit.component.html',
-  styleUrls: ['./um-edit.component.scss']
+    selector: 'app-um-edit',
+    templateUrl: './um-edit.component.html',
+    styleUrls: ['./um-edit.component.scss'],
+    standalone: false
 })
 export class UmEditComponent implements OnInit, OnDestroy {
   errors: string[] = [];

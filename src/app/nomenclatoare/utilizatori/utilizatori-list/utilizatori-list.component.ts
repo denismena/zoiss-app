@@ -7,9 +7,10 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-utilizatori-list',
-  templateUrl: './utilizatori-list.component.html',
-  styleUrls: ['./utilizatori-list.component.scss']
+    selector: 'app-utilizatori-list',
+    templateUrl: './utilizatori-list.component.html',
+    styleUrls: ['./utilizatori-list.component.scss'],
+    standalone: false
 })
 export class UtilizatoriListComponent implements OnInit, OnDestroy {
 

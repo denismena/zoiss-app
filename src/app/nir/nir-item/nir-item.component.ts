@@ -7,9 +7,10 @@ import { NIRService } from '../nir.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-nir-item',
-  templateUrl: './nir-item.component.html',
-  styleUrls: ['./nir-item.component.scss']
+    selector: 'app-nir-item',
+    templateUrl: './nir-item.component.html',
+    styleUrls: ['./nir-item.component.scss'],
+    standalone: false
 })
 export class NirItemComponent implements OnInit, OnDestroy{
   @Input() model:nirDTO | undefined;

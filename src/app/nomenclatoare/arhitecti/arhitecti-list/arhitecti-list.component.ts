@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-arhitecti-list',
-  templateUrl: './arhitecti-list.component.html',
-  styleUrls: ['./arhitecti-list.component.scss']
+    selector: 'app-arhitecti-list',
+    templateUrl: './arhitecti-list.component.html',
+    styleUrls: ['./arhitecti-list.component.scss'],
+    standalone: false
 })
 export class ArhitectiListComponent implements OnInit, OnDestroy {
 

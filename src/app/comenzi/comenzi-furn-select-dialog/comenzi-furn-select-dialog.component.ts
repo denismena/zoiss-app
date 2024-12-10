@@ -9,9 +9,10 @@ import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.servic
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-comenzi-furn-select-dialog',
-  templateUrl: './comenzi-furn-select-dialog.component.html',
-  styleUrls: ['./comenzi-furn-select-dialog.component.scss']
+    selector: 'app-comenzi-furn-select-dialog',
+    templateUrl: './comenzi-furn-select-dialog.component.html',
+    styleUrls: ['./comenzi-furn-select-dialog.component.scss'],
+    standalone: false
 })
 export class ComenziFurnSelectDialogComponent implements OnInit, OnDestroy {
 

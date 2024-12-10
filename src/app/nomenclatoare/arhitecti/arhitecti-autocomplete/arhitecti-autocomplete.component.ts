@@ -10,9 +10,10 @@ import { ArhitectiService } from '../arhitecti.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-arhitecti-autocomplete',
-  templateUrl: './arhitecti-autocomplete.component.html',
-  styleUrls: ['./arhitecti-autocomplete.component.scss']
+    selector: 'app-arhitecti-autocomplete',
+    templateUrl: './arhitecti-autocomplete.component.html',
+    styleUrls: ['./arhitecti-autocomplete.component.scss'],
+    standalone: false
 })
 export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 

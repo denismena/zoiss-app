@@ -10,9 +10,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-clienti-list',
-  templateUrl: './clienti-list.component.html',
-  styleUrls: ['./clienti-list.component.scss']
+    selector: 'app-clienti-list',
+    templateUrl: './clienti-list.component.html',
+    styleUrls: ['./clienti-list.component.scss'],
+    standalone: false
 })
 export class ClientiListComponent implements OnInit, OnDestroy {
 

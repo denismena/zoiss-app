@@ -12,9 +12,10 @@ import { SecurityService } from 'src/app/security/security.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-notificari-list',
-  templateUrl: './notificari-list.component.html',
-  styleUrls: ['./notificari-list.component.scss']
+    selector: 'app-notificari-list',
+    templateUrl: './notificari-list.component.html',
+    styleUrls: ['./notificari-list.component.scss'],
+    standalone: false
 })
 export class NotificariListComponent implements OnInit, OnDestroy {
 

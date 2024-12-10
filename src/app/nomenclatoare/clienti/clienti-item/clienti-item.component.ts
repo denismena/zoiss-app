@@ -6,9 +6,10 @@ import Swal from 'sweetalert2';
 import { clientiAdresaDTO, clientiDTO } from './clienti.model';
 
 @Component({
-  selector: 'app-clienti-item',
-  templateUrl: './clienti-item.component.html',
-  styleUrls: ['./clienti-item.component.scss']
+    selector: 'app-clienti-item',
+    templateUrl: './clienti-item.component.html',
+    styleUrls: ['./clienti-item.component.scss'],
+    standalone: false
 })
 export class ClientiItemComponent implements OnInit {
 

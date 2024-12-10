@@ -7,9 +7,10 @@ import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-produs-stoc-dialog',
-  templateUrl: './produs-stoc-dialog.component.html',
-  styleUrls: ['./produs-stoc-dialog.component.scss']
+    selector: 'app-produs-stoc-dialog',
+    templateUrl: './produs-stoc-dialog.component.html',
+    styleUrls: ['./produs-stoc-dialog.component.scss'],
+    standalone: false
 })
 export class ProdusStocDialogComponent implements OnInit, OnDestroy {
 
