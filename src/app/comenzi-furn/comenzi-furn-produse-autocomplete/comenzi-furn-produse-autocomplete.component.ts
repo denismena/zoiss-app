@@ -163,7 +163,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
       { data:{produsSplit: produs}, width: '650px', height: '300px' });
       dialogRef.afterClosed()
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-      .subscribe((data) => {
+      .subscribe((data:any) => {
         if (data.clicked === 'submit') {
           const anotherProdus : produseComandaFurnizorDTO = {
             ...data.form,
