@@ -13,9 +13,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-comenzi-item',
-  templateUrl: './comenzi-item.component.html',
-  styleUrls: ['./comenzi-item.component.scss']
+    selector: 'app-comenzi-item',
+    templateUrl: './comenzi-item.component.html',
+    styleUrls: ['./comenzi-item.component.scss'],
+    standalone: false
 })
 export class ComenziItemComponent implements OnInit, OnDestroy {
 

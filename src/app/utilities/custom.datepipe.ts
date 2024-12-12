@@ -2,8 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
    
    @Pipe({
-     name: 'customDateTime'
-   })
+    name: 'customDateTime',
+    standalone: false
+})
    export class CustomDateTimePipe extends 
                 DatePipe implements PipeTransform {
      transform(value: any, args?: any): any {
@@ -12,8 +13,9 @@ import { DatePipe } from '@angular/common';
    }
 
    @Pipe({
-    name: 'customDate'
-  })
+    name: 'customDate',
+    standalone: false
+})
   export class CustomDatePipe extends 
                DatePipe implements PipeTransform {
     transform(value: any, args?: any): any {
@@ -22,8 +24,9 @@ import { DatePipe } from '@angular/common';
   }
 
   @Pipe({
-    name: 'daNu'
-  })
+    name: 'daNu',
+    standalone: false
+})
   export class DaNuPipe implements PipeTransform {
     transform(value: any): any {
       return value ? 'Da' : 'Nu';;
@@ -54,8 +57,9 @@ import { DatePipe } from '@angular/common';
   // }
 
   @Pipe({
-    name: 'filterComandaProdusStoc'
-  })
+    name: 'filterComandaProdusStoc',
+    standalone: false
+})
   export class FilterComandaProdusStocPipe implements PipeTransform {
     transform(items: any[], searchText: string): any[] {
       if (!items) {

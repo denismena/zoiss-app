@@ -15,7 +15,8 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
 @include mat.all-component-typographies();
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -57,15 +58,15 @@ $md-mcgpalette0: (
     )
 );
 
-$zoiss-app-primary: mat.define-palette($md-mcgpalette0);
-$zoiss-app-accent: mat.define-palette($md-mcgpalette0, A200, A100, A400);
+$zoiss-app-primary: mat.m2-define-palette($md-mcgpalette0);
+$zoiss-app-accent: mat.m2-define-palette($md-mcgpalette0, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$zoiss-app-warn: mat.define-palette($md-mcgpalette0);
+$zoiss-app-warn: mat.m2-define-palette($md-mcgpalette0);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$zoiss-app-theme: mat.define-light-theme((
+$zoiss-app-theme: mat.m2-define-light-theme((
   color: (
     primary: $zoiss-app-primary,
     accent: $zoiss-app-accent,
@@ -76,7 +77,8 @@ $zoiss-app-theme: mat.define-light-theme((
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.core-theme($zoiss-app-theme);
+@include mat.elevation-classes();
+@include mat.app-background();
 @include mat.all-component-themes($zoiss-app-theme);
 body{
   color: #3c4858;

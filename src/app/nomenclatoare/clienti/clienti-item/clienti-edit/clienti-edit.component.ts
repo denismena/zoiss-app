@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-clienti-edit',
-  templateUrl: './clienti-edit.component.html',
-  styleUrls: ['./clienti-edit.component.scss']
+    selector: 'app-clienti-edit',
+    templateUrl: './clienti-edit.component.html',
+    styleUrls: ['./clienti-edit.component.scss'],
+    standalone: false
 })
 export class ClientiEditComponent implements OnInit, OnDestroy {
 

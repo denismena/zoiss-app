@@ -8,9 +8,10 @@ import { SecurityService } from 'src/app/security/security.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-utilizatori-autocomplete',
-  templateUrl: './utilizatori-autocomplete.component.html',
-  styleUrls: ['./utilizatori-autocomplete.component.scss']
+    selector: 'app-utilizatori-autocomplete',
+    templateUrl: './utilizatori-autocomplete.component.html',
+    styleUrls: ['./utilizatori-autocomplete.component.scss'],
+    standalone: false
 })
 export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 

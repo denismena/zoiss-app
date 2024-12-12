@@ -7,9 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-arhitecti-edit',
-  templateUrl: './arhitecti-edit.component.html',
-  styleUrls: ['./arhitecti-edit.component.scss']
+    selector: 'app-arhitecti-edit',
+    templateUrl: './arhitecti-edit.component.html',
+    styleUrls: ['./arhitecti-edit.component.scss'],
+    standalone: false
 })
 export class ArhitectiEditComponent implements OnInit, OnDestroy {
   errors: string[] = [];

@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-produse-create',
-  templateUrl: './produse-create.component.html',
-  styleUrls: ['./produse-create.component.scss']
+    selector: 'app-produse-create',
+    templateUrl: './produse-create.component.html',
+    styleUrls: ['./produse-create.component.scss'],
+    standalone: false
 })
 export class ProduseCreateComponent implements OnInit, OnDestroy {
 

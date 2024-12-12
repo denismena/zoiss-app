@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-nir-edit',
-  templateUrl: './nir-edit.component.html',
-  styleUrls: ['./nir-edit.component.scss']
+    selector: 'app-nir-edit',
+    templateUrl: './nir-edit.component.html',
+    styleUrls: ['./nir-edit.component.scss'],
+    standalone: false
 })
 export class NirEditComponent implements OnInit, OnDestroy{
   model!:nirDTO;

@@ -39,7 +39,7 @@ export class SecurityService {
     return true;
   }
 
-  private async tryRefreshingTokens(token: string): Promise<boolean> {
+  public async tryRefreshingTokens(token: string): Promise<boolean> {
     const refreshToken = localStorage.getItem("refreshToken");
     if (!token || !refreshToken) { 
       return false;
@@ -55,10 +55,7 @@ export class SecurityService {
       const authenticatorResponse = await this.refreshtoken(credentials)
         .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
         .toPromise();
-
-      this.saveToke(authenticatorResponse);
-      localStorage.setItem("token", authenticatorResponse.token);
-      localStorage.setItem("refreshToken", authenticatorResponse.refreshToken);
+      this.saveToken(authenticatorResponse);
       isRefreshSuccess = true;
       //this.router.navigate(['/']);
     } catch (error) {
@@ -100,7 +97,7 @@ export class SecurityService {
     this.router.navigate(['/login']);
   }
 
-  saveToke(authenticationResponse: authentificationResponse){
+  saveToken(authenticationResponse: authentificationResponse){
     localStorage.setItem(this.tokenKey, authenticationResponse.token);
     localStorage.setItem(this.refreshToken, authenticationResponse.refreshToken);
     localStorage.setItem(this.expirationTokenKey, authenticationResponse.expiration.toString());

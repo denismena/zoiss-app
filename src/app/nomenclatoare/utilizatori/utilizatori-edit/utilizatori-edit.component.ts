@@ -11,9 +11,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-utilizatori-edit',
-  templateUrl: './utilizatori-edit.component.html',
-  styleUrls: ['./utilizatori-edit.component.scss']
+    selector: 'app-utilizatori-edit',
+    templateUrl: './utilizatori-edit.component.html',
+    styleUrls: ['./utilizatori-edit.component.scss'],
+    standalone: false
 })
 export class UtilizatoriEditComponent implements OnInit, OnDestroy {
 
@@ -64,7 +65,7 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(authenticationResponse=>{
       if(this.model.email == this.securityService.getFieldFromJwt('email'))
-        this.securityService.saveToke(authenticationResponse);
+        this.securityService.saveToken(authenticationResponse);
       this.router.navigate(['/utilizatori']);
     }, error=> this.errors = parseWebAPIErrors(error));
   }

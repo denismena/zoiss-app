@@ -8,9 +8,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-clienti-create-dialog',
-  templateUrl: './clienti-create-dialog.component.html',
-  styleUrls: ['./clienti-create-dialog.component.scss']
+    selector: 'app-clienti-create-dialog',
+    templateUrl: './clienti-create-dialog.component.html',
+    styleUrls: ['./clienti-create-dialog.component.scss'],
+    standalone: false
 })
 export class ClientiCreateDialogComponent implements OnInit, OnDestroy {
 

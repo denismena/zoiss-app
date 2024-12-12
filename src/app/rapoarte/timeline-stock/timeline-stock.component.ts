@@ -13,9 +13,10 @@ HC_exportData(Highcharts);
 HC_more(Highcharts);
 
 @Component({
-  selector: 'app-timeline-stock',
-  templateUrl: './timeline-stock.component.html',
-  styleUrls: ['./timeline-stock.component.scss']
+    selector: 'app-timeline-stock',
+    templateUrl: './timeline-stock.component.html',
+    styleUrls: ['./timeline-stock.component.scss'],
+    standalone: false
 })
 export class TimelineStockComponent implements OnInit, OnDestroy{
   produsId: number = 0;

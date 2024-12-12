@@ -16,9 +16,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-comenzi-furn-produse-autocomplete',
-  templateUrl: './comenzi-furn-produse-autocomplete.component.html',
-  styleUrls: ['./comenzi-furn-produse-autocomplete.component.scss']
+    selector: 'app-comenzi-furn-produse-autocomplete',
+    templateUrl: './comenzi-furn-produse-autocomplete.component.html',
+    styleUrls: ['./comenzi-furn-produse-autocomplete.component.scss'],
+    standalone: false
 })
 export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestroy {
 
@@ -113,17 +114,17 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
     }else{      
       this.form.controls['cantitate']?.setValue(cantDecimal);
       this.form.controls['cutii']?.setValue(cutii??0);
-      this.form.controls['valoare']?.setValue((Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000)??0);
+      this.form.controls['valoare']?.setValue(Math.round((valoareDecimal + Number.EPSILON) * 1000) / 1000);
     }
   }
   onPretChange(event: any){
     const pret = event.target.value;
-    var val = Number(pret * this.form.controls['cantitate'].value??0)
+    var val = Number(pret * this.form.controls['cantitate'].value)
     if(pret == ''){
       this.form.controls['valoare']?.setValue('');
     }
     else{
-      this.form.controls['valoare']?.setValue((Math.round((val + Number.EPSILON) * 1000) / 1000)??0);
+      this.form.controls['valoare']?.setValue(Math.round((val + Number.EPSILON) * 1000) / 1000);
     }
   }
 
@@ -162,7 +163,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
       { data:{produsSplit: produs}, width: '650px', height: '300px' });
       dialogRef.afterClosed()
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-      .subscribe((data) => {
+      .subscribe((data:any) => {
         if (data.clicked === 'submit') {
           const anotherProdus : produseComandaFurnizorDTO = {
             ...data.form,

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { oferteDTO } from '../oferte-item/oferte.model';
 import { OferteService } from '../oferte.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -14,23 +13,27 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
-import * as saveAs from 'file-saver';
+import saveAs from 'file-saver';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-oferte-list',
-  templateUrl: './oferte-list.component.html',
-  styleUrls: ['./oferte-list.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-oferte-list',
+    templateUrl: './oferte-list.component.html',
+    styleUrls: ['./oferte-list.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 export class OferteListComponent implements OnInit, OnDestroy {
 
@@ -54,7 +57,7 @@ export class OferteListComponent implements OnInit, OnDestroy {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router, private unsubscribeService: UnsubscribeService,
-      private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService) { 
+      private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { 
     this.oferte = [];
     this.expandedElement = [];
   }
@@ -109,13 +112,21 @@ export class OferteListComponent implements OnInit, OnDestroy {
   }
 
   delete(id: number){
-    this.oferteService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.oferteService.delete(id)
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
 

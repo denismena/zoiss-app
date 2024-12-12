@@ -4,9 +4,10 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { transportatorDTO } from './transportator.model';
 
 @Component({
-  selector: 'app-transportator-item',
-  templateUrl: './transportator-item.component.html',
-  styleUrls: ['./transportator-item.component.scss']
+    selector: 'app-transportator-item',
+    templateUrl: './transportator-item.component.html',
+    styleUrls: ['./transportator-item.component.scss'],
+    standalone: false
 })
 export class TransportatorItemComponent implements OnInit {
 

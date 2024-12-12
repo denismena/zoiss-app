@@ -5,17 +5,20 @@ import { PageEvent } from '@angular/material/paginator';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { umDTO } from '../../um/um-item/um.model';
 import { UMService } from '../../um/um.service';
 import { produseDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-produse-list',
-  templateUrl: './produse-list.component.html',
-  styleUrls: ['./produse-list.component.scss']
+    selector: 'app-produse-list',
+    templateUrl: './produse-list.component.html',
+    styleUrls: ['./produse-list.component.scss'],
+    standalone: false
 })
 export class ProduseListComponent implements OnInit, OnDestroy {
 
@@ -29,7 +32,8 @@ export class ProduseListComponent implements OnInit, OnDestroy {
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private produseService: ProduseService, private formBuilder:FormBuilder, private umService: UMService, private unsubscribeService: UnsubscribeService) {  
+  constructor(private produseService: ProduseService, private formBuilder:FormBuilder, private umService: UMService, private dialog: MatDialog, 
+    private unsubscribeService: UnsubscribeService) {  
     this.produse = [];
   }
   
@@ -74,14 +78,23 @@ export class ProduseListComponent implements OnInit, OnDestroy {
       this.loading$ = false;
     });    
   }
+  
   delete(id: number){
-    this.produseService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.produseService.delete(id)
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
 

@@ -1,23 +1,22 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
-import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
-import Swal from 'sweetalert2';
 import { LivrariService } from '../livrari.service';
 import { LivrariDTO, livrariProduseDTO } from './livrari.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-livrari-item',
-  templateUrl: './livrari-item.component.html',
-  styleUrls: ['./livrari-item.component.scss']
+    selector: 'app-livrari-item',
+    templateUrl: './livrari-item.component.html',
+    styleUrls: ['./livrari-item.component.scss'],
+    standalone: false
 })
 export class LivrariItemComponent implements OnInit, OnDestroy {
 
-  constructor(private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
+  constructor(private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, private dialog: MatDialog,
     private livrariService: LivrariService) { }
 
   @Input() model:LivrariDTO | undefined;  
@@ -65,8 +64,8 @@ export class LivrariItemComponent implements OnInit, OnDestroy {
     const produse = this.selectedProdus.map(val => {
       return {id: val.id??0, transportProduseId: val.transportProduseId, comenziProdusId:val.comenziProdusId, livrat: val.livrat}
     });
-    if(produse.filter(produse=>produse.livrat== true).length > 0 && this.form.get('curier')?.value ==null){
-      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici un curier!", icon: 'info' });
+    if(produse.filter(produse=>produse.livrat== true).length > 0 && (this.form.get('curier')?.value ==null || this.form.get('curier')?.value == '')){
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Nu ati selectat nici un curier!"}});
       return;
     }
     this.form.get('livrariProduse')?.setValue(produse);

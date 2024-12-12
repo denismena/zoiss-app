@@ -12,9 +12,10 @@ import { takeUntil } from 'rxjs/operators';
 HC_exporting(Highcharts);
 HC_exportData(Highcharts);
 @Component({
-  selector: 'app-comenzi-utilizatori',
-  templateUrl: './comenzi-utilizatori.component.html',
-  styleUrls: ['./comenzi-utilizatori.component.scss']
+    selector: 'app-comenzi-utilizatori',
+    templateUrl: './comenzi-utilizatori.component.html',
+    styleUrls: ['./comenzi-utilizatori.component.scss'],
+    standalone: false
 })
 export class ComenziUtilizatoriComponent implements OnInit, OnDestroy{
   loading$: boolean = true;

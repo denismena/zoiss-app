@@ -9,9 +9,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-produse-edit',
-  templateUrl: './produse-edit.component.html',
-  styleUrls: ['./produse-edit.component.scss']
+    selector: 'app-produse-edit',
+    templateUrl: './produse-edit.component.html',
+    styleUrls: ['./produse-edit.component.scss'],
+    standalone: false
 })
 export class ProduseEditComponent implements OnInit, OnDestroy {
 

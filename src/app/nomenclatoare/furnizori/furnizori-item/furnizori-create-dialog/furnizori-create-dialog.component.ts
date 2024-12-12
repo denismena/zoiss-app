@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-furnizori-create-dialog',
-  templateUrl: './furnizori-create-dialog.component.html',
-  styleUrls: ['./furnizori-create-dialog.component.scss']
+    selector: 'app-furnizori-create-dialog',
+    templateUrl: './furnizori-create-dialog.component.html',
+    styleUrls: ['./furnizori-create-dialog.component.scss'],
+    standalone: false
 })
 export class FurnizoriCreateDialogComponent implements OnInit, OnDestroy {
   errors: string[] = [];

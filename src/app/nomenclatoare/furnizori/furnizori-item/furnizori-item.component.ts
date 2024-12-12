@@ -6,9 +6,10 @@ import { environment } from 'src/environments/environment';
 import { furnizoriCreationDTO, furnizoriDTO } from './furnizori.model';
 
 @Component({
-  selector: 'app-furnizori-item',
-  templateUrl: './furnizori-item.component.html',
-  styleUrls: ['./furnizori-item.component.scss']
+    selector: 'app-furnizori-item',
+    templateUrl: './furnizori-item.component.html',
+    styleUrls: ['./furnizori-item.component.scss'],
+    standalone: false
 })
 export class FurnizoriItemComponent implements OnInit {
 

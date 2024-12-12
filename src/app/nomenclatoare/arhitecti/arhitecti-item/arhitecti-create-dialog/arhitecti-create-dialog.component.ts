@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-arhitecti-create-dialog',
-  templateUrl: './arhitecti-create-dialog.component.html',
-  styleUrls: ['./arhitecti-create-dialog.component.scss']
+    selector: 'app-arhitecti-create-dialog',
+    templateUrl: './arhitecti-create-dialog.component.html',
+    styleUrls: ['./arhitecti-create-dialog.component.scss'],
+    standalone: false
 })
 export class ArhitectiCreateDialogComponent implements OnInit, OnDestroy {
   errors: string[] = [];

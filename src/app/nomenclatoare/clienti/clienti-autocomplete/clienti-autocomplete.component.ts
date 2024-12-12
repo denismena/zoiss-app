@@ -10,9 +10,10 @@ import { ClientiService } from '../clienti.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-clienti-autocomplete',
-  templateUrl: './clienti-autocomplete.component.html',
-  styleUrls: ['./clienti-autocomplete.component.scss']
+    selector: 'app-clienti-autocomplete',
+    templateUrl: './clienti-autocomplete.component.html',
+    styleUrls: ['./clienti-autocomplete.component.scss'],
+    standalone: false
 })
 export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 

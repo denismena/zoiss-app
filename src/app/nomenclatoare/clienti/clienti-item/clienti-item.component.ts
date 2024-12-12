@@ -1,18 +1,20 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import Swal from 'sweetalert2';
 import { clientiAdresaDTO, clientiDTO } from './clienti.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-clienti-item',
-  templateUrl: './clienti-item.component.html',
-  styleUrls: ['./clienti-item.component.scss']
+    selector: 'app-clienti-item',
+    templateUrl: './clienti-item.component.html',
+    styleUrls: ['./clienti-item.component.scss'],
+    standalone: false
 })
 export class ClientiItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder,private router:Router) { }
+  constructor(private formBuilder:FormBuilder,private router:Router, private dialog: MatDialog) { }
   public form!: FormGroup;  
   @Input()model:clientiDTO | undefined;
   @Input()adreseList: clientiAdresaDTO[] = [];
@@ -61,7 +63,7 @@ export class ClientiItemComponent implements OnInit {
   saveChanges(){    
     //set the adrese list to model
     if(this.adreseList.length == 0){
-      Swal.fire({ title: "Atentie!", text: "Nu ati adaugat nici o adresa!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Nu ati adaugat nici o adresa!"}});
       return;
     }
     const adrese = this.adreseList.map(val => {

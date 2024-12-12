@@ -11,9 +11,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-oferte-item',
-  templateUrl: './oferte-item.component.html',
-  styleUrls: ['./oferte-item.component.scss']
+    selector: 'app-oferte-item',
+    templateUrl: './oferte-item.component.html',
+    styleUrls: ['./oferte-item.component.scss'],
+    standalone: false
 })
 export class OferteItemComponent implements OnInit, OnDestroy {
 

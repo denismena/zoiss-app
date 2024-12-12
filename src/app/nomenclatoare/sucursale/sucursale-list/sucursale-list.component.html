@@ -30,10 +30,7 @@
                 <a routerLink="/sucursale/edit/{{element.id}}" title="Edit">
                     <mat-icon color="primary">edit</mat-icon>
                 </a>
-                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(element.id)" [swal]="{
-                        title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
-                        close
-                </mat-icon>
+                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

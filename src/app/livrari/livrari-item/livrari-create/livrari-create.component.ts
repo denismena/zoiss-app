@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-livrari-create',
-  templateUrl: './livrari-create.component.html',
-  styleUrls: ['./livrari-create.component.scss']
+    selector: 'app-livrari-create',
+    templateUrl: './livrari-create.component.html',
+    styleUrls: ['./livrari-create.component.scss'],
+    standalone: false
 })
 export class LivrariCreateComponent implements OnInit, OnDestroy {
 

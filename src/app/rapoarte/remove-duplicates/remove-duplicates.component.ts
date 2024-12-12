@@ -13,9 +13,10 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 @Component({
-  selector: 'app-remove-duplicates',  
-  templateUrl: './remove-duplicates.component.html',
-  styleUrls: ['./remove-duplicates.component.scss']
+    selector: 'app-remove-duplicates',
+    templateUrl: './remove-duplicates.component.html',
+    styleUrls: ['./remove-duplicates.component.scss'],
+    standalone: false
 })
 export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) produseTable!: MatTable<any>;

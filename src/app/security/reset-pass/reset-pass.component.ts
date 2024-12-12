@@ -9,9 +9,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-reset-pass',
-  templateUrl: './reset-pass.component.html',
-  styleUrls: ['./reset-pass.component.scss']
+    selector: 'app-reset-pass',
+    templateUrl: './reset-pass.component.html',
+    styleUrls: ['./reset-pass.component.scss'],
+    standalone: false
 })
 export class ResetPassComponent implements OnInit, OnDestroy {
 

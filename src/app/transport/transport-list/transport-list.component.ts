@@ -14,24 +14,26 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { LivrariNumberDialogComponent } from '../livrari-number-dialog/livrari-number-dialog.component';
 import { transportDTO, transportProduseDTO } from '../transport-item/transport.model';
 import { TransportService } from '../transport.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-transport-list',
-  templateUrl: './transport-list.component.html',
-  styleUrls: ['./transport-list.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-transport-list',
+    templateUrl: './transport-list.component.html',
+    styleUrls: ['./transport-list.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 export class TransportListComponent implements OnInit, OnDestroy {
 
@@ -114,15 +116,24 @@ export class TransportListComponent implements OnInit, OnDestroy {
   }
 
   delete(id: number){
-    this.transporService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.transporService.delete(id)
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
+
   expand(element: transportDTO){
     var index = this.expandedElement.findIndex(f=>f.id == element.id);
     if(index == -1)
@@ -151,11 +162,11 @@ export class TransportListComponent implements OnInit, OnDestroy {
 
     if(maiMultiClienti) 
     { 
-      Swal.fire({ title: "Atentie!", text: "Ati selectat produse de la mai multi clienti!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Ati selectat produse de la mai multi clienti!"}});
       return;
     }
     if(selectedProd.length == 0){
-      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici un produs!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Nu ati selectat nici un produs!"}});
       return;
     }
 

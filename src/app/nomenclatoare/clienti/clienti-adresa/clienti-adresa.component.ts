@@ -11,9 +11,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-clienti-adresa',
-  templateUrl: './clienti-adresa.component.html',
-  styleUrls: ['./clienti-adresa.component.scss']
+    selector: 'app-clienti-adresa',
+    templateUrl: './clienti-adresa.component.html',
+    styleUrls: ['./clienti-adresa.component.scss'],
+    standalone: false
 })
 export class ClientiAdresaComponent implements OnInit, OnDestroy {
 

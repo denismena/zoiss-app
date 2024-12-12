@@ -3,9 +3,10 @@ import { environment } from 'src/environments/environment';
 import { toBase64 } from '../utils';
 
 @Component({
-  selector: 'app-input-img',
-  templateUrl: './input-img.component.html',
-  styleUrls: ['./input-img.component.scss']
+    selector: 'app-input-img',
+    templateUrl: './input-img.component.html',
+    styleUrls: ['./input-img.component.scss'],
+    standalone: false
 })
 export class InputImgComponent implements OnInit {
 

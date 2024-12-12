@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import * as saveAs from 'file-saver';
+import { saveAs } from 'file-saver';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
@@ -12,24 +12,27 @@ import { TransportService } from 'src/app/transport/transport.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-comenzi-furn-list',
-  templateUrl: './comenzi-furn-list.component.html',
-  styleUrls: ['./comenzi-furn-list.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-comenzi-furn-list',
+    templateUrl: './comenzi-furn-list.component.html',
+    styleUrls: ['./comenzi-furn-list.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 export class ComenziFurnListComponent implements OnInit, OnDestroy {
 
@@ -52,7 +55,7 @@ export class ComenziFurnListComponent implements OnInit, OnDestroy {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService, private unsubscribeService: UnsubscribeService,
-    private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService) { 
+    private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService, public dialog: MatDialog) { 
     this.comenziFurnizor = [];
     this.expandedElement = [];
   }
@@ -108,17 +111,26 @@ export class ComenziFurnListComponent implements OnInit, OnDestroy {
       this.loading$ = false;
     });    
   }
-
+  
   delete(id: number){
-    this.comenziFurnizorService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.comenziFurnizorService.delete(id)
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
+
   togglePanel(){    
     this.panelOpenState = !this.panelOpenState;
   }

@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { SecurityService } from '../security.service';
 
 @Component({
-  selector: 'app-authorize-view',
-  templateUrl: './authorize-view.component.html',
-  styleUrls: ['./authorize-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-authorize-view',
+    templateUrl: './authorize-view.component.html',
+    styleUrls: ['./authorize-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AuthorizeViewComponent implements OnInit {
 

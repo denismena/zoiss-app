@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
 @Component({
-  selector: 'app-depozite-all-dialog',
-  templateUrl: './depozite-all-dialog.component.html',
-  styleUrls: ['./depozite-all-dialog.component.scss']
+    selector: 'app-depozite-all-dialog',
+    templateUrl: './depozite-all-dialog.component.html',
+    styleUrls: ['./depozite-all-dialog.component.scss'],
+    standalone: false
 })
 export class DepoziteAllDialogComponent implements OnInit {
 

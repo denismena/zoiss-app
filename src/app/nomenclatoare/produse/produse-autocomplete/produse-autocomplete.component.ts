@@ -11,9 +11,10 @@ import { ProduseService } from '../produse.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
-  selector: 'app-produse-autocomplete',
-  templateUrl: './produse-autocomplete.component.html',
-  styleUrls: ['./produse-autocomplete.component.scss']
+    selector: 'app-produse-autocomplete',
+    templateUrl: './produse-autocomplete.component.html',
+    styleUrls: ['./produse-autocomplete.component.scss'],
+    standalone: false
 })
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 

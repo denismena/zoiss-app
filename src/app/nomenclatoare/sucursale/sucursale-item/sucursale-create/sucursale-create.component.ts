@@ -7,9 +7,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-sucursale-create',
-  templateUrl: './sucursale-create.component.html',
-  styleUrls: ['./sucursale-create.component.scss']
+    selector: 'app-sucursale-create',
+    templateUrl: './sucursale-create.component.html',
+    styleUrls: ['./sucursale-create.component.scss'],
+    standalone: false
 })
 export class SucursaleCreateComponent implements OnInit, OnDestroy {
 

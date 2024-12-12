@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { NotificariItemComponent } from '../notificari-item/notificari-item.component';
 import { notificariDTO } from '../notificari.model';
 import { NotificariService } from '../notificari.service';
@@ -10,11 +9,13 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 import { SecurityService } from 'src/app/security/security.service';
 import { forkJoin } from 'rxjs';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-notificari-list',
-  templateUrl: './notificari-list.component.html',
-  styleUrls: ['./notificari-list.component.scss']
+    selector: 'app-notificari-list',
+    templateUrl: './notificari-list.component.html',
+    styleUrls: ['./notificari-list.component.scss'],
+    standalone: false
 })
 export class NotificariListComponent implements OnInit, OnDestroy {
 
@@ -68,7 +69,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
           .subscribe(() => {this.loadList();}, error => {
             this.errors = parseWebAPIErrors(error);
-            Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+            this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
           });
         }
       });
@@ -87,7 +88,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
   deleteAll(){
@@ -98,7 +99,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
   read(id: number){
@@ -106,7 +107,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe(() => {this.loadList();}, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
   readAll(){
@@ -117,7 +118,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
 

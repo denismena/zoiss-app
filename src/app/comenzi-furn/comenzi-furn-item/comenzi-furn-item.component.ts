@@ -8,9 +8,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-comenzi-furn-item',
-  templateUrl: './comenzi-furn-item.component.html',
-  styleUrls: ['./comenzi-furn-item.component.scss']
+    selector: 'app-comenzi-furn-item',
+    templateUrl: './comenzi-furn-item.component.html',
+    styleUrls: ['./comenzi-furn-item.component.scss'],
+    standalone: false
 })
 export class ComenziFurnItemComponent implements OnInit, OnDestroy {
 

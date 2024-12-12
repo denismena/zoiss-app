@@ -9,9 +9,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-livrari-edit',
-  templateUrl: './livrari-edit.component.html',
-  styleUrls: ['./livrari-edit.component.scss']
+    selector: 'app-livrari-edit',
+    templateUrl: './livrari-edit.component.html',
+    styleUrls: ['./livrari-edit.component.scss'],
+    standalone: false
 })
 export class LivrariEditComponent implements OnInit, OnDestroy {
   errors: string[] = [];

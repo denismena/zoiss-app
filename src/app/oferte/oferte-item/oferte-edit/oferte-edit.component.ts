@@ -12,9 +12,10 @@ import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
-  selector: 'app-oferte-edit',
-  templateUrl: './oferte-edit.component.html',
-  styleUrls: ['./oferte-edit.component.scss']
+    selector: 'app-oferte-edit',
+    templateUrl: './oferte-edit.component.html',
+    styleUrls: ['./oferte-edit.component.scss'],
+    standalone: false
 })
 export class OferteEditComponent implements OnInit, OnDestroy {
 

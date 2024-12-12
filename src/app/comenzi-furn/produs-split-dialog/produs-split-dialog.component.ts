@@ -5,9 +5,10 @@ import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validato
 import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 
 @Component({
-  selector: 'app-produs-split-dialog',
-  templateUrl: './produs-split-dialog.component.html',
-  styleUrls: ['./produs-split-dialog.component.scss']
+    selector: 'app-produs-split-dialog',
+    templateUrl: './produs-split-dialog.component.html',
+    styleUrls: ['./produs-split-dialog.component.scss'],
+    standalone: false
 })
 export class ProdusSplitDialogComponent implements OnInit {
 

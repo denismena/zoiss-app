@@ -9,9 +9,10 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-forget-pass',
-  templateUrl: './forget-pass.component.html',
-  styleUrls: ['./forget-pass.component.scss']
+    selector: 'app-forget-pass',
+    templateUrl: './forget-pass.component.html',
+    styleUrls: ['./forget-pass.component.scss'],
+    standalone: false
 })
 export class ForgetPassComponent implements OnInit, OnDestroy {
 

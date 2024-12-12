@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>
+  <mat-icon aria-hidden="true" class="dialog-title-icon">warning</mat-icon>
+  {{ defaultTitle }}
+</h2>
+<mat-dialog-content>
+  {{defaultMessage}}
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button mat-dialog-close color="primary" cdkFocusInitial (click)="ok()">{{defaultOkButtonText}}</button>
+</mat-dialog-actions>
