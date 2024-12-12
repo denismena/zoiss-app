@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { comenziDTO, produseComandaDTO } from '../comenzi-item/comenzi.model';
 import { ComenziService } from '../comenzi.service';
-import Swal from 'sweetalert2';
 import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.service';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
@@ -21,6 +20,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { toExistingComenziFurnizoriDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
     selector: 'app-comenzi-list',
@@ -60,8 +61,8 @@ export class ComenziListComponent implements OnInit, OnDestroy {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, private unsubscribeService: UnsubscribeService, 
-    private router:Router, private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService,
-    public dialog: MatDialog) { 
+    private router:Router, private formBuilder: FormBuilder, private exportService: ExportService, public cookie: CookieService,
+    private dialog: MatDialog) { 
     this.comenzi = [];
     this.expandedElement = [];
   }
@@ -114,14 +115,23 @@ export class ComenziListComponent implements OnInit, OnDestroy {
   }
 
   delete(id: number){
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
+    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
     this.comenziService.delete(id)
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
-  }
+  } 
 
   expand(element: comenziDTO){
     var index = this.expandedElement.findIndex(f=>f.id == element.id);
@@ -156,16 +166,12 @@ export class ComenziListComponent implements OnInit, OnDestroy {
     if(!comenziNeplatite && selectedProd.length == 0 && furnizorId == 0) return;
     
     if(comenziNeplatite){
-      Swal.fire({
-        title: 'Atentie!',
-        text: "Ati selectat o comanda care nu este platita! Doriti sa continuati?",
-        icon: 'warning',
-        showCancelButton: true,        
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.genereazaComnada(selectedProd);
-        }
-      });  
+      const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{title: 'Atentie!', message: "Ati selectat o comanda care nu este platita! Doriti sa continuati?"}});
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((confirm) => {      
+        if(confirm) this.genereazaComnada(selectedProd);
+      });
     }
     else {
       this.genereazaComnada(selectedProd);
@@ -208,16 +214,16 @@ export class ComenziListComponent implements OnInit, OnDestroy {
 
     if(faraFurnizor) 
     {       
-      Swal.fire({ title: "Atentie!", text: "Unul dintre produse nu are furnizor!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Unul dintre produse nu are furnizor!"}});
       return [false, [], 0];
     }
     if(maiMultiFurnizori) 
     { 
-      Swal.fire({ title: "Atentie!", text: "Ati selectat produse de la mai multi furnizori!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Ati selectat produse de la mai multi furnizori!"}});
       return [false, [], 0];
     }
     if(selectedProd.length == 0){
-      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o comanda!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Nu ati selectat nici o comanda!"}});
       return [false, [], 0];
     }
 
@@ -233,25 +239,19 @@ export class ComenziListComponent implements OnInit, OnDestroy {
     if(!comenziNeplatite && selectedProd.length == 0 && furnizorId == 0) return;
     
     if(comenziNeplatite){
-      Swal.fire({
-        title: 'Atentie!',
-        text: "Ati selectat o comanda care nu este platita! Doriti sa continuati?",
-        icon: 'warning',
-        showCancelButton: true        
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.adaugaLaComnada(selectedProd, furnizorId);
-        }
-      });  
+      const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{title: 'Atentie!', message: "Ati selectat o comanda care nu este platita! Doriti sa continuati?"}});
+      dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .subscribe((confirm) => {      
+        if(confirm) this.adaugaLaComnada(selectedProd, furnizorId);
+      }); 
     }
     else {
       this.adaugaLaComnada(selectedProd, furnizorId);
     }
   }
 
-  adaugaLaComnada(selectedProd:any, furnizorId: number){
-    console.log('sunt unde trebuie. furnizorId', furnizorId); 
-    
+  adaugaLaComnada(selectedProd:any, furnizorId: number){    
     const dialogRef = this.dialog.open(ComenziFurnSelectDialogComponent,      
       { data:{ furnizorId : furnizorId}, width: '450px', height: '400px' });
 

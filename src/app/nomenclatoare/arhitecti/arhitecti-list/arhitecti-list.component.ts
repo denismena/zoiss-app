@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
     selector: 'app-arhitecti-list',
@@ -17,7 +19,7 @@ export class ArhitectiListComponent implements OnInit, OnDestroy {
   arhitecti: arhitectiDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  constructor(private arhitectiService: ArhitectiService, private unsubscribeService: UnsubscribeService) { 
+  constructor(private arhitectiService: ArhitectiService, private unsubscribeService: UnsubscribeService, public dialog: MatDialog) { 
     this.arhitecti = [];
   }
 
@@ -38,13 +40,21 @@ export class ArhitectiListComponent implements OnInit, OnDestroy {
     });    
   }
   delete(id: number){
-    this.arhitectiService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.arhitectiService.delete(id)
     .subscribe(() => {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
 

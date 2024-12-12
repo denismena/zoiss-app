@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>
+  <mat-icon aria-hidden="true" class="dialog-title-icon">help</mat-icon>
+  {{ defaultTitle }}
+</h2>
+<mat-dialog-content>
+  {{defaultMessage}}
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button mat-dialog-close color="primary" cdkFocusInitial (click)="ok()">{{defaultOkButtonText}}</button>
+    <button mat-button mat-dialog-close color="primary" (click)="cancel()">{{defaultCancelButtonText}}</button>  
+</mat-dialog-actions>

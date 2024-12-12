@@ -3,11 +3,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
     selector: 'app-clienti-list',
@@ -26,7 +28,7 @@ export class ClientiListComponent implements OnInit, OnDestroy {
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService) { 
+  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, private dialog: MatDialog) { 
     this.clienti = [];
   }
   columnsToDisplay= ['nume', 'pfPj', 'cuicnp', 'registruComert', 'action'];
@@ -62,14 +64,23 @@ export class ClientiListComponent implements OnInit, OnDestroy {
       this.loading$ = false;
     });    
   }
+  
   delete(id: number){
-    this.clientiService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.clientiService.delete(id)
     .subscribe(() => {
       this.loadList(this.form.value);
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
 

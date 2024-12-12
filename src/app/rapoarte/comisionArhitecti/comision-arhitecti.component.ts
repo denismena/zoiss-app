@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import saveAs from 'file-saver';
 import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { RapoarteService } from '../rapoarte.service';
 import { arhitectiComisionDTO, comandaArhitectiDTO } from './comision-arhitecti.model';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-comision-arhitecti',
@@ -35,7 +36,7 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
   public form!: FormGroup;
 
   constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
-      private exportService: ExportService) { 
+      private exportService: ExportService, private dialog: MatDialog) { 
     this.comisioaneArhitecti = [];
     this.expandedElement = [];    
   }
@@ -66,7 +67,6 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
     this.reportService.comisionArhitecti(values)
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
     .subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
-      console.log('response', response);
       this.comisioaneArhitecti = response.body??[];
       this.sortedData = this.comisioaneArhitecti.slice();
       this.loading$ = false;
@@ -104,7 +104,7 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
       })
     });
     if(selectedComenzi.length == 0){
-      Swal.fire({ title: "Atentie!", text: "Nu ati selectat nici o comanda!", icon: 'info' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "Atentie!", message: "Nu ati selectat nici o comanda!"}});
       return;
     }
     this.reportService.plateste(selectedComenzi)

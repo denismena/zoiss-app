@@ -55,10 +55,8 @@
                 <a routerLink="/utilizatori/edit/{{element.id}}" title="Edit">
                     <mat-icon color="primary">edit</mat-icon>
                 </a>
-                <mat-icon *ngIf="element.active" color="primary" class="redIcon" (confirm)="changeStatus(element)" title="Schimba status in inactiv"
-                    [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa schimbati statusul in inactiv?',showCancelButton: true}">lock_person</mat-icon>
-                <mat-icon *ngIf="!element.active" color="primary" class="greenIcon" (confirm)="changeStatus(element)" title="Schimba status in activ"
-                    [swal]="{title: 'Confirmare', text: 'Sunteti siguri ca doriti sa schimbati statusul in activ?',showCancelButton: true}">lock_open</mat-icon>
+                <mat-icon *ngIf="element.active" color="primary" class="redIcon" (click)="changeStatus(element)" title="Schimba status in inactiv">lock_person</mat-icon>
+                <mat-icon *ngIf="!element.active" color="primary" class="greenIcon" (click)="changeStatus(element)" title="Schimba status in activ">lock_open</mat-icon>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

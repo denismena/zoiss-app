@@ -27,7 +27,6 @@
     "@material-design-icons/svg": "^0.14.13",
     "@popperjs/core": "^2.9.2",
     "@rxweb/reactive-form-validators": "^13.0.1",
-    "@sweetalert2/ngx-sweetalert2": "^12.2.0",
     "@zxing/browser": "^0.1.4",
     "@zxing/library": "^0.20.0",
     "@zxing/ngx-scanner": "^16.0.1",
@@ -43,7 +42,6 @@
     "ngx-barcode-scanner": "^0.1.2",
     "rxjs": "~6.6.0",
     "stream": "0.0.2",
-    "sweetalert2": "^11.1.2",
     "tslib": "^2.2.0",
     "zone.js": "^0.15.0"
   },

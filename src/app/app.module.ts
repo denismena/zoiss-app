@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'; 
-import { SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2'
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
@@ -250,7 +249,6 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
-        SweetAlert2Module.forRoot(),
         RxReactiveFormsModule,
         AngularEditorModule,
         ZXingScannerModule,

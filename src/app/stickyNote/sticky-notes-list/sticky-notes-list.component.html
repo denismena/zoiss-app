@@ -3,10 +3,7 @@
     <li *ngFor="let item of notes; index as i;" (focusout)="saveChanges(item.id, $event)">
       <div class="wrapper">
         <span class="my-custom-button">
-          <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (confirm)="delete(item.id)" [swal]="{
-            title: 'Confirmare', text: 'Sunteti siguri ca doriti sa stergeti inregistrarea?',showCancelButton: true}" title="Delete">
-            close
-          </mat-icon>
+          <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(item.id)" title="Delete">close</mat-icon>
         </span>        
         <angular-editor [(ngModel)]="item.descriere" [config]="config"></angular-editor>
       </div>

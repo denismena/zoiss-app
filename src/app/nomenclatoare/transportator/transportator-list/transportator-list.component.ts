@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import Swal from 'sweetalert2';
 import { transportatorDTO } from '../transportator-item/transportator.model';
 import { TransporatorService } from '../transportator.service';
 import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
     selector: 'app-transportator-list',
@@ -17,7 +19,7 @@ export class TransportatorListComponent implements OnInit, OnDestroy {
   transportator: transportatorDTO[];
   errors: string[] = [];
   loading$: boolean = true;
-  constructor(private transporatorService: TransporatorService, private unsubscribeService: UnsubscribeService) { 
+  constructor(private transporatorService: TransporatorService, private unsubscribeService: UnsubscribeService, private dialog: MatDialog) { 
     this.transportator = [];
   }
 
@@ -37,14 +39,23 @@ export class TransportatorListComponent implements OnInit, OnDestroy {
       this.loading$ = false;
     });    
   }
+
   delete(id: number){
-    this.transporatorService.delete(id)
+    const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
+    dialogRef.afterClosed()
     .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .subscribe((confirm) => {      
+      if(confirm) this.deleteComanda(id);
+    });
+  }
+
+  private deleteComanda(id: number){
+    this.transporatorService.delete(id)
     .subscribe(() => {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
-      Swal.fire({ title: "A aparut o eroare!", text: error.error, icon: 'error' });
+      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
 
