@@ -159,7 +159,7 @@ export class ComenziFurnListComponent implements OnInit, OnDestroy {
     var selectedProd: produseComandaFurnizorDTO[] = [];
     this.comenziFurnizor.forEach(element => {
       element.comenziFurnizoriProduse.forEach(prod=>{
-        if(prod.addToTransport)
+        if(prod.addToTransport && !prod.isInTransport)
           {
             selectedProd.push(prod);
           }

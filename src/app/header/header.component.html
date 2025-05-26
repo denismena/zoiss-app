@@ -51,9 +51,20 @@
     </div> -->
     <app-authorize-view>
       <ng-container authorize>
-        <span class="text-light">{{securityService.getFieldFromJwt('name')}}</span>
-        <!-- <app-notificari-list></app-notificari-list> -->
-        <a mat-button (click)="securityService.logout()" class="text-light">Logout</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 200px;">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarUserName" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{securityService.getFieldFromJwt('name')}}
+            </a>
+            <ul class="dropdown-menu bg-dark" aria-labelledby="navbarUserName">
+              <li class="nav-item" style="width: 200px;">
+                <mat-slide-toggle matTooltip="Export PDF cu component nou" [(ngModel)]="pdfComponentNou" (change)="pdfComponentNouChange()" labelPosition="before">
+                  <span class="nav-link">Export PDF cu component nou</span></mat-slide-toggle>
+              </li>
+              <li class="nav-item"><a class="nav-link" (click)="securityService.logout()">Logout</a></li>            
+            </ul>
+          </li>
+        </ul>
       </ng-container>
       <ng-container notAuthorize class="text-light">
         <a routerLink="login" class="text-light">Login</a>&nbsp;&nbsp;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '../security/security.service';
+import { CookieService } from '../utilities/cookie.service';
 
 @Component({
     selector: 'app-header',
@@ -8,10 +9,14 @@ import { SecurityService } from '../security/security.service';
     standalone: false
 })
 export class HeaderComponent implements OnInit {
-
-  constructor(public securityService: SecurityService) { }
+  pdfComponentNou: boolean = false;
+  constructor(public securityService: SecurityService, public cookie: CookieService) { }
 
   ngOnInit(): void {
+    this.pdfComponentNou = this.cookie.getCookie('pdfComponentNou') === 'true';    
+  }
+  pdfComponentNouChange() {
+    this.cookie.setCookie({ name: 'pdfComponentNou', value: this.pdfComponentNou.toString() });
   }
 
 }
