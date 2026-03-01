@@ -1,7 +1,9 @@
 <div class="container bordered">
-    <h2>Edit Produse</h2>
+  <h2>Edit Produse</h2>
 </div>
-<app-produse-item *ngIf="model" [model]="model" 
+@if (model) {
+  <app-produse-item [model]="model"
     [preselectFurnizor]="preselectFurnizor"
-    (onSaveChanges)="saveChanges($event)"></app-produse-item>
+  (onSaveChanges)="saveChanges($event)"></app-produse-item>
+}
 <app-display-errors [errors]="errors"></app-display-errors>

@@ -1,233 +1,265 @@
 <mat-accordion>
-    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
-      <mat-expansion-panel-header>
-        <mat-panel-description (click)="$event.stopPropagation();">
-            <div (click)="togglePanel()">
-                <mat-icon class="greenIcon display-7">
-                    {{ panelOpenState ? 'expand_less' : 'expand_more' }}
-                </mat-icon>
-            </div>
-            <h2>Lista Oferte
-                <button type="button" color="primary" routerLink="/oferte/create" mat-flat-button matTooltip="Oferta noua">                    
-                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Oferta noua" height="30" width="30" class="greenIcon">                    
-                </button>
-                <button mat-flat-button color="primary" (click)="genereazaComanda()" matTooltip="Genereaza comanda">
-                    <img src="assets/img/icons/material-design-icons/two-tone/local_offer.svg" alt="Genereaza comanda" height="30" width="30" class="greenIcon">
-                </button>                
-            </h2>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <form [formGroup]="form">
-        <div class="">    
-            <div class="row">
-                <div class="col-md-2">
-        <mat-form-field appearance="outline">
-            <mat-label>De la data</mat-label>
-            <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerFrom></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
-                </div>
-        <div class="col-md-2">
-        <mat-form-field appearance="outline">
-            <mat-label>La data</mat-label>
-            <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerTo></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
+  <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
+    <mat-expansion-panel-header>
+      <mat-panel-description (click)="$event.stopPropagation();">
+        <div (click)="togglePanel()">
+          <mat-icon class="greenIcon display-7">
+            {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
         </div>
-        <div class="col-md-2">            
+        <h2>Lista Oferte
+          <button type="button" color="primary" routerLink="/oferte/create" mat-flat-button matTooltip="Oferta noua">
+            <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Oferta noua" height="30" width="30" class="greenIcon">
+          </button>
+          <button mat-flat-button color="primary" (click)="genereazaComanda()" matTooltip="Genereaza comanda">
+            <img src="assets/img/icons/material-design-icons/two-tone/local_offer.svg" alt="Genereaza comanda" height="30" width="30" class="greenIcon">
+          </button>
+        </h2>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="form">
+      <div class="">
+        <div class="row">
+          <div class="col-md-2">
             <mat-form-field appearance="outline">
-                <mat-label>Numar</mat-label>
-                <input formControlName="numar" value=""  matInput class="table-text-right">
+              <mat-label>De la data</mat-label>
+              <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerFrom></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
             </mat-form-field>
-        </div>
-        <div class="col-md-2">
-        <mat-slide-toggle formControlName="mine">Doar ofertele mele</mat-slide-toggle>    
-        </div>
-        <div class="col-md-2">
-        <mat-slide-toggle formControlName="sucursala">Doar sucursala mea</mat-slide-toggle>    
-        </div>
-        <div class="col-md-2">
-        <mat-slide-toggle formControlName="allComandate">Doar necomandate</mat-slide-toggle>
-        <div style="float: right;">
-            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
-        </div>                
-        </div>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>La data</mat-label>
+              <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerTo></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Numar</mat-label>
+              <input formControlName="numar" value=""  matInput class="table-text-right">
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-slide-toggle formControlName="mine">Doar ofertele mele</mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <mat-slide-toggle formControlName="sucursala">Doar sucursala mea</mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <mat-slide-toggle formControlName="allComandate">Doar necomandate</mat-slide-toggle>
+            <div style="float: right;">
+              <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
             </div>
-            
-            <div class="row">
-                <div class="col-md-3">
-        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>
             <input type="hidden" formControlName="clientId" #clientId>
-                </div>
-            <div class="col-md-3">
-        <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" #arhitectFilter></app-arhitecti-autocomplete>    
-        <input type="hidden" formControlName="arhitectId" #arhitectId>
-            </div>
-        <div class="col-md-3">
-        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
-        <input type="hidden" formControlName="produsId" #produsId>
-        </div>        
-        <div class="col-md-3">
+          </div>
+          <div class="col-md-3">
+            <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" #arhitectFilter></app-arhitecti-autocomplete>
+            <input type="hidden" formControlName="arhitectId" #arhitectId>
+          </div>
+          <div class="col-md-3">
+            <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+            <input type="hidden" formControlName="produsId" #produsId>
+          </div>
+          <div class="col-md-3">
             <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
             <input type="hidden" formControlName="furnizorId" #furnizorId>
-            </div>
-        
-            </div>
-        </div>
-    </form>
-    </mat-expansion-panel>    
-  </mat-accordion>
-  <app-display-errors [errors]="errors"></app-display-errors>
-    <div class="spinner-container" *ngIf="loading$">
-        <mat-spinner></mat-spinner>
-    </div>
-    <table mat-table *ngIf="oferte.length > 0" [dataSource]="oferte" multiTemplateDataRows class="table-index">
-        <ng-container matColumnDef="expand">
-            <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element" (click)="expand(element)">
-                <mat-icon>
-                    {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
-                </mat-icon>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="numar">
-            <th mat-header-cell *matHeaderCellDef>Numar</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.numar}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="data">
-            <th mat-header-cell *matHeaderCellDef>Data</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.data|customDate}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="client">
-            <th mat-header-cell *matHeaderCellDef>Client</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.client}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="arhitect">
-            <th mat-header-cell *matHeaderCellDef>Arhitect</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.arhitect}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="utilizator">
-            <th mat-header-cell *matHeaderCellDef>Utilizator</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.utilizator}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="comandate">            
-            <th mat-header-cell *matHeaderCellDef class="text-center">Comandate</th>
-            <td *matCellDef="let element" class="text-center">
-              {{element.produseProc}} / {{element.produseAll}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="select">            
-            <th mat-header-cell *matHeaderCellDef>Select</th>
-            <td *matCellDef="let element">              
-            <input #checkBox type="checkbox" *ngIf="element.produseProc!=element.produseAll"
-                [(ngModel)]="element.allComandate" (change)="getCheckbox(checkBox, element)"/>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="avans">
-            <th mat-header-cell *matHeaderCellDef>Avans</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.avans| number: '1.0-2'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="total">
-            <th mat-header-cell *matHeaderCellDef class="table-text-right">Total</th>
-            <td mat-cell *matCellDef="let element" class="table-text-right">
-                {{element.produseValoareTotala| number: '1.0-2'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="discount">
-            <th mat-header-cell *matHeaderCellDef class="table-text-right">Discount</th>
-            <td mat-cell *matCellDef="let element" class="table-text-right">
-                {{element.produseDiscount| number: '1.0-2'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="valoare">
-            <th mat-header-cell *matHeaderCellDef class="table-text-right">Valoare</th>
-            <td mat-cell *matCellDef="let element" class="table-text-right">
-                {{element.produseValoare| number: '1.0-2'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="action" class="w-5">
-            <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element">
-                <a routerLink="/oferte/edit/{{element.id}}" title="Edit">
-                    <mat-icon color="primary">edit</mat-icon>
-                </a>
-                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
-                <mat-icon class="greenIcon" title="Genereaza Excel" (click)="genereazaExcel(element)">assignment</mat-icon>
-                <mat-icon class="redIcon" [matMenuTriggerFor]="selecteazaRaport">picture_as_pdf</mat-icon>
-                <mat-menu #selecteazaRaport class="container-sm mpanel">
-                    <menu mat-menu-item (click)="genereazaPDF(element, true)">Oferta</menu>
-                    <menu mat-menu-item (click)="genereazaPDFcuPoza(element)">Oferta cu poze</menu>
-                    <menu mat-menu-item (click)="genereazaPDF(element, false)">Oferta fara pret</menu>
-                </mat-menu>
-            </td>
-        </ng-container>        
-        
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
-                <table class="table table-striped table-sm" *ngIf="element.produse.length > 0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Produs</th>
-                        <th scope="col">Cod</th>
-                        <th scope="col">Furnizor</th>
-                        <th scope="col">UM</th>
-                        <th scope="col" class="table-text-right">Cant</th>
-                        <th scope="col" class="table-text-right">Cutii</th>
-                        <th scope="col" class="table-text-right">Pret um</th>
-                        <th scope="col" class="table-text-right">Discount(%)</th>
-                        <th scope="col" class="table-text-right">Valoare</th>
-                        <th scope="col">#</th>
-                      </tr>
-                    </thead>
-                    <tbody>                        
-                      <tr *ngFor="let prod of element.produse" [ngClass]="{ 'categoryProd': prod.isCategory === true, 'stocProd':prod.isStoc === true }">
-                        <td *ngIf="prod.isCategory === true" [attr.colspan]="9" class="table-text-center">{{prod.produsNume}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.produsNume}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.codProdus}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.furnizorNume}}</td>
-                        <td *ngIf="prod.isCategory === false">{{prod.um}}</td>
-                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.cantitate| number: '1.0-2'}}</td>
-                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.cutii| number: '1.0-2'}}</td>
-                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.pretUm| number: '1.0-2'}}</td>
-                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.discount| number: '1.0-2'}}</td>
-                        <td *ngIf="prod.isCategory === false" class="table-text-right">{{prod.valoare| number: '1.0-2'}}</td>
-                        <td>                            
-                            <input type="checkbox" [(ngModel)]="prod.addToComanda" *ngIf="!prod.isInComanda" 
-                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
-                        </td>
-                      </tr>                      
-                    </tbody>
-                  </table>
-            </div>
-            </td>
-        </ng-container>
+          </div>
 
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-            class="example-element-row"
-            >
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="updatePagination($event)">
-    </mat-paginator>
+        </div>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+<app-display-errors [errors]="errors"></app-display-errors>
+@if (loading$) {
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+}
+@if (oferte.length > 0) {
+  <table mat-table [dataSource]="oferte" multiTemplateDataRows class="table-index">
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element" (click)="expand(element)">
+        <mat-icon>
+          {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
+        </mat-icon>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="numar">
+      <th mat-header-cell *matHeaderCellDef>Numar</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.numar}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="data">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.data|customDate}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef>Client</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.client}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="arhitect">
+      <th mat-header-cell *matHeaderCellDef>Arhitect</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.arhitect}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="utilizator">
+      <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.utilizator}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="comandate">
+      <th mat-header-cell *matHeaderCellDef class="text-center">Comandate</th>
+      <td *matCellDef="let element" class="text-center">
+        {{element.produseProc}} / {{element.produseAll}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>Select</th>
+      <td *matCellDef="let element">
+        @if (element.produseProc!=element.produseAll) {
+          <input #checkBox type="checkbox"
+            [(ngModel)]="element.allComandate" (change)="getCheckbox(checkBox, element)"/>
+        }
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="avans">
+      <th mat-header-cell *matHeaderCellDef>Avans</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.avans| number: '1.0-2'}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef class="table-text-right">Total</th>
+      <td mat-cell *matCellDef="let element" class="table-text-right">
+        {{element.produseValoareTotala| number: '1.0-2'}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="discount">
+      <th mat-header-cell *matHeaderCellDef class="table-text-right">Discount</th>
+      <td mat-cell *matCellDef="let element" class="table-text-right">
+        {{element.produseDiscount| number: '1.0-2'}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="valoare">
+      <th mat-header-cell *matHeaderCellDef class="table-text-right">Valoare</th>
+      <td mat-cell *matCellDef="let element" class="table-text-right">
+        {{element.produseValoare| number: '1.0-2'}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="action" class="w-5">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/oferte/edit/{{element.id}}" title="Edit">
+          <mat-icon color="primary">edit</mat-icon>
+        </a>
+        <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
+        <mat-icon class="greenIcon" title="Genereaza Excel" (click)="genereazaExcel(element)">assignment</mat-icon>
+        <mat-icon class="redIcon" [matMenuTriggerFor]="selecteazaRaport">picture_as_pdf</mat-icon>
+        <mat-menu #selecteazaRaport class="container-sm mpanel">
+          <menu mat-menu-item (click)="genereazaPDF(element, true)">Oferta</menu>
+          <menu mat-menu-item (click)="genereazaPDFcuPoza(element)">Oferta cu poze</menu>
+          <menu mat-menu-item (click)="genereazaPDF(element, false)">Oferta fara pret</menu>
+        </mat-menu>
+      </td>
+    </ng-container>
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+        @if (expandedElement.indexOf(element) > -1) {
+          <div class="example-element-detail" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">
+            @if (element.produse.length > 0) {
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Produs</th>
+                    <th scope="col">Cod</th>
+                    <th scope="col">Furnizor</th>
+                    <th scope="col">UM</th>
+                    <th scope="col" class="table-text-right">Cant</th>
+                    <th scope="col" class="table-text-right">Cutii</th>
+                    <th scope="col" class="table-text-right">Pret um</th>
+                    <th scope="col" class="table-text-right">Discount(%)</th>
+                    <th scope="col" class="table-text-right">Valoare</th>
+                    <th scope="col">#</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (prod of element.produse; track prod) {
+                    <tr [ngClass]="{ 'categoryProd': prod.isCategory === true, 'stocProd':prod.isStoc === true }">
+                      @if (prod.isCategory === true) {
+                        <td [attr.colspan]="9" class="table-text-center">{{prod.produsNume}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td>{{prod.produsNume}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td>{{prod.codProdus}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td>{{prod.furnizorNume}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td>{{prod.um}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td class="table-text-right">{{prod.cantitate| number: '1.0-2'}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td class="table-text-right">{{prod.cutii| number: '1.0-2'}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td class="table-text-right">{{prod.pretUm| number: '1.0-2'}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td class="table-text-right">{{prod.discount| number: '1.0-2'}}</td>
+                      }
+                      @if (prod.isCategory === false) {
+                        <td class="table-text-right">{{prod.valoare| number: '1.0-2'}}</td>
+                      }
+                      <td>
+                        @if (!prod.isInComanda) {
+                          <input type="checkbox" [(ngModel)]="prod.addToComanda"
+                            name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </div>
+        }
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row"
+      >
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="example-detail-row"></tr>
+  </table>
+}
+<mat-paginator [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+  (page)="updatePagination($event)">
+</mat-paginator>

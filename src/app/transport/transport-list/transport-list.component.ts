@@ -39,7 +39,7 @@ export class TransportListComponent implements OnInit, OnDestroy {
 
   transport: transportDTO[]
   expandedElement: transportDTO[];
-  checked = [];
+  checked: any[] = [];
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];

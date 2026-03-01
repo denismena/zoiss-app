@@ -1,9 +1,11 @@
 <div class="container bordered">
-    <h2>Modifica oferta</h2>    
+  <h2>Modifica oferta</h2>
 </div>
-<app-oferte-item *ngIf="model" 
+@if (model) {
+  <app-oferte-item
     [selectedProdus] = "selectedProdus"
     [preselectClient] = "preselectClient"
     [preselectArhitect] = "preselectArhitect"
-    [model]="model" (onSaveChanges)="saveChanges($event)"></app-oferte-item>
-<app-display-errors [errors]="errors"></app-display-errors>    
+  [model]="model" (onSaveChanges)="saveChanges($event)"></app-oferte-item>
+}
+<app-display-errors [errors]="errors"></app-display-errors>

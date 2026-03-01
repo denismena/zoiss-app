@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { BarcodeScannerLivestreamComponent } from 'ngx-barcode-scanner';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-home',

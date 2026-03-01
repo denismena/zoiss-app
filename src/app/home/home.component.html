@@ -1,58 +1,60 @@
 <app-authorize-view>
-    <ng-container authorize>        
-        <div class="container">    
-            <div class="row">
-                <div class="col-md-9 col-12">
-                    <app-dashboard></app-dashboard>
-                </div>
-                <div class="col-md-3">
-                    <h2>Stick notes</h2>
-                    <app-sticky-notes-list></app-sticky-notes-list>
-                    <div class="my-md-3">
-                        Scaneaza produs <br>            
-                        <app-scan-qr *ngIf="scannerEnabled"></app-scan-qr>
-                        <mat-icon class="greenIcon" (click)="scan()">camera_alt</mat-icon>
-                        <mat-icon class="redIcon" (click)="stop()">stop</mat-icon>
-                    </div>
-                    <div class="my-md-3">
-                        <h2>Updates</h2>
-                        <h3>Update 9 Mar</h3>
-                        <ul>
-                            <li>Rapoarte->Comisioane sucursale - inlocuit raportul per depozite cu comenzi per sucursale</li>
-                            <li>Transport->Edit->click pe campul de produs/depozit->optiune delete</li>
-                            <li>Comanda furnizor->Fix. split, la Transport arata valoarea initiala.</li>
-                        </ul>
-                        <h3>Update 8 Feb</h3>
-                        <ul>
-                            <li>Rapoarte->Comisioane arhitecti - Sortare si total</li>
-                        </ul>
-                        <h3>Update 3 Feb</h3>
-                        <ul>
-                            <li>Utilizatori - Optiune de a schimba statusul (activ/inactiv)</li>
-                            <li>Update secutirate aplicatie</li>
-                        </ul>
-                        <h3>Update 23 Jan</h3>
-                        <ul>
-                            <li>Fix - Sters comanda unde acelasi produc de stoc exista de mai multe ori</li>
-                            <li>Fix - Creare comanda din oferta unde acelasi produc de stoc exista de mai multe ori</li>
-                            <li>Raport nou - Nomenclatoare->Produse->Lista->buton cu raport 'Timeline stoc'</li>
-                            <li>Functionalitate noua - Rapoarte->Sterge duplicate - optiune de a sterge unul sau mai multe produse sau furnizori duplicati</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>            
-        </div>        
-    </ng-container>
-    <ng-container notAuthorize>
-        <app-login></app-login>
-    </ng-container>
+  <ng-container authorize>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-9 col-12">
+          <app-dashboard></app-dashboard>
+        </div>
+        <div class="col-md-3">
+          <h2>Stick notes</h2>
+          <app-sticky-notes-list></app-sticky-notes-list>
+          <div class="my-md-3">
+            Scaneaza produs <br>
+            @if (scannerEnabled) {
+              <app-scan-qr></app-scan-qr>
+            }
+            <mat-icon class="greenIcon" (click)="scan()">camera_alt</mat-icon>
+            <mat-icon class="redIcon" (click)="stop()">stop</mat-icon>
+          </div>
+          <div class="my-md-3">
+            <h2>Updates</h2>
+            <h3>Update 9 Mar</h3>
+            <ul>
+              <li>Rapoarte->Comisioane sucursale - inlocuit raportul per depozite cu comenzi per sucursale</li>
+              <li>Transport->Edit->click pe campul de produs/depozit->optiune delete</li>
+              <li>Comanda furnizor->Fix. split, la Transport arata valoarea initiala.</li>
+            </ul>
+            <h3>Update 8 Feb</h3>
+            <ul>
+              <li>Rapoarte->Comisioane arhitecti - Sortare si total</li>
+            </ul>
+            <h3>Update 3 Feb</h3>
+            <ul>
+              <li>Utilizatori - Optiune de a schimba statusul (activ/inactiv)</li>
+              <li>Update secutirate aplicatie</li>
+            </ul>
+            <h3>Update 23 Jan</h3>
+            <ul>
+              <li>Fix - Sters comanda unde acelasi produc de stoc exista de mai multe ori</li>
+              <li>Fix - Creare comanda din oferta unde acelasi produc de stoc exista de mai multe ori</li>
+              <li>Raport nou - Nomenclatoare->Produse->Lista->buton cu raport 'Timeline stoc'</li>
+              <li>Functionalitate noua - Rapoarte->Sterge duplicate - optiune de a sterge unul sau mai multe produse sau furnizori duplicati</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container notAuthorize>
+    <app-login></app-login>
+  </ng-container>
 </app-authorize-view>
 
 <!-- <app-authorize-view>
-    <div class="d-none d-sm-block col-md-9 col-12">
-        <app-dashboard></app-dashboard>
-    </div>
-    <ng-container notAuthorize>
-        <app-login></app-login>
-    </ng-container>
+<div class="d-none d-sm-block col-md-9 col-12">
+  <app-dashboard></app-dashboard>
+</div>
+<ng-container notAuthorize>
+  <app-login></app-login>
+</ng-container>
 </app-authorize-view> -->

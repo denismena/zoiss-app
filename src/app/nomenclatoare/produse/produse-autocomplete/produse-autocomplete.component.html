@@ -1,18 +1,19 @@
 <form class="example-form">
-    <mat-label>Produs</mat-label>    
-    <mat-icon class="greenIcon" (click)="addProdusDialog()">add_circle</mat-icon>
-    <mat-icon color="primary" (click)="editProdusDialog()">edit</mat-icon>
-    <mat-form-field class="example-full-width" appearance="fill">      
-      <input matInput
-             aria-label="Produse"
-             (ngModelChange)="search($event)"
-             [matAutocomplete]="auto"
-             [formControl]="produsCtrl">
+  <mat-label>Produs</mat-label>
+  <mat-icon class="greenIcon" (click)="addProdusDialog()">add_circle</mat-icon>
+  <mat-icon color="primary" (click)="editProdusDialog()">edit</mat-icon>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput
+      aria-label="Produse"
+      (ngModelChange)="search($event)"
+      [matAutocomplete]="auto"
+      [formControl]="produsCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        <mat-option *ngFor="let prod of selectedProdus | async" [value]="prod" [ngClass]="{'alert-danger' : !prod.active}">
-          <b>({{prod.cod}})</b> {{prod.nume}}
-        </mat-option>
+        @for (prod of (selectedProdus | async) ?? []; track prod) {
+          <mat-option [value]="prod" [ngClass]="{'alert-danger' : !prod.active}">
+            <b>({{prod.cod}})</b> {{prod.nume}}
+          </mat-option>
+        }
       </mat-autocomplete>
-    </mat-form-field>    
+    </mat-form-field>
   </form>
-  

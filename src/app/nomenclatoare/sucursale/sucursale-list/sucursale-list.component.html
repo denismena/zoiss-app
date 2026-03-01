@@ -1,41 +1,43 @@
 <div class="container">
-<mat-accordion>
+  <mat-accordion>
     <mat-expansion-panel hideToggle class="mat-elevation-z0">
       <mat-expansion-panel-header>
-        <mat-panel-description (click)="$event.stopPropagation();">            
-            <h2>Lista Sucursale
-                <button type="button" routerLink="/sucursale/create" mat-flat-button color="primary">
-                    <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
-                </button>
-            </h2> 
+        <mat-panel-description (click)="$event.stopPropagation();">
+          <h2>Lista Sucursale
+            <button type="button" routerLink="/sucursale/create" mat-flat-button color="primary">
+              <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
+            </button>
+          </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>
-    </mat-expansion-panel>    
-</mat-accordion>
+    </mat-expansion-panel>
+  </mat-accordion>
 
-<app-display-errors [errors]="errors"></app-display-errors>
+  <app-display-errors [errors]="errors"></app-display-errors>
 
-<app-generic-list [list]="sucursala">
+  <app-generic-list [list]="sucursala">
     <ng-container content>
-    <table mat-table *ngIf="sucursala.length > 0" [dataSource]="sucursala" class="table-index">        
-        <ng-container matColumnDef="nume">
+      @if (sucursala.length > 0) {
+        <table mat-table [dataSource]="sucursala" class="table-index">
+          <ng-container matColumnDef="nume">
             <th mat-header-cell *matHeaderCellDef>Nume</th>
             <td mat-cell *matCellDef="let element">
-                {{element.nume}}
+              {{element.nume}}
             </td>
-        </ng-container>        
-        <ng-container matColumnDef="action">
+          </ng-container>
+          <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element">                
-                <a routerLink="/sucursale/edit/{{element.id}}" title="Edit">
-                    <mat-icon color="primary">edit</mat-icon>
-                </a>
-                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
+            <td mat-cell *matCellDef="let element">
+              <a routerLink="/sucursale/edit/{{element.id}}" title="Edit">
+                <mat-icon color="primary">edit</mat-icon>
+              </a>
+              <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
             </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-    </table>
-</ng-container>
-</app-generic-list>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+        </table>
+      }
+    </ng-container>
+  </app-generic-list>
 </div>

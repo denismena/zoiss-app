@@ -1,8 +1,10 @@
 <div class="container bordered">
-    <h2>Editeaza Livrarea Client: {{this.client}} </h2>
+  <h2>Editeaza Livrarea Client: {{this.client}} </h2>
 </div>
-<app-livrari-item *ngIf="model" 
-[selectedProdus] = "selectedProdus"
-[clientId] = "clientId"
-[model]="model" (onSaveChanges)="saveChanges($event)"></app-livrari-item>
+@if (model) {
+  <app-livrari-item
+    [selectedProdus] = "selectedProdus"
+    [clientId] = "clientId"
+  [model]="model" (onSaveChanges)="saveChanges($event)"></app-livrari-item>
+}
 <app-display-errors [errors]="errors"></app-display-errors>

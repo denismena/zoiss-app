@@ -1,79 +1,87 @@
 <form (submit)="saveChanges()" [formGroup]="form">
-    <div class="container bordered">            
-        <div class="row">
-            <div class="col-md-4">                
-                <mat-label>Referinta</mat-label>
-                <mat-form-field appearance="outline">            
-                    <input formControlName="referinta" matInput>
-                    <mat-error>Completati Referinta!</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4">
-            <mat-label>Transportator</mat-label>
-            <mat-form-field appearance="outline">                
-                <mat-select formControlName="transportatorId" (selectionChange)="selectTransportator($event)">
-                    <mat-option *ngFor="let trans of transportatorList" [value]="trans.id">
-                        {{trans.nume}}
-                    </mat-option>            
-                </mat-select>
-            </mat-form-field>
-            </div>
-            <div class="col-md-4">
-                <mat-label>Data</mat-label>            
-                <mat-form-field appearance="outline">            
-                    <input formControlName="data" matInput [matDatepicker]="dataPicker">
-                    <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #dataPicker></mat-datepicker>
-                    <mat-error>Completati data!</mat-error>
-                </mat-form-field>  
-            </div>
-    </div>
+  <div class="container bordered">
     <div class="row">
-    <div class="col-md-4">
-        <mat-label>Adresa</mat-label>
-        <mat-form-field appearance="outline">            
-            <input formControlName="adresa" matInput>
+      <div class="col-md-4">
+        <mat-label>Referinta</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="referinta" matInput>
+          <mat-error>Completati Referinta!</mat-error>
         </mat-form-field>
-    </div>
-    <div class="col-md-8">
-        <mat-label>Detalii</mat-label>
-        <mat-form-field appearance="outline">            
-            <input formControlName="detalii" matInput>
-        </mat-form-field>    
-    </div>
-    </div>    
-    <div class="col-md-12">
-        <mat-divider></mat-divider>
-        <app-transport-produse *ngIf="selectedProdus" [selectedProdus]="selectedProdus" [depoziteLista]="depoziteLista"
-            [showModificaDepozit]="showModificaDepozit"></app-transport-produse>
+      </div>
+      <div class="col-md-4">
+        <mat-label>Transportator</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="transportatorId" (selectionChange)="selectTransportator($event)">
+            @for (trans of transportatorList; track trans) {
+              <mat-option [value]="trans.id">
+                {{trans.nume}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-label>Data</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="data" matInput [matDatepicker]="dataPicker">
+          <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dataPicker></mat-datepicker>
+          <mat-error>Completati data!</mat-error>
+        </mat-form-field>
+      </div>
     </div>
     <div class="row">
-    
+      <div class="col-md-4">
+        <mat-label>Adresa</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="adresa" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col-md-8">
+        <mat-label>Detalii</mat-label>
+        <mat-form-field appearance="outline">
+          <input formControlName="detalii" matInput>
+        </mat-form-field>
+      </div>
     </div>
-</div>
-<div class="container">
+    <div class="col-md-12">
+      <mat-divider></mat-divider>
+      @if (selectedProdus) {
+        <app-transport-produse [selectedProdus]="selectedProdus" [depoziteLista]="depoziteLista"
+        [showModificaDepozit]="showModificaDepozit"></app-transport-produse>
+      }
+    </div>
+    <div class="row">
+
+    </div>
+  </div>
+  <div class="container">
     <div class="row form-footer">
-        <div class="col-md-6">
-            <br />
-            <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-            <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
-        </div>
-        <div class="col-md-4">
-            <br />
-            <mat-form-field appearance="fill" *ngIf="showModificaDepozit">
-                <mat-label>Depozit nou:</mat-label>
-                <mat-select formControlName="newDepozitId" (selectionChange)="selectNewDepozit($event)">
-                    <mat-option *ngFor="let depozit of depoziteList" [value]="depozit.id">
-                        {{depozit.nume}}
-                    </mat-option>            
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <br />
-            <button type="button" mat-flat-button color="primary" (click)="modificaDepozitClick()">
-                {{ showModificaDepozit == true ? 'Renunta' : 'Modifica depozit' }}</button>
-        </div>
+      <div class="col-md-6">
+        <br />
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/transport" mat-flat-button color="primary">Renunta</a>
+      </div>
+      <div class="col-md-4">
+        <br />
+        @if (showModificaDepozit) {
+          <mat-form-field appearance="fill">
+            <mat-label>Depozit nou:</mat-label>
+            <mat-select formControlName="newDepozitId" (selectionChange)="selectNewDepozit($event)">
+              @for (depozit of depoziteList; track depozit) {
+                <mat-option [value]="depozit.id">
+                  {{depozit.nume}}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+      </div>
+      <div class="col-md-2">
+        <br />
+        <button type="button" mat-flat-button color="primary" (click)="modificaDepozitClick()">
+        {{ showModificaDepozit == true ? 'Renunta' : 'Modifica depozit' }}</button>
+      </div>
     </div>
-</div>    
+  </div>
 </form>

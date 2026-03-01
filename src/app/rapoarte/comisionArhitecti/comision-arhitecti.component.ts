@@ -28,7 +28,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class ComisionArhitectiComponent implements OnInit, OnDestroy {
 
   loading$: boolean = true;
-  checked = [];
+  checked: any[] = [];
   comisioaneArhitecti: arhitectiComisionDTO[];
   expandedElement: arhitectiComisionDTO[];
   sortedData: arhitectiComisionDTO[] = [];

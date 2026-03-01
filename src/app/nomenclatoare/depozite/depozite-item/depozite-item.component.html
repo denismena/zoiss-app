@@ -1,55 +1,57 @@
 <form (submit) = "saveChanges()" [formGroup]="form">
-<div class="container bordered">    
-        <mat-form-field appearance="outline">
-            <mat-label>Nume</mat-label>
-            <input formControlName="nume" matInput>
-            <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
-            <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Adresa</mat-label>
-            <input formControlName="adresa" matInput>
-            <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Persoana Contact</mat-label>
-            <input formControlName="persoanaContact" matInput>
-            <mat-error>{{form.get("persoanaContact")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>        
-        <mat-form-field appearance="outline">
-            <mat-label>Persoana Contact Telefon</mat-label>
-            <input formControlName="persoanaContactTel" matInput>
-            <mat-error>{{form.get("persoanaContactTel")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Persoana Contact Email</mat-label>
-            <input formControlName="persoanaContactEmail" matInput>
-            <mat-error>{{form.get("persoanaContactEmail")?.getError("email")?.message}}</mat-error>
-            <mat-error>{{form.get("persoanaContactEmail")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Sort</mat-label>
-            <input formControlName="sort" matInput>
-            <mat-error>{{form.get("sort")?.getError("required")?.message}}</mat-error>
-            <mat-error>{{form.get("sort")?.getError("numeric")?.message}}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Precedent</mat-label>
-            <mat-select formControlName="parentId" (selectionChange)="selectParent($event)">
-                <mat-option *ngFor="let depozit of depozitList" [value]="depozit.id">
-                {{depozit.nume}}
-                </mat-option>            
-            </mat-select>
-            <mat-error>{{form.get("parentId")?.getError("noneOf")?.message}}</mat-error>
-        </mat-form-field>
-        <div>            
-            <mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle>
-        </div>
-</div>
-<div class="container">
-    <div class="form-footer">
-        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-        <a mat-stroke-button routerLink="/depozite" mat-flat-button color="primary">Renunta</a>
+  <div class="container bordered">
+    <mat-form-field appearance="outline">
+      <mat-label>Nume</mat-label>
+      <input formControlName="nume" matInput>
+      <mat-error>{{form.get("nume")?.getError("required")?.message}}</mat-error>
+      <mat-error>{{form.get("nume")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Adresa</mat-label>
+      <input formControlName="adresa" matInput>
+      <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Persoana Contact</mat-label>
+      <input formControlName="persoanaContact" matInput>
+      <mat-error>{{form.get("persoanaContact")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Persoana Contact Telefon</mat-label>
+      <input formControlName="persoanaContactTel" matInput>
+      <mat-error>{{form.get("persoanaContactTel")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Persoana Contact Email</mat-label>
+      <input formControlName="persoanaContactEmail" matInput>
+      <mat-error>{{form.get("persoanaContactEmail")?.getError("email")?.message}}</mat-error>
+      <mat-error>{{form.get("persoanaContactEmail")?.getError("maxLength")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Sort</mat-label>
+      <input formControlName="sort" matInput>
+      <mat-error>{{form.get("sort")?.getError("required")?.message}}</mat-error>
+      <mat-error>{{form.get("sort")?.getError("numeric")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Precedent</mat-label>
+      <mat-select formControlName="parentId" (selectionChange)="selectParent($event)">
+        @for (depozit of depozitList; track depozit) {
+          <mat-option [value]="depozit.id">
+            {{depozit.nume}}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error>{{form.get("parentId")?.getError("noneOf")?.message}}</mat-error>
+    </mat-form-field>
+    <div>
+      <mat-slide-toggle class="example-margin" color="primary" formControlName="active">Active</mat-slide-toggle>
     </div>
-</div>
+  </div>
+  <div class="container">
+    <div class="form-footer">
+      <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+      <a mat-stroke-button routerLink="/depozite" mat-flat-button color="primary">Renunta</a>
+    </div>
+  </div>
 </form>

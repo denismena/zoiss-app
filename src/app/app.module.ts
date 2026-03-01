@@ -50,6 +50,7 @@ import { ArhitectiAutocompleteComponent } from './nomenclatoare/arhitecti/arhite
 
 import { InputImgComponent } from './utilities/input-img/input-img.component';
 import {CustomDateTimePipe, CustomDatePipe, DaNuPipe, FilterComandaProdusStocPipe} from './utilities/custom.datepipe';
+import { SafeHtmlPipe } from './utilities/safe-html.pipe';
 import { OferteProduseAutocompleteComponent } from './oferte/oferte-produse-autocomplete/oferte-produse-autocomplete.component';
 import { ClientiAdresaComponent } from './nomenclatoare/clienti/clienti-adresa/clienti-adresa.component';
 import { UmListComponent } from './nomenclatoare/um/um-list/um-list.component';
@@ -101,7 +102,7 @@ import { StickyNotesListComponent } from './stickyNote/sticky-notes-list/sticky-
 import { NotificariItemComponent } from './notificari/notificari-item/notificari-item.component';
 import { NotificariListComponent } from './notificari/notificari-list/notificari-list.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { QRCodeModule } from 'angularx-qrcode';
+import { QRCodeComponent } from 'angularx-qrcode';
 import { ScanQRComponent } from './scan-qr/scan-qr.component';
 import { ForgetPassComponent } from './security/forget-pass/forget-pass.component';
 import { ResetPassComponent } from './security/reset-pass/reset-pass.component';
@@ -138,6 +139,7 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         CustomDatePipe,
         DaNuPipe,
         FilterComandaProdusStocPipe,
+        SafeHtmlPipe,
         ProduseListComponent,
         ProduseItemComponent,
         ClientiListComponent,
@@ -252,7 +254,7 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         RxReactiveFormsModule,
         AngularEditorModule,
         ZXingScannerModule,
-        QRCodeModule,
+        QRCodeComponent,
         HighchartsChartModule], providers: [{
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptorService,

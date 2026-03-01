@@ -1,64 +1,73 @@
-<table #produseTable style="width: 100%;"
+@if (selectedProdus.length > 0) {
+  <table #produseTable style="width: 100%;"
     mat-table
-    *ngIf="selectedProdus.length > 0"
     [dataSource]="selectedProdus">
-
     <ng-container matColumnDef="clientNume">
-        <th mat-header-cell *matHeaderCellDef>Client</th>
-        <td mat-cell *matCellDef="let element">{{element.clientNume}}</td>
+      <th mat-header-cell *matHeaderCellDef>Client</th>
+      <td mat-cell *matCellDef="let element">{{element.clientNume}}</td>
     </ng-container>
     <ng-container matColumnDef="produsCod">
-        <th mat-header-cell *matHeaderCellDef>Cod</th>
-        <td mat-cell *matCellDef="let element">{{element.produsCod}}</td>
+      <th mat-header-cell *matHeaderCellDef>Cod</th>
+      <td mat-cell *matCellDef="let element">{{element.produsCod}}</td>
     </ng-container>
     <ng-container matColumnDef="produsNume">
-        <th mat-header-cell *matHeaderCellDef>Produs</th>
-        <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
+      <th mat-header-cell *matHeaderCellDef>Produs</th>
+      <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
     </ng-container>
     <ng-container matColumnDef="cantitate">
-        <th mat-header-cell *matHeaderCellDef>Cantitate</th>
-        <td mat-cell *matCellDef="let element">{{element.cantitate}}</td>
+      <th mat-header-cell *matHeaderCellDef>Cantitate</th>
+      <td mat-cell *matCellDef="let element">{{element.cantitate}}</td>
     </ng-container>
     <ng-container matColumnDef="um">
-        <th mat-header-cell *matHeaderCellDef>UM</th>
-        <td mat-cell *matCellDef="let element">{{element.um}}</td>
+      <th mat-header-cell *matHeaderCellDef>UM</th>
+      <td mat-cell *matCellDef="let element">{{element.um}}</td>
     </ng-container>
     <ng-container matColumnDef="cutii">
-        <th mat-header-cell *matHeaderCellDef>Cutii</th>
-        <td mat-cell *matCellDef="let element">{{element.cutii}}</td>
+      <th mat-header-cell *matHeaderCellDef>Cutii</th>
+      <td mat-cell *matCellDef="let element">{{element.cutii}}</td>
     </ng-container>
     <ng-container matColumnDef="depozit">
-        <th mat-header-cell *matHeaderCellDef>Depozit</th>
-        <td mat-cell *matCellDef="let element">{{element.depozit}}</td>
+      <th mat-header-cell *matHeaderCellDef>Depozit</th>
+      <td mat-cell *matCellDef="let element">{{element.depozit}}</td>
     </ng-container>
-    <ng-container *ngFor="let disCol of this.depoziteLista; let colIndex = index" matColumnDef="{{disCol}}">        
-        <th mat-header-cell *matHeaderCellDef>{{disCol}} 
-            <mat-icon style="cursor: pointer;" (click)="showPromptAll(disCol)">add</mat-icon> </th>        
-        <td mat-cell *matCellDef="let element">
-            <span *ngIf="findByDepozit(element.transportProduseDepozit,disCol) as dep">
-                <span *ngIf="dep?.data!=null">
+    @for (disCol of this.depoziteLista; track disCol; let colIndex = $index) {
+      <ng-container matColumnDef="{{disCol}}">
+        <th mat-header-cell *matHeaderCellDef>{{disCol}}
+          <mat-icon style="cursor: pointer;" (click)="showPromptAll(disCol)">add</mat-icon> </th>
+          <td mat-cell *matCellDef="let element">
+            @if (findByDepozit(element.transportProduseDepozit,disCol); as dep) {
+              <span>
+                @if (dep?.data!=null) {
+                  <span>
                     <span [ngClass]="{'fw-bold': dep.pozaPath != ''}">{{dep.data|customDate}}</span>
                     <mat-icon matTooltip={{dep.detalii}} (click)="showPrompt(element.id, dep.id, dep.data, dep.detalii, dep.pozaPath)">info</mat-icon>
-                </span>
-                <span *ngIf="dep?.data==null">
+                  </span>
+                }
+                @if (dep?.data==null) {
+                  <span>
                     <button type="button" mat-flat-button color="primary" (click)="showPrompt(element.id,dep.id, null, '', '')">
-                        <mat-icon>add</mat-icon>
+                      <mat-icon>add</mat-icon>
                     </button>
-                </span>
-            </span>            
-        </td>        
-    </ng-container>
-    <ng-container matColumnDef="livrat">
+                  </span>
+                }
+              </span>
+            }
+          </td>
+        </ng-container>
+      }
+      <ng-container matColumnDef="livrat">
         <th mat-header-cell *matHeaderCellDef>Livrat</th>
         <td mat-cell *matCellDef="let element">{{element.livrat|daNu}}</td>
-    </ng-container>
-    <ng-container matColumnDef="#">            
+      </ng-container>
+      <ng-container matColumnDef="#">
         <th mat-header-cell *matHeaderCellDef>#</th>
-        <td *matCellDef="let element">              
-            <input #checkBox type="checkbox" [(ngModel)]="element.selectedNewDepozit" *ngIf="this.showModificaDepozit" />
+        <td *matCellDef="let element">
+          @if (this.showModificaDepozit) {
+            <input #checkBox type="checkbox" [(ngModel)]="element.selectedNewDepozit" />
+          }
         </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-
-</table>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+  }

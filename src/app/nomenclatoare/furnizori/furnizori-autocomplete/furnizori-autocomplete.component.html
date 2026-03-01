@@ -1,18 +1,19 @@
 <form class="example-form">
-    <mat-label>Furnizor</mat-label>    
-    <mat-icon class="greenIcon" (click)="addFurnizorDialog()">add_circle</mat-icon>
-    <mat-icon color="primary" (click)="editFurnizorDialog()">edit</mat-icon>
-    <mat-form-field class="example-full-width" appearance="fill">      
-      <input matInput
-             aria-label="Furnizori"
-             (ngModelChange)="search($event)"
-             [matAutocomplete]="auto"
-             [formControl]="furnizorCtrl">
+  <mat-label>Furnizor</mat-label>
+  <mat-icon class="greenIcon" (click)="addFurnizorDialog()">add_circle</mat-icon>
+  <mat-icon color="primary" (click)="editFurnizorDialog()">edit</mat-icon>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput
+      aria-label="Furnizori"
+      (ngModelChange)="search($event)"
+      [matAutocomplete]="auto"
+      [formControl]="furnizorCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        <mat-option *ngFor="let furn of selectedFurnizor | async" [value]="furn" [ngClass]="{'alert-danger' : !furn.active}">
+        @for (furn of (selectedFurnizor | async) ?? []; track furn) {
+          <mat-option [value]="furn" [ngClass]="{'alert-danger' : !furn.active}">
             {{furn.nume}}
-        </mat-option>
+          </mat-option>
+        }
       </mat-autocomplete>
-    </mat-form-field>    
+    </mat-form-field>
   </form>
-  
