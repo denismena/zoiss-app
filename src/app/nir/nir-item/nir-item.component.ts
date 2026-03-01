@@ -40,7 +40,6 @@ export class NirItemComponent implements OnInit, OnDestroy{
       .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
       .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
-        console.log('next number assigne', data);
       });
     }
   }

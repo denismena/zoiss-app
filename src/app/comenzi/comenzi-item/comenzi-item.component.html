@@ -70,7 +70,7 @@
             <label id="example-radio-group-label">Adresa livrare</label>
             <mat-radio-group
               aria-labelledby="example-radio-group-label"
-              class="example-radio-group"formControlName="clientiAdresaId">
+              class="example-radio-group" formControlName="clientiAdresaId">
               @for (adresa of adresa; track adresa) {
                 <mat-radio-button class="example-radio-button" [value]="adresa.id">
                   <b>Depozit: </b>{{adresa.depozit}}   <b>Adresa: </b>{{adresa.adresa}}   <b>Oras: </b>{{adresa.oras}}

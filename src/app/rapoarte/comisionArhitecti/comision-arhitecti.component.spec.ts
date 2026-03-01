@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs';
 
 import { ComisionArhitectiComponent } from './comision-arhitecti.component';
+import { RapoarteService } from '../rapoarte.service';
+import { ExportService } from 'src/app/utilities/export.service';
+import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 describe('ComisionArhitectiComponent', () => {
   let component: ComisionArhitectiComponent;
@@ -8,7 +13,13 @@ describe('ComisionArhitectiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ComisionArhitectiComponent ]
+      declarations: [ ComisionArhitectiComponent ],
+      providers: [
+        UnsubscribeService,
+        { provide: RapoarteService, useValue: { comisionArhitect: () => of([]) } },
+        { provide: ExportService, useValue: { exportToExcel: () => {} } }
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   });

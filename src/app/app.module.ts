@@ -29,6 +29,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { DisplayErrorsComponent } from './utilities/display-errors/display-errors.component';
 import { GenericListComponent } from './utilities/generic-list/generic-list.component';
+import { LoadingSlotDirective } from './utilities/generic-list/loading-slot.directive';
+import { EmptySlotDirective } from './utilities/generic-list/empty-slot.directive';
 
 import { FurnizoriListComponent } from './nomenclatoare/furnizori/furnizori-list/furnizori-list.component';
 import { FurnizoriItemComponent } from './nomenclatoare/furnizori/furnizori-item/furnizori-item.component';
@@ -140,6 +142,8 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         DaNuPipe,
         FilterComandaProdusStocPipe,
         SafeHtmlPipe,
+        LoadingSlotDirective,
+        EmptySlotDirective,
         ProduseListComponent,
         ProduseItemComponent,
         ClientiListComponent,

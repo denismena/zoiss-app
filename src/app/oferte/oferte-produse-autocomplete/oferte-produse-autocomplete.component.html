@@ -103,7 +103,7 @@
 </form>
 
 @if (selectedProdusFiltered.length > 0) {
-  <table #produseTable style="width: 100%;" mat-table[dataSource]="selectedProdusFiltered"
+  <table #produseTable style="width: 100%;" mat-table [dataSource]="selectedProdusFiltered"
     cdkDropList [cdkDropListData]="selectedProdusFiltered" (cdkDropListDropped)="dropped($event)">
     <ng-container matColumnDef="codProdus">
       <th mat-header-cell *matHeaderCellDef>Cod</th>
