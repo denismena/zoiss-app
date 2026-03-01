@@ -1,8 +1,10 @@
 <div class="container bordered">
-    <h2>Editeaza Comanda Furnizor {{this.furnizorName}}</h2>
+  <h2>Editeaza Comanda Furnizor {{this.furnizorName}}</h2>
 </div>
-<app-display-errors [errors]="errors"></app-display-errors>    
-<app-comenzi-furn-item *ngIf="model"
-[selectedProdus]="selectedProdus"
-[model]="model" 
-(onSaveChanges)="saveChanges($event)"></app-comenzi-furn-item>
+<app-display-errors [errors]="errors"></app-display-errors>
+@if (model) {
+  <app-comenzi-furn-item
+    [selectedProdus]="selectedProdus"
+    [model]="model"
+  (onSaveChanges)="saveChanges($event)"></app-comenzi-furn-item>
+}

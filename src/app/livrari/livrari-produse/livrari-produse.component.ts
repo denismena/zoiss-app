@@ -16,7 +16,7 @@ export class LivrariProduseComponent implements OnInit, OnDestroy {
   
   @Input() selectedProdus: livrariProduseDTO[]=[];
   @Input() clientId: number | undefined;
-  checked = [];  
+  checked: any[] = [];  
   @ViewChild(MatTable)
   table!: MatTable<any>;
   

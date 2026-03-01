@@ -1,213 +1,225 @@
 <mat-accordion>
-    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
-      <mat-expansion-panel-header>
-        <mat-panel-description (click)="$event.stopPropagation();">
-            <div (click)="togglePanel()">
-                <mat-icon class="greenIcon">
-                    {{ panelOpenState ? 'expand_less' : 'expand_more' }}
-                </mat-icon>
+  <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
+    <mat-expansion-panel-header>
+      <mat-panel-description (click)="$event.stopPropagation();">
+        <div (click)="togglePanel()">
+          <mat-icon class="greenIcon">
+            {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </div>
+        <h2>Lista Comenzi Furnizori
+          <button mat-flat-button color="primary" (click)="genereazaTransport()" matTooltip="Genereaza transport">
+            <img src="assets/img/icons/material-design-icons/two-tone/local_shipping.svg" alt="Genereaza transport" height="30" width="30" class="greenIcon">
+          </button>
+        </h2>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="form">
+      <div>
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>De la data</mat-label>
+              <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerFrom></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>La data</mat-label>
+              <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerTo></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <mat-slide-toggle formControlName="sucursala">Doar sucursala mea</mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <mat-slide-toggle formControlName="allTransportate">Doar netransportate</mat-slide-toggle>
+            <div style="float: right;">
+              <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
             </div>
-            <h2>Lista Comenzi Furnizori
-                <button mat-flat-button color="primary" (click)="genereazaTransport()" matTooltip="Genereaza transport">                    
-                    <img src="assets/img/icons/material-design-icons/two-tone/local_shipping.svg" alt="Genereaza transport" height="30" width="30" class="greenIcon">
-                </button>                
-            </h2>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <form [formGroup]="form">
-        <div>    
-            <div class="row">
-                <div class="col-md-3">
-        <mat-form-field appearance="outline">
-            <mat-label>De la data</mat-label>
-            <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerFrom></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
-                </div>
-        <div class="col-md-3">
-        <mat-form-field appearance="outline">
-            <mat-label>La data</mat-label>
-            <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerTo></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
+          </div>
         </div>
-        <div class="col-md-2">
-        <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    
-        </div>
-        <div class="col-md-2">
-        <mat-slide-toggle formControlName="sucursala">Doar sucursala mea</mat-slide-toggle>    
-        </div>
-        <div class="col-md-2">
-        <mat-slide-toggle formControlName="allTransportate">Doar netransportate</mat-slide-toggle>
-        <div style="float: right;">
-            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
-        </div>                
-        </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-3">
-                    <mat-form-field appearance="outline" class="w-50">
-                        <mat-label>Disponibilitate de la data</mat-label>
-                        <input formControlName="disponibilitateFromDate" matInput [matDatepicker]="dataPickerDispFrom">
-                        <mat-datepicker-toggle matSuffix [for]="dataPickerDispFrom"></mat-datepicker-toggle>
-                        <mat-datepicker #dataPickerDispFrom></mat-datepicker>                        
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="w-50">
-                        <mat-label>Disponibilitate la data</mat-label>
-                        <input formControlName="disponibilitateToDate" matInput [matDatepicker]="dataPickerDispTo">
-                        <mat-datepicker-toggle matSuffix [for]="dataPickerDispTo"></mat-datepicker-toggle>
-                        <mat-datepicker #dataPickerDispTo></mat-datepicker>                        
-                    </mat-form-field>
-                </div>
-                <div class="col-md-3">
-        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field appearance="outline" class="w-50">
+              <mat-label>Disponibilitate de la data</mat-label>
+              <input formControlName="disponibilitateFromDate" matInput [matDatepicker]="dataPickerDispFrom">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerDispFrom"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerDispFrom></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-50">
+              <mat-label>Disponibilitate la data</mat-label>
+              <input formControlName="disponibilitateToDate" matInput [matDatepicker]="dataPickerDispTo">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerDispTo"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerDispTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>
             <input type="hidden" formControlName="clientId" #clientId>
-                </div>
-            
-        <div class="col-md-3">
-        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
-        <input type="hidden" formControlName="produsId" #produsId>
-        </div>        
-        <div class="col-md-3">
+          </div>
+
+          <div class="col-md-3">
+            <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+            <input type="hidden" formControlName="produsId" #produsId>
+          </div>
+          <div class="col-md-3">
             <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
             <input type="hidden" formControlName="furnizorId" #furnizorId>
-            </div>
-        
-            </div>
-        </div>
-    </form>
-    </mat-expansion-panel>    
-  </mat-accordion>
-<br />
-<div class="spinner-container" *ngIf="loading$">
-    <mat-spinner></mat-spinner>
-</div>
-<app-display-errors [errors]="errors"></app-display-errors>
-    <table mat-table *ngIf="comenziFurnizor.length > 0" [dataSource]="comenziFurnizor" multiTemplateDataRows>
-        <ng-container matColumnDef="expand">
-            <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element" (click)="expand(element)">
-                <mat-icon *ngIf="element.produseComenziFurnizorAll > 0">
-                    {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
-                  </mat-icon>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="numar">
-            <th mat-header-cell *matHeaderCellDef>Numar</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.numar}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="data">
-            <th mat-header-cell *matHeaderCellDef>Data</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.data|customDate}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="furnizor">
-            <th mat-header-cell *matHeaderCellDef>Furnizor</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.furnizor}}
-            </td>
-        </ng-container>        
-        <ng-container matColumnDef="utilizator">
-            <th mat-header-cell *matHeaderCellDef>Utilizator</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.utilizator}}
-            </td>
-        </ng-container>        
-        <ng-container matColumnDef="termen">
-            <th mat-header-cell *matHeaderCellDef>Termen livrare</th>
-            <td mat-cell *matCellDef="let element">
-                {{element.termenLivrare}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="transportate">            
-            <th mat-header-cell *matHeaderCellDef>Transportate</th>
-            <td *matCellDef="let element">
-              {{element.produseComenziFurnizorProc}} / {{element.produseComenziFurnizorAll}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="select">            
-            <th mat-header-cell *matHeaderCellDef>Select</th>
-            <td *matCellDef="let element">              
-              <input #checkBox type="checkbox" *ngIf="element.produseComenziFurnizorProc!=element.produseComenziFurnizorAll"
-                [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="platit">            
-            <th mat-header-cell *matHeaderCellDef>Platit</th>
-            <td *matCellDef="let element">
-                <mat-slide-toggle [(ngModel)]="element.platit" (change)="setPlatita($event, element.id)"></mat-slide-toggle>
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element">
-                <a routerLink="/comenziFurnizor/edit/{{element.id}}" title="Edit">
-                    <mat-icon color="primary">edit</mat-icon>
-                </a>
-                <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
-                <mat-icon class="greenIcon" matTooltip="Genereaza Excel" (click)="genereazaExcel(element)">assignment</mat-icon>
-            </td>
-        </ng-container>
-        
-        
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
-                <table class="table table-striped table-sm" *ngIf="element.comenziFurnizoriProduse.length > 0">
-                    <thead>
-                      <tr>
-                        <th scope="col">Client</th>
-                        <th scope="col">Produs</th>
-                        <th scope="col">Cod</th>
-                        <th scope="col">UM</th>
-                        <th scope="col">Cant</th>
-                        <th scope="col">Cutii</th>
-                        <th scope="col">Pret um</th>
-                        <th scope="col">Valoare</th>
-                        <th scope="col">Disponibilitate</th>                        
-                        <th scope="col">#</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let prod of element.comenziFurnizoriProduse">                        
-                        <td>{{prod.clientNume}}</td>
-                        <td>{{prod.produsNume}}</td>
-                        <td>{{prod.codProdus}}</td>
-                        <td>{{prod.um}}</td>
-                        <td>{{prod.cantitate}}</td>
-                        <td>{{prod.cutii}}</td>
-                        <td>{{prod.pretUm}}</td>
-                        <td>{{prod.valoare}}</td>
-                        <td>{{prod.disponibilitate|customDate}}</td>                        
-                        <td>                            
-                            <input type="checkbox" [(ngModel)]="prod.addToTransport" *ngIf="!prod.isInTransport" 
-                                name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
-                        </td>
-                      </tr>                      
-                    </tbody>
-                  </table>
-            </div>
-            </td>
-        </ng-container>
+          </div>
 
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-            class="example-element-row"
-            >
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-        (page)="updatePagination($event)">
-    </mat-paginator>
-    
+        </div>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+<br />
+@if (loading$) {
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+}
+<app-display-errors [errors]="errors"></app-display-errors>
+@if (comenziFurnizor.length > 0) {
+  <table mat-table [dataSource]="comenziFurnizor" multiTemplateDataRows>
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element" (click)="expand(element)">
+        @if (element.produseComenziFurnizorAll > 0) {
+          <mat-icon>
+            {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        }
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="numar">
+      <th mat-header-cell *matHeaderCellDef>Numar</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.numar}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="data">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.data|customDate}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="furnizor">
+      <th mat-header-cell *matHeaderCellDef>Furnizor</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.furnizor}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="utilizator">
+      <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.utilizator}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="termen">
+      <th mat-header-cell *matHeaderCellDef>Termen livrare</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.termenLivrare}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="transportate">
+      <th mat-header-cell *matHeaderCellDef>Transportate</th>
+      <td *matCellDef="let element">
+        {{element.produseComenziFurnizorProc}} / {{element.produseComenziFurnizorAll}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>Select</th>
+      <td *matCellDef="let element">
+        @if (element.produseComenziFurnizorProc!=element.produseComenziFurnizorAll) {
+          <input #checkBox type="checkbox"
+            [(ngModel)]="element.allComandate"(change)="getCheckbox(checkBox, element)"/>
+        }
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="platit">
+      <th mat-header-cell *matHeaderCellDef>Platit</th>
+      <td *matCellDef="let element">
+        <mat-slide-toggle [(ngModel)]="element.platit" (change)="setPlatita($event, element.id)"></mat-slide-toggle>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/comenziFurnizor/edit/{{element.id}}" title="Edit">
+          <mat-icon color="primary">edit</mat-icon>
+        </a>
+        <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
+        <mat-icon class="greenIcon" matTooltip="Genereaza Excel" (click)="genereazaExcel(element)">assignment</mat-icon>
+      </td>
+    </ng-container>
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+        @if (expandedElement.indexOf(element) > -1) {
+          <div class="example-element-detail" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">
+            @if (element.comenziFurnizoriProduse.length > 0) {
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Client</th>
+                    <th scope="col">Produs</th>
+                    <th scope="col">Cod</th>
+                    <th scope="col">UM</th>
+                    <th scope="col">Cant</th>
+                    <th scope="col">Cutii</th>
+                    <th scope="col">Pret um</th>
+                    <th scope="col">Valoare</th>
+                    <th scope="col">Disponibilitate</th>
+                    <th scope="col">#</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (prod of element.comenziFurnizoriProduse; track prod) {
+                    <tr>
+                      <td>{{prod.clientNume}}</td>
+                      <td>{{prod.produsNume}}</td>
+                      <td>{{prod.codProdus}}</td>
+                      <td>{{prod.um}}</td>
+                      <td>{{prod.cantitate}}</td>
+                      <td>{{prod.cutii}}</td>
+                      <td>{{prod.pretUm}}</td>
+                      <td>{{prod.valoare}}</td>
+                      <td>{{prod.disponibilitate|customDate}}</td>
+                      <td>
+                        @if (!prod.isInTransport) {
+                          <input type="checkbox" [(ngModel)]="prod.addToTransport"
+                            name="list_name" value="{{prod.id}}" (change)="isAllSelected(element)" />
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </div>
+        }
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row"
+      >
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+}
+<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+  (page)="updatePagination($event)">
+</mat-paginator>

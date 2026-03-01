@@ -1,5 +1,7 @@
 <div class="container bordered">
-    <h2>Edit UM</h2>
+  <h2>Edit UM</h2>
 </div>
-<app-um-item *ngIf="model" [model]="model" (onSaveChanges)="saveChanges($event)"></app-um-item>
+@if (model) {
+  <app-um-item [model]="model" (onSaveChanges)="saveChanges($event)"></app-um-item>
+}
 <app-display-errors [errors]="errors"></app-display-errors>

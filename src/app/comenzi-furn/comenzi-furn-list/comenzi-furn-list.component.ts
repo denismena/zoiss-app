@@ -38,7 +38,7 @@ export class ComenziFurnListComponent implements OnInit, OnDestroy {
 
   comenziFurnizor: comenziFurnizorDTO[]
   expandedElement: comenziFurnizorDTO[];
-  checked = [];
+  checked: any[] = [];
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];

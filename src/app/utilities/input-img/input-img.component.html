@@ -1,14 +1,20 @@
 <div>
-    <button type="button" mat-raised-button (click)="fileInput.click()" color="primary">Select image</button>
-    <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="change($event)" />
-    <button type="button" mat-raised-button (click)="delete()" *ngIf="imageBase64 || urlCurrentImage" color="primary">Delete image</button>
+  <button type="button" mat-raised-button (click)="fileInput.click()" color="primary">Select image</button>
+  <input type="file" hidden #fileInput accept="image/png, image/jpeg" (change)="change($event)" />
+  @if (imageBase64 || urlCurrentImage) {
+    <button type="button" mat-raised-button (click)="delete()" color="primary">Delete image</button>
+  }
 
-    <div>
-        <div *ngIf="imageBase64" id="divImgBase64" class="produsImgContent">
-            <img [src]="imageBase64"  image-resizing image-Height="100px" image-Width="100px" />
-        </div>
-        <div *ngIf="urlCurrentImage" id="divCurrImage" class="produsImgContent">
-            <img [src]="urlCurrentImage"  image-resizing image-Height="100px" image-Width="100px"/>
-        </div>
-    </div>    
+  <div>
+    @if (imageBase64) {
+      <div id="divImgBase64" class="produsImgContent">
+        <img [src]="imageBase64"  image-resizing image-Height="100px" image-Width="100px" />
+      </div>
+    }
+    @if (urlCurrentImage) {
+      <div id="divCurrImage" class="produsImgContent">
+        <img [src]="urlCurrentImage"  image-resizing image-Height="100px" image-Width="100px"/>
+      </div>
+    }
+  </div>
 </div>

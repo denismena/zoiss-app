@@ -1,182 +1,191 @@
 <mat-accordion>
-    <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
-      <mat-expansion-panel-header>        
-        <mat-panel-description (click)="$event.stopPropagation();">
-            <div (click)="togglePanel()">
-                <mat-icon class="greenIcon">
-                    {{ panelOpenState ? 'expand_less' : 'expand_more' }}
-                </mat-icon>
+  <mat-expansion-panel hideToggle class="mat-elevation-z0" [expanded]="panelOpenState">
+    <mat-expansion-panel-header>
+      <mat-panel-description (click)="$event.stopPropagation();">
+        <div (click)="togglePanel()">
+          <mat-icon class="greenIcon">
+            {{ panelOpenState ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </div>
+        <h2>Lista Livrari
+          <button mat-flat-button color="primary" routerLink="/livrari/create" matTooltip="Genereaza livrare pentru produse stoc">
+            <img src="assets/img/icons/material-design-icons/two-tone/delivery_dining.svg" alt="Genereaza livrare pentru produse stoc" height="30" width="30" class="greenIcon">
+          </button>
+        </h2>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="form">
+      <div class="">
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>De la data</mat-label>
+              <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerFrom></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>La data</mat-label>
+              <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
+              <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
+              <mat-datepicker #dataPickerTo></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-slide-toggle formControlName="mine">Doar livrarile mele</mat-slide-toggle>
+          </div>
+          <div class="col-md-3">
+            <mat-slide-toggle formControlName="allLivrate">Doar nelivrate</mat-slide-toggle>
+            <div style="float: right;">
+              <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
             </div>
-            <h2>Lista Livrari
-                <button mat-flat-button color="primary" routerLink="/livrari/create" matTooltip="Genereaza livrare pentru produse stoc">                    
-                    <img src="assets/img/icons/material-design-icons/two-tone/delivery_dining.svg" alt="Genereaza livrare pentru produse stoc" height="30" width="30" class="greenIcon">
-                </button>                
-            </h2>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <form [formGroup]="form">
-        <div class="">    
-            <div class="row">
-                <div class="col-md-3">
-        <mat-form-field appearance="outline">
-            <mat-label>De la data</mat-label>
-            <input formControlName="fromDate" matInput [matDatepicker]="dataPickerFrom">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerFrom"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerFrom></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
-                </div>
-        <div class="col-md-3">
-        <mat-form-field appearance="outline">
-            <mat-label>La data</mat-label>
-            <input formControlName="toDate" matInput [matDatepicker]="dataPickerTo">
-            <mat-datepicker-toggle matSuffix [for]="dataPickerTo"></mat-datepicker-toggle>
-            <mat-datepicker #dataPickerTo></mat-datepicker>
-            <mat-error>Completati data!</mat-error>
-        </mat-form-field>
+          </div>
         </div>
-        <div class="col-md-3">
-        <mat-slide-toggle formControlName="mine">Doar livrarile mele</mat-slide-toggle>    
-        </div>
-        <div class="col-md-3">
-        <mat-slide-toggle formControlName="allLivrate">Doar nelivrate</mat-slide-toggle>
-        <div style="float: right;">
-            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>    
-        </div>                
-        </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-3">
-                    
-                </div>
-                <div class="col-md-3">
-        <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>    
+
+        <div class="row">
+          <div class="col-md-3">
+
+          </div>
+          <div class="col-md-3">
+            <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>
             <input type="hidden" formControlName="clientId" #clientId>
-                </div>
-            
-        <div class="col-md-3">
-        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
-        <input type="hidden" formControlName="produsId" #produsId>
-        </div>        
-        <div class="col-md-3">
+          </div>
+
+          <div class="col-md-3">
+            <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" #produsFilter></app-produse-autocomplete>
+            <input type="hidden" formControlName="produsId" #produsId>
+          </div>
+          <div class="col-md-3">
             <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
             <input type="hidden" formControlName="furnizorId" #furnizorId>
-            </div>
-        
-            </div>
+          </div>
+
         </div>
+      </div>
     </form>
-    </mat-expansion-panel>    
-  </mat-accordion>
+  </mat-expansion-panel>
+</mat-accordion>
 
-<div class="spinner-container" *ngIf="loading$">
+@if (loading$) {
+  <div class="spinner-container">
     <mat-spinner></mat-spinner>
-</div>
+  </div>
+}
 <app-display-errors [errors]="errors"></app-display-errors>
-        <table mat-table *ngIf="livrari.length > 0" [dataSource]="livrari" multiTemplateDataRows class="table-index">
-            <ng-container matColumnDef="expand">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell *matCellDef="let element" (click)="expand(element)">
-                    <mat-icon *ngIf="element.livrariProduse.length > 0">
-                        {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
-                      </mat-icon>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="numar">
-                <th mat-header-cell *matHeaderCellDef>Numar</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.numar}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="data">
-                <th mat-header-cell *matHeaderCellDef>Data</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.data|customDate}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="client">
-                <th mat-header-cell *matHeaderCellDef>Client</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.client}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="curier">
-                <th mat-header-cell *matHeaderCellDef>Curier</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.curier}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="receptionatDe">
-                <th mat-header-cell *matHeaderCellDef>Receptionat De</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.receptionatDe}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="detalii">
-                <th mat-header-cell *matHeaderCellDef>Detalii</th>
-                <td mat-cell *matCellDef="let element" [style.width]="element.detalii ? '450px' : '100px'">
-                    <app-read-more>{{element.detalii}}</app-read-more>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="utilizator">
-                <th mat-header-cell *matHeaderCellDef>Utilizator</th>
-                <td mat-cell *matCellDef="let element">
-                    {{element.utilizator}}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="livrate">            
-                <th mat-header-cell *matHeaderCellDef>Livrate</th>
-                <td *matCellDef="let element">
-                    {{element.produseLivrate}} / {{element.produseAll}}
-                </td>
-            </ng-container>            
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell *matCellDef="let element">                    
-                    <a routerLink="/livrari/edit/{{element.id}}" title="Edit">
-                        <mat-icon color="primary">edit</mat-icon>
-                    </a>
-                    <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
-                    <mat-icon class="redIcon" (click)="genereazaPDF(element)" title="Genereaza afiz de insotire a marfii">picture_as_pdf</mat-icon>
-                </td>
-            </ng-container>
-
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div class="example-element-detail" *ngIf="expandedElement.indexOf(element) > -1" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">                
-                <table class="table table-striped table-sm" *ngIf="element.livrariProduse.length > 0">
-                    <thead>
-                      <tr>                        
-                        <th scope="col">Furnizor</th>
-                        <th scope="col">Produs</th>                        
-                        <th scope="col">Cant</th>
-                        <th scope="col">UM</th>                        
-                        <th scope="col">Cutii</th>
-                        <th scope="col">Livrat</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let prod of element.livrariProduse">
-                        <td>{{prod.furnizor}}</td>
-                        <td>{{prod.produsNume}}</td>
-                        <td>{{prod.cantitate}}</td>
-                        <td>{{prod.um}}</td>
-                        <td>{{prod.cutii}}</td>
-                        <td>{{prod.livrat|daNu}}</td>
-                      </tr>                      
-                    </tbody>
-                  </table>
-            </div>
-            </td>
-        </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>        
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
-            (page)="updatePagination($event)">
-        </mat-paginator>
-        
+@if (livrari.length > 0) {
+  <table mat-table [dataSource]="livrari" multiTemplateDataRows class="table-index">
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element" (click)="expand(element)">
+        @if (element.livrariProduse.length > 0) {
+          <mat-icon>
+            {{ expandedElement.indexOf(element) > -1 ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        }
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="numar">
+      <th mat-header-cell *matHeaderCellDef>Numar</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.numar}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="data">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.data|customDate}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef>Client</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.client}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="curier">
+      <th mat-header-cell *matHeaderCellDef>Curier</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.curier}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="receptionatDe">
+      <th mat-header-cell *matHeaderCellDef>Receptionat De</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.receptionatDe}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="detalii">
+      <th mat-header-cell *matHeaderCellDef>Detalii</th>
+      <td mat-cell *matCellDef="let element" [style.width]="element.detalii ? '450px' : '100px'">
+        <app-read-more>{{element.detalii}}</app-read-more>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="utilizator">
+      <th mat-header-cell *matHeaderCellDef>Utilizator</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.utilizator}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="livrate">
+      <th mat-header-cell *matHeaderCellDef>Livrate</th>
+      <td *matCellDef="let element">
+        {{element.produseLivrate}} / {{element.produseAll}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/livrari/edit/{{element.id}}" title="Edit">
+          <mat-icon color="primary">edit</mat-icon>
+        </a>
+        <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(element.id)" title="Delete">close</mat-icon>
+        <mat-icon class="redIcon" (click)="genereazaPDF(element)" title="Genereaza afiz de insotire a marfii">picture_as_pdf</mat-icon>
+      </td>
+    </ng-container>
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+        @if (expandedElement.indexOf(element) > -1) {
+          <div class="example-element-detail" [@detailExpand]="expandedElement.indexOf(element) > -1 ? 'expanded' : 'collapsed'">
+            @if (element.livrariProduse.length > 0) {
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Furnizor</th>
+                    <th scope="col">Produs</th>
+                    <th scope="col">Cant</th>
+                    <th scope="col">UM</th>
+                    <th scope="col">Cutii</th>
+                    <th scope="col">Livrat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (prod of element.livrariProduse; track prod) {
+                    <tr>
+                      <td>{{prod.furnizor}}</td>
+                      <td>{{prod.produsNume}}</td>
+                      <td>{{prod.cantitate}}</td>
+                      <td>{{prod.um}}</td>
+                      <td>{{prod.cutii}}</td>
+                      <td>{{prod.livrat|daNu}}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          </div>
+        }
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+}
+<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons="" [length]="totalRecords" [pageSize]="pageSize"
+  (page)="updatePagination($event)">
+</mat-paginator>

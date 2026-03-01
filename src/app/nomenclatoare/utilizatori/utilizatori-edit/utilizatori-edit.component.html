@@ -1,39 +1,41 @@
 <div class="container bordered">
-    <h2>Edit Utilizator</h2>
+  <h2>Edit Utilizator</h2>
 </div>
 <app-display-errors [errors]="errors"></app-display-errors>
 <form (submit)="edit(form.value)" [formGroup]="form" >
-<div class="container bordered">
+  <div class="container bordered">
     <mat-form-field appearance="outline">
-        <mat-label>Nume</mat-label>
-        <input formControlName="name" matInput>
-        <mat-error>{{form.get("name")?.getError("required")?.message}}</mat-error>
+      <mat-label>Nume</mat-label>
+      <input formControlName="name" matInput>
+      <mat-error>{{form.get("name")?.getError("required")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput [readonly]="true" [disabled]="true">
-        <mat-error>{{form.get("email")?.getError("required")?.message}}</mat-error>
-        <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
-    </mat-form-field>    
-    <mat-form-field appearance="outline">
-        <mat-label>Telefon</mat-label>
-        <input formControlName="phoneNumber" matInput>
-        <mat-error>{{form.get("phoneNumber")?.getError("required")?.message}}</mat-error>
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput [readonly]="true" [disabled]="true">
+      <mat-error>{{form.get("email")?.getError("required")?.message}}</mat-error>
+      <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>Sucursala</mat-label>
-        <mat-select formControlName="sucursalaId" (selectionChange)="selectParent($event)">
-            <mat-option value=""></mat-option> 
-            <mat-option *ngFor="let sucursala of sucursaleList" [value]="sucursala.id">
+      <mat-label>Telefon</mat-label>
+      <input formControlName="phoneNumber" matInput>
+      <mat-error>{{form.get("phoneNumber")?.getError("required")?.message}}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Sucursala</mat-label>
+      <mat-select formControlName="sucursalaId" (selectionChange)="selectParent($event)">
+        <mat-option value=""></mat-option>
+        @for (sucursala of sucursaleList; track sucursala) {
+          <mat-option [value]="sucursala.id">
             {{sucursala.nume}}
-            </mat-option>            
-        </mat-select>        
-    </mat-form-field>    
-</div>
-<div class="container">
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="container">
     <div class="form-footer">
-        <button mat-flat-button color="primary" [disabled]="form.invalid">Salveaza</button>        
-        <a mat-stroke-button routerLink="/utilizatori" mat-flat-button color="primary">Renunta</a>
+      <button mat-flat-button color="primary" [disabled]="form.invalid">Salveaza</button>
+      <a mat-stroke-button routerLink="/utilizatori" mat-flat-button color="primary">Renunta</a>
     </div>
-</div>
+  </div>
 </form>

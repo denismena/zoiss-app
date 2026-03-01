@@ -1,100 +1,102 @@
 <form (submit)="saveChanges()" [formGroup]="form">
-<div class="container bordered">
+  <div class="container bordered">
     <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-3">
-                    <mat-label>Numar</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="numar" matInput>
-                        <mat-error>{{form.get("numar")?.getError("required")?.message}}</mat-error>
-                        <mat-error>{{form.get("numar")?.getError("numeric")?.message}}</mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-3">
-                    <mat-label>Data</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="data" matInput [matDatepicker]="dataPicker">
-                        <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dataPicker></mat-datepicker>
-                        <mat-error>Completati data!</mat-error>
-                    </mat-form-field>
-                </div>                
-                <div class="col-md-3">
-                    <mat-label>Conditii plata</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="conditiiPlata" matInput>
-                        <mat-error>{{form.get("conditiiPlata")?.getError("maxLength")?.message}}</mat-error>
-                    </mat-form-field>                    
-                </div>
-                <div class="col-md-3">
-                    <mat-label>Termen de livrare</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="termenLivrare" matInput>                        
-                    </mat-form-field>                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" *ngIf="preselectClient||!model" ></app-clienti-autocomplete>    
-                    <input type="hidden" formControlName="clientId" #clientId>
-                </div>
-                <div class="col-md-3">
-                    <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" [preselectArhitect] = "preselectArhitect"></app-arhitecti-autocomplete>    
-                    <input type="hidden" formControlName="arhitectId" #arhitectId>
-                </div>
-                <div class="col-md-1">
-                    <mat-label>Comision</mat-label>
-                    <mat-form-field appearance="outline">                            
-                        <input formControlName="comision" matInput class="table-text-right">
-                        <span matSuffix>%</span>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-2">
-                    <mat-label>Avans</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="avans" matInput class="table-text-right">
-                        <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-3">
-                    <mat-label>Factura avans</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="facturaAvans" matInput>                        
-                    </mat-form-field>                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <mat-label>Conditii livrare</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="conditiiLivrare" matInput>                        
-                    </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                    <mat-label>Observatii</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="observatii" matInput>                        
-                    </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                    <mat-label>Valabilitate oferta</mat-label>
-                    <mat-form-field appearance="outline">                        
-                        <input formControlName="valabilitate" matInput>                        
-                    </mat-form-field>
-                </div>
-            </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3">
+            <mat-label>Numar</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="numar" matInput>
+              <mat-error>{{form.get("numar")?.getError("required")?.message}}</mat-error>
+              <mat-error>{{form.get("numar")?.getError("numeric")?.message}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-label>Data</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="data" matInput [matDatepicker]="dataPicker">
+              <mat-datepicker-toggle matSuffix [for]="dataPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dataPicker></mat-datepicker>
+              <mat-error>Completati data!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-label>Conditii plata</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="conditiiPlata" matInput>
+              <mat-error>{{form.get("conditiiPlata")?.getError("maxLength")?.message}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-label>Termen de livrare</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="termenLivrare" matInput>
+            </mat-form-field>
+          </div>
         </div>
-        <div class="col-md-12">
-            <mat-divider></mat-divider>        
-            <app-oferte-produse-autocomplete [idOferta]="this.model?.id" [selectedProdus]="selectedProdus"></app-oferte-produse-autocomplete>
+        <div class="row">
+          <div class="col-md-3">
+            @if (preselectClient||!model) {
+              <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" [preselectClient] = "preselectClient" ></app-clienti-autocomplete>
+            }
+            <input type="hidden" formControlName="clientId" #clientId>
+          </div>
+          <div class="col-md-3">
+            <app-arhitecti-autocomplete (onOptionSelected)="selectArhitect($event)" [preselectArhitect] = "preselectArhitect"></app-arhitecti-autocomplete>
+            <input type="hidden" formControlName="arhitectId" #arhitectId>
+          </div>
+          <div class="col-md-1">
+            <mat-label>Comision</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="comision" matInput class="table-text-right">
+              <span matSuffix>%</span>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-label>Avans</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="avans" matInput class="table-text-right">
+              <mat-error>{{form.get("avans")?.getError("numeric")?.message}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-label>Factura avans</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="facturaAvans" matInput>
+            </mat-form-field>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-md-4">
+            <mat-label>Conditii livrare</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="conditiiLivrare" matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-label>Observatii</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="observatii" matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-label>Valabilitate oferta</mat-label>
+            <mat-form-field appearance="outline">
+              <input formControlName="valabilitate" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <mat-divider></mat-divider>
+        <app-oferte-produse-autocomplete [idOferta]="this.model?.id" [selectedProdus]="selectedProdus"></app-oferte-produse-autocomplete>
+      </div>
     </div>
-</div>
-<div class="container">
-<div class="form-footer">
-    <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-    <a mat-stroke-button routerLink="/oferte" mat-flat-button color="primary">Renunta</a>
-</div>
-</div>
+  </div>
+  <div class="container">
+    <div class="form-footer">
+      <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+      <a mat-stroke-button routerLink="/oferte" mat-flat-button color="primary">Renunta</a>
+    </div>
+  </div>
 </form>

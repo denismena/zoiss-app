@@ -2,17 +2,18 @@
   <mat-label>Client</mat-label>
   <mat-icon class="greenIcon" (click)="addClientDialog()">add_circle</mat-icon>
   <mat-icon color="primary" (click)="editClientDialog()">edit</mat-icon>
-    <mat-form-field class="example-full-width" appearance="fill">      
-      <input matInput
-             aria-label="Client"
-             (ngModelChange)="search($event)"
-             [matAutocomplete]="auto"
-             [formControl]="clientCtrl">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput
+      aria-label="Client"
+      (ngModelChange)="search($event)"
+      [matAutocomplete]="auto"
+      [formControl]="clientCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        <mat-option *ngFor="let client of selectedClient | async" [value]="client" [ngClass]="{'alert-danger' : !client.active}">
+        @for (client of (selectedClient | async) ?? []; track client) {
+          <mat-option [value]="client" [ngClass]="{'alert-danger' : !client.active}">
             {{client.nume}}
-        </mat-option>
+          </mat-option>
+        }
       </mat-autocomplete>
-    </mat-form-field>    
+    </mat-form-field>
   </form>
-  

@@ -20,6 +20,13 @@ export class SecurityService {
   private readonly refreshToken = "refreshToken";
   private readonly roleField = "role";
 
+  /*
+   * SECURITY NOTE: JWT and refresh tokens are stored in localStorage.
+   * This is vulnerable to XSS-based token theft if an attacker injects malicious script.
+   * Recommended improvement: Use HttpOnly cookies for tokens (requires backend changes).
+   * If cookies are not feasible, ensure strict Content-Security-Policy and other XSS mitigations.
+   */
+
   async isAuthenticated(): Promise<boolean> {
     const token = localStorage.getItem(this.tokenKey);
     if (!token) return false;

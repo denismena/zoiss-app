@@ -1,17 +1,18 @@
 <form class="example-form">
-    <mat-label>Arhitect</mat-label>    
-    <mat-icon class="greenIcon" (click)="addArhitectDialog()">add_circle</mat-icon>
-    <mat-icon color="primary" (click)="editArhitectDialog()">edit</mat-icon>
-    <mat-form-field class="example-full-width" appearance="fill">      
-      <input matInput
-             aria-label="Arhitect"
-             [matAutocomplete]="auto"
-             [formControl]="arhitectCtrl">
+  <mat-label>Arhitect</mat-label>
+  <mat-icon class="greenIcon" (click)="addArhitectDialog()">add_circle</mat-icon>
+  <mat-icon color="primary" (click)="editArhitectDialog()">edit</mat-icon>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput
+      aria-label="Arhitect"
+      [matAutocomplete]="auto"
+      [formControl]="arhitectCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        <mat-option *ngFor="let arhitect of selectedArhitect | async" [value]="arhitect" [ngClass]="{'alert-danger' : !arhitect.active}">
+        @for (arhitect of (selectedArhitect | async) ?? []; track arhitect) {
+          <mat-option [value]="arhitect" [ngClass]="{'alert-danger' : !arhitect.active}">
             {{arhitect.nume}}
-        </mat-option>
+          </mat-option>
+        }
       </mat-autocomplete>
-    </mat-form-field>    
-</form>
-  
+    </mat-form-field>
+  </form>

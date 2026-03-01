@@ -1,9 +1,11 @@
 <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
-<div *ngIf="produsToDisplay">
+@if (produsToDisplay) {
+  <div>
     Cod: {{produsToDisplay.cod}} <br>
     Nume: {{produsToDisplay.nume}}<br>
     Furnizor: {{produsToDisplay.prefFurnizor}}<br>
     UM: {{produsToDisplay.um}}<br>
     Pret: {{produsToDisplay.pret}}<br>
     <a mat-stroke-button mat-flat-button color="primary" (click)="edit()"> Edit</a>
-</div>
+  </div>
+}

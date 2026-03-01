@@ -1,11 +1,13 @@
 <div style="float: right;"><mat-icon class="greenIcon" (click)="addNotes()">add_circle</mat-icon></div>
-<ul>    
-    <li *ngFor="let item of notes; index as i;" (focusout)="saveChanges(item.id, $event)">
+<ul>
+  @for (item of notes; track item; let i = $index) {
+    <li (focusout)="saveChanges(item.id, $event)">
       <div class="wrapper">
         <span class="my-custom-button">
           <mat-icon mat-list-icon [ngStyle]="{'color':'red', 'cursor': 'pointer'}" (click)="delete(item.id)" title="Delete">close</mat-icon>
-        </span>        
+        </span>
         <angular-editor [(ngModel)]="item.descriere" [config]="config"></angular-editor>
       </div>
-    </li>    
+    </li>
+  }
 </ul>

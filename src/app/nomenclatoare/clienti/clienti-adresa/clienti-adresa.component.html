@@ -1,160 +1,157 @@
 <h4>Adrese</h4>
 <form (submit)="saveChanges()" [formGroup]="form">
-    <div class="container">    
-        <div class="row">
-    <div class="col-md-5">
-        <mat-label>Adresa</mat-label>
-        <mat-form-field appearance="outline">            
-            <input matInput formControlName="adresa" />
-            <mat-error>{{form.get("adresa")?.getError("required")?.message}}</mat-error>
-            <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-    </div>
-    <div class="col-md-2">
-        <mat-label>Oras</mat-label>
-        <mat-form-field appearance="outline">            
-            <input matInput formControlName="oras" />
-            <mat-error>{{form.get("oras")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-    </div>
-    <div class="col-md-2">
-        <mat-label>Judet</mat-label>
-        <mat-form-field appearance="outline">            
-            <input matInput formControlName="judet" />
-            <mat-error>{{form.get("judet")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-    </div>
-    <div class="col-md-2">
-        <mat-label>Tara</mat-label>
-        <mat-form-field appearance="outline">            
-            <input matInput formControlName="tara" />
-            <mat-error>{{form.get("tara")?.getError("maxLength")?.message}}</mat-error>
-        </mat-form-field>
-    </div>   
-    <div class="col-md-1"> 
-        <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
-    </div> 
-        </div>
+  <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <mat-label>Tel</mat-label>
-            <mat-form-field appearance="outline">                
-                <input matInput formControlName="tel" />
-                <mat-error>{{form.get("tel")?.getError("required")?.message}}</mat-error>
-                <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <mat-label>Email</mat-label>
-            <mat-form-field appearance="outline">            
-                <input matInput formControlName="email" />
-                <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
-                <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-md-4">
-                    <mat-slide-toggle formControlName="sediu" color="primary">Sediu</mat-slide-toggle>
-                    <mat-slide-toggle formControlName="livrare" (change)="changeLivrare($event)" color="primary">Livrare</mat-slide-toggle>       
-                </div>
-                <div class="col-md-8">
-                    <mat-label>Depozit</mat-label>
-                    <mat-form-field appearance="outline" *ngIf="showLivrare">            
-                        <select matNativeControl formControlName="depozitId" (change)="changeDepozit($event.target)">
-                            <option value="" selected></option>
-                            <option *ngFor="let depozit of depozite" [value]="depozit.id">
-                                {{depozit.nume}}
-                            </option>
-                        </select>            
-                    </mat-form-field>
-                    <mat-error>{{form.get("depozitId")?.getError("required")?.message}}</mat-error>
-                </div>
-            </div>                
-        </div>
-        <div class="col-md-1"> 
-            <!-- <button mat-flat-button color="primary">Renunta</button> -->
-            <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
-        </div>
+      <div class="col-md-5">
+        <mat-label>Adresa</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="adresa" />
+          <mat-error>{{form.get("adresa")?.getError("required")?.message}}</mat-error>
+          <mat-error>{{form.get("adresa")?.getError("maxLength")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-label>Oras</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="oras" />
+          <mat-error>{{form.get("oras")?.getError("maxLength")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-label>Judet</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="judet" />
+          <mat-error>{{form.get("judet")?.getError("maxLength")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-label>Tara</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="tara" />
+          <mat-error>{{form.get("tara")?.getError("maxLength")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-1">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+      </div>
     </div>
-    </div>    
+    <div class="row">
+      <div class="col-md-3">
+        <mat-label>Tel</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="tel" />
+          <mat-error>{{form.get("tel")?.getError("required")?.message}}</mat-error>
+          <mat-error>{{form.get("tel")?.getError("maxLength")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-label>Email</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="email" />
+          <mat-error>{{form.get("email")?.getError("email")?.message}}</mat-error>
+          <mat-error>{{form.get("email")?.getError("maxLength")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-4">
+            <mat-slide-toggle formControlName="sediu" color="primary">Sediu</mat-slide-toggle>
+            <mat-slide-toggle formControlName="livrare" (change)="changeLivrare($event)" color="primary">Livrare</mat-slide-toggle>
+          </div>
+          <div class="col-md-8">
+            <mat-label>Depozit</mat-label>
+            @if (showLivrare) {
+              <mat-form-field appearance="outline">
+                <select matNativeControl formControlName="depozitId" (change)="changeDepozit($event.target)">
+                  <option value="" selected></option>
+                  @for (depozit of depozite; track depozit) {
+                    <option [value]="depozit.id">
+                      {{depozit.nume}}
+                    </option>
+                  }
+                </select>
+              </mat-form-field>
+            }
+            <mat-error>{{form.get("depozitId")?.getError("required")?.message}}</mat-error>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <!-- <button mat-flat-button color="primary">Renunta</button> -->
+        <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
+      </div>
+    </div>
+  </div>
 </form>
 
-<table #adreseTable style="width: 100%;"
+@if (adreseList.length > 0) {
+  <table #adreseTable style="width: 100%;"
     mat-table
-    *ngIf="adreseList.length > 0"
     [dataSource]="adreseList">
-
     <ng-container matColumnDef="adresa">
-        <th mat-header-cell *matHeaderCellDef>Adresa</th>
-        <td mat-cell *matCellDef="let element">{{element.adresa}}</td>
-      </ng-container>
-
+      <th mat-header-cell *matHeaderCellDef>Adresa</th>
+      <td mat-cell *matCellDef="let element">{{element.adresa}}</td>
+    </ng-container>
     <ng-container matColumnDef="oras">
-        <th mat-header-cell *matHeaderCellDef>Oras</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.oras}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Oras</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.oras}}
+      </td>
     </ng-container>
-
     <ng-container matColumnDef="judet">
-        <th mat-header-cell *matHeaderCellDef>Judet</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.judet}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Judet</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.judet}}
+      </td>
     </ng-container>
-
     <ng-container matColumnDef="tara">
-        <th mat-header-cell *matHeaderCellDef>Tara</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.tara}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Tara</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.tara}}
+      </td>
     </ng-container>
-
     <ng-container matColumnDef="tel">
-        <th mat-header-cell *matHeaderCellDef>Tel</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.tel}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Tel</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.tel}}
+      </td>
     </ng-container>
-
     <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.email}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.email}}
+      </td>
     </ng-container>
     <ng-container matColumnDef="sediu">
-        <th mat-header-cell *matHeaderCellDef>Sediu</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.sediu|daNu}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Sediu</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.sediu|daNu}}
+      </td>
     </ng-container>
     <ng-container matColumnDef="livrare">
-        <th mat-header-cell *matHeaderCellDef>Livrare</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.livrare|daNu}}            
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Livrare</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.livrare|daNu}}
+      </td>
     </ng-container>
     <ng-container matColumnDef="depozit">
-        <th mat-header-cell *matHeaderCellDef>Depozit</th>
-        <td mat-cell *matCellDef="let element">
-            {{element.depozit}}            
-        </td>
-    </ng-container>   
-
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let element">
-            <mat-icon color="primary" (click)="edit(element)" *ngIf="element.id !=null">edit</mat-icon>
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">
-                close
-            </mat-icon>
-        </td>
+      <th mat-header-cell *matHeaderCellDef>Depozit</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.depozit}}
+      </td>
     </ng-container>
-    
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.id !=null) {
+          <mat-icon color="primary" (click)="edit(element)">edit</mat-icon>
+        }
+        <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">
+          close
+        </mat-icon>
+      </td>
+    </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-
-</table>
-  
+  </table>
+}

@@ -40,7 +40,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
 
   comenzi: comenziDTO[];
   expandedElement: comenziDTO[];
-  checked = [];
+  checked: any[] = [];
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];

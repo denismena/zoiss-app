@@ -1,2 +1,6 @@
-<ng-content *ngIf="!isAuthorize()" select="[notAuthorize]"></ng-content>
-<ng-content *ngIf="isAuthorize()" select="[authorize]"></ng-content>
+@if (!isAuthorize()) {
+  <ng-content select="[notAuthorize]"></ng-content>
+}
+@if (isAuthorize()) {
+  <ng-content select="[authorize]"></ng-content>
+}

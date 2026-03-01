@@ -1,193 +1,201 @@
-<div class="container">    
-    <div class="row">
-        <div class="col-md-4">
-            <h4>Produse</h4>
-        </div>
-        <div class="col-md-8">
-            <form [formGroup]="formDoarNecomandate">
-                <mat-slide-toggle formControlName="doarNecomandate">Doar necomandate</mat-slide-toggle>
-            </form>            
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Produse</h4>
     </div>
+    <div class="col-md-8">
+      <form [formGroup]="formDoarNecomandate">
+        <mat-slide-toggle formControlName="doarNecomandate">Doar necomandate</mat-slide-toggle>
+      </form>
+    </div>
+  </div>
 </div>
 
 
 <form (submit)="saveChanges()" [formGroup]="form">
-    <div class="container">    
-        <div class="row">
-            <div class="col-md-6"> 
-                <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" [preselectedProdus]="preselectedProdus" #produsAuto></app-produse-autocomplete>
-                <input type="hidden" formControlName="produsId" #produsId>
-            </div>
-            <div class="col-md-5">
-                <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>            
-                <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF"> 
-                <input type="hidden" formControlName="isCategory" #isCategory> 
-            </div>
-            <div class="col-md-1 d-none d-sm-block">
-                <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <mat-label>UM</mat-label>                
-                <mat-form-field appearance="outline">        
-                    <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
-                        <mat-option *ngFor="let um of umList" [value]="um.id">
-                            {{um.nume}}
-                        </mat-option>            
-                    </mat-select>
-                </mat-form-field> 
-            </div>
-            <div class="col-md-2"> 
-                <mat-label>Cantitate</mat-label>        
-                <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="cantitate" #cantitate id="cantitate" (change)="onCantitateChange($event)"/>
-                    <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field>
-                {{perCutieSet}} / cutie
-            </div>
-            <div class="col-md-2">
-                <mat-label>Cutii</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="cutii" readonly="true" />
-                    <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field> 
-            </div>
-            <div class="col-md-1">
-                <mat-label>Pret UM</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="pretUm" (change)="onPretChange($event)"/>
-                    <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field> 
-            </div>            
-            <div class="col-md-1">
-                <mat-label>Discount</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="discount" (change)="onPretChange($event)" class="table-text-right"/>        
-                    <span matSuffix>%</span>            
-                    <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field> 
-            </div>
-            <div class="col-md-2">
-                <mat-label>Valoare</mat-label>
-                <mat-form-field appearance="outline">                    
-                    <input matInput formControlName="valoare" readonly="true"/>
-                    <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
-                    <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
-                </mat-form-field> 
-            </div>
-            <div class="col-md-1">
-                <mat-slide-toggle formControlName="isStoc">Stoc</mat-slide-toggle>
-            </div> 
-            <div class="col-md-1 d-none d-sm-block"> 
-                <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
-            </div>    
-        </div>
-        <div class="row d-block d-sm-none">
-            <div class="col">
-                <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
-                <a mat-stroke-button mat-flat-button color="primary" style="margin-left: 1rem;" (click)="clearForm()">Renunta</a>
-            </div>
-            <!-- <div class="col">
-                
-            </div> -->
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <app-produse-autocomplete (onOptionSelected)="selectProdus($event)" [preselectedProdus]="preselectedProdus" #produsAuto></app-produse-autocomplete>
+        <input type="hidden" formControlName="produsId" #produsId>
+      </div>
+      <div class="col-md-5">
+        <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" [preselectFurnizor]="preselectFurnizor" #furnizoriAuto></app-furnizori-autocomplete>
+        <input type="hidden" formControlName="furnizorId" #furnizorId class="clsF">
+        <input type="hidden" formControlName="isCategory" #isCategory>
+      </div>
+      <div class="col-md-1 d-none d-sm-block">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <mat-label>UM</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
+            @for (um of umList; track um) {
+              <mat-option [value]="um.id">
+                {{um.nume}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-label>Cantitate</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="cantitate" #cantitate id="cantitate" (change)="onCantitateChange($event)"/>
+          <mat-error>{{form.get("cantitate")?.getError("required")?.message}}</mat-error>
+          <mat-error>{{form.get("cantitate")?.getError("numeric")?.message}}</mat-error>
+        </mat-form-field>
+        {{perCutieSet}} / cutie
+      </div>
+      <div class="col-md-2">
+        <mat-label>Cutii</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="cutii" readonly="true" />
+          <mat-error>{{form.get("cutii")?.getError("required")?.message}}</mat-error>
+          <mat-error>{{form.get("cutii")?.getError("numeric")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-1">
+        <mat-label>Pret UM</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="pretUm" (change)="onPretChange($event)"/>
+          <mat-error>{{form.get("pretUm")?.getError("required")?.message}}</mat-error>
+          <mat-error>{{form.get("pretUm")?.getError("numeric")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-1">
+        <mat-label>Discount</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="discount" (change)="onPretChange($event)" class="table-text-right"/>
+          <span matSuffix>%</span>
+          <mat-error>{{form.get("discount")?.getError("numeric")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-label>Valoare</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="valoare" readonly="true"/>
+          <mat-error>{{form.get("valoare")?.getError("required")?.message}}</mat-error>
+          <mat-error>{{form.get("valoare")?.getError("numeric")?.message}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-1">
+        <mat-slide-toggle formControlName="isStoc">Stoc</mat-slide-toggle>
+      </div>
+      <div class="col-md-1 d-none d-sm-block">
+        <a mat-stroke-button mat-flat-button color="primary" (click)="clearForm()">Renunta</a>
+      </div>
+    </div>
+    <div class="row d-block d-sm-none">
+      <div class="col">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">{{this.isEditMode ? 'Salveaza' :'Adauga'}}</button>
+        <a mat-stroke-button mat-flat-button color="primary" style="margin-left: 1rem;" (click)="clearForm()">Renunta</a>
+      </div>
+      <!-- <div class="col">
+
+    </div> -->
+  </div>
 </div>
 
 </form>
 
-<table #produseTable style="width: 100%;" mat-table *ngIf="selectedProdusFiltered.length > 0"[dataSource]="selectedProdusFiltered"
+@if (selectedProdusFiltered.length > 0) {
+  <table #produseTable style="width: 100%;" mat-table [dataSource]="selectedProdusFiltered"
     cdkDropList [cdkDropListData]="selectedProdusFiltered" (cdkDropListDropped)="dropped($event)">
-
     <ng-container matColumnDef="codProdus">
-        <th mat-header-cell *matHeaderCellDef>Cod</th>
-        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">{{element.codProdus}}</ng-container></td>
-        <td mat-footer-cell *matFooterCellDef> Total </td>
+      <th mat-header-cell *matHeaderCellDef>Cod</th>
+      <td mat-cell *matCellDef="let element">@if (element.isCategory === false) {
+        {{element.codProdus}}
+      }</td>
+      <td mat-footer-cell *matFooterCellDef> Total </td>
     </ng-container>
-
     <ng-container matColumnDef="produsNume">
-        <th mat-header-cell *matHeaderCellDef>Produs</th>
-        <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
-        <td mat-footer-cell *matFooterCellDef></td>
+      <th mat-header-cell *matHeaderCellDef>Produs</th>
+      <td mat-cell *matCellDef="let element">{{element.produsNume}}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
-
     <ng-container matColumnDef="furnizorNume">
-        <th mat-header-cell *matHeaderCellDef>Furnizor</th>
-        <td mat-cell *matCellDef="let element"><ng-container *ngIf="element.isCategory === false">
-            {{element.furnizorNume}}</ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <ng-container matColumnDef="um">
-        <th mat-header-cell *matHeaderCellDef>UM</th>
-        <td mat-cell *matCellDef="let element" style="text-align: left;"><ng-container *ngIf="element.isCategory === false">
-            {{element.um}}</ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <ng-container matColumnDef="cantitate">
-        <th mat-header-cell *matHeaderCellDef class="table-text-right">Cant</th>
-        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.cantitate| number: '1.0-3'}}</ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <ng-container matColumnDef="cutii">
-        <th mat-header-cell *matHeaderCellDef class="table-text-right">Cutii</th>
-        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.cutii| number: '1.0-2'}}</ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalBox()}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="pretUm">
-        <th mat-header-cell *matHeaderCellDef class="table-text-right">Pret</th>
-        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.pretUm| number: '1.0-2'}}</ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <ng-container matColumnDef="discount">
-        <th mat-header-cell *matHeaderCellDef class="table-text-right">Discount <br />
-            <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)" 
-                class="table-text-right" style="width: 4rem;" />
-        </th>
-        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.discount| number: '1.0-2'}} <span *ngIf="element.discount > 0">%</span></ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <ng-container matColumnDef="valoare">
-        <th mat-header-cell *matHeaderCellDef class="table-text-right">Val</th>
-        <td mat-cell *matCellDef="let element" class="table-text-right"><ng-container *ngIf="element.isCategory === false">
-            {{element.valoare| number: '1.0-3'}}</ng-container>
-        </td>
-        <td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalCost()| number: '1.0-2'}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
-        <td mat-cell *matCellDef="let element" class="table-text-center">
-            <mat-icon color="primary" (click)="edit(element)" *ngIf="element.id !=null && element.isInComanda==false">edit</mat-icon>
-            <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)" *ngIf="element.isInComanda==false">close</mat-icon>
-            <mat-icon matTooltip="Produsul este deja intr-o comanda" *ngIf="element.isInComanda==true">info</mat-icon>
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-    
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;let entry" cdkDrag [cdkDragData]="row" 
-        [ngClass]="{ 'categoryProd': entry.isCategory== true, 'stocProd':entry.isStoc == true}"></tr>
-    <tr mat-footer-row *matFooterRowDef="columnsToDisplay" ngClass="tableFooter"></tr>
-
+      <th mat-header-cell *matHeaderCellDef>Furnizor</th>
+      <td mat-cell *matCellDef="let element">@if (element.isCategory === false) {
+        {{element.furnizorNume}}
+      }
+    </td>
+    <td mat-footer-cell *matFooterCellDef></td>
+  </ng-container>
+  <ng-container matColumnDef="um">
+    <th mat-header-cell *matHeaderCellDef>UM</th>
+    <td mat-cell *matCellDef="let element" style="text-align: left;">@if (element.isCategory === false) {
+      {{element.um}}
+    }
+  </td>
+  <td mat-footer-cell *matFooterCellDef></td>
+</ng-container>
+<ng-container matColumnDef="cantitate">
+  <th mat-header-cell *matHeaderCellDef class="table-text-right">Cant</th>
+  <td mat-cell *matCellDef="let element" class="table-text-right">@if (element.isCategory === false) {
+    {{element.cantitate| number: '1.0-3'}}
+  }
+</td>
+<td mat-footer-cell *matFooterCellDef></td>
+</ng-container>
+<ng-container matColumnDef="cutii">
+  <th mat-header-cell *matHeaderCellDef class="table-text-right">Cutii</th>
+  <td mat-cell *matCellDef="let element" class="table-text-right">@if (element.isCategory === false) {
+    {{element.cutii| number: '1.0-2'}}
+  }
+</td>
+<td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalBox()}} </td>
+</ng-container>
+<ng-container matColumnDef="pretUm">
+  <th mat-header-cell *matHeaderCellDef class="table-text-right">Pret</th>
+  <td mat-cell *matCellDef="let element" class="table-text-right">@if (element.isCategory === false) {
+    {{element.pretUm| number: '1.0-2'}}
+  }
+</td>
+<td mat-footer-cell *matFooterCellDef></td>
+</ng-container>
+<ng-container matColumnDef="discount">
+  <th mat-header-cell *matHeaderCellDef class="table-text-right">Discount <br />
+    <input type="number" id="discoutAll" #discoutAll (change)="changeDiscountAll(discoutAll)"
+      class="table-text-right" style="width: 4rem;" />
+    </th>
+    <td mat-cell *matCellDef="let element" class="table-text-right">@if (element.isCategory === false) {
+      {{element.discount| number: '1.0-2'}} @if (element.discount > 0) {
+      <span>%</span>
+    }
+  }
+</td>
+<td mat-footer-cell *matFooterCellDef></td>
+</ng-container>
+<ng-container matColumnDef="valoare">
+  <th mat-header-cell *matHeaderCellDef class="table-text-right">Val</th>
+  <td mat-cell *matCellDef="let element" class="table-text-right">@if (element.isCategory === false) {
+    {{element.valoare| number: '1.0-3'}}
+  }
+</td>
+<td mat-footer-cell *matFooterCellDef class="table-text-right"> {{getTotalCost()| number: '1.0-2'}} </td>
+</ng-container>
+<ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef style="width: 60px;">#</th>
+  <td mat-cell *matCellDef="let element" class="table-text-center">
+    @if (element.id !=null && element.isInComanda==false) {
+      <mat-icon color="primary" (click)="edit(element)">edit</mat-icon>
+    }
+    @if (element.isInComanda==false) {
+      <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="remove(element)">close</mat-icon>
+    }
+    @if (element.isInComanda==true) {
+      <mat-icon matTooltip="Produsul este deja intr-o comanda">info</mat-icon>
+    }
+  </td>
+  <td mat-footer-cell *matFooterCellDef></td>
+</ng-container>
+<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+<tr mat-row *matRowDef="let row; columns: columnsToDisplay;let entry" cdkDrag [cdkDragData]="row"
+[ngClass]="{ 'categoryProd': entry.isCategory== true, 'stocProd':entry.isStoc == true}"></tr>
+<tr mat-footer-row *matFooterRowDef="columnsToDisplay" ngClass="tableFooter"></tr>
 </table>
-  
+}

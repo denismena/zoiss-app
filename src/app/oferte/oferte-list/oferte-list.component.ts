@@ -39,7 +39,7 @@ export class OferteListComponent implements OnInit, OnDestroy {
 
   oferte: oferteDTO[]
   expandedElement: oferteDTO[];
-  checked = [];
+  checked: any[] = [];
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
   errors: string[] = [];
