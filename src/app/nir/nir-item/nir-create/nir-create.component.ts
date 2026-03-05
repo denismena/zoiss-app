@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { NIRService } from '../../nir.service';
 import { nirDTO } from '../nir.model';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -12,10 +11,11 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./nir-create.component.scss'],
     standalone: false
 })
-export class NirCreateComponent implements OnInit, OnDestroy{
+export class NirCreateComponent implements OnInit {
   errors: string[] = [];
 
-  constructor(private router:Router, private nirService: NIRService, private unsubscribeService: UnsubscribeService ) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private nirService: NIRService) { }
   ngOnInit(): void {
     
   }
@@ -23,12 +23,10 @@ export class NirCreateComponent implements OnInit, OnDestroy{
   saveChanges(nirDTO:nirDTO){
     console.log('nirDTO', nirDTO);
     this.nirService.create(nirDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/nir'])
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-  
-  ngOnDestroy(): void {}
 }

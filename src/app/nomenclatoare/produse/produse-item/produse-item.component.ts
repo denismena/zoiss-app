@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -6,8 +6,8 @@ import { furnizoriDTO } from '../../furnizori/furnizori-item/furnizori.model';
 import { umDTO } from '../../um/um-item/um.model';
 import { UMService } from '../../um/um.service';
 import { produseCreationDTO, produseDTO } from './produse.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-produse-item',
@@ -15,10 +15,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./produse-item.component.scss'],
     standalone: false
 })
-export class ProduseItemComponent implements OnInit, OnDestroy {
+export class ProduseItemComponent implements OnInit {
 
-  constructor(private router:Router, private formBuilder: FormBuilder, private umService: UMService,
-    private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private formBuilder: FormBuilder, private umService: UMService) { }
   public form!: FormGroup;
   
   @Input() preselectFurnizor:furnizoriDTO|undefined;
@@ -50,7 +50,7 @@ export class ProduseItemComponent implements OnInit, OnDestroy {
     }
 
     this.umService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(um=>{
       this.umList=um;
     })
@@ -93,6 +93,4 @@ export class ProduseItemComponent implements OnInit, OnDestroy {
      this.form.get('prefFurnizor')?.setValue(furnizor.nume);
     }
   }
-
-  ngOnDestroy(): void {}
 }

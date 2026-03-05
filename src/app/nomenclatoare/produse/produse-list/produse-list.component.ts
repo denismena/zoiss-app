@@ -1,15 +1,15 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { umDTO } from '../../um/um-item/um.model';
 import { UMService } from '../../um/um.service';
 import { produseDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
@@ -20,7 +20,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     styleUrls: ['./produse-list.component.scss'],
     standalone: false
 })
-export class ProduseListComponent implements OnInit, OnDestroy {
+export class ProduseListComponent implements OnInit {
 
   produse: produseDTO[];
   errors: string[] = [];
@@ -32,8 +32,9 @@ export class ProduseListComponent implements OnInit, OnDestroy {
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private produseService: ProduseService, private formBuilder:FormBuilder, private umService: UMService, private dialog: MatDialog, 
-    private unsubscribeService: UnsubscribeService) {  
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private produseService: ProduseService, private formBuilder:FormBuilder, private umService: UMService, private dialog: MatDialog) {  
     this.produse = [];
   }
   
@@ -52,13 +53,13 @@ export class ProduseListComponent implements OnInit, OnDestroy {
     this.loadList(this.form.value);
 
     this.umService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(um=>{
       this.umList=um;
     })
 
     this.form.valueChanges
-    .pipe(debounceTime(1000))
+    .pipe(debounceTime(1000), takeUntilDestroyed(this.destroyRef))
     .subscribe(values => {
       this.loadList(values);
     });
@@ -68,7 +69,7 @@ export class ProduseListComponent implements OnInit, OnDestroy {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.produseService.getAll(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<produseDTO[]>)=>{
       this.produse = response.body??[];      
       this.totalRecords = Number(response.headers.get("totalRecords"));
@@ -82,7 +83,7 @@ export class ProduseListComponent implements OnInit, OnDestroy {
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -111,7 +112,4 @@ export class ProduseListComponent implements OnInit, OnDestroy {
     this.pageSize = event.pageSize;
     this.loadList(this.form.value);
   }
-
-  ngOnDestroy(): void {}
-
 }

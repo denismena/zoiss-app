@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HighchartsChartDirective } from 'highcharts-angular';
 import { RapoarteService } from '../rapoarte/rapoarte.service';
 import { comenziPerLuna } from '../rapoarte/comenzi-depozite/comenzi-depozite.model';
 import { HttpResponse } from '@angular/common/http';
-import { UnsubscribeService } from '../unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,9 +12,10 @@ import { takeUntil } from 'rxjs/operators';
     standalone: true,
     imports: [HighchartsChartDirective],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   chartData: any[] = [];
-  constructor(private reportService: RapoarteService, private unsubscribeService: UnsubscribeService) {}
+  constructor(private reportService: RapoarteService) {}
 
   ngOnInit(): void {
     this.loadTrendComenzi();
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       toDate: toDate.toISOString().split('T')[0],
     };
     this.reportService.trendComenziPerUtilizator(filter)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<comenziPerLuna[]>) => {
       const chartSerie = response.body ?? [];
       this.chartOptionsTrendComenziPerUtilizator = {
@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       toDate: toDate.toISOString().split('T')[0],
     };
     this.reportService.trendComenzi(filter)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<comenziPerLuna[]>) => {
       const chartSerie = response.body ?? [];
       this.chartOptionsTrendComenzi = {
@@ -194,7 +194,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       toDate: toDate.toISOString().split('T')[0],
     };
     this.reportService.trendComenziClientNou(filter)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<comenziPerLuna[]>) => {
       const chartSerie = response.body ?? [];
       this.chartOptionsTrendComenziClientiNoi = {
@@ -211,6 +211,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
   //#endregion
-
-  ngOnDestroy(): void { }
 }

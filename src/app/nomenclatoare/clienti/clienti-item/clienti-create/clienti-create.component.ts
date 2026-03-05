@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ClientiService } from '../../clienti.service';
 import { clientiDTO } from '../clienti.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-clienti-create',
@@ -12,21 +11,20 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./clienti-create.component.scss'],
     standalone: false
 })
-export class ClientiCreateComponent implements OnInit, OnDestroy {
+export class ClientiCreateComponent implements OnInit {
 
   errors: string[] = [];
-  constructor(private router:Router, private clientiService: ClientiService, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private clientiService: ClientiService) { }
 
   ngOnInit(): void {
   }
   saveChanges(clientiDTO:clientiDTO){
     this.clientiService.create(clientiDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/clienti'])
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
-  ngOnDestroy(): void {}
 }

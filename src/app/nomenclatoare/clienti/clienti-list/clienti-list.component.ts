@@ -1,12 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
@@ -17,7 +17,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     styleUrls: ['./clienti-list.component.scss'],
     standalone: false
 })
-export class ClientiListComponent implements OnInit, OnDestroy {
+export class ClientiListComponent implements OnInit {
 
   clienti: clientiDTO[];
   errors: string[] = [];
@@ -28,7 +28,8 @@ export class ClientiListComponent implements OnInit, OnDestroy {
   pageSize: number = 100;
   initialFormValues: any;
   panelOpenState = false;
-  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, private dialog: MatDialog) { 
+  private destroyRef = inject(DestroyRef);
+  constructor(private clientiService: ClientiService, private formBuilder:FormBuilder, private dialog: MatDialog) { 
     this.clienti = [];
   }
   columnsToDisplay= ['nume', 'pfPj', 'cuicnp', 'registruComert', 'action'];
@@ -54,7 +55,7 @@ export class ClientiListComponent implements OnInit, OnDestroy {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.clientiService.getAll(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<clientiDTO[]>)=>{
       this.clienti = response.body??[];
       this.totalRecords = Number(response.headers.get("totalrecords"));
@@ -68,7 +69,7 @@ export class ClientiListComponent implements OnInit, OnDestroy {
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -96,7 +97,4 @@ export class ClientiListComponent implements OnInit, OnDestroy {
   togglePanel(){
     this.panelOpenState = !this.panelOpenState;
   }
-
-  ngOnDestroy(): void {}
-  
 }

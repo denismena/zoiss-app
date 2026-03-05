@@ -14,7 +14,7 @@
     <div class="col-12">
       @for (item of notificari; track item) {
         <div class="row">
-          <div class="col-7 col-md-10" [ngClass]="{'fw-bold':item.read===false }"><div [innerHtml]="item.descriere" (click)="view(item)"></div></div>
+          <div class="col-7 col-md-10" [ngClass]="{'fw-bold':item.read===false }"><div [innerHtml]="item.descriere | safeHtml" (click)="view(item)"></div></div>
           <div class="col-5 col-md-2">
             <mat-icon [ngStyle]="{'color':'white'}" (click)="read(item.id)" matTooltip="Marcheaza ca citit"> clear_all</mat-icon>
             <mat-icon mat-list-icon [ngStyle]="{'color':'red'}" (click)="delete(item.id)"  title="Delete">close</mat-icon></div>

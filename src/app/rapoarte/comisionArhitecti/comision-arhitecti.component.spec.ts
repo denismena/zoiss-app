@@ -5,8 +5,6 @@ import { of } from 'rxjs';
 import { ComisionArhitectiComponent } from './comision-arhitecti.component';
 import { RapoarteService } from '../rapoarte.service';
 import { ExportService } from 'src/app/utilities/export.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-
 describe('ComisionArhitectiComponent', () => {
   let component: ComisionArhitectiComponent;
   let fixture: ComponentFixture<ComisionArhitectiComponent>;
@@ -15,7 +13,6 @@ describe('ComisionArhitectiComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ComisionArhitectiComponent ],
       providers: [
-        UnsubscribeService,
         { provide: RapoarteService, useValue: { comisionArhitect: () => of([]) } },
         { provide: ExportService, useValue: { exportToExcel: () => {} } }
       ],

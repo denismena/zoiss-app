@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { DepoziteService } from '../../depozite.service';
 import { depoziteDTO } from '../depozite.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-depozite-create',
@@ -12,10 +11,11 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./depozite-create.component.scss'],
     standalone: false
 })
-export class DepoziteCreateComponent implements OnInit, OnDestroy {
+export class DepoziteCreateComponent implements OnInit {
 
   errors: string[] = [];
-  constructor(private router:Router, private depoziteService: DepoziteService, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private depoziteService: DepoziteService) { }
 
   ngOnInit(): void {
   }
@@ -23,13 +23,10 @@ export class DepoziteCreateComponent implements OnInit, OnDestroy {
   saveChanges(depoziteDTO: depoziteDTO){
     console.log(depoziteDTO);
     this.depoziteService.create(depoziteDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/depozite'])
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
-  ngOnDestroy(): void {}
-
 }

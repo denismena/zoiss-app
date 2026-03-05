@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { DepoziteService } from '../depozite.service';
 import { depoziteDTO } from './depozite.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-depozite-item',
@@ -13,9 +13,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./depozite-item.component.scss'],
     standalone: false
 })
-export class DepoziteItemComponent implements OnInit, OnDestroy {
+export class DepoziteItemComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private depoztService: DepoziteService, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder: FormBuilder, private depoztService: DepoziteService) { }
   public form!: FormGroup;
   @Input()
   model:depoziteDTO | undefined;
@@ -37,7 +38,7 @@ export class DepoziteItemComponent implements OnInit, OnDestroy {
     });
 
     this.depoztService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(depozite=>{
       this.depozitList=depozite;
     })
@@ -56,7 +57,4 @@ export class DepoziteItemComponent implements OnInit, OnDestroy {
   selectParent(depozit: any){       
     this.form.get('parentId')?.setValue(depozit.value);
   }
-
-  ngOnDestroy(): void {}
-
 }

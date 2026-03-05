@@ -1,18 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { authentificationResponse, forgetPass, resetPass, tokenModel, userCredentials, UtilizatoriDTO } from './security.models';
-import { UnsubscribeService } from '../unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityService {
 
-  constructor(private http: HttpClient, private router: Router, private unsubscribeService: UnsubscribeService) {}  
+  constructor(private http: HttpClient, private router: Router) {}  
 
   private apiUrl = environment.apiUrl + "/utilizatori";
   private readonly tokenKey: string = 'token';
@@ -59,9 +58,7 @@ export class SecurityService {
     let isRefreshSuccess: boolean = false;
 
     try {
-      const authenticatorResponse = await this.refreshtoken(credentials)
-        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-        .toPromise();
+      const authenticatorResponse = await firstValueFrom(this.refreshtoken(credentials).pipe(take(1)));
       this.saveToken(authenticatorResponse);
       isRefreshSuccess = true;
       //this.router.navigate(['/']);

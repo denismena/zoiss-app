@@ -1,10 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.service';
@@ -13,7 +14,6 @@ import { produseDTO, produseOfertaDTO } from 'src/app/nomenclatoare/produse/prod
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 
 @Component({
@@ -22,10 +22,11 @@ import { CookieService } from 'src/app/utilities/cookie.service';
     styleUrls: ['./oferte-produse-autocomplete.component.scss'],
     standalone: false
 })
-export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
+export class OferteProduseAutocompleteComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, public cookie: CookieService, 
-    private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, public cookie: CookieService,
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
@@ -81,7 +82,7 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
     this.formDoarNecomandate = this.formBuilder.group({
       doarNecomandate: this.idOferta ? this.cookie.getCookie('oferta' + this.idOferta)== '' ? false: this.cookie.getCookie('oferta' + this.idOferta) : false,
     });
-    this.formDoarNecomandate.controls['doarNecomandate'].valueChanges.subscribe(value => {
+    this.formDoarNecomandate.controls['doarNecomandate'].valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.cookie.setCookie({name:'oferta' + this.idOferta, value, session: true});
 
       if(value){
@@ -101,16 +102,16 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
       furnizorId: new FormControl()
     });
 
-    this.produsCtrl.valueChanges.subscribe(value => {
+    this.produsCtrl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.produseService.searchByName(value)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(produs => {
         this.produsToDisplay = produs;
       });
     });
 
     this.umService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(um=>{
       this.umList=um;
     });
@@ -118,7 +119,7 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
 
   loadProduseList(){
     this.produseService.getProduseAutocomplete()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(produse=>{
       this.produsToDisplay = produse;
     });    
@@ -142,7 +143,7 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
       this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
       this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
       this.furnizorService.getById(produs.prefFurnizorId)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
       });
@@ -188,7 +189,7 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
   edit(produs:any){
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(produs=>{
       this.preselectedProdus = produs;
       this.perCutieSet = produs.perCutie;
@@ -196,7 +197,7 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
     });
     if(produs.furnizorId > 0){
       this.furnizorService.getById(produs.furnizorId)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
       });
@@ -268,6 +269,5 @@ export class OferteProduseAutocompleteComponent implements OnInit, OnDestroy {
     this.selectedProdusFiltered.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
 
-  ngOnDestroy(): void {}
 }
 

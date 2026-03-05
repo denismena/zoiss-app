@@ -10,9 +10,10 @@
 
 <app-display-errors [errors]="errors"></app-display-errors>
 
+@let utilizatori = utilizatori$ | async;
 <app-generic-list [list]="utilizatori">
   <ng-container content>
-    @if (utilizatori.length > 0) {
+    @if (utilizatori && utilizatori.length > 0) {
       <table mat-table [dataSource]="utilizatori" class="table-index">
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef>Email</th>

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,9 +8,7 @@ import { DepoziteService } from 'src/app/nomenclatoare/depozite/depozite.service
 import { transportatorDTO } from 'src/app/nomenclatoare/transportator/transportator-item/transportator.model';
 import { TransporatorService } from 'src/app/nomenclatoare/transportator/transportator.service';
 import { transportDTO, transportProduseDTO } from './transport.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { forkJoin } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-transport-item',
@@ -17,9 +16,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./transport-item.component.scss'],
     standalone: false
 })
-export class TransportItemComponent implements OnInit, OnDestroy {
+export class TransportItemComponent implements OnInit {
 
-  constructor(private formBuilder:FormBuilder, private transportatorService: TransporatorService, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, private transportatorService: TransporatorService,
     private depoziteService: DepoziteService) { }
   @Input()
   model:transportDTO | undefined;
@@ -51,7 +51,7 @@ export class TransportItemComponent implements OnInit, OnDestroy {
       this.transportatorService.getAll(),
       this.depoziteService.getAll()
     ])
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(([trans, depozite]) => {
       this.transportatorList = trans;
       this.depoziteList = depozite;
@@ -86,6 +86,4 @@ export class TransportItemComponent implements OnInit, OnDestroy {
     this.showModificaDepozit = !this.showModificaDepozit;
   }
 
-  ngOnDestroy(): void {
-  }
 }

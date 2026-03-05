@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -17,8 +18,6 @@ import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { LivrariNumberDialogComponent } from '../livrari-number-dialog/livrari-number-dialog.component';
 import { transportDTO, transportProduseDTO } from '../transport-item/transport.model';
 import { TransportService } from '../transport.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
@@ -35,7 +34,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     ],
     standalone: false
 })
-export class TransportListComponent implements OnInit, OnDestroy {
+export class TransportListComponent implements OnInit {
 
   transport: transportDTO[]
   expandedElement: transportDTO[];
@@ -56,7 +55,8 @@ export class TransportListComponent implements OnInit, OnDestroy {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
-  constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router,
     public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService, public cookie: CookieService) { 
     this.transport = [];
     this.expandedElement = [];
@@ -96,7 +96,7 @@ export class TransportListComponent implements OnInit, OnDestroy {
     })
 
     this.depoziteService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(dep=>{this.depozitList=dep;});
   }
 
@@ -104,7 +104,7 @@ export class TransportListComponent implements OnInit, OnDestroy {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.transporService.getAll(values)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((response: HttpResponse<transportDTO[]>)=>{
       this.transport = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
@@ -118,7 +118,7 @@ export class TransportListComponent implements OnInit, OnDestroy {
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -174,14 +174,14 @@ export class TransportListComponent implements OnInit, OnDestroy {
       { data:{ }, width: '400px', height: '300px' });
 
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((data) => {      
       if (data.clicked === 'submit') {
         var numar = data.form.numar;
 
         if(selectedProd.length > 0){
           this.livrariService.fromTransport(numar, selectedProd)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(id=>{
             this.router.navigate(['/livrari/edit/' + id])
           }, 
@@ -239,8 +239,5 @@ export class TransportListComponent implements OnInit, OnDestroy {
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
   }
  //#endregion
-
-  ngOnDestroy(): void {
-  }
 
 }

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -9,18 +10,17 @@ import { UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
 import { ComenziService } from '../comenzi.service';
 import { comenziDTO, produseComandaDTO } from './comenzi.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-
 @Component({
     selector: 'app-comenzi-item',
     templateUrl: './comenzi-item.component.html',
     styleUrls: ['./comenzi-item.component.scss'],
     standalone: false
 })
-export class ComenziItemComponent implements OnInit, OnDestroy {
+export class ComenziItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder,
     private comenziService: ComenziService, private clientiService: ClientiService, private securityService: SecurityService) { }
   @Input()
   model:comenziDTO | undefined;
@@ -70,7 +70,7 @@ export class ComenziItemComponent implements OnInit, OnDestroy {
     {      
       //on add form get the next contract number
       this.comenziService.getNextNumber()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
       });
@@ -80,7 +80,7 @@ export class ComenziItemComponent implements OnInit, OnDestroy {
     
     if(this.form.get('utilizatorId')?.value){
       this.securityService.getById(this.form.get('utilizatorId')?.value)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(utilizator => {
         this.preselectUtilizator = utilizator;
         if(this.model !== undefined)
@@ -94,7 +94,7 @@ export class ComenziItemComponent implements OnInit, OnDestroy {
   loadAdrese(clientId: number)
   {
     this.clientiService.getById(clientId)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(adresa=>{
       this.adresa = adresa.adrese.filter(a=>a.livrare == true);
     });
@@ -123,5 +123,4 @@ export class ComenziItemComponent implements OnInit, OnDestroy {
   selectUtilizator(utilizator: any){    
     this.form.get('utilizatorId')?.setValue(utilizator?.id);
   }
-  ngOnDestroy(): void {}
 }

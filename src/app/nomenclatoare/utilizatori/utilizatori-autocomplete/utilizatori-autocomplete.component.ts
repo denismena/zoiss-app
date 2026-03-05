@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, Subscription } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
     selector: 'app-utilizatori-autocomplete',
@@ -26,7 +27,8 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
   subscription: Subscription | undefined;
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
-  constructor(private securitySevice: SecurityService, private unsubscribeService: UnsubscribeService) {
+  private destroyRef = inject(DestroyRef);
+  constructor(private securitySevice: SecurityService) {
     this.utilizatori = [];
     this.selectedUtilizator = new Observable<UtilizatoriDTO[]>();
     this.selectedUtilizator = this.utilizatorCtrl.valueChanges
@@ -42,7 +44,7 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
 
   loadUtilizatoriList(){
     this.securitySevice.getUsers()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(utilizatori=>{
       this.utilizatori = utilizatori;
       this.utilizatorCtrl.setValue(this.preselectUtilizator);

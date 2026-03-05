@@ -5,8 +5,6 @@ import { of } from 'rxjs';
 
 import { ProduseItemComponent } from './produse-item.component';
 import { UMService } from '../../um/um.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-
 describe('ProduseItemComponent', () => {
   let component: ProduseItemComponent;
   let fixture: ComponentFixture<ProduseItemComponent>;
@@ -16,7 +14,6 @@ describe('ProduseItemComponent', () => {
       declarations: [ ProduseItemComponent ],
       imports: [ RouterTestingModule ],
       providers: [
-        UnsubscribeService,
         { provide: UMService, useValue: { getAll: () => of([]) } }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]

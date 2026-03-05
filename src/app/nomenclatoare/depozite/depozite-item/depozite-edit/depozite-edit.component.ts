@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DepoziteService } from '../../depozite.service';
 import { depoziteCreationDTO, depoziteDTO } from '../depozite.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -12,17 +11,19 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./depozite-edit.component.scss'],
     standalone: false
 })
-export class DepoziteEditComponent implements OnInit, OnDestroy {
+export class DepoziteEditComponent implements OnInit {
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute, private router:Router, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private activatedRoute: ActivatedRoute, private router:Router, 
     private depoziteService: DepoziteService) { }
 
   model!:depoziteDTO;
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       if(params.id == null) return;
       this.depoziteService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(depozit => {
         this.model = depozit;        
       },
@@ -31,13 +32,10 @@ export class DepoziteEditComponent implements OnInit, OnDestroy {
   }
   saveChanges(depoziteCreationDTO:depoziteCreationDTO){
     this.depoziteService.edit(this.model.id, depoziteCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/depozite"]);
     },
     error=> this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
-
 }

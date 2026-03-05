@@ -1,12 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 //import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import { takeUntil } from 'rxjs/operators';
 import { comenziFurnizorBasicDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
     selector: 'app-comenzi-furn-select-dialog',
@@ -14,12 +13,13 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
     styleUrls: ['./comenzi-furn-select-dialog.component.scss'],
     standalone: false
 })
-export class ComenziFurnSelectDialogComponent implements OnInit, OnDestroy {
+export class ComenziFurnSelectDialogComponent implements OnInit {
 
+  private destroyRef = inject(DestroyRef);
   public form!: FormGroup;
   comenzifurnizor: comenziFurnizorBasicDTO[];
   furnizorId:number;
-  constructor(private formBuilder:FormBuilder, private comenziFurnizorService: ComenziFurnizorService, private unsubscribeService: UnsubscribeService,
+  constructor(private formBuilder:FormBuilder, private comenziFurnizorService: ComenziFurnizorService,
     @Inject(MAT_DIALOG_DATA) data: { furnizorId:number}, public dialogRef: MatDialogRef<ComenziFurnSelectDialogComponent>) {
       this.comenzifurnizor = [];
       this.furnizorId = data.furnizorId;
@@ -31,7 +31,7 @@ export class ComenziFurnSelectDialogComponent implements OnInit, OnDestroy {
     });    
    
     this.comenziFurnizorService.getBasicList(this.furnizorId)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(data=>{      
       this.comenzifurnizor=data;
     });
@@ -43,7 +43,5 @@ export class ComenziFurnSelectDialogComponent implements OnInit, OnDestroy {
       form: form      
     });
   }
-
-  ngOnDestroy(): void {}
 
 }

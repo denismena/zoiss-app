@@ -1,10 +1,10 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ArhitectiService } from '../../arhitecti.service';
 import { arhitectiCreationDTO, arhitectiDTO } from '../arhitecti.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-arhitecti-create-dialog',
@@ -12,12 +12,13 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./arhitecti-create-dialog.component.scss'],
     standalone: false
 })
-export class ArhitectiCreateDialogComponent implements OnInit, OnDestroy {
+export class ArhitectiCreateDialogComponent implements OnInit {
   errors: string[] = [];
   isDialog: boolean = true;
   editId: number = 0;
-  preselectedArhitect: arhitectiDTO;  
-  constructor(private arhitectiService: ArhitectiService, private unsubscribeService: UnsubscribeService,
+  preselectedArhitect: arhitectiDTO;
+  private destroyRef = inject(DestroyRef);
+  constructor(private arhitectiService: ArhitectiService,
     @Inject(MAT_DIALOG_DATA) data:{arhitect: arhitectiDTO, editId:number}, 
     public dialogRef: MatDialogRef<ArhitectiCreateDialogComponent>) { 
       this.preselectedArhitect = data?.arhitect;
@@ -31,7 +32,7 @@ export class ArhitectiCreateDialogComponent implements OnInit, OnDestroy {
   if(arhitectDTO!=undefined){
     if(this.editId == 0){
       this.arhitectiService.create(arhitectDTO)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(id=>{
         this.dialogRef.close({
           clicked: 'submit',
@@ -43,7 +44,7 @@ export class ArhitectiCreateDialogComponent implements OnInit, OnDestroy {
     }
     else{
       this.arhitectiService.edit(this.editId, arhitectDTO)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(id=>{
         this.dialogRef.close({
           clicked: 'submit',
@@ -61,6 +62,4 @@ export class ArhitectiCreateDialogComponent implements OnInit, OnDestroy {
     });
    }
   }
-
-  ngOnDestroy(): void {}
 }

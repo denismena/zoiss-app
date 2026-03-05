@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
 import { ArhitectiService } from 'src/app/nomenclatoare/arhitecti/arhitecti.service';
@@ -7,8 +8,6 @@ import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { OferteService } from '../../oferte.service';
 import { oferteCreationDTO, oferteDTO } from '../oferte.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -17,9 +16,10 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./oferte-edit.component.scss'],
     standalone: false
 })
-export class OferteEditComponent implements OnInit, OnDestroy {
+export class OferteEditComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, 
     private oferteService: OferteService, private clientiService: ClientiService, private arhitectService: ArhitectiService) { }
   
   model!:oferteDTO;
@@ -32,21 +32,21 @@ export class OferteEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;      
       this.oferteService.putGet(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(oferta => {
         this.model = oferta.oferta;
         this.selectedProdus = oferta.produse;
         console.log(this.model);
 
         this.clientiService.getById(oferta.oferta.clientId)
-        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(client=>{
           this.preselectClient = client;
         });
 
         if(oferta.oferta.arhitectId != null){
           this.arhitectService.getById(oferta.oferta.arhitectId)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(arhitect=>{
             this.preselectArhitect = arhitect;
           });
@@ -57,12 +57,10 @@ export class OferteEditComponent implements OnInit, OnDestroy {
 
   saveChanges(oferteCreationDTO:oferteCreationDTO){
     this.oferteService.edit(this.model.id, oferteCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/oferte"]);
     }, 
     error=> this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
 }

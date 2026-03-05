@@ -6,8 +6,6 @@ import { of } from 'rxjs';
 
 import { ProduseListComponent } from './produse-list.component';
 import { ProduseService } from '../produse.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-
 describe('ProduseListComponent', () => {
   let component: ProduseListComponent;
   let fixture: ComponentFixture<ProduseListComponent>;
@@ -18,7 +16,6 @@ describe('ProduseListComponent', () => {
       declarations: [ ProduseListComponent ],
       imports: [ RouterTestingModule ],
       providers: [
-        UnsubscribeService,
         { provide: ProduseService, useValue: { getAll: () => of(mockResponse) } }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]

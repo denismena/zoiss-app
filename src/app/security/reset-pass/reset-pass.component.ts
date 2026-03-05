@@ -1,12 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { resetPass } from '../security.models';
 import { SecurityService } from '../security.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-reset-pass',
@@ -14,9 +13,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./reset-pass.component.scss'],
     standalone: false
 })
-export class ResetPassComponent implements OnInit, OnDestroy {
+export class ResetPassComponent implements OnInit {
 
-  constructor(private securityService: SecurityService, private router: Router, private formBuilder: FormBuilder, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private securityService: SecurityService, private router: Router, private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute) { }
   errors: string[] = [];
   public form!: FormGroup;
@@ -35,12 +35,10 @@ export class ResetPassComponent implements OnInit, OnDestroy {
   register(userCredentials: resetPass){
     this.errors=[];    
     this.securityService.resetPassword(userCredentials)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(authenticationResponse=>{
       this.router.navigate(['/']);
     }, error=> this.errors = parseWebAPIErrors(error));
   }
 
-  ngOnDestroy(): void {
-  }
 }

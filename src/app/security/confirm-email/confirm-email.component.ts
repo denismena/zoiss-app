@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { confirmEmail } from '../security.models';
 import { SecurityService } from '../security.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-confirm-email',
@@ -12,15 +11,17 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./confirm-email.component.scss'],
     standalone: false
 })
-export class ConfirmEmailComponent implements OnInit, OnDestroy {
+export class ConfirmEmailComponent implements OnInit {
 
-  constructor(private securityService: SecurityService, private activatedRoute: ActivatedRoute, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private securityService: SecurityService, private activatedRoute: ActivatedRoute) { }
   errors: string[] = [];
   success: boolean = false;
   
   ngOnInit(): void {
     this.activatedRoute.queryParams
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(params => {
       const confEmail: confirmEmail = { email: params.email, token: params.token };
       this.confirm(confEmail);
@@ -30,7 +31,7 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
     this.errors=[];
     this.success=false;
     this.securityService.confirmEmail(userCredentials)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(authenticationResponse=>{
       if(authenticationResponse != null){
         this.success=true;
@@ -38,6 +39,4 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
     }, error=> this.errors = parseWebAPIErrors(error));
   }
 
-  ngOnDestroy(): void {
-  }
 }

@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 
 import { ClientiListComponent } from './clienti-list.component';
 import { ClientiService } from '../clienti.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { MaterialModule } from 'src/app/material/material.module';
 import { DisplayErrorsComponent } from 'src/app/utilities/display-errors/display-errors.component';
 
@@ -19,7 +18,6 @@ describe('ClientiListComponent', () => {
       declarations: [ ClientiListComponent, DisplayErrorsComponent ],
       imports: [ MaterialModule, RouterTestingModule ],
       providers: [
-        UnsubscribeService,
         { provide: ClientiService, useValue: { getAll: () => of(new HttpResponse({ body: [], headers: mockHeaders })), delete: () => of({}) } }
       ]
     })

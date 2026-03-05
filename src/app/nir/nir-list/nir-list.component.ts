@@ -1,8 +1,8 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { nirDTO } from '../nir-item/nir.model';
 import { Router } from '@angular/router';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ExportService } from 'src/app/utilities/export.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
@@ -10,7 +10,6 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { NIRService } from '../nir.service';
-import { takeUntil } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,7 +29,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     ],
     standalone: false
 })
-export class NirListComponent implements OnInit, OnDestroy {
+export class NirListComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   public form!: FormGroup;
@@ -45,7 +44,8 @@ export class NirListComponent implements OnInit, OnDestroy {
   panelOpenState = false;
   loading$: boolean = true;  
   
-  constructor(private nirService: NIRService, private router:Router, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private nirService: NIRService, private router:Router,
     private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { 
       this.nirList = [];
       this.expandedElement = [];
@@ -81,7 +81,7 @@ export class NirListComponent implements OnInit, OnDestroy {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.nirService.getAll(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<nirDTO[]>)=>{
       this.nirList = response.body??[];
       console.log('this.nirList', this.nirList);
@@ -96,7 +96,7 @@ export class NirListComponent implements OnInit, OnDestroy {
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -144,9 +144,6 @@ export class NirListComponent implements OnInit, OnDestroy {
  
   togglePanel(){
     this.panelOpenState = !this.panelOpenState;
-  }
-  
-  ngOnDestroy(): void {
   }
 
 }

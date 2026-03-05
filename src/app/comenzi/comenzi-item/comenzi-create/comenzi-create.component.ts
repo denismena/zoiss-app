@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ComenziService } from '../../comenzi.service';
 import { comenziDTO } from '../comenzi.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-comenzi-create',
@@ -12,10 +11,11 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./comenzi-create.component.scss'],
     standalone: false
 })
-export class ComenziCreateComponent implements OnInit, OnDestroy {
+export class ComenziCreateComponent implements OnInit {
 
+  private destroyRef = inject(DestroyRef);
   errors: string[] = [];
-  constructor(private router:Router, private comenziService: ComenziService, private unsubscribeService: UnsubscribeService) { }
+  constructor(private router:Router, private comenziService: ComenziService) { }
 
   nextNumber: number = 1;
   ngOnInit(): void {    
@@ -24,7 +24,7 @@ export class ComenziCreateComponent implements OnInit, OnDestroy {
   saveChanges(comenziDTO:comenziDTO){
     console.log(comenziDTO);
     this.comenziService.create(comenziDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/comenzi'])
     }, 
@@ -33,5 +33,4 @@ export class ComenziCreateComponent implements OnInit, OnDestroy {
       this.errors = parseWebAPIErrors(error);
     });
   }
-  ngOnDestroy(): void {}
 }

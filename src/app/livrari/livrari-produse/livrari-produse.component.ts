@@ -1,10 +1,9 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { LivrariDTO, livrariProduseDTO } from '../livrari-item/livrari.model';
 import { ProdusStocDialogComponent } from '../produs-stoc-dialog/produs-stoc-dialog.component';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-livrari-produse',
@@ -12,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./livrari-produse.component.scss'],
     standalone: false
 })
-export class LivrariProduseComponent implements OnInit, OnDestroy {
+export class LivrariProduseComponent implements OnInit {
   
   @Input() selectedProdus: livrariProduseDTO[]=[];
   @Input() clientId: number | undefined;
@@ -20,7 +19,8 @@ export class LivrariProduseComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable)
   table!: MatTable<any>;
   
-  constructor(public dialog: MatDialog, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(public dialog: MatDialog) { }
   columnsToDisplay = ['furnizor', 'produsNume', 'cantitate', 'um', 'cutii', 'livrat', 'actions']
   ngOnInit(): void {    
   }
@@ -44,7 +44,7 @@ export class LivrariProduseComponent implements OnInit, OnDestroy {
       { data:{id: this.clientId}, width: '650px', height: '300px' });
 
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         if (data.clicked === 'submit') {          
           data.form.forEach((produs: any) => {
@@ -100,7 +100,5 @@ export class LivrariProduseComponent implements OnInit, OnDestroy {
       console.log('this.table: ', this.table);
     }    
   }
-
-  ngOnDestroy(): void {}
 
 }

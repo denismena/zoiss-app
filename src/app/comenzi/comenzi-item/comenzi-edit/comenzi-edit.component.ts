@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { arhitectiDTO } from 'src/app/nomenclatoare/arhitecti/arhitecti-item/arhitecti.model';
 import { ArhitectiService } from 'src/app/nomenclatoare/arhitecti/arhitecti.service';
@@ -6,8 +7,6 @@ import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.m
 import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 import { ComenziService } from '../../comenzi.service';
 import { comenziCreationDTO, comenziDTO, produseComandaDTO } from '../comenzi.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
@@ -17,9 +16,10 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./comenzi-edit.component.scss'],
     standalone: false
 })
-export class ComenziEditComponent implements OnInit, OnDestroy {
+export class ComenziEditComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, 
     private comenziService: ComenziService, private clientiService: ClientiService, private arhitectService: ArhitectiService) { }
   
     errors: string[] = [];
@@ -31,7 +31,7 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.comenziService.putGet(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(comanda => {
         this.model = comanda.comanda;
         this.selectedProdus = comanda.comenziProduses;        
@@ -45,13 +45,13 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
           //   this.preselectArhitect = arhitect;
           // });
           this.clientiService.getById(comanda.comanda.clientId)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(client=>{
             this.preselectClient = client;
           });
           if(comanda.comanda.arhitectId != null){
             this.arhitectService.getById(comanda.comanda.arhitectId)
-            .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(arhitect=>{
               this.preselectArhitect = arhitect;
             });
@@ -63,7 +63,7 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
   }
   // ngOnInit(): void {
   //   this.activatedRoute.params.pipe(
-  //     takeUntil(this.unsubscribeService.unsubscribeSignal$)
+  //     takeUntilDestroyed(this.destroyRef)
   //   ).subscribe(params => {
   //     forkJoin([
   //       this.comenziService.putGet(params.id),
@@ -80,7 +80,7 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
 
   saveChanges(comenziCreationDTO:comenziCreationDTO){
     this.comenziService.edit(this.model.id, comenziCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/comenzi"]);
     }, 
@@ -88,5 +88,4 @@ export class ComenziEditComponent implements OnInit, OnDestroy {
       this.errors = parseWebAPIErrors(error);
     });
   }
-  ngOnDestroy(): void {}
 }

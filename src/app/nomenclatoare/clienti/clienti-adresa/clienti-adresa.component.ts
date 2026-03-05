@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -7,8 +7,8 @@ import { depoziteDTO } from '../../depozite/depozite-item/depozite.model';
 import { DepoziteService } from '../../depozite/depozite.service';
 import { clientiAdresaDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-clienti-adresa',
@@ -16,9 +16,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./clienti-adresa.component.scss'],
     standalone: false
 })
-export class ClientiAdresaComponent implements OnInit, OnDestroy {
+export class ClientiAdresaComponent implements OnInit {
 
-  constructor(private formBuilder:FormBuilder, private depoziteService: DepoziteService, private unsubscribeService: UnsubscribeService) { 
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, private depoziteService: DepoziteService) { 
    this.adreseList=[]; 
   }
 
@@ -54,7 +55,7 @@ export class ClientiAdresaComponent implements OnInit, OnDestroy {
   loadDepozite()
   {
     this.depoziteService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(depozite=>{
       this.depozite = depozite;
       console.log(this.depozite);
@@ -103,6 +104,4 @@ export class ClientiAdresaComponent implements OnInit, OnDestroy {
   changeDepozit(depozit:any){
     this.form.get('depozit')?.setValue(depozit.selectedOptions[0].text);
   }
-
-  ngOnDestroy(): void {}
 }

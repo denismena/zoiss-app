@@ -1,4 +1,5 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,8 +7,6 @@ import { DepoziteAllDialogComponent } from '../depozite-all-dialog/depozite-all-
 import { DepoziteDialogComponent } from '../depozite-dialog/depozite-dialog.component';
 import { transportProduseDepozitDTO, transportProduseDTO } from '../transport-item/transport.model';
 import { TransportService } from '../transport.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-transport-produse',
@@ -15,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./transport-produse.component.scss'],
     standalone: false
 })
-export class TransportProduseComponent implements OnInit, OnDestroy {
+export class TransportProduseComponent implements OnInit {
 
   @Input()
   selectedProdus: transportProduseDTO[]=[];
@@ -29,13 +28,15 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable)
   table!: MatTable<any>;
   dataFromDialog : any;
+
+  private destroyRef = inject(DestroyRef);
   
-  constructor(private activatedRoute: ActivatedRoute, private unsubscribeService: UnsubscribeService,
+  constructor(private activatedRoute: ActivatedRoute,
     public dialog: MatDialog, private transportService: TransportService) {     
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
+    this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params=>{
       this.id= params.id;
     });
     this.depoziteLista.forEach(d=>{
@@ -54,12 +55,12 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
       { data:{id: id, date:data, detalii:detalii, pozaPath:pozaPath}, width: '600px', height: '450px' });
 
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((data) => {
       if (data.clicked === 'submit') {
         this.dataFromDialog = data.form;
         this.transportService.saveDepozitArrival(data.form)
-        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           var currProDep = this.selectedProdus.find(f=>f.id === prodDepId)?.transportProduseDepozit.find(ff=>ff.id === id);
           if(currProDep !=null)
@@ -74,7 +75,7 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
         console.log('delete', data.form);
         //return;          
         this.transportService.deleteProdusDepozit(data.form?.id)
-        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           var currProDep = this.selectedProdus.find(f=>f.id === prodDepId)?.transportProduseDepozit.find(ff=>ff.id === id);
           if(currProDep !=null)
@@ -95,13 +96,13 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
       { data:{id: this.id, depozit: depozit}, width: '450px', height: '400px' });
 
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((data) => {      
       if (data.clicked === 'submit') {
         this.dataFromDialog = data.form;
         
         this.transportService.saveDepozitArrivalAll(data.form)
-            .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
               this.selectedProdus.forEach(produs => {
                   var currProDep = produs.transportProduseDepozit.find(f=>f.depozit === depozit);                                     
@@ -118,7 +119,7 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
         console.log('delete', data.form);
         //return;
         this.transportService.deleteDepozit(data.form?.transportId, data.form?.depozit)
-            .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
               this.selectedProdus.forEach(produs => {
                 var currProDep = produs.transportProduseDepozit.find(f=>f.depozit === depozit);                                     
@@ -133,8 +134,5 @@ export class TransportProduseComponent implements OnInit, OnDestroy {
         });
       }
     }); 
-  }
-
-  ngOnDestroy(): void {
   }
 }

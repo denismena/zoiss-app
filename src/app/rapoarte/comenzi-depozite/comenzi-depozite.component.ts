@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { formatDateFormData } from 'src/app/utilities/utils';
 import { RapoarteService } from '../rapoarte.service';
 import { sucursaleComenziDTO } from './comenzi-depozite.model';
-import { formatDateFormData } from 'src/app/utilities/utils';
-import { HttpResponse } from '@angular/common/http';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { HighchartsChartDirective } from 'highcharts-angular';
 import { MaterialModule } from 'src/app/material/material.module';
 import { CommonModule } from '@angular/common';
@@ -17,7 +16,7 @@ import { CommonModule } from '@angular/common';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, MaterialModule, HighchartsChartDirective],
 })
-export class ComenziDepoziteComponent implements OnInit, OnDestroy {
+export class ComenziDepoziteComponent implements OnInit {
   loading$: boolean = true;
   comenziDepozite: sucursaleComenziDTO[] = [];
   public form!: FormGroup;
@@ -54,7 +53,8 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
     },
   };
 
-  constructor(private reportService: RapoarteService, private formBuilder: FormBuilder, private unsubscribeService: UnsubscribeService) {}
+  private destroyRef = inject(DestroyRef);
+  constructor(private reportService: RapoarteService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     const date: Date = new Date();
@@ -77,7 +77,7 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
 
   loadList(values: any) {
     this.reportService.comenziSucursale(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<sucursaleComenziDTO[]>) => {
       this.comenziDepozite = response.body ?? [];
       this.chartOptions = {
@@ -105,5 +105,4 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
     return this.comenziDepozite.map(t => t.cantitate).reduce((acc, value) => Number(acc) + Number(value), 0).toFixed(2);
   }
 
-  ngOnDestroy(): void {}
 }

@@ -1,13 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import { stickyNotesCreationDTO, stickyNotesDTO } from '../sticky-notes.model';
-import { StickyNotesService } from '../sticky-notes.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { stickyNotesCreationDTO, stickyNotesDTO } from '../sticky-notes.model';
+import { StickyNotesService } from '../sticky-notes.service';
 
 @Component({
     selector: 'app-sticky-notes-list',
@@ -15,11 +14,12 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     styleUrls: ['./sticky-notes-list.component.scss'],
     standalone: false
 })
-export class StickyNotesListComponent implements OnInit, OnDestroy {
+export class StickyNotesListComponent implements OnInit {
 
   notes: stickyNotesDTO[];
   errors: string[] = [];
-  constructor(private stickyNotesService: StickyNotesService, private unsubscribeService: UnsubscribeService, private dialog: MatDialog) { 
+  private destroyRef = inject(DestroyRef);
+  constructor(private stickyNotesService: StickyNotesService, private dialog: MatDialog) { 
     this.notes=[];
   }
 
@@ -29,7 +29,7 @@ export class StickyNotesListComponent implements OnInit, OnDestroy {
 
   loadList(){
     this.stickyNotesService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(notes=>{
       this.notes = notes;
     });    
@@ -38,7 +38,7 @@ export class StickyNotesListComponent implements OnInit, OnDestroy {
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -57,7 +57,7 @@ export class StickyNotesListComponent implements OnInit, OnDestroy {
   saveChanges(id:number, stickyNotesDTO: any){
     const note: stickyNotesCreationDTO={descriere:stickyNotesDTO.target.innerHTML};    
     this.stickyNotesService.edit(id, note)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{    
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
@@ -66,7 +66,7 @@ export class StickyNotesListComponent implements OnInit, OnDestroy {
   addNotes(){
     const note: stickyNotesCreationDTO={descriere:''};    
     this.stickyNotesService.create(note)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{      
       this.loadList();
     }, 
@@ -111,6 +111,4 @@ export class StickyNotesListComponent implements OnInit, OnDestroy {
     ]
   };
 
-  ngOnDestroy(): void {
-  }
 }

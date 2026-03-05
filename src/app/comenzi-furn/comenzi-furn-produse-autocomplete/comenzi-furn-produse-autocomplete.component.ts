@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -12,8 +12,8 @@ import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.mod
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { ProdusSplitDialogComponent } from '../produs-split-dialog/produs-split-dialog.component';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-comenzi-furn-produse-autocomplete',
@@ -21,9 +21,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./comenzi-furn-produse-autocomplete.component.scss'],
     standalone: false
 })
-export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestroy {
+export class ComenziFurnProduseAutocompleteComponent implements OnInit {
 
-  constructor(private umService: UMService, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private umService: UMService,
     private formBuilder:FormBuilder, private produseService: ProduseService, public dialog: MatDialog) { 
     this.selectedProdus = [];
     //this.produsToDisplay = [];    
@@ -69,7 +70,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
     
     
     this.umService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(um=>{
       this.umList=um;
     })
@@ -131,7 +132,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
   edit(produs:any){    
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(produs=>{
       this.preselectedProdus = produs;
       this.perCutieSet = produs.perCutie;
@@ -162,7 +163,7 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
     const dialogRef = this.dialog.open(ProdusSplitDialogComponent,      
       { data:{produsSplit: produs}, width: '650px', height: '300px' });
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data:any) => {
         if (data.clicked === 'submit') {
           const anotherProdus : produseComandaFurnizorDTO = {
@@ -191,5 +192,4 @@ export class ComenziFurnProduseAutocompleteComponent implements OnInit, OnDestro
     this.table.renderRows();
   }
 
-  ngOnDestroy(): void {}
 }

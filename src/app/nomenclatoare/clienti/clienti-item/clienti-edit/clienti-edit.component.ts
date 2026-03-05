@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ClientiService } from '../../clienti.service';
 import { clientiDTO, clientiCreationDTO, clientiAdresaDTO } from '../clienti.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-clienti-edit',
@@ -12,9 +11,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./clienti-edit.component.scss'],
     standalone: false
 })
-export class ClientiEditComponent implements OnInit, OnDestroy {
+export class ClientiEditComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private clientiService: ClientiService, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private clientiService: ClientiService) { }
 
   adreseList: clientiAdresaDTO[] = [];
   model!:clientiDTO;
@@ -23,7 +23,7 @@ export class ClientiEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == undefined) return;
       this.clientiService.putGet(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(client => {
         this.model = client.client;
         this.adreseList = client.adrese;
@@ -34,12 +34,10 @@ export class ClientiEditComponent implements OnInit, OnDestroy {
   }
   saveChanges(clientiCreationDTO:clientiCreationDTO){
     this.clientiService.edit(this.model.id, clientiCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/clienti"]);
     },
     error => this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
 }

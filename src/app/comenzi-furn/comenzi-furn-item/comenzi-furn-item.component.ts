@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from './comenzi-furn.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-comenzi-furn-item',
@@ -13,10 +12,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./comenzi-furn-item.component.scss'],
     standalone: false
 })
-export class ComenziFurnItemComponent implements OnInit, OnDestroy {
+export class ComenziFurnItemComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private comenziFurnizorService: ComenziFurnizorService,
-    private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute, private formBuilder:FormBuilder, private comenziFurnizorService: ComenziFurnizorService) { }
 
   @Input()
   model:comenziFurnizorDTO | undefined;
@@ -45,7 +44,7 @@ export class ComenziFurnItemComponent implements OnInit, OnDestroy {
     {      
       //on add form get the next contract number
       this.comenziFurnizorService.getNextNumber()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
       });
@@ -64,7 +63,4 @@ export class ComenziFurnItemComponent implements OnInit, OnDestroy {
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
   }
-
-  ngOnDestroy(): void {}
-
 }

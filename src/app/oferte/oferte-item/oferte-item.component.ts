@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,8 +8,6 @@ import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.m
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { OferteService } from '../oferte.service';
 import { oferteDTO } from './oferte.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-oferte-item',
@@ -16,9 +15,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./oferte-item.component.scss'],
     standalone: false
 })
-export class OferteItemComponent implements OnInit, OnDestroy {
+export class OferteItemComponent implements OnInit {
 
-  constructor(private formBuilder:FormBuilder, private oferteService: OferteService, private unsubscribeService: UnsubscribeService ) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, private oferteService: OferteService) { }
   @Input()
   model:oferteDTO | undefined;
   public form!: FormGroup;
@@ -63,7 +63,7 @@ export class OferteItemComponent implements OnInit, OnDestroy {
     {      
       //on add form get the next contract number
       this.oferteService.getNextNumber()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
       });
@@ -90,6 +90,4 @@ export class OferteItemComponent implements OnInit, OnDestroy {
     this.form.get('arhitectId')?.setValue(arhitect?.id);    
     this.form.get('comision')?.setValue(arhitect?.comision);    
   }
-
-  ngOnDestroy(): void {}
 }

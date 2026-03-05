@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 import { LivrariService } from '../livrari.service';
 import { LivrariDTO, livrariProduseDTO } from './livrari.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-livrari-item',
@@ -14,9 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
     styleUrls: ['./livrari-item.component.scss'],
     standalone: false
 })
-export class LivrariItemComponent implements OnInit, OnDestroy {
+export class LivrariItemComponent implements OnInit {
 
-  constructor(private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, private dialog: MatDialog,
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, private dialog: MatDialog,
     private livrariService: LivrariService) { }
 
   @Input() model:LivrariDTO | undefined;  
@@ -47,7 +47,7 @@ export class LivrariItemComponent implements OnInit, OnDestroy {
       //on add form
       this.form.get('clientId')?.setValue(this.clientId);
       this.livrariService.getNextNumber()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data=>{
         console.log(data);
         this.form.get('numar')?.setValue(data);
@@ -73,5 +73,4 @@ export class LivrariItemComponent implements OnInit, OnDestroy {
       this.onSaveChanges.emit(this.form.value);
   }
 
-  ngOnDestroy(): void {}
 }

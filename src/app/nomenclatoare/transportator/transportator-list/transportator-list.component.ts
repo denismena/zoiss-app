@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { transportatorDTO } from '../transportator-item/transportator.model';
 import { TransporatorService } from '../transportator.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { Subject } from 'rxjs';
+import { catchError, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-transportator-list',
@@ -14,36 +16,31 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     styleUrls: ['./transportator-list.component.scss'],
     standalone: false
 })
-export class TransportatorListComponent implements OnInit, OnDestroy {
+export class TransportatorListComponent {
 
-  transportator: transportatorDTO[];
   errors: string[] = [];
-  loading$: boolean = true;
-  constructor(private transporatorService: TransporatorService, private unsubscribeService: UnsubscribeService, private dialog: MatDialog) { 
-    this.transportator = [];
-  }
+  private refresh$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+  private transporatorService = inject(TransporatorService);
+  private dialog = inject(MatDialog);
 
-  columnsToDisplay= ['nume', 'nrInmatriculare', 'adresa', 'tel', 'email', 'active', 'action'];
+  transportator$ = this.refresh$.pipe(
+    startWith(void 0),
+    switchMap(() => this.transporatorService.getAll().pipe(
+      catchError(error => {
+        this.errors = parseWebAPIErrors(error);
+        return of([] as transportatorDTO[]);
+      }),
+      shareReplay(1)
+    ))
+  );
 
-  ngOnInit(): void {
-    this.loadList();
-  }
-  loadList(){
-    this.transporatorService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-    .subscribe(transportator=>{
-      this.transportator = transportator;
-      this.loading$ = false;
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-    });    
-  }
+  columnsToDisplay = ['nume', 'nrInmatriculare', 'adresa', 'tel', 'email', 'active', 'action'];
 
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -52,12 +49,10 @@ export class TransportatorListComponent implements OnInit, OnDestroy {
   private deleteComanda(id: number){
     this.transporatorService.delete(id)
     .subscribe(() => {
-      this.loadList();
+      this.refresh$.next();
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
-
-  ngOnDestroy(): void {}
 }

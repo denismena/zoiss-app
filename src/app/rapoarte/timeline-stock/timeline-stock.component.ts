@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HttpResponse } from '@angular/common/http';
 import { RapoarteService } from '../rapoarte.service';
 import * as Highcharts from 'highcharts';
-import { takeUntil } from 'rxjs/operators';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { HighchartsChartDirective } from 'highcharts-angular';
 import { MaterialModule } from 'src/app/material/material.module';
@@ -16,9 +15,10 @@ import { RouterModule } from '@angular/router';
     standalone: true,
     imports: [RouterModule, MaterialModule, HighchartsChartDirective],
 })
-export class TimelineStockComponent implements OnInit, OnDestroy {
+export class TimelineStockComponent implements OnInit {
   produsId: number = 0;
-  constructor(private activatedRoute: ActivatedRoute, private reportService: RapoarteService, private unsubscribeService: UnsubscribeService) {}
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute, private reportService: RapoarteService) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -67,7 +67,7 @@ export class TimelineStockComponent implements OnInit, OnDestroy {
 
     const options = Highcharts.getOptions();
     this.reportService.timelineStockProduse(filter)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<any>) => {
       const chartSerie = response.body ?? [];
       this.chartOptionsTimelineStock = {
@@ -87,5 +87,4 @@ export class TimelineStockComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void { }
 }

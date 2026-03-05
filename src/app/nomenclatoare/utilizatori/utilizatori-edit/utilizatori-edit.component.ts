@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,8 +7,8 @@ import { SecurityService } from 'src/app/security/security.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { SucursaleService } from '../../sucursale/sucursala.service';
 import { sucursalaDTO } from '../../sucursale/sucursale-item/sucursala.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-utilizatori-edit',
@@ -16,9 +16,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./utilizatori-edit.component.scss'],
     standalone: false
 })
-export class UtilizatoriEditComponent implements OnInit, OnDestroy {
+export class UtilizatoriEditComponent implements OnInit {
 
-  constructor(private securityService: SecurityService, private router: Router, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+  constructor(private securityService: SecurityService, private router: Router, 
     private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private sucursaleService: SucursaleService) { 
       
     }
@@ -32,7 +33,7 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.securityService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(util => {
         this.model = util;
         if(this.model !== undefined)
@@ -51,7 +52,7 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
     })
 
     this.sucursaleService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(sucursale=>{
       this.sucursaleList=sucursale;      
     },
@@ -62,7 +63,7 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
     this.errors=[];
     if(utilizatoriDTO.sucursalaId == 0) utilizatoriDTO.sucursalaId = null;
     this.securityService.edit(this.model.id, utilizatoriDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(authenticationResponse=>{
       if(this.model.email == this.securityService.getFieldFromJwt('email'))
         this.securityService.saveToken(authenticationResponse);
@@ -73,6 +74,4 @@ export class UtilizatoriEditComponent implements OnInit, OnDestroy {
   selectParent(depozit: any){       
     this.form.get('sucursalaId')?.setValue(depozit.value);
   }
-
-  ngOnDestroy(): void {}
 }
