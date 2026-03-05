@@ -122,7 +122,6 @@ import { ComenziFurnSelectDialogComponent } from './comenzi/comenzi-furn-select-
 import { LivrariCreateComponent } from './livrari/livrari-item/livrari-create/livrari-create.component';
 import { ComenziUtilizatoriComponent } from './rapoarte/comenzi-utilizatori/comenzi-utilizatori.component';
 import { ComenziDepoziteComponent } from './rapoarte/comenzi-depozite/comenzi-depozite.component';
-import { HighchartsChartModule } from 'highcharts-angular';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { IconsService } from './utilities/icons.service';
 import { NirItemComponent } from './nir/nir-item/nir-item.component';
@@ -237,15 +236,11 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         UtilizatoriAutocompleteComponent,
         ComenziFurnSelectDialogComponent,
         LivrariCreateComponent,
-        ComenziUtilizatoriComponent,
-        ComenziDepoziteComponent,
-        DashboardComponent,
         NirItemComponent,
         NirCreateComponent,
         NirEditComponent,
         NirListComponent,
         NirProduseAutocompleteComponent,
-        TimelineStockComponent,
         RemoveDuplicatesComponent,
         ReadMoreComponent
     ],
@@ -259,7 +254,10 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         AngularEditorModule,
         ZXingScannerModule,
         QRCodeComponent,
-        HighchartsChartModule], providers: [{
+        ComenziUtilizatoriComponent,
+        ComenziDepoziteComponent,
+        DashboardComponent,
+        TimelineStockComponent], providers: [{
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptorService,
             multi: true,
