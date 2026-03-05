@@ -30,7 +30,6 @@ export class ProduseEditComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(produs => {
         this.model = produs;
-        console.log(this.model);
 
         if(produs.prefFurnizorId !=undefined){
           this.furnizorService.getById(produs.prefFurnizorId)

@@ -147,7 +147,6 @@ export class LivrariListComponent implements OnInit {
       const dt = new Date(element.data)
       saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
     }, error => {
-      console.log("Something went wrong");
     });
   }
 
@@ -155,21 +154,17 @@ export class LivrariListComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitectId: string){
     this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
 

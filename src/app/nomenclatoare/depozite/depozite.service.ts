@@ -17,7 +17,6 @@ export class DepoziteService {
   }
 
   create(depozit: depoziteCreationDTO){
-    console.log('depoziteCreationDTO', depozit);
     return this.http.post(this.apiUrl, depozit);
   }
 

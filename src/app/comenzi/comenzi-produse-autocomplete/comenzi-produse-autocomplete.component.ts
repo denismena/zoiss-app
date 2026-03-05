@@ -101,7 +101,6 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     .subscribe(um=>{
       this.umList=um;
     })
-    console.log('selectedProdus', this.selectedProdus);
   }
 
   loadProduseList(){
@@ -127,7 +126,6 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
   this.form.get('produsNume')?.setValue(produs?.nume);
   this.form.get('codProdus')?.setValue(produs?.cod);
   if(produs != undefined && produs.prefFurnizorId !=undefined){
-    console.log('prefFurnizor', produs.prefFurnizor);
     this.form.get('furnizorId')?.setValue(produs.prefFurnizorId);
     this.form.get('furnizorNume')?.setValue(produs.prefFurnizor);
     this.furnizorService.getById(produs.prefFurnizorId)
@@ -156,7 +154,6 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.selectedProdus[index]=this.form.value;
     }
     else this.selectedProdus.push(this.form.value);
-    console.log('selectedProdus', this.selectedProdus, this.form.controls['isInComandaFurnizor'].value);
     if (this.table !== undefined){
       this.table.renderRows();
     }

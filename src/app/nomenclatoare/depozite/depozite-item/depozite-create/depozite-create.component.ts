@@ -21,7 +21,6 @@ export class DepoziteCreateComponent implements OnInit {
   }
 
   saveChanges(depoziteDTO: depoziteDTO){
-    console.log(depoziteDTO);
     this.depoziteService.create(depoziteDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{

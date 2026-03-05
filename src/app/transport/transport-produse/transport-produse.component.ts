@@ -72,7 +72,6 @@ export class TransportProduseComponent implements OnInit {
         });
       }
       if (data.clicked === 'delete') {
-        console.log('delete', data.form);
         //return;          
         this.transportService.deleteProdusDepozit(data.form?.id)
         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -116,7 +115,6 @@ export class TransportProduseComponent implements OnInit {
             });
       }
       if (data.clicked === 'delete') {        
-        console.log('delete', data.form);
         //return;
         this.transportService.deleteDepozit(data.form?.transportId, data.form?.depozit)
             .pipe(takeUntilDestroyed(this.destroyRef))

@@ -161,7 +161,6 @@ export class OferteListComponent implements OnInit {
       element.produse.forEach(prod=>{
         if(prod.addToComanda && !prod.isInComanda)
           {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.addToComanda);
             selectedProd.push(prod);
           }
       })
@@ -229,7 +228,6 @@ export class OferteListComponent implements OnInit {
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
     }, error => {
-      console.log("Something went wrong");
     });
   }
   
@@ -244,7 +242,6 @@ export class OferteListComponent implements OnInit {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
     }, error => {
-      console.log("Something went wrong");
     });
   }
 
@@ -261,7 +258,6 @@ export class OferteListComponent implements OnInit {
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       window.open(fileURL, "_blank");
     }, error => {
-      console.log("Something went wrong");
     });
   }
 }

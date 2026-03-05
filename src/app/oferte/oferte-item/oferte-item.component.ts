@@ -75,7 +75,6 @@ export class OferteItemComponent implements OnInit {
       return {id: val.id??0, cantitate: val.cantitate??0, furnizorId: val.furnizorId, produsId: val.produsId,
         umId:val.umId, um: val.um, cutii: val.cutii??0, pretUm: val.pretUm??0, valoare: val.valoare??0, discount: val.discount, isStoc: val.isStoc??false}
     });
-    console.log('set produse', produse);
     this.form.get('produse')?.setValue(produse);
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
@@ -83,7 +82,6 @@ export class OferteItemComponent implements OnInit {
 
   selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitect: any){    

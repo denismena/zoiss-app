@@ -247,7 +247,6 @@ export class OferteProduseAutocompleteComponent implements OnInit {
     return this.selectedProdusFiltered.map(t => t.cutii).reduce((acc, value) => Number(acc) + Number(value), 0);
   }
   remove(produs:any){
-    console.log('delete produs', produs);
     const index = this.selectedProdusFiltered.findIndex(a => a.id === produs.id);
     this.selectedProdusFiltered.splice(index, 1);
     

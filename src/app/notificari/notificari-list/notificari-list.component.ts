@@ -91,7 +91,6 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     });
   }
   deleteAll(){
-    console.log('delete all:');
     this.notificariService.deleteAll()
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
@@ -110,7 +109,6 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     });
   }
   readAll(){
-    console.log('read all:');
     this.notificariService.readAll()
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
@@ -122,7 +120,6 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   }
 
   setNotificationStyle(item: any){
-    console.log('setNotificationStyle', item);
     this.securityService.setNotificationStyle(item.checked);
   }
 }

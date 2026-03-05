@@ -94,8 +94,6 @@ export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterV
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
         if (!e || !e.source) {
-          console.log('this.preselectFurnizor', this.preselectFurnizor);
-          console.log('this.furnizorCtrl', this.furnizorCtrl.value);
           if(this.preselectFurnizor == undefined)//daca nu are nimic selectat, scrisul este sters
             this.furnizorCtrl.setValue(null);
           if(this.furnizorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
@@ -121,7 +119,6 @@ export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterV
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.furnizorCtrl.setValue(this.dataFromDialog);
           this.preselectFurnizor = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
@@ -140,7 +137,6 @@ export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterV
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.furnizorCtrl.setValue(this.dataFromDialog);
           this.preselectFurnizor = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);

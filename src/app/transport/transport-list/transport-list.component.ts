@@ -151,7 +151,6 @@ export class TransportListComponent implements OnInit {
             element.transportProduse.forEach(prod=>{              
               if(prod.addToLivrare && !prod.livrat && prod.livrabil)
                 {
-                  console.log('prod', prod);
                   selectedProd.push(prod);
 
                   if(cclientId != prod.clientId && cclientId > 0)  maiMultiClienti = true; 
@@ -196,17 +195,14 @@ export class TransportListComponent implements OnInit {
   }
   getCheckbox(checkbox: any, row: transportDTO){
     this.checked = [];
-    console.log(row);
     row.transportProduse.forEach(p=>p.addToLivrare = p.livrabil ? checkbox.checked : false
     );    
   }
 
   isAllSelected(row: transportDTO) {
-    row.allComandate = row.transportProduse.every(function(item:any) {
-          console.log('in isAllSelected row', item); 
+    row.allComandate =     row.transportProduse.every(function(item:any) {
           return item.addToTransport == true;
         })
-      console.log('row.allComandate', row.allComandate);
   }
 
   updatePagination(event: PageEvent){

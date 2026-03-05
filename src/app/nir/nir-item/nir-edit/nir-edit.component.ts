@@ -26,10 +26,8 @@ export class NirEditComponent implements OnInit {
       this.nirService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(nir => {
-        console.log('nir', nir);
         this.model = nir.nir;
         this.selectedProdus = nir.produse;
-        console.log(this.model);        
       })
     });
   }

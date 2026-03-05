@@ -14,11 +14,9 @@ export class NotificariItemComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) data: { item: any },
   public dialogRef: MatDialogRef<NotificariItemComponent>) { 
     this.notif = data?.item;
-    console.log('notif:', data);
   }
 
   ngOnInit(): void {
-    console.log('notif2:', this.notif);
   }
   submit() {    
     this.dialogRef.close({

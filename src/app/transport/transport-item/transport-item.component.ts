@@ -71,12 +71,10 @@ export class TransportItemComponent implements OnInit {
   }
 
   saveChanges(){
-    console.log('this.selectedProdus', this.selectedProdus);
     const produse = this.selectedProdus.map(val => {
       return {id: val.id, depozitId: val.depozitId, comenziFurnizoriProdusId: val.comenziFurnizoriProdusId, 
         selectedNewDepozit:val.selectedNewDepozit}
     });
-    console.log('set produse', produse);
     this.form.get('transportProduse')?.setValue(produse);
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);

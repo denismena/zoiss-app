@@ -84,7 +84,6 @@ export class NirListComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<nirDTO[]>)=>{
       this.nirList = response.body??[];
-      console.log('this.nirList', this.nirList);
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
     }, error => {

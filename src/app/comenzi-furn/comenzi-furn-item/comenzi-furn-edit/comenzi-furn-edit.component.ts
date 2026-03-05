@@ -25,7 +25,6 @@ export class ComenziFurnEditComponent implements OnInit {
       this.comenziFurnizorService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))      
       .subscribe(comanda => {
-        console.log('comanda:', comanda);
         this.model = comanda.comandaFurnizor;
         this.selectedProdus = comanda.comenziFurnizoriProduse;
         this.furnizorName = this.model.furnizor;        

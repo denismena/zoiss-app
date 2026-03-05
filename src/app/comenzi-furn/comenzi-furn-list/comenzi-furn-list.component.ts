@@ -150,7 +150,6 @@ export class ComenziFurnListComponent implements OnInit {
 
   isAllSelected(row: comenziFurnizorDTO) {   
     row.allComandate = row.comenziFurnizoriProduse.every(function(item:any) {
-          console.log('in isAllSelected row', item); 
           return item.addToTransport == true;
         })
   }
@@ -171,7 +170,6 @@ export class ComenziFurnListComponent implements OnInit {
       this.transportService.fromComandaFurnizor(selectedProd)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(id=>{
-        console.log('comanda new id', id);
         this.router.navigate(['/transport/edit/' + id])
       }, 
       error=> this.errors = parseWebAPIErrors(error));
@@ -219,12 +217,10 @@ selectFurnizor(furnizor: any){
      saveAs(blob, 'Comanda ' + element.furnizor + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
    }, error => {
-     console.log("Something went wrong");
    });
  }
 
  setPlatita(event: MatSlideToggleChange, comandaId: number){
-  console.log('checkbox:', event);
   this.comenziFurnizorService.setPlatita(comandaId, event.checked)
   .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {});  

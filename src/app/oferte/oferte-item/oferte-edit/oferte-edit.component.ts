@@ -36,7 +36,6 @@ export class OferteEditComponent implements OnInit {
       .subscribe(oferta => {
         this.model = oferta.oferta;
         this.selectedProdus = oferta.produse;
-        console.log(this.model);
 
         this.clientiService.getById(oferta.oferta.clientId)
         .pipe(takeUntilDestroyed(this.destroyRef))

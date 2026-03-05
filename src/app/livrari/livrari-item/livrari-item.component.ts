@@ -49,7 +49,6 @@ export class LivrariItemComponent implements OnInit {
       this.livrariService.getNextNumber()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data=>{
-        console.log(data);
         this.form.get('numar')?.setValue(data);
       });
     }

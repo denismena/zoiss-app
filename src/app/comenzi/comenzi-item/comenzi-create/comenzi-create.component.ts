@@ -22,7 +22,6 @@ export class ComenziCreateComponent implements OnInit {
   }
 
   saveChanges(comenziDTO:comenziDTO){
-    console.log(comenziDTO);
     this.comenziService.create(comenziDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{

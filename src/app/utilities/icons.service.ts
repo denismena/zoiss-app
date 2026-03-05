@@ -18,7 +18,6 @@ export class IconsService {
         name: string,
         namespace: string
       ): SafeResourceUrl | SafeResourceUrlWithIconOptions | null => {
-        console.log('logo inter', name, namespace);
         switch (namespace) {
           case 'mat':            
             return this.domSanitizer.bypassSecurityTrustResourceUrl(

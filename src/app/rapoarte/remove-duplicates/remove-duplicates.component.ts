@@ -140,13 +140,11 @@ export class RemoveDuplicatesComponent implements OnInit {
   }
 
   selectClientSters(client: any) {
-    console.log('client', client);
     this.duplicatesClienti.push(client);
     this.loadAdrese(client).subscribe((detaliiClient:any)=>{
       this.duplicatesClientiDTO.push(detaliiClient);
       this.fromClienti.patchValue({removeListId: this.duplicatesClienti});
       this.clientSters.clearSelection();
-      console.log('this.fromClienti', this.fromClienti.value, this.fromClienti);
       if(this.clientTable !== undefined)
         this.clientTable.renderRows();
     });

@@ -34,7 +34,6 @@ export class ForgetPassComponent implements OnInit {
     .subscribe(authenticatorResponse=>{      
       this.success = true;
     }, error=> {this.errors = parseWebAPIErrors(error);
-      console.log('this.errors', this.errors);
     })
   }
 

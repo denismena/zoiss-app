@@ -65,15 +65,12 @@ export class ProduseItemComponent implements OnInit {
       Object.keys(this.form.controls).forEach(controlName => {
         const control = this.form.get(controlName);
         if (control?.invalid) {
-          console.log('Invalid field:', controlName);
-          console.log('Validation errors:', control?.errors);
         }
       });
     }
   }
 
   onImageSelected(image: any){
-    console.log('image', image);
     this.form.get('poza')?.setValue(image);
     this.form.get('pozaPath')?.setValue('image');
   }

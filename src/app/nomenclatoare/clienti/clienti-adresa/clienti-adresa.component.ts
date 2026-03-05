@@ -58,7 +58,6 @@ export class ClientiAdresaComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(depozite=>{
       this.depozite = depozite;
-      console.log(this.depozite);
     });
   }
   saveChanges(){
@@ -75,13 +74,11 @@ export class ClientiAdresaComponent implements OnInit {
   }
 
   remove(adrese:any){
-    console.log('delete adresa', adrese);
     const index = this.adreseList.findIndex(a => a.adresa === adrese.adresa);
     this.adreseList.splice(index, 1);
     this.table.renderRows();
   }
   edit(produs:any){
-    console.log('produs', produs);
     this.form.setValue(produs);    
     this.isEditMode = true;
   }
@@ -91,7 +88,6 @@ export class ClientiAdresaComponent implements OnInit {
   }
 
   changeLivrare(event: any){
-    console.log(event.checked);
     if(event.checked)
     {
         this.showLivrare = true;

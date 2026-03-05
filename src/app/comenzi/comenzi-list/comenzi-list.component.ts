@@ -147,7 +147,6 @@ export class ComenziListComponent implements OnInit {
 
   getCheckbox(checkbox: any, row: comenziDTO){
     this.checked = [];
-    console.log(row);
     row.comenziProduses.forEach(p=>p.addToComandaFurnizor = checkbox.checked
     );    
   }
@@ -300,12 +299,10 @@ export class ComenziListComponent implements OnInit {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs == undefined ? 0 : produs.id);
     this.form.get('produsNume')?.setValue(produs == undefined ? "" :produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId??0);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitect: any){
@@ -313,7 +310,6 @@ export class ComenziListComponent implements OnInit {
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
  genereazaExcel(element:any)
@@ -326,7 +322,6 @@ export class ComenziListComponent implements OnInit {
      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
    }, error => {
-     console.log("Something went wrong");
    });
  }
  genereazaPDF(element:any)
@@ -341,7 +336,6 @@ export class ComenziListComponent implements OnInit {
       saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       //window.open(fileURL, "_blank");
     }, error => {
-      console.log("Something went wrong");
     });
   }
 

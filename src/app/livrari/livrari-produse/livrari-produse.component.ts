@@ -32,7 +32,6 @@ export class LivrariProduseComponent implements OnInit {
   }
 
   isAllSelected(row: LivrariDTO) {
-    console.log(row);
     row.allLivrare = this.selectedProdus.every(function(item:any) {
           return item.livrat == true;
     })
@@ -79,9 +78,6 @@ export class LivrariProduseComponent implements OnInit {
   }
 
   split(produs:any, splitCutii: any){
-    console.log('splitCutii: ', splitCutii.value);
-    console.log('delete produs: ', produs);
-
     const splitProdus : livrariProduseDTO = {
       ...produs,
       cutii: splitCutii.value,
@@ -97,7 +93,6 @@ export class LivrariProduseComponent implements OnInit {
     this.selectedProdus.push(produs);
     if (this.table !== undefined){      
       this.table.renderRows();
-      console.log('this.table: ', this.table);
     }    
   }
 

@@ -57,7 +57,6 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
   }
 
   displayFn(utilizator: UtilizatoriDTO): string {
-    console.log('utilizator auto:', utilizator);
     return utilizator && utilizator.name ? utilizator.name : '';
   }
 

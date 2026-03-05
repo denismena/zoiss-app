@@ -118,10 +118,10 @@ const routes: Routes = [
   {path: "livrari/create", component: LivrariCreateComponent, canActivate:[isAuthenticatedGuard]} ,  
   {path: "livrari/edit/:id", component: LivrariEditComponent, canActivate:[isAuthenticatedGuard]},
 
-  {path: "notes", component: StickyNotesListComponent} ,  
+  {path: "notes", component: StickyNotesListComponent, canActivate:[isAuthenticatedGuard]} ,  
 
-  {path: "notificari", component: NotificariListComponent} ,  
-  {path: "notificari/edit/:id", component: NotificariItemComponent},
+  {path: "notificari", component: NotificariListComponent, canActivate:[isAuthenticatedGuard]} ,  
+  {path: "notificari/edit/:id", component: NotificariItemComponent, canActivate:[isAuthenticatedGuard]},
 
   {path: "sucursale", component:SucursaleListComponent, canActivate:[isAuthenticatedGuard]},
   {path: "sucursale/create", component: SucursaleCreateComponent, canActivate:[isAuthenticatedGuard]},

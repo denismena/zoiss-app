@@ -132,7 +132,6 @@ export class ComisionArhitectiComponent implements OnInit {
       saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
       this.loading$ = false;
     }, error => {
-      console.log("Something went wrong");
     });
   }
 
@@ -141,7 +140,6 @@ export class ComisionArhitectiComponent implements OnInit {
   }
 
   sortData(sort: any) {
-    console.log('sort', sort);
     const data = this.comisioaneArhitecti.slice();
     if (!sort.active || sort.direction === '') {
       this.sortedData = data;

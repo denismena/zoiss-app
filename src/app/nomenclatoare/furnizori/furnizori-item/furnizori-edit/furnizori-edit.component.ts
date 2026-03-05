@@ -25,7 +25,6 @@ export class FurnizoriEditComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))            
       .subscribe(furnizor => {
         this.model = furnizor;
-        console.log(this.model);
       },error=> this.errors = parseWebAPIErrors(error))
     });
   }

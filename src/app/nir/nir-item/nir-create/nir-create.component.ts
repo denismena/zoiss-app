@@ -21,7 +21,6 @@ export class NirCreateComponent implements OnInit {
   }
 
   saveChanges(nirDTO:nirDTO){
-    console.log('nirDTO', nirDTO);
     this.nirService.create(nirDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
