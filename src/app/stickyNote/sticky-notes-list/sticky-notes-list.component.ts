@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -12,6 +12,7 @@ import { StickyNotesService } from '../sticky-notes.service';
     selector: 'app-sticky-notes-list',
     templateUrl: './sticky-notes-list.component.html',
     styleUrls: ['./sticky-notes-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class StickyNotesListComponent implements OnInit {
@@ -19,6 +20,7 @@ export class StickyNotesListComponent implements OnInit {
   notes: stickyNotesDTO[];
   errors: string[] = [];
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   constructor(private stickyNotesService: StickyNotesService, private dialog: MatDialog) { 
     this.notes=[];
   }
@@ -32,6 +34,7 @@ export class StickyNotesListComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(notes=>{
       this.notes = notes;
+      this.cdr.markForCheck();
     });    
   }
 
@@ -51,6 +54,7 @@ export class StickyNotesListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 
@@ -60,7 +64,10 @@ export class StickyNotesListComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{    
     }, 
-    error=> this.errors = parseWebAPIErrors(error));    
+    error=> {
+      this.errors = parseWebAPIErrors(error);
+      this.cdr.markForCheck();
+    });    
   }
 
   addNotes(){
@@ -70,7 +77,10 @@ export class StickyNotesListComponent implements OnInit {
     .subscribe(()=>{      
       this.loadList();
     }, 
-    error=> this.errors = parseWebAPIErrors(error));
+    error=> {
+      this.errors = parseWebAPIErrors(error);
+      this.cdr.markForCheck();
+    });
   }
   
   config: AngularEditorConfig = {

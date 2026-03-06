@@ -1,5 +1,5 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { nirDTO } from '../nir-item/nir.model';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-nir-list',
     templateUrl: './nir-list.component.html',
     styleUrls: ['./nir-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -45,6 +46,7 @@ export class NirListComponent implements OnInit {
   loading$: boolean = true;  
   
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   constructor(private nirService: NIRService, private router:Router,
     private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { 
       this.nirList = [];
@@ -86,9 +88,11 @@ export class NirListComponent implements OnInit {
       this.nirList = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
 
@@ -108,6 +112,7 @@ export class NirListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 

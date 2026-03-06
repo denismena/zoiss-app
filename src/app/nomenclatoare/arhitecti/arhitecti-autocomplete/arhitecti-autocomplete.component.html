@@ -8,7 +8,7 @@
       [matAutocomplete]="auto"
       [formControl]="arhitectCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        @for (arhitect of (selectedArhitect | async) ?? []; track arhitect) {
+        @for (arhitect of (selectedArhitect | async) ?? []; track arhitect.id) {
           <mat-option [value]="arhitect" [ngClass]="{'alert-danger' : !arhitect.active}">
             {{arhitect.nume}}
           </mat-option>

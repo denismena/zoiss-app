@@ -56,7 +56,7 @@
             <mat-form-field appearance="outline">
               <mat-select formControlName="depozitId">
                 <mat-option value="0"></mat-option>
-                @for (dep of depozitList; track dep) {
+                @for (dep of depozitList; track dep.id) {
                   <mat-option [value]="dep.id">
                     {{dep.nume}}
                   </mat-option>
@@ -178,7 +178,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @for (prod of element.transportProduse; track prod) {
+                  @for (prod of element.transportProduse; track prod.id) {
                     <tr>
                       <td>{{prod.depozit}}</td>
                       <td>{{prod.clientNume}}</td>

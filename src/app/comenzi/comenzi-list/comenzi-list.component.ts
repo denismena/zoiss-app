@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Router } from '@angular/router';
@@ -26,6 +26,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-comenzi-list',
     templateUrl: './comenzi-list.component.html',
     styleUrls: ['./comenzi-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -60,6 +61,7 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService,
     private router:Router, private formBuilder: FormBuilder, private exportService: ExportService, public cookie: CookieService,
@@ -109,9 +111,11 @@ export class ComenziListComponent implements OnInit {
       this.comenzi = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
 
@@ -131,6 +135,7 @@ export class ComenziListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   } 
 

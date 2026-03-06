@@ -98,12 +98,14 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
 
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
-        if (!e || !e.source) {
-          if(this.preselectedProdus == undefined)//daca nu are nimic selectat, scrisul este sters
-            this.produsCtrl.setValue(null);
-          if(this.produsCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
-            this.onOptionSelected.emit(undefined);
-        }
+        setTimeout(() => {
+          if (!e || !e.source) {
+            if(this.preselectedProdus == undefined)//daca nu are nimic selectat, scrisul este sters
+              this.produsCtrl.setValue(null);
+            if(this.produsCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+              this.onOptionSelected.emit(undefined);
+          }
+        }, 0);
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());

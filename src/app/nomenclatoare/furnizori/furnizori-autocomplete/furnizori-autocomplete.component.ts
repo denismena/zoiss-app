@@ -93,14 +93,14 @@ export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterV
 
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
-        if (!e || !e.source) {
-          if(this.preselectFurnizor == undefined)//daca nu are nimic selectat, scrisul este sters
-            this.furnizorCtrl.setValue(null);
-          if(this.furnizorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
-            this.onOptionSelected.emit(undefined);
-          //this.furnizorCtrl.setValue(null);
-          //this.onOptionSelected.emit(undefined);
-        }
+        setTimeout(() => {
+          if (!e || !e.source) {
+            if(this.preselectFurnizor == undefined)//daca nu are nimic selectat, scrisul este sters
+              this.furnizorCtrl.setValue(null);
+            if(this.furnizorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+              this.onOptionSelected.emit(undefined);
+          }
+        }, 0);
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());

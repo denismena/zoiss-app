@@ -9,7 +9,7 @@
       [matAutocomplete]="auto"
       [formControl]="clientCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        @for (client of (selectedClient | async) ?? []; track client) {
+        @for (client of (selectedClient | async) ?? []; track client.id) {
           <mat-option [value]="client" [ngClass]="{'alert-danger' : !client.active}">
             {{client.nume}}
           </mat-option>

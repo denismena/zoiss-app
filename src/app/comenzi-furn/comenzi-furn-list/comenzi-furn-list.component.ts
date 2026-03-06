@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -15,7 +15,6 @@ import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
@@ -55,6 +54,7 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
     private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService, public dialog: MatDialog) { 
     this.comenziFurnizor = [];
@@ -107,9 +107,11 @@ export class ComenziFurnListComponent implements OnInit {
       this.comenziFurnizor = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
   
@@ -129,6 +131,7 @@ export class ComenziFurnListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 

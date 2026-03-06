@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
     selector: 'app-notificari-list',
     templateUrl: './notificari-list.component.html',
     styleUrls: ['./notificari-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class NotificariListComponent implements OnInit, OnDestroy {
@@ -25,6 +26,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   comenzileMeleValue: boolean = false;
   @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger | undefined;
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   constructor(private notificariService: NotificariService, public dialog: MatDialog, private securityService: SecurityService) { 
     this.notificari=[];
   }
@@ -53,6 +55,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       }
 
       this.comenzileMeleValue = utilizator.showNotificationsForAllOrders;
+      this.cdr.markForCheck();
     });
 
   }
@@ -69,6 +72,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
           .subscribe(() => {this.loadList();}, error => {
             this.errors = parseWebAPIErrors(error);
             this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+            this.cdr.markForCheck();
           });
         }
       });
@@ -88,6 +92,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
   deleteAll(){
@@ -98,6 +103,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
   read(id: number){
@@ -106,6 +112,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     .subscribe(() => {this.loadList();}, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
   readAll(){
@@ -116,6 +123,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 

@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,6 +25,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-transport-list',
     templateUrl: './transport-list.component.html',
     styleUrls: ['./transport-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -56,6 +57,7 @@ export class TransportListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router,
     public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService, public cookie: CookieService) { 
     this.transport = [];
@@ -97,7 +99,10 @@ export class TransportListComponent implements OnInit {
 
     this.depoziteService.getAll()
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(dep=>{this.depozitList=dep;});
+    .subscribe(dep=>{
+      this.depozitList=dep;
+      this.cdr.markForCheck();
+    });
   }
 
   loadList(values: any){
@@ -108,10 +113,12 @@ export class TransportListComponent implements OnInit {
       .subscribe((response: HttpResponse<transportDTO[]>)=>{
       this.transport = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false; 
+      this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
 
@@ -131,6 +138,7 @@ export class TransportListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 

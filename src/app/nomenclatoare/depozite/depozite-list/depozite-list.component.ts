@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { depoziteDTO } from '../depozite-item/depozite.model';
@@ -14,6 +14,7 @@ import { of } from 'rxjs';
     selector: 'app-depozite-list',
     templateUrl: './depozite-list.component.html',
     styleUrls: ['./depozite-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class DepoziteListComponent {
@@ -23,12 +24,14 @@ export class DepoziteListComponent {
   private destroyRef = inject(DestroyRef);
   private depoziteService = inject(DepoziteService);
   private dialog = inject(MatDialog);
+  private cdr = inject(ChangeDetectorRef);
 
   depozite$ = this.refresh$.pipe(
     startWith(void 0),
     switchMap(() => this.depoziteService.getAll().pipe(
       catchError(error => {
         this.errors = parseWebAPIErrors(error);
+        this.cdr.markForCheck();
         return of([] as depoziteDTO[]);
       }),
       shareReplay(1)
@@ -53,6 +56,7 @@ export class DepoziteListComponent {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 }

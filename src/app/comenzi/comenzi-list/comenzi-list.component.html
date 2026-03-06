@@ -226,7 +226,7 @@
                 </tr>
               </thead>
               <tbody>
-                @for (prod of element.comenziProduses; track prod) {
+                @for (prod of element.comenziProduses; track prod.id) {
                   <tr [ngClass]="{ 'categoryProd': prod.isCategory === true, 'stocProd':prod.isStoc === true }">
                     @if (prod.isCategory === true) {
                       <td colspan="11" class="table-text-center">{{prod.produsNume}}</td>

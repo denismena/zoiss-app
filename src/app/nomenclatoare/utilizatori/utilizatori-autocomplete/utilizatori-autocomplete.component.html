@@ -6,7 +6,7 @@
       [matAutocomplete]="autoUtilizator"
       [formControl]="utilizatorCtrl">
       <mat-autocomplete #autoUtilizator="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        @for (utilizator of (selectedUtilizator | async) ?? []; track utilizator) {
+        @for (utilizator of (selectedUtilizator | async) ?? []; track utilizator.id) {
           <mat-option [value]="utilizator">
             {{utilizator.name}}
           </mat-option>

@@ -33,7 +33,7 @@
         <mat-label>UM</mat-label>
         <mat-form-field appearance="outline">
           <mat-select formControlName="umId" (selectionChange)="selectUM($event)">
-            @for (um of umList; track um) {
+            @for (um of umList; track um.id) {
               <mat-option [value]="um.id">
                 {{um.nume}}
               </mat-option>

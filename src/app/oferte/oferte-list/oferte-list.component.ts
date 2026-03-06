@@ -1,5 +1,5 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
@@ -16,7 +16,6 @@ import { PageEvent } from '@angular/material/paginator';
 import saveAs from 'file-saver';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
-import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
@@ -26,6 +25,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-oferte-list',
     templateUrl: './oferte-list.component.html',
     styleUrls: ['./oferte-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -57,6 +57,7 @@ export class OferteListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
       private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { 
     this.oferte = [];
@@ -106,9 +107,11 @@ export class OferteListComponent implements OnInit {
       this.oferte = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
 
@@ -128,6 +131,7 @@ export class OferteListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 

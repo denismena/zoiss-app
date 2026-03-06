@@ -76,12 +76,14 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
 
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
-        if (!e || !e.source) {
-          if(this.preselectUtilizator == undefined)//daca nu are nimic selectat, scrisul este sters
-            this.utilizatorCtrl.setValue(null);
-          if(this.utilizatorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
-            this.onOptionSelected.emit(undefined);
-        }
+        setTimeout(() => {
+          if (!e || !e.source) {
+            if(this.preselectUtilizator == undefined)//daca nu are nimic selectat, scrisul este sters
+              this.utilizatorCtrl.setValue(null);
+            if(this.utilizatorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+              this.onOptionSelected.emit(undefined);
+          }
+        }, 0);
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());

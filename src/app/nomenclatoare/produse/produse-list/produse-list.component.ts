@@ -1,9 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
-import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { umDTO } from '../../um/um-item/um.model';
@@ -18,6 +17,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-produse-list',
     templateUrl: './produse-list.component.html',
     styleUrls: ['./produse-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class ProduseListComponent implements OnInit {
@@ -33,6 +33,7 @@ export class ProduseListComponent implements OnInit {
   initialFormValues: any;
   panelOpenState = false;
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(private produseService: ProduseService, private formBuilder:FormBuilder, private umService: UMService, private dialog: MatDialog) {  
     this.produse = [];
@@ -56,6 +57,7 @@ export class ProduseListComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(um=>{
       this.umList=um;
+      this.cdr.markForCheck();
     })
 
     this.form.valueChanges
@@ -74,9 +76,11 @@ export class ProduseListComponent implements OnInit {
       this.produse = response.body??[];      
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
   
@@ -96,6 +100,7 @@ export class ProduseListComponent implements OnInit {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 
