@@ -185,7 +185,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @for (prod of element.comenziFurnizoriProduse; track prod) {
+                  @for (prod of element.comenziFurnizoriProduse; track prod.id) {
                     <tr>
                       <td>{{prod.clientNume}}</td>
                       <td>{{prod.produsNume}}</td>

@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
-import { SucursaleService } from '../sucursala.service';
-import { sucursalaDTO } from '../sucursale-item/sucursala.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { SucursaleService } from '../sucursala.service';
+import { sucursalaDTO } from '../sucursale-item/sucursala.model';
+import { Subject } from 'rxjs';
+import { catchError, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-sucursale-list',
@@ -14,34 +16,30 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     styleUrls: ['./sucursale-list.component.scss'],
     standalone: false
 })
-export class SucursaleListComponent implements OnInit, OnDestroy {
+export class SucursaleListComponent {
 
-  sucursala: sucursalaDTO[] = [];
-  columnsToDisplay= ['nume', 'action'];
+  columnsToDisplay = ['nume', 'action'];
   errors: string[] = [];
-  loading$: boolean = true;
-  constructor(private sucursalaService: SucursaleService, private unsubscribeService: UnsubscribeService, public dialog: MatDialog) { }
+  private refresh$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+  private sucursalaService = inject(SucursaleService);
+  private dialog = inject(MatDialog);
 
-  ngOnInit(): void {
-    this.loadList();
-  }
-
-  loadList(){
-    this.sucursalaService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-    .subscribe(sucursala=>{
-      this.sucursala = sucursala;
-      this.loading$ = false;
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-    });    
-  }  
+  sucursala$ = this.refresh$.pipe(
+    startWith(void 0),
+    switchMap(() => this.sucursalaService.getAll().pipe(
+      catchError(error => {
+        this.errors = parseWebAPIErrors(error);
+        return of([] as sucursalaDTO[]);
+      }),
+      shareReplay(1)
+    ))
+  );
 
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -50,13 +48,11 @@ export class SucursaleListComponent implements OnInit, OnDestroy {
   private deleteComanda(id: number){
     this.sucursalaService.delete(id)
     .subscribe(() => {
-      this.loadList();
+      this.refresh$.next();
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
-
-  ngOnDestroy(): void {}
 
 }

@@ -15,9 +15,10 @@
 
   <app-display-errors [errors]="errors"></app-display-errors>
 
+  @let sucursala = sucursala$ | async;
   <app-generic-list [list]="sucursala">
     <ng-container content>
-      @if (sucursala.length > 0) {
+      @if (sucursala && sucursala.length > 0) {
         <table mat-table [dataSource]="sucursala" class="table-index">
           <ng-container matColumnDef="nume">
             <th mat-header-cell *matHeaderCellDef>Nume</th>

@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { TransporatorService } from '../../transportator.service';
 import { transportatorDTO } from '../transportator.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-transportator-create',
@@ -12,22 +11,20 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./transportator-create.component.scss'],
     standalone: false
 })
-export class TransportatorCreateComponent implements OnInit, OnDestroy {
+export class TransportatorCreateComponent implements OnInit {
 
   errors: string[] = [];
-  constructor(private router:Router, private transporatorService: TransporatorService, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private transporatorService: TransporatorService) { }
 
   ngOnInit(): void {
   }
   saveChanges(transportatorDTO: transportatorDTO){    
     this.transporatorService.create(transportatorDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/transportator'])
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
-  ngOnDestroy(): void {}
-
 }

@@ -1,29 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { formatDateFormData } from 'src/app/utilities/utils';
 import { RapoarteService } from '../rapoarte.service';
 import { sucursaleComenziDTO } from './comenzi-depozite.model';
-import { formatDateFormData } from 'src/app/utilities/utils';
-import { HttpResponse } from '@angular/common/http';
-import * as Highcharts from 'highcharts';
-import HC_exporting from 'highcharts/modules/exporting';
-import HC_exportData from 'highcharts/modules/export-data';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-HC_exporting(Highcharts);
-HC_exportData(Highcharts);
+import { HighchartsChartDirective } from 'highcharts-angular';
+import { MaterialModule } from 'src/app/material/material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-comenzi-depozite',
     templateUrl: './comenzi-depozite.component.html',
     styleUrls: ['./comenzi-depozite.component.scss'],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, MaterialModule, HighchartsChartDirective],
 })
-export class ComenziDepoziteComponent implements OnInit, OnDestroy {
+export class ComenziDepoziteComponent implements OnInit {
   loading$: boolean = true;
   comenziDepozite: sucursaleComenziDTO[] = [];
   public form!: FormGroup;
 
-  columnsToDisplay= ['sucursala', 'cantitate', 'valoare'];
+  columnsToDisplay = ['sucursala', 'cantitate', 'valoare'];
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'pie'
@@ -33,15 +31,15 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
     },
     tooltip: {
       pointFormat: 'Valoarea comenzilor: <b>{point.y} millions</b>'
-    },    
+    },
     xAxis: {
-      type: 'category',      
+      type: 'category',
     },
     yAxis: {
       title: {
         text: 'Valoare'
       }
-    },    
+    },
     exporting: {
       enabled: true,
       buttons: {
@@ -53,12 +51,13 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
     legend: {
       enabled: false
     },
-    /* Your initial chart options here */
   };
-  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService) {}
+
+  private destroyRef = inject(DestroyRef);
+  constructor(private reportService: RapoarteService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    let date: Date = new Date();
+    const date: Date = new Date();
     date.setDate(date.getDate() - 30);
     this.form = this.formBuilder.group({
       arhitectId: 0,
@@ -69,38 +68,34 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
 
     this.loadList(this.form.value);
 
-    this.form.valueChanges.subscribe(values=>{
-      // values.arhitectId = values.arhitectId;
-      // values.status = values.status;
+    this.form.valueChanges.subscribe(values => {
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
-      this.loadList(values);            
-    })
-  }
-  
-  loadList(values: any){
-    this.reportService.comenziSucursale(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-    .subscribe((response: HttpResponse<sucursaleComenziDTO[]>)=>{
-      this.comenziDepozite = response.body??[];
-      this.chartOptions.series = [{
-        data: this.comenziDepozite.map(t => ({ y: t.valoare, name: t.sucursala })),        
-        type: 'pie',
-        dataLabels: {
-          enabled: true,
-          format: '{point.y:,.2f}', // Display the Y value as the label
-        },
-      }];
-      this.updateChart();
-      this.loading$ = false;
-    });    
+      this.loadList(values);
+    });
   }
 
-  updateChart(): void {
-    this.chartOptions.subtitle = { 
-      text: 'Total: ' + this.getTotalCost() + ' lei'
-     };
-    Highcharts.chart('your-chart-container', this.chartOptions);
+  loadList(values: any) {
+    this.reportService.comenziSucursale(values)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((response: HttpResponse<sucursaleComenziDTO[]>) => {
+      this.comenziDepozite = response.body ?? [];
+      this.chartOptions = {
+        ...this.chartOptions,
+        subtitle: {
+          text: 'Total: ' + this.getTotalCost() + ' lei'
+        },
+        series: [{
+          data: this.comenziDepozite.map(t => ({ y: t.valoare, name: t.sucursala })),
+          type: 'pie',
+          dataLabels: {
+            enabled: true,
+            format: '{point.y:,.2f}',
+          },
+        }],
+      };
+      this.loading$ = false;
+    });
   }
 
   getTotalCost() {
@@ -109,6 +104,5 @@ export class ComenziDepoziteComponent implements OnInit, OnDestroy {
   getTotalNumber() {
     return this.comenziDepozite.map(t => t.cantitate).reduce((acc, value) => Number(acc) + Number(value), 0).toFixed(2);
   }
-  
-  ngOnDestroy(): void {}
+
 }

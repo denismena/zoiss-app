@@ -1,6 +1,6 @@
 <div style="float: right;"><mat-icon class="greenIcon" (click)="addNotes()">add_circle</mat-icon></div>
 <ul>
-  @for (item of notes; track item; let i = $index) {
+  @for (item of notes; track item.id; let i = $index) {
     <li (focusout)="saveChanges(item.id, $event)">
       <div class="wrapper">
         <span class="my-custom-button">

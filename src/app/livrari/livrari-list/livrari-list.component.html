@@ -164,7 +164,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @for (prod of element.livrariProduse; track prod) {
+                  @for (prod of element.livrariProduse; track prod.id) {
                     <tr>
                       <td>{{prod.furnizor}}</td>
                       <td>{{prod.produsNume}}</td>

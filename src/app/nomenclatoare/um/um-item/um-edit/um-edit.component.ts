@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UMService } from '../../um.service';
 import { umCreationDTO, umDTO } from '../um.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -12,17 +11,17 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./um-edit.component.scss'],
     standalone: false
 })
-export class UmEditComponent implements OnInit, OnDestroy {
+export class UmEditComponent implements OnInit {
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private umService: UMService,
-    private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private umService: UMService) { }
 
   model!:umDTO;
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.umService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(um => {
         this.model = um;        
       },
@@ -31,12 +30,10 @@ export class UmEditComponent implements OnInit, OnDestroy {
   }
   saveChanges(umCreationDTO:umCreationDTO){
     this.umService.edit(this.model.id, umCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/um"]);
     },
     error => this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
 }

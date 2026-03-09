@@ -39,7 +39,6 @@ export class TransportService{
   }
 
   edit(id: number, transport: transportEditDTO){
-    console.log('oferte service:', transport);
     return this.http.put(`${this.apiUrl}/${id}`, transport);
   }
 
@@ -56,13 +55,11 @@ export class TransportService{
   }
 
   saveDepozitArrival(produsInDepozit: transportProduseDepozitDTO){
-    console.log('produsInDepozit:', produsInDepozit);
     const formData = this.buildFormData(produsInDepozit);
     return this.http.post(`${this.apiUrl}/produsInDepozit`, formData);    
   }
 
   saveDepozitArrivalAll(produsInDepozit: transportProduseDepozitAllDTO){
-    console.log('produsInDepozitAll:', produsInDepozit);
     return this.http.post(`${this.apiUrl}/produsInDepozitAll`, produsInDepozit);
   }
 

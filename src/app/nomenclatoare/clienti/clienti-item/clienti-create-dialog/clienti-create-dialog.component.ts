@@ -1,11 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ClientiService } from '../../clienti.service';
 import { clientiAdresaDTO, clientiCreationDTO, clientiDTO } from '../clienti.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-clienti-create-dialog',
@@ -13,14 +13,15 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./clienti-create-dialog.component.scss'],
     standalone: false
 })
-export class ClientiCreateDialogComponent implements OnInit, OnDestroy {
+export class ClientiCreateDialogComponent implements OnInit {
 
   errors: string[] = [];
   isDialog: boolean = true;
   preselectClient: clientiDTO | undefined;
   adreseList: clientiAdresaDTO[] = [];
-  editId: number = 0;  
-  constructor(private clientiService: ClientiService, private unsubscribeService: UnsubscribeService,
+  editId: number = 0;
+  private destroyRef = inject(DestroyRef);
+  constructor(private clientiService: ClientiService,
     @Inject(MAT_DIALOG_DATA) data:{client: clientiDTO, editId: number},    
     public dialogRef: MatDialogRef<ClientiCreateDialogComponent>) { 
       this.editId = data?.editId;
@@ -37,7 +38,7 @@ export class ClientiCreateDialogComponent implements OnInit, OnDestroy {
     if(clientiDTO != undefined){
       if(this.editId == 0){
         this.clientiService.create(clientiDTO)
-        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(id=>{
           this.dialogRef.close({
             clicked: 'submit',
@@ -49,7 +50,7 @@ export class ClientiCreateDialogComponent implements OnInit, OnDestroy {
       }
       else{
         this.clientiService.edit(this.editId, clientiDTO)
-        .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(id=>{
           this.dialogRef.close({
             clicked: 'submit',
@@ -67,7 +68,4 @@ export class ClientiCreateDialogComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  ngOnDestroy(): void {}
-
 }

@@ -1,20 +1,20 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { SecurityService } from 'src/app/security/security.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 import { NotificariItemComponent } from '../notificari-item/notificari-item.component';
 import { notificariDTO } from '../notificari.model';
 import { NotificariService } from '../notificari.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-import { SecurityService } from 'src/app/security/security.service';
 import { forkJoin } from 'rxjs';
-import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
 @Component({
     selector: 'app-notificari-list',
     templateUrl: './notificari-list.component.html',
     styleUrls: ['./notificari-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class NotificariListComponent implements OnInit, OnDestroy {
@@ -25,8 +25,9 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   necitite: number = 0;
   comenzileMeleValue: boolean = false;
   @ViewChild('languageMenuTrigger') languageMenuTrigger: MatMenuTrigger | undefined;
-  constructor(private notificariService: NotificariService, public dialog: MatDialog, private securityService: SecurityService, 
-    private unsubscribeService: UnsubscribeService) { 
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  constructor(private notificariService: NotificariService, public dialog: MatDialog, private securityService: SecurityService) { 
     this.notificari=[];
   }
 
@@ -43,7 +44,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       this.notificariService.getAll(),
       this.securityService.getByEmail(this.securityService.getFieldFromJwt('email') as string) //this.securityService.currentUser$
     ])
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(([notificari, utilizator]) => {
         this.notificari = notificari;      
       let oldNecitite = this.necitite;
@@ -54,6 +55,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
       }
 
       this.comenzileMeleValue = utilizator.showNotificationsForAllOrders;
+      this.cdr.markForCheck();
     });
 
   }
@@ -62,14 +64,15 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(NotificariItemComponent,      
       { data:{item: itemNot}, width: '500px', height: '300px' });
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {        
         if (data.clicked === 'submit') {
           this.notificariService.read(itemNot.id)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => {this.loadList();}, error => {
             this.errors = parseWebAPIErrors(error);
             this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+            this.cdr.markForCheck();
           });
         }
       });
@@ -83,47 +86,48 @@ export class NotificariListComponent implements OnInit, OnDestroy {
 
   delete(id: number){
     this.notificariService.delete(id)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))    
+    .pipe(takeUntilDestroyed(this.destroyRef))    
     .subscribe(() => {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
   deleteAll(){
-    console.log('delete all:');
     this.notificariService.deleteAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
   read(id: number){
     this.notificariService.read(id)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {this.loadList();}, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
   readAll(){
-    console.log('read all:');
     this.notificariService.readAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.loadList();
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 
   setNotificationStyle(item: any){
-    console.log('setNotificationStyle', item);
     this.securityService.setNotificationStyle(item.checked);
   }
 }

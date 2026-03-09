@@ -2,12 +2,13 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, On
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import { FurnizoriCreateDialogComponent } from '../furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
     selector: 'app-furnizori-autocomplete',
@@ -15,10 +16,12 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
     styleUrls: ['./furnizori-autocomplete.component.scss'],
     standalone: false
 })
-export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   furnizori: furnizoriDTO[];
-  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog, private unsubscribeService: UnsubscribeService ) { 
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog) { 
     this.furnizori = [];
     this.selectedFurnizor = new Observable<furnizoriDTO[]>();    
   }
@@ -47,7 +50,7 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
     searchTerm += event;
     if(searchTerm.length > 2){    
       this.furnizorService.search(searchTerm)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(furnizori=>{
         this.furnizori = furnizori;
         this.selectedFurnizor = this.furnizorCtrl.valueChanges
@@ -90,16 +93,14 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
 
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
-        if (!e || !e.source) {
-          console.log('this.preselectFurnizor', this.preselectFurnizor);
-          console.log('this.furnizorCtrl', this.furnizorCtrl.value);
-          if(this.preselectFurnizor == undefined)//daca nu are nimic selectat, scrisul este sters
-            this.furnizorCtrl.setValue(null);
-          if(this.furnizorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
-            this.onOptionSelected.emit(undefined);
-          //this.furnizorCtrl.setValue(null);
-          //this.onOptionSelected.emit(undefined);
-        }
+        setTimeout(() => {
+          if (!e || !e.source) {
+            if(this.preselectFurnizor == undefined)//daca nu are nimic selectat, scrisul este sters
+              this.furnizorCtrl.setValue(null);
+            if(this.furnizorCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+              this.onOptionSelected.emit(undefined);
+          }
+        }, 0);
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());
@@ -113,12 +114,11 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
       { data:{editId:0}, width: '800px', height: '750px' });
 
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.furnizorCtrl.setValue(this.dataFromDialog);
           this.preselectFurnizor = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);
@@ -132,12 +132,11 @@ export class FurnizoriAutocompleteComponent implements OnInit, AfterViewInit, On
       { data:{furnizor: this.preselectFurnizor, editId: this.preselectFurnizor?.id??0}, width: '800px', height: '750px' });
 
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
           this.dataFromDialog.id = data.id;
-          console.log('data.form.data', this.dataFromDialog);
           this.furnizorCtrl.setValue(this.dataFromDialog);
           this.preselectFurnizor = this.dataFromDialog;
           this.onOptionSelected.emit(this.dataFromDialog);

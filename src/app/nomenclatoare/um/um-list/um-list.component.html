@@ -14,9 +14,10 @@
   </mat-accordion>
 
   <app-display-errors [errors]="errors"></app-display-errors>
+  @let um = um$ | async;
   <app-generic-list [list]="um">
     <ng-container content>
-      @if (um.length > 0) {
+      @if (um && um.length > 0) {
         <table mat-table [dataSource]="um" class="table-index">
           <ng-container matColumnDef="nume">
             <th mat-header-cell *matHeaderCellDef>Nume</th>

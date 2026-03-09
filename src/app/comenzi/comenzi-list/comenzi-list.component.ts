@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Router } from '@angular/router';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -18,8 +19,6 @@ import { ExportService } from 'src/app/utilities/export.service';
 import { ComenziFurnSelectDialogComponent } from '../comenzi-furn-select-dialog/comenzi-furn-select-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { toExistingComenziFurnizoriDTO } from 'src/app/comenzi-furn/comenzi-furn-item/comenzi-furn.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
@@ -27,6 +26,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-comenzi-list',
     templateUrl: './comenzi-list.component.html',
     styleUrls: ['./comenzi-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -36,7 +36,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     ],
     standalone: false
 })
-export class ComenziListComponent implements OnInit, OnDestroy {
+export class ComenziListComponent implements OnInit {
 
   comenzi: comenziDTO[];
   expandedElement: comenziDTO[];
@@ -60,7 +60,10 @@ export class ComenziListComponent implements OnInit, OnDestroy {
   @ViewChild(FurnizoriAutocompleteComponent)
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
-  constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+
+  constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService,
     private router:Router, private formBuilder: FormBuilder, private exportService: ExportService, public cookie: CookieService,
     private dialog: MatDialog) { 
     this.comenzi = [];
@@ -88,7 +91,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
     this.loadList(this.form.value);
 
     this.form.valueChanges
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(values=>{
       values.fromDate = formatDateFormData(values.fromDate);
       values.toDate = formatDateFormData(values.toDate);
@@ -108,16 +111,18 @@ export class ComenziListComponent implements OnInit, OnDestroy {
       this.comenzi = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
 
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -130,6 +135,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   } 
 
@@ -146,7 +152,6 @@ export class ComenziListComponent implements OnInit, OnDestroy {
 
   getCheckbox(checkbox: any, row: comenziDTO){
     this.checked = [];
-    console.log(row);
     row.comenziProduses.forEach(p=>p.addToComandaFurnizor = checkbox.checked
     );    
   }
@@ -168,7 +173,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
     if(comenziNeplatite){
       const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{title: 'Atentie!', message: "Ati selectat o comanda care nu este platita! Doriti sa continuati?"}});
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((confirm) => {      
         if(confirm) this.genereazaComnada(selectedProd);
       });
@@ -180,7 +185,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
 
   genereazaComnada(selectedProd:any){
     this.comenziFurnizorService.fromComanda(selectedProd)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(id=>{
       this.router.navigate(['/comenziFurnizor/edit/' + id])
     }, 
@@ -241,7 +246,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
     if(comenziNeplatite){
       const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{title: 'Atentie!', message: "Ati selectat o comanda care nu este platita! Doriti sa continuati?"}});
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((confirm) => {      
         if(confirm) this.adaugaLaComnada(selectedProd, furnizorId);
       }); 
@@ -256,7 +261,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
       { data:{ furnizorId : furnizorId}, width: '450px', height: '400px' });
 
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((data) => {      
       if (data.clicked === 'submit') {
         var comandaFurnizorId = data.form.comandaFurnId;
@@ -268,7 +273,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
         
         if(selectedProd.length > 0){
           this.comenziFurnizorService.addToExisting(paramObject)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(()=>{
             this.router.navigate(['/comenziFurnizor/edit/' + comandaFurnizorId])
           }, 
@@ -299,12 +304,10 @@ export class ComenziListComponent implements OnInit, OnDestroy {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs == undefined ? 0 : produs.id);
     this.form.get('produsNume')?.setValue(produs == undefined ? "" :produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId??0);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitect: any){
@@ -312,27 +315,25 @@ export class ComenziListComponent implements OnInit, OnDestroy {
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
  genereazaExcel(element:any)
  {
    this.loading$ = true;
    this.exportService.comandaReport(element.id)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
    .subscribe(blob => {
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
    }, error => {
-     console.log("Something went wrong");
    });
  }
  genereazaPDF(element:any)
   {    
     this.loading$ = true;
     this.exportService.comandaReportPDF(element.id)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(blob => {
       //var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
@@ -340,10 +341,7 @@ export class ComenziListComponent implements OnInit, OnDestroy {
       saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       //window.open(fileURL, "_blank");
     }, error => {
-      console.log("Something went wrong");
     });
   }
-
-  ngOnDestroy(): void {}
 
 }

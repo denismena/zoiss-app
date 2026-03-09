@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import saveAs from 'file-saver';
@@ -12,8 +13,6 @@ import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { LivrariDTO } from '../livrari-item/livrari.model';
 import { LivrariService } from '../livrari.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
@@ -22,6 +21,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-livrari-list',
     templateUrl: './livrari-list.component.html',
     styleUrls: ['./livrari-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -31,7 +31,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     ],
     standalone: false
 })
-export class LivrariListComponent implements OnInit, OnDestroy {
+export class LivrariListComponent implements OnInit {
 
   livrari: LivrariDTO[]=[]
   expandedElement: LivrariDTO[]=[];
@@ -47,7 +47,9 @@ export class LivrariListComponent implements OnInit, OnDestroy {
   @ViewChild(ClientiAutocompleteComponent) clientFilter!: ClientiAutocompleteComponent;  
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
-  constructor(private livrariService: LivrariService, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  constructor(private livrariService: LivrariService,
     private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { }
 
   columnsToDisplay= ['expand', 'numar', 'data', 'client', 'curier', 'receptionatDe', 'detalii', 'utilizator', 'livrate', 'action'];
@@ -84,21 +86,23 @@ export class LivrariListComponent implements OnInit, OnDestroy {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.livrariService.getAll(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<LivrariDTO[]>)=>{
       this.livrari = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
 
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -111,6 +115,7 @@ export class LivrariListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 
@@ -141,13 +146,12 @@ export class LivrariListComponent implements OnInit, OnDestroy {
   {    
     this.loading$ = true;
     this.exportService.aimPDF(element.id)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(blob => {
       this.loading$ = false;
       const dt = new Date(element.data)
       saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
     }, error => {
-      console.log("Something went wrong");
     });
   }
 
@@ -155,23 +159,18 @@ export class LivrariListComponent implements OnInit, OnDestroy {
   selectProdus(produs: any){    
     this.form.get('produsId')?.setValue(produs.id);
     this.form.get('produsNume')?.setValue(produs.nume);    
-    console.log('produsId: ', this.form.get('produsId')?.value);
  }
 
  selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitectId: string){
     this.form.get('arhitectId')?.setValue(arhitectId);
-    console.log('arhitectId: ', this.form.get('arhitectId')?.value);
   }
   selectFurnizor(furnizor: any){
     this.form.get('furnizorId')?.setValue(furnizor.id);
-    console.log('furnizorId: ', this.form.get('furnizorId')?.value);
   }
  //#endregion
 
-  ngOnDestroy(): void {}
 }

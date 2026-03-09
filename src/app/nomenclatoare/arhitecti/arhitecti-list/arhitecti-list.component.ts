@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { arhitectiDTO } from '../arhitecti-item/arhitecti.model';
 import { ArhitectiService } from '../arhitecti.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { Subject } from 'rxjs';
+import { catchError, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-arhitecti-list',
@@ -14,35 +16,31 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     styleUrls: ['./arhitecti-list.component.scss'],
     standalone: false
 })
-export class ArhitectiListComponent implements OnInit, OnDestroy {
+export class ArhitectiListComponent {
 
-  arhitecti: arhitectiDTO[];
   errors: string[] = [];
-  loading$: boolean = true;
-  constructor(private arhitectiService: ArhitectiService, private unsubscribeService: UnsubscribeService, public dialog: MatDialog) { 
-    this.arhitecti = [];
-  }
+  private refresh$ = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+  private arhitectiService = inject(ArhitectiService);
+  private dialog = inject(MatDialog);
 
-  columnsToDisplay= ['nume', 'adresa', 'tel', 'email', 'comision', 'action'];
+  arhitecti$ = this.refresh$.pipe(
+    startWith(void 0),
+    switchMap(() => this.arhitectiService.getAll().pipe(
+      catchError(error => {
+        this.errors = parseWebAPIErrors(error);
+        return of([] as arhitectiDTO[]);
+      }),
+      shareReplay(1)
+    ))
+  );
 
-  ngOnInit(): void {
-    this.loadList();
-  }
-  loadList(){
-    this.arhitectiService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))    
-    .subscribe(arhitecti=>{
-      this.arhitecti = arhitecti;
-      this.loading$ = false;
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-    });    
-  }
+  columnsToDisplay = ['nume', 'adresa', 'tel', 'email', 'comision', 'action'];
+
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -51,13 +49,10 @@ export class ArhitectiListComponent implements OnInit, OnDestroy {
   private deleteComanda(id: number){
     this.arhitectiService.delete(id)
     .subscribe(() => {
-      this.loadList();
+      this.refresh$.next();
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
     });
   }
-
-  ngOnDestroy(): void {}
-
 }

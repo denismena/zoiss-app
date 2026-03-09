@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
 import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 import { LivrariService } from '../../livrari.service';
 import { LivrariDTO, livrariProduseDTO } from '../livrari.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -14,9 +13,10 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./livrari-edit.component.scss'],
     standalone: false
 })
-export class LivrariEditComponent implements OnInit, OnDestroy {
+export class LivrariEditComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService,
+  constructor(private activatedRoute: ActivatedRoute,private router:Router,
     private livrareService: LivrariService) { }
   model!:LivrariDTO;
   selectedProdus: livrariProduseDTO[] = [];
@@ -28,7 +28,7 @@ export class LivrariEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.livrareService.putGet(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(livrare => {
         this.model = livrare.livrare;        
         this.selectedProdus = livrare.livrareProduse;
@@ -42,12 +42,11 @@ export class LivrariEditComponent implements OnInit, OnDestroy {
 
   saveChanges(livrariDTO:LivrariDTO){
     this.livrareService.edit(this.model.id, livrariDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/livrari"]);
     },
     error=> this.errors = parseWebAPIErrors(error));
   }
 
-  ngOnDestroy(): void {}
 }

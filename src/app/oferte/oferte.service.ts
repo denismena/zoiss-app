@@ -62,7 +62,6 @@ export class OferteService {
     if (oferta.termenLivrare){
       formData.append('termenLivrare', oferta.termenLivrare);
     }
-    console.log('formData produse:', oferta.produse);
     formData.append('produse', JSON.stringify(oferta.produse));
 
     return formData;

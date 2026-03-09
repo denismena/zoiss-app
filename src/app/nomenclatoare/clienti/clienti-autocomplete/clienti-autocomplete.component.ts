@@ -2,12 +2,13 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Outpu
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import { ClientiCreateDialogComponent } from '../clienti-item/clienti-create-dialog/clienti-create-dialog.component';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
     selector: 'app-clienti-autocomplete',
@@ -18,7 +19,8 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
   clienti: clientiDTO[];
-  constructor(private clientiService: ClientiService, public dialog: MatDialog, private unsubscribeService: UnsubscribeService) { 
+  private destroyRef = inject(DestroyRef);
+  constructor(private clientiService: ClientiService, public dialog: MatDialog) { 
     this.clienti = [];    
     this.selectedClient = new Observable<clientiDTO[]>();    
   }
@@ -46,7 +48,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     searchTerm += event;
     if(searchTerm.length > 2){    
       this.clientiService.search(searchTerm)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(clienti=>{
         this.clienti = clienti;
         this.selectedClient = this.clientCtrl.valueChanges
@@ -87,14 +89,15 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     }
 
     this.subscription = this.trigger.panelClosingActions
-    //this.trigger.panelClosingActions.pipe(this.takeUntil(this.trigger.autocomplete.closed))
       .subscribe(e => {
-        if (!e || !e.source) {
-          if(this.preselectClient == undefined)//daca nu are nimic selectat, scrisul este sters
-            this.clientCtrl.setValue(null);          
-          if(this.clientCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
-            this.onOptionSelected.emit(undefined);
-        }
+        setTimeout(() => {
+          if (!e || !e.source) {
+            if(this.preselectClient == undefined)//daca nu are nimic selectat, scrisul este sters
+              this.clientCtrl.setValue(null);          
+            if(this.clientCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+              this.onOptionSelected.emit(undefined);
+          }
+        }, 0);
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());
@@ -108,7 +111,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       { data:{editId: 0}, width: '900px', height: '750px' });
 
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
@@ -125,7 +128,7 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       { data:{client: this.preselectClient, editId: this.preselectClient?.id??0}, width: '1000px', height: '750px' });
 
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;

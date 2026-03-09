@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,8 +8,6 @@ import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.m
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { OferteService } from '../oferte.service';
 import { oferteDTO } from './oferte.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-oferte-item',
@@ -16,9 +15,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./oferte-item.component.scss'],
     standalone: false
 })
-export class OferteItemComponent implements OnInit, OnDestroy {
+export class OferteItemComponent implements OnInit {
 
-  constructor(private formBuilder:FormBuilder, private oferteService: OferteService, private unsubscribeService: UnsubscribeService ) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, private oferteService: OferteService) { }
   @Input()
   model:oferteDTO | undefined;
   public form!: FormGroup;
@@ -63,7 +63,7 @@ export class OferteItemComponent implements OnInit, OnDestroy {
     {      
       //on add form get the next contract number
       this.oferteService.getNextNumber()
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data=>{
         this.form.get('numar')?.setValue(data);
       });
@@ -75,7 +75,6 @@ export class OferteItemComponent implements OnInit, OnDestroy {
       return {id: val.id??0, cantitate: val.cantitate??0, furnizorId: val.furnizorId, produsId: val.produsId,
         umId:val.umId, um: val.um, cutii: val.cutii??0, pretUm: val.pretUm??0, valoare: val.valoare??0, discount: val.discount, isStoc: val.isStoc??false}
     });
-    console.log('set produse', produse);
     this.form.get('produse')?.setValue(produse);
     if(this.form.valid)
       this.onSaveChanges.emit(this.form.value);
@@ -83,13 +82,10 @@ export class OferteItemComponent implements OnInit, OnDestroy {
 
   selectClient(clientId: string){
     this.form.get('clientId')?.setValue(clientId);
-    console.log('clientNume: ', this.form.get('clientId')?.value);
   }
 
   selectArhitect(arhitect: any){    
     this.form.get('arhitectId')?.setValue(arhitect?.id);    
     this.form.get('comision')?.setValue(arhitect?.comision);    
   }
-
-  ngOnDestroy(): void {}
 }

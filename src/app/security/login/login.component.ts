@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { userCredentials } from '../security.models';
 import { SecurityService } from '../security.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -12,9 +11,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./login.component.scss'],
     standalone: false
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
-  constructor(private securityservice: SecurityService, private router: Router, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private securityservice: SecurityService, private router: Router) { }
   errors: string[] = [];
   scannerEnabled: boolean = false;
 
@@ -22,13 +22,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   login(userCredentials: userCredentials){
     this.securityservice.login(userCredentials)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(authenticatorResponse=>{
       this.securityservice.saveToken(authenticatorResponse);
       this.router.navigate(['/home']);
     }, error=> this.errors = parseWebAPIErrors(error));
   }
 
-  ngOnDestroy(): void {
-  }
 }

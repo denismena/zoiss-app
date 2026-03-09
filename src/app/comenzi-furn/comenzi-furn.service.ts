@@ -37,7 +37,6 @@ export class ComenziFurnizorService{
     return this.http.post(`${this.apiUrl}/fromComanda`, produse);
   }
   addToExisting(produse: toExistingComenziFurnizoriDTO){
-    console.log('produse:', produse); 
     return this.http.post(`${this.apiUrl}/addProduse`, produse);
   }
 
@@ -46,7 +45,6 @@ export class ComenziFurnizorService{
   }
 
   edit(id: number, oferte: comenziFurnizorCreationDTO){
-    console.log('oferte service:', oferte);
     return this.http.put(`${this.apiUrl}/${id}`, oferte);
   }
 

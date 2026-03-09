@@ -1,16 +1,15 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import saveAs from 'file-saver';
 import { ExportService } from 'src/app/utilities/export.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 import { RapoarteService } from '../rapoarte.service';
 import { arhitectiComisionDTO, comandaArhitectiDTO } from './comision-arhitecti.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-comision-arhitecti',
@@ -25,7 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
     ],
     standalone: false
 })
-export class ComisionArhitectiComponent implements OnInit, OnDestroy {
+export class ComisionArhitectiComponent implements OnInit {
 
   loading$: boolean = true;
   checked: any[] = [];
@@ -35,7 +34,8 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
   errors: string[] = [];
   public form!: FormGroup;
 
-  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+  constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, 
       private exportService: ExportService, private dialog: MatDialog) { 
     this.comisioaneArhitecti = [];
     this.expandedElement = [];    
@@ -65,7 +65,7 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
 
   loadList(values: any){
     this.reportService.comisionArhitecti(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<arhitectiComisionDTO[]>)=>{
       this.comisioaneArhitecti = response.body??[];
       this.sortedData = this.comisioaneArhitecti.slice();
@@ -108,7 +108,7 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
       return;
     }
     this.reportService.plateste(selectedComenzi)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(id=>{      
       this.loadList(this.form.value);
     }, 
@@ -127,12 +127,11 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
     const dtfrom = new Date(this.form.controls['fromDate'].value);
     const dtTo = new Date(this.form.controls['toDate'].value);
     this.exportService.comisionArhitectPDF(selectedComenziId, dtfrom, dtTo)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(blob => {      
       saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
       this.loading$ = false;
     }, error => {
-      console.log("Something went wrong");
     });
   }
 
@@ -141,7 +140,6 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
   }
 
   sortData(sort: any) {
-    console.log('sort', sort);
     const data = this.comisioaneArhitecti.slice();
     if (!sort.active || sort.direction === '') {
       this.sortedData = data;
@@ -167,5 +165,4 @@ export class ComisionArhitectiComponent implements OnInit, OnDestroy {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  ngOnDestroy(): void {}
 }

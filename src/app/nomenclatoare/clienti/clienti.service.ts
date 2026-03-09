@@ -33,7 +33,6 @@ export class ClientiService {
   }
 
   edit(id: number, client: clientiCreationDTO){
-    console.log('edit to service:', client);
     return this.http.put(`${this.apiUrl}/${id}`, client);
   }
 

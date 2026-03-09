@@ -13,9 +13,10 @@
 </mat-accordion>
 
 <app-display-errors [errors]="errors"></app-display-errors>
+@let depozite = depozite$ | async;
 <app-generic-list [list]="depozite">
   <ng-container content>
-    @if (depozite.length > 0) {
+    @if (depozite && depozite.length > 0) {
       <table mat-table [dataSource]="depozite" class="table-index">
         <ng-container matColumnDef="nume">
           <th mat-header-cell *matHeaderCellDef>Nume</th>

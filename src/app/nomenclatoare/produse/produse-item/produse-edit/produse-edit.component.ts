@@ -5,8 +5,8 @@ import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.serv
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ProduseService } from '../../produse.service';
 import { produseCreationDTO,produseDTO } from '../produse.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-produse-edit',
@@ -14,9 +14,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./produse-edit.component.scss'],
     standalone: false
 })
-export class ProduseEditComponent implements OnInit, OnDestroy {
+export class ProduseEditComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private produsService: ProduseService, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private produsService: ProduseService,
       private furnizorService: FurnizoriService) { }
   
   errors: string[] = [];
@@ -26,14 +27,13 @@ export class ProduseEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.produsService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(produs => {
         this.model = produs;
-        console.log(this.model);
 
         if(produs.prefFurnizorId !=undefined){
           this.furnizorService.getById(produs.prefFurnizorId)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(furnizor=>{
             this.preselectFurnizor = furnizor;
           },
@@ -44,13 +44,10 @@ export class ProduseEditComponent implements OnInit, OnDestroy {
   }
   saveChanges(produseCreationDTO:produseCreationDTO){
     this.produsService.edit(this.model.id, produseCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/produse"]);
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
-  ngOnDestroy(): void {}
-
 }

@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { depoziteDTO } from 'src/app/nomenclatoare/depozite/depozite-item/depozite.model';
 import { TransportService } from '../../transport.service';
 import { transportCreationDTO, transportDTO, transportEditDTO, transportProduseDTO } from '../transport.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -13,10 +12,10 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./transport-edit.component.scss'],
     standalone: false
 })
-export class TransportEditComponent implements OnInit, OnDestroy {
+export class TransportEditComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private transportService: TransportService,
-    private unsubscribeService: UnsubscribeService) { }
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private transportService: TransportService) { }
   model!:transportDTO;
   selectedProdus: transportProduseDTO[] = [];
   depoziteLista: string[]=[];
@@ -25,7 +24,7 @@ export class TransportEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.transportService.putGet(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(transport => {
         this.model = transport.transport;
         this.selectedProdus = transport.transportProduse;
@@ -39,14 +38,11 @@ export class TransportEditComponent implements OnInit, OnDestroy {
 
   saveChanges(transportCreationDTO:transportEditDTO){
     this.transportService.edit(this.model.id, transportCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/transport"]);
     },
     error=> this.errors = parseWebAPIErrors(error));
-  }
-
-  ngOnDestroy(): void {
   }
 
 }

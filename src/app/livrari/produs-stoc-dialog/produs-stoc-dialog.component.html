@@ -15,9 +15,9 @@
                     <input matInput placeholder="Cauta dupa cod sau nume produs" class="mat-optgroup-label"
                       [(ngModel)]="searchTextProdus" [ngModelOptions]="{standalone: true}" (ngModelChange)="updateSearchResults()" style="flex: 1;">
                     </div>
-                    @for (group of filteredProduseStocList | filterComandaProdusStoc: searchTextComanda; track group) {
+                    @for (group of filteredProduseStocList | filterComandaProdusStoc: searchTextComanda; track group.comandaNumar) {
                       <mat-optgroup [label]="'Comanda: ' + group.comandaNumar + ' / ' + (group.comandaData | customDate)">
-                        @for (produs of filterComenziProduseStoc(group.comenziProduseStoc, searchTextProdus); track produs) {
+                        @for (produs of filterComenziProduseStoc(group.comenziProduseStoc, searchTextProdus); track produs.id) {
                           <mat-option [value]="produs.id">
                             (<b>{{produs.codProdus}}</b>) {{produs.produsNume}}; <b>Cant:</b> {{produs.cantitate}}
                           </mat-option>

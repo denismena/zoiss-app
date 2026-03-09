@@ -1,24 +1,23 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
 import { produseDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { RapoarteService } from '../rapoarte.service';
-import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
 import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clienti-autocomplete/clienti-autocomplete.component';
-import { ClientiService } from 'src/app/nomenclatoare/clienti/clienti.service';
 @Component({
     selector: 'app-remove-duplicates',
     templateUrl: './remove-duplicates.component.html',
     styleUrls: ['./remove-duplicates.component.scss'],
     standalone: false
 })
-export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
+export class RemoveDuplicatesComponent implements OnInit {
   @ViewChild(MatTable) produseTable!: MatTable<any>;
   @ViewChild(MatTable) furnizorTable!: MatTable<any>;
   @ViewChild(MatTable) clientTable!: MatTable<any>;
@@ -42,7 +41,8 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
   columnsToDisplayFurn = ['#', 'nume', 'adresa', 'actions']
   columnsToDisplayClient = ['#', 'nume', 'cnp/cui', 'adresa', 'actions']
  
-  constructor(private formBuilder:FormBuilder, private rapoarteService: RapoarteService, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, private rapoarteService: RapoarteService,
     private clientiService: ClientiService) { }
   
   ngOnInit(): void {
@@ -86,7 +86,7 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
 
   saveChangesProdus() {
     this.rapoarteService.removeDuplicatesProduse(this.formProduse.value)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.formProduse.reset();
       this.produsAuto.clearSelection();
@@ -122,7 +122,7 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
 
   saveChangesFurnizor() {
     this.rapoarteService.removeDuplicatesFurnizori(this.formFurnizor.value)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.formFurnizor.reset();
       this.duplicatesFurnizorDTO = [];
@@ -140,13 +140,11 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
   }
 
   selectClientSters(client: any) {
-    console.log('client', client);
     this.duplicatesClienti.push(client);
     this.loadAdrese(client).subscribe((detaliiClient:any)=>{
       this.duplicatesClientiDTO.push(detaliiClient);
       this.fromClienti.patchValue({removeListId: this.duplicatesClienti});
       this.clientSters.clearSelection();
-      console.log('this.fromClienti', this.fromClienti.value, this.fromClienti);
       if(this.clientTable !== undefined)
         this.clientTable.renderRows();
     });
@@ -154,7 +152,7 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
 
   loadAdrese(clientId: number) {
     return this.clientiService.getById(clientId)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$));
+      .pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   removeClient(client:any) {
@@ -167,7 +165,7 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
 
   saveChangesClienti() {
     this.rapoarteService.removeDuplicatesClienti(this.fromClienti.value)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.fromClienti.reset();
       this.duplicatesClientiDTO = [];
@@ -178,7 +176,5 @@ export class RemoveDuplicatesComponent implements OnInit, OnDestroy {
     error=> this.errors = parseWebAPIErrors(error)); 
   }  
   //end Clienti
-
-  ngOnDestroy(): void {}
 
 }

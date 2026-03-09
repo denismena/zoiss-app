@@ -64,7 +64,7 @@
               <mat-form-field appearance="outline">
                 <select matNativeControl formControlName="depozitId" (change)="changeDepozit($event.target)">
                   <option value="" selected></option>
-                  @for (depozit of depozite; track depozit) {
+                  @for (depozit of depozite; track depozit.id) {
                     <option [value]="depozit.id">
                       {{depozit.nume}}
                     </option>

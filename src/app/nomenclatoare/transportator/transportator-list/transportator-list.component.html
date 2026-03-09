@@ -14,9 +14,10 @@
 
 <app-display-errors [errors]="errors"></app-display-errors>
 
+@let transportator = transportator$ | async;
 <app-generic-list [list]="transportator">
   <ng-container content>
-    @if (transportator.length > 0) {
+    @if (transportator && transportator.length > 0) {
       <table mat-table [dataSource]="transportator" class="table-index">
         <ng-container matColumnDef="nume">
           <th mat-header-cell *matHeaderCellDef>Nume</th>

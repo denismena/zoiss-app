@@ -1,12 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { forgetPass, userCredentials } from '../security.models';
 import { SecurityService } from '../security.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-register',
@@ -14,9 +13,10 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./register.component.scss'],
     standalone: false
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
 
-  constructor(private securityService: SecurityService, private unsubscribeService: UnsubscribeService, private formBuilder: FormBuilder) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private securityService: SecurityService, private formBuilder: FormBuilder) { }
   errors: string[] = [];
   success: boolean = false;
   public form!: FormGroup;
@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.errors=[];
     this.success=false;
     this.securityService.register(userCredentials)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(authenticationResponse=>{      
       if(authenticationResponse == null){
         this.success=true;        
@@ -42,6 +42,4 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }, error=> this.errors = parseWebAPIErrors(error));
   }
 
-  ngOnDestroy(): void {
-  }
 }

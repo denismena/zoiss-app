@@ -126,7 +126,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @for (prod of element.produse; track prod) {
+                  @for (prod of element.produse; track prod.id) {
                     <tr>
                       <td>{{prod.produsNume}}</td>
                       <td>{{prod.codProdus}}</td>

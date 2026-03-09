@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArhitectiService } from '../../arhitecti.service';
 import { arhitectiCreationDTO, arhitectiDTO } from '../arhitecti.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -12,17 +11,17 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./arhitecti-edit.component.scss'],
     standalone: false
 })
-export class ArhitectiEditComponent implements OnInit, OnDestroy {
+export class ArhitectiEditComponent implements OnInit {
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private arhitectiService: ArhitectiService,
-    private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private arhitectiService: ArhitectiService) { }
   
   model!:arhitectiDTO;
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.arhitectiService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(arhitect => {
         this.model = arhitect;        
       },
@@ -32,13 +31,10 @@ export class ArhitectiEditComponent implements OnInit, OnDestroy {
 
   saveChanges(arhitectiCreationDTO:arhitectiCreationDTO){
     this.arhitectiService.edit(this.model.id, arhitectiCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/arhitecti"]);
     },
     error => this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
-
 }

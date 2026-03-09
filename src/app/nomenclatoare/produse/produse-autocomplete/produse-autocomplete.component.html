@@ -9,7 +9,7 @@
       [matAutocomplete]="auto"
       [formControl]="produsCtrl">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)" [displayWith]="displayFn">
-        @for (prod of (selectedProdus | async) ?? []; track prod) {
+        @for (prod of (selectedProdus | async) ?? []; track prod.id) {
           <mat-option [value]="prod" [ngClass]="{'alert-danger' : !prod.active}">
             <b>({{prod.cod}})</b> {{prod.nume}}
           </mat-option>

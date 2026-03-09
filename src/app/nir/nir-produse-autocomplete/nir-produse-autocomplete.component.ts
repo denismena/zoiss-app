@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { furnizoriDTO } from 'src/app/nomenclatoare/furnizori/furnizori-item/furnizori.model';
@@ -6,11 +7,9 @@ import { FurnizoriService } from 'src/app/nomenclatoare/furnizori/furnizori.serv
 import { produseDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { ProduseService } from 'src/app/nomenclatoare/produse/produse.service';
 import { UMService } from 'src/app/nomenclatoare/um/um.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { produseNirDTO } from '../nir-item/nir.model';
 import { umDTO } from 'src/app/nomenclatoare/um/um-item/um.model';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { takeUntil } from 'rxjs/operators';
 import { MatTable } from '@angular/material/table';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
@@ -22,7 +21,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     styleUrls: ['./nir-produse-autocomplete.component.scss'],
     standalone: false
 })
-export class NirProduseAutocompleteComponent {
+export class NirProduseAutocompleteComponent implements OnInit {
   @Input() preselectedProdus:produseDTO|undefined;
   @Input() preselectFurnizor:furnizoriDTO|undefined;
   @Input() selectedProdus: produseNirDTO[];
@@ -39,7 +38,8 @@ export class NirProduseAutocompleteComponent {
   umList: umDTO[]=[];
   isEditMode: boolean=false;
 
-  constructor(private formBuilder:FormBuilder, private unsubscribeService: UnsubscribeService, 
+  private destroyRef = inject(DestroyRef);
+  constructor(private formBuilder:FormBuilder, 
     private produseService: ProduseService, private umService: UMService, private furnizorService: FurnizoriService) { 
     this.selectedProdus = [];
     this.produsToDisplay = [];    
@@ -63,16 +63,18 @@ export class NirProduseAutocompleteComponent {
     this.furnizorFormGroup = new FormGroup({
       furnizorId: new FormControl()
     });
-    this.produsCtrl.valueChanges.subscribe(value => {
-      this.produseService.searchByNameComanda(value)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-      .subscribe(produs => {
-        this.produsToDisplay = produs;
-      });
-    })
+    this.produsCtrl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => {
+        this.produseService.searchByNameComanda(value)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(produs => {
+            this.produsToDisplay = produs;
+          });
+      })
 
     this.umService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(um=>{
       this.umList=um;
     })
@@ -80,7 +82,7 @@ export class NirProduseAutocompleteComponent {
 
   loadProduseList(){
     this.produseService.getProduseAutocompleteComanda()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(produse=>{
       this.produsToDisplay = produse;
     });    
@@ -124,7 +126,7 @@ export class NirProduseAutocompleteComponent {
     //produs.produsStocValoare = produs.produsStocValoare;
     this.form.setValue(produs);
     this.produseService.getById(produs.produsId)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(produs=>{
       this.preselectedProdus = produs;
       //this.perCutieSet = produs.perCutie;
@@ -133,7 +135,7 @@ export class NirProduseAutocompleteComponent {
     if(produs.furnizorId == null)this.preselectFurnizor = undefined;
     else{
       this.furnizorService.getById(produs.furnizorId)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(furnizor=>{
         this.preselectFurnizor = furnizor;
       });      
@@ -158,7 +160,4 @@ export class NirProduseAutocompleteComponent {
     moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
     this.table.renderRows();
   }
-
-  ngOnDestroy(): void {}
-  
 }

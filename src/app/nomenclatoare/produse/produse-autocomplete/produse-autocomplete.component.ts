@@ -3,12 +3,13 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {Observable, Subscription} from 'rxjs';
-import {map, startWith, takeUntil} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import { ProduseCreateDialogComponent } from '../produse-item/produse-create-dialog/produse-create-dialog.component';
 import { produseDTO, produseOfertaDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 
 @Component({
     selector: 'app-produse-autocomplete',
@@ -18,8 +19,9 @@ import { UnsubscribeService } from 'src/app/unsubscribe.service';
 })
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
-  produse: produseDTO[]
-  constructor(private produseService: ProduseService, public dialog: MatDialog, private unSubscribeService: UnsubscribeService) { 
+  produse: produseDTO[];
+  private destroyRef = inject(DestroyRef);
+  constructor(private produseService: ProduseService, public dialog: MatDialog) { 
     this.produse = [];   
 
     this.selectedProdus = new Observable<produseOfertaDTO[]>();    
@@ -54,7 +56,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
     searchTerm += event;
     if(searchTerm.length >= 2){    
       this.produseService.search(searchTerm)
-      .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(produse=>{
         this.produse = produse;
         this.selectedProdus = this.produsCtrl.valueChanges
@@ -96,12 +98,14 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
 
     this.subscription = this.trigger.panelClosingActions
       .subscribe(e => {
-        if (!e || !e.source) {
-          if(this.preselectedProdus == undefined)//daca nu are nimic selectat, scrisul este sters
-            this.produsCtrl.setValue(null);
-          if(this.produsCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
-            this.onOptionSelected.emit(undefined);
-        }
+        setTimeout(() => {
+          if (!e || !e.source) {
+            if(this.preselectedProdus == undefined)//daca nu are nimic selectat, scrisul este sters
+              this.produsCtrl.setValue(null);
+            if(this.produsCtrl.value == '') //daca scrisul este gol atunci trimit ca nimic selectat
+              this.onOptionSelected.emit(undefined);
+          }
+        }, 0);
       },
       err => this._subscribeToClosingActions(),
       () => this._subscribeToClosingActions());
@@ -116,7 +120,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       { data:{editId:0}, width: '800px', height: '750px' });
       
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;
@@ -133,7 +137,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
       { data:{produs: this.preselectedProdus, editId: this.preselectedProdus?.id??0}, width: '800px', height: '750px' });
       
       dialogRef.afterClosed()
-      .pipe(takeUntil(this.unSubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {      
         if (data.clicked === 'submit') {
           this.dataFromDialog = data.form;

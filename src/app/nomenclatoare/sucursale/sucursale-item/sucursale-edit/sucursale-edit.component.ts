@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { SucursaleService } from '../../sucursala.service';
 import { sucursalaCreationDTO, sucursalaDTO } from '../sucursala.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
     selector: 'app-sucursale-edit',
@@ -12,17 +11,17 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./sucursale-edit.component.scss'],
     standalone: false
 })
-export class SucursaleEditComponent implements OnInit, OnDestroy {
+export class SucursaleEditComponent implements OnInit {
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private sucursaleService: SucursaleService,
-    private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router, private sucursaleService: SucursaleService) { }
 
   model!:sucursalaDTO;
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.sucursaleService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(um => {
         this.model = um;
       },
@@ -31,13 +30,11 @@ export class SucursaleEditComponent implements OnInit, OnDestroy {
   }
   saveChanges(sucursalaCreationDTO:sucursalaCreationDTO){
     this.sucursaleService.edit(this.model.id, sucursalaCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/sucursale"]);
     },
     error=> this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
 
 }

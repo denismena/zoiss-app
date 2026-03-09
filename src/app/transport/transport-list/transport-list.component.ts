@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -17,8 +18,6 @@ import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { LivrariNumberDialogComponent } from '../livrari-number-dialog/livrari-number-dialog.component';
 import { transportDTO, transportProduseDTO } from '../transport-item/transport.model';
 import { TransportService } from '../transport.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 
@@ -26,6 +25,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-transport-list',
     templateUrl: './transport-list.component.html',
     styleUrls: ['./transport-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -35,7 +35,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     ],
     standalone: false
 })
-export class TransportListComponent implements OnInit, OnDestroy {
+export class TransportListComponent implements OnInit {
 
   transport: transportDTO[]
   expandedElement: transportDTO[];
@@ -56,7 +56,9 @@ export class TransportListComponent implements OnInit, OnDestroy {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
-  constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  constructor(private transporService: TransportService, private livrariService: LivrariService, private router:Router,
     public dialog: MatDialog, private formBuilder:FormBuilder, private depoziteService: DepoziteService, public cookie: CookieService) { 
     this.transport = [];
     this.expandedElement = [];
@@ -96,29 +98,34 @@ export class TransportListComponent implements OnInit, OnDestroy {
     })
 
     this.depoziteService.getAll()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
-    .subscribe(dep=>{this.depozitList=dep;});
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(dep=>{
+      this.depozitList=dep;
+      this.cdr.markForCheck();
+    });
   }
 
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.transporService.getAll(values)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((response: HttpResponse<transportDTO[]>)=>{
       this.transport = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false; 
+      this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
 
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -131,6 +138,7 @@ export class TransportListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 
@@ -151,7 +159,6 @@ export class TransportListComponent implements OnInit, OnDestroy {
             element.transportProduse.forEach(prod=>{              
               if(prod.addToLivrare && !prod.livrat && prod.livrabil)
                 {
-                  console.log('prod', prod);
                   selectedProd.push(prod);
 
                   if(cclientId != prod.clientId && cclientId > 0)  maiMultiClienti = true; 
@@ -174,14 +181,14 @@ export class TransportListComponent implements OnInit, OnDestroy {
       { data:{ }, width: '400px', height: '300px' });
 
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((data) => {      
       if (data.clicked === 'submit') {
         var numar = data.form.numar;
 
         if(selectedProd.length > 0){
           this.livrariService.fromTransport(numar, selectedProd)
-          .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(id=>{
             this.router.navigate(['/livrari/edit/' + id])
           }, 
@@ -196,17 +203,14 @@ export class TransportListComponent implements OnInit, OnDestroy {
   }
   getCheckbox(checkbox: any, row: transportDTO){
     this.checked = [];
-    console.log(row);
     row.transportProduse.forEach(p=>p.addToLivrare = p.livrabil ? checkbox.checked : false
     );    
   }
 
   isAllSelected(row: transportDTO) {
-    row.allComandate = row.transportProduse.every(function(item:any) {
-          console.log('in isAllSelected row', item); 
+    row.allComandate =     row.transportProduse.every(function(item:any) {
           return item.addToTransport == true;
         })
-      console.log('row.allComandate', row.allComandate);
   }
 
   updatePagination(event: PageEvent){
@@ -239,8 +243,5 @@ export class TransportListComponent implements OnInit, OnDestroy {
     this.form.get('furnizorId')?.setValue(furnizor == undefined ? 0 : furnizor?.id);
   }
  //#endregion
-
-  ngOnDestroy(): void {
-  }
 
 }

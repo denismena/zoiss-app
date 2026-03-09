@@ -1,5 +1,5 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
@@ -16,8 +16,7 @@ import { PageEvent } from '@angular/material/paginator';
 import saveAs from 'file-saver';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
@@ -26,6 +25,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-oferte-list',
     templateUrl: './oferte-list.component.html',
     styleUrls: ['./oferte-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('detailExpand', [
             state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -35,7 +35,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     ],
     standalone: false
 })
-export class OferteListComponent implements OnInit, OnDestroy {
+export class OferteListComponent implements OnInit {
 
   oferte: oferteDTO[]
   expandedElement: oferteDTO[];
@@ -56,7 +56,9 @@ export class OferteListComponent implements OnInit, OnDestroy {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent; 
   
-  constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
       private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { 
     this.oferte = [];
     this.expandedElement = [];
@@ -100,21 +102,23 @@ export class OferteListComponent implements OnInit, OnDestroy {
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
     this.oferteService.getAll(values)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((response: HttpResponse<oferteDTO[]>)=>{
       this.oferte = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
       this.errors = parseWebAPIErrors(error);      
       this.loading$ = false;
+      this.cdr.markForCheck();
     });    
   }
 
   delete(id: number){
     const dialogRef = this.dialog.open(OkCancelDialogComponent, {data:{}});
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe((confirm) => {      
       if(confirm) this.deleteComanda(id);
     });
@@ -127,6 +131,7 @@ export class OferteListComponent implements OnInit, OnDestroy {
     }, error => {
       this.errors = parseWebAPIErrors(error);
       this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      this.cdr.markForCheck();
     });
   }
 
@@ -160,7 +165,6 @@ export class OferteListComponent implements OnInit, OnDestroy {
       element.produse.forEach(prod=>{
         if(prod.addToComanda && !prod.isInComanda)
           {
-            console.log(prod.id + ' ' +prod.produsNume + ' ' + prod.addToComanda);
             selectedProd.push(prod);
           }
       })
@@ -169,7 +173,7 @@ export class OferteListComponent implements OnInit, OnDestroy {
 
     if(selectedProd.length > 0){
       this.comenziService.fromOferta(selectedProd)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(id=>{
         this.router.navigate(['/comenzi/edit/' + id])
       }, 
@@ -222,13 +226,12 @@ export class OferteListComponent implements OnInit, OnDestroy {
     
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
     this.exportService.ofertaReport(element.id, this.getSelectedProduse(element), neComandate)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(blob => {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
     }, error => {
-      console.log("Something went wrong");
     });
   }
   
@@ -237,13 +240,12 @@ export class OferteListComponent implements OnInit, OnDestroy {
     this.loading$ = true;
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
     this.exportService.ofertaReportPDF(element.id, this.getSelectedProduse(element), neComandate, showPrice)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(blob => {
       this.loading$ = false;
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
     }, error => {
-      console.log("Something went wrong");
     });
   }
 
@@ -252,7 +254,7 @@ export class OferteListComponent implements OnInit, OnDestroy {
     this.loading$ = true;
     const neComandate = this.cookie.getCookie('oferta' + element.id) == '' ? 'false' : this.cookie.getCookie('oferta' + element.id);
     this.exportService.ofertaReportPDFcuPoza(element.id, this.getSelectedProduse(element), neComandate)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(blob => {
       var fileURL = window.URL.createObjectURL(blob);
       this.loading$ = false;
@@ -260,9 +262,6 @@ export class OferteListComponent implements OnInit, OnDestroy {
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       window.open(fileURL, "_blank");
     }, error => {
-      console.log("Something went wrong");
     });
   }
-  
-  ngOnDestroy(): void {}
 }

@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 
 import { ConfirmEmailComponent } from './confirm-email.component';
 import { SecurityService } from '../security.service';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
 import { DisplayErrorsComponent } from 'src/app/utilities/display-errors/display-errors.component';
 
 describe('ConfirmEmailComponent', () => {
@@ -15,7 +14,6 @@ describe('ConfirmEmailComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ConfirmEmailComponent, DisplayErrorsComponent ],
       providers: [
-        UnsubscribeService,
         { provide: ActivatedRoute, useValue: { queryParams: of({}) } },
         { provide: SecurityService, useValue: { confirmEmail: () => of(null) } }
       ]

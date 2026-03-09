@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransporatorService } from '../../transportator.service';
 import { transportatorCreationDTO, transportatorDTO } from '../transportator.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 
 @Component({
@@ -12,9 +11,10 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     styleUrls: ['./transportator-edit.component.scss'],
     standalone: false
 })
-export class TransportatorEditComponent implements OnInit, OnDestroy {
+export class TransportatorEditComponent implements OnInit {
   errors: string[] = [];
-  constructor(private activatedRoute: ActivatedRoute,private router:Router, private unsubscribeService: UnsubscribeService,
+  private destroyRef = inject(DestroyRef);
+  constructor(private activatedRoute: ActivatedRoute,private router:Router,
     private transporatorService: TransporatorService) { }
 
   model!:transportatorDTO;
@@ -22,7 +22,7 @@ export class TransportatorEditComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       if(params.id == null) return;
       this.transporatorService.getById(params.id)
-      .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(transportator => {
         this.model = transportator;        
       },
@@ -31,13 +31,10 @@ export class TransportatorEditComponent implements OnInit, OnDestroy {
   }
   saveChanges(transportatorCreationDTO:transportatorCreationDTO){
     this.transporatorService.edit(this.model.id, transportatorCreationDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(() => {
       this.router.navigate(["/transportator"]);
     },
     error => this.errors = parseWebAPIErrors(error));
   }
-
-  ngOnDestroy(): void {}
-
 }

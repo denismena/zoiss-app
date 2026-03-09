@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { OferteService } from '../../oferte.service';
 import { oferteDTO } from '../oferte.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-oferte-create',
@@ -12,10 +11,11 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./oferte-create.component.scss'],
     standalone: false
 })
-export class OferteCreateComponent implements OnInit, OnDestroy {
+export class OferteCreateComponent implements OnInit {
 
   errors: string[] = [];
-  constructor(private router:Router, private oferteService: OferteService, private unsubscribeService: UnsubscribeService ) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private oferteService: OferteService) { }
 
   nextNumber: number = 1;
   ngOnInit(): void {    
@@ -23,12 +23,10 @@ export class OferteCreateComponent implements OnInit, OnDestroy {
 
   saveChanges(oferteDTO:oferteDTO){
     this.oferteService.create(oferteDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/oferte'])
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
-  ngOnDestroy(): void {}
 }

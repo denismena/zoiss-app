@@ -68,7 +68,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Depozit nou:</mat-label>
             <mat-select formControlName="newDepozitId" (selectionChange)="selectNewDepozit($event)">
-              @for (depozit of depoziteList; track depozit) {
+              @for (depozit of depoziteList; track depozit.id) {
                 <mat-option [value]="depozit.id">
                   {{depozit.nume}}
                 </mat-option>

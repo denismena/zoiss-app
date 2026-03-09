@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { ProduseService } from '../../produse.service';
 import { produseCreationDTO } from '../produse.model';
-import { UnsubscribeService } from 'src/app/unsubscribe.service';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-produse-create',
@@ -12,21 +11,20 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./produse-create.component.scss'],
     standalone: false
 })
-export class ProduseCreateComponent implements OnInit, OnDestroy {
+export class ProduseCreateComponent implements OnInit {
 
   errors: string[] = [];
-  constructor(private router:Router, private produsService: ProduseService, private unsubscribeService: UnsubscribeService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private router:Router, private produsService: ProduseService) { }
 
   ngOnInit(): void {
   }
   saveChanges(produseDTO: produseCreationDTO){    
     this.produsService.create(produseDTO)
-    .pipe(takeUntil(this.unsubscribeService.unsubscribeSignal$))
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe(()=>{
       this.router.navigate(['/produse'])
     }, 
     error=> this.errors = parseWebAPIErrors(error));    
   }
-
-  ngOnDestroy(): void {}
 }
