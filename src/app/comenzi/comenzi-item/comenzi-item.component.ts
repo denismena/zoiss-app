@@ -40,6 +40,9 @@ export class ComenziItemComponent implements OnInit {
   @Output()
   onSaveChanges: EventEmitter<comenziDTO> = new EventEmitter<comenziDTO>();
 
+  @Output()
+  onClone: EventEmitter<void> = new EventEmitter<void>();
+
   ngOnInit(): void {   
 
     this.form = this.formBuilder.group({

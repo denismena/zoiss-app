@@ -88,4 +88,13 @@ export class ComenziEditComponent implements OnInit {
       this.errors = parseWebAPIErrors(error);
     });
   }
+
+  cloneComanda(){
+    this.comenziService.clone(this.model.id)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((newId) => {
+      this.router.navigate(['/comenzi/edit', newId]);
+    }, 
+    error => this.errors = parseWebAPIErrors(error));
+  }
 }

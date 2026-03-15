@@ -38,6 +38,10 @@ export class OferteService {
     return this.http.put(`${this.apiUrl}/${id}`, oferte);
   }
 
+  clone(id: number): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/clone/${id}`, {});
+  }
+
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

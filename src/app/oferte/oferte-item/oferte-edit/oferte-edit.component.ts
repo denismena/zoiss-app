@@ -62,4 +62,13 @@ export class OferteEditComponent implements OnInit {
     }, 
     error=> this.errors = parseWebAPIErrors(error));
   }
+
+  cloneOferta(){
+    this.oferteService.clone(this.model.id)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((newId) => {
+      this.router.navigate(['/oferte/edit', newId]);
+    }, 
+    error => this.errors = parseWebAPIErrors(error));
+  }
 }

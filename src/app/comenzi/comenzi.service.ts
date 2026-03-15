@@ -61,4 +61,8 @@ export class ComenziService{
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  clone(id: number): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/clone/${id}`, {});
+  }
 }

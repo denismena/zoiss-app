@@ -20,3 +20,19 @@ h2{
   .example-radio-button {
     margin: 5px;
   }
+
+.form-footer-with-clone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+.form-footer-center {
+    display: flex;
+    gap: 1rem;
+  }
+.form-footer-clone {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+  }
