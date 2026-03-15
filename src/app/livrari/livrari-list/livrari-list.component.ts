@@ -151,7 +151,10 @@ export class LivrariListComponent implements OnInit {
       this.loading$ = false;
       const dt = new Date(element.data)
       saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+      this.cdr.markForCheck();
     }, error => {
+      this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
 

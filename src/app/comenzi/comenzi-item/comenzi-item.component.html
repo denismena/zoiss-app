@@ -83,8 +83,9 @@
             <app-utilizatori-autocomplete (onOptionSelected)="selectUtilizator($event)" [preselectUtilizator] = "preselectUtilizator"></app-utilizatori-autocomplete>
             <input type="hidden" formControlName="utilizatorId" #utilizatorId>
           </div>
-          <div class="col-md-1">
-            <mat-slide-toggle formControlName="platit" matTooltip="Platit">Platit</mat-slide-toggle>
+          <div class="col-md-1 d-flex flex-column justify-content-between">
+            <mat-slide-toggle formControlName="platit" matTooltip="Platit">Platit</mat-slide-toggle>            
+            <mat-slide-toggle formControlName="finalizat" matTooltip="Finalizat" class="pb-3">Finalizat</mat-slide-toggle>
           </div>
           <div class="col-md-2">
             <mat-slide-toggle formControlName="arhitectPlatit" matTooltip="Arhitect platit">Arhitect platit</mat-slide-toggle>

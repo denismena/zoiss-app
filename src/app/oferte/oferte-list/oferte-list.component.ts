@@ -231,7 +231,10 @@ export class OferteListComponent implements OnInit {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
       this.loading$ = false;
+      this.cdr.markForCheck();
     }, error => {
+      this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
   
@@ -245,7 +248,10 @@ export class OferteListComponent implements OnInit {
       this.loading$ = false;
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+      this.cdr.markForCheck();
     }, error => {
+      this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
 
@@ -261,7 +267,10 @@ export class OferteListComponent implements OnInit {
       const dt = new Date(element.data)
       saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       window.open(fileURL, "_blank");
+      this.cdr.markForCheck();
     }, error => {
+      this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
 }

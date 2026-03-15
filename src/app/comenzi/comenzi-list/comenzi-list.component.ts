@@ -69,7 +69,7 @@ export class ComenziListComponent implements OnInit {
     this.comenzi = [];
     this.expandedElement = [];
   }
-  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'orasClient', 'arhitect', 'utilizator', 'avans', 'total', 'discount', 'valoare', 'comandate', 'platit', 'select', 'action'];
+  columnsToDisplay= ['expand', 'numar', 'data', 'client', 'orasClient', 'arhitect', 'utilizator', 'avans', 'total', 'discount', 'valoare', 'comandate', 'platit', 'finalizat', 'select', 'action'];
 
   ngOnInit(): void {
     let date: Date = new Date();
@@ -84,7 +84,10 @@ export class ComenziListComponent implements OnInit {
       furnizorId:0,      
       mine: this.cookie.getCookie('comanda_mine')== '' ? false: this.cookie.getCookie('comanda_mine'),
       sucursala: this.cookie.getCookie('comanda_sucursala')== '' ? false: this.cookie.getCookie('comanda_sucursala'),
-      allComandate: this.cookie.getCookie('comanda_allComandate')== '' ? false: this.cookie.getCookie('comanda_allComandate')
+      allComandate: this.cookie.getCookie('comanda_allComandate')== '' ? false: this.cookie.getCookie('comanda_allComandate'),
+      platit: null as boolean | null,
+      arhitectPlatit: null as boolean | null,
+      finalizat: null as boolean | null
     });
 
     this.initialFormValues = this.form.value
@@ -101,13 +104,20 @@ export class ComenziListComponent implements OnInit {
       this.cookie.setCookie({name: 'comanda_mine',value: values.mine, session: true});
       this.cookie.setCookie({name: 'comanda_sucursala',value: values.sucursala, session: true});
       this.cookie.setCookie({name: 'comanda_allComandate',value: values.allComandate, session: true});
+      this.cookie.setCookie({name: 'comanda_platit',value: values.platit, session: true});
+      this.cookie.setCookie({name: 'comanda_arhitectPlatit',value: values.arhitectPlatit, session: true});
+      this.cookie.setCookie({name: 'comanda_finalizat',value: values.finalizat, session: true});
     })
   }
 
   loadList(values: any){
     values.page = this.currentPage;
     values.recordsPerPage = this.pageSize;
-    this.comenziService.getAll(values).subscribe((response: HttpResponse<comenziDTO[]>)=>{
+    const params = { ...values };
+    if (params.platit == null) delete params.platit;
+    if (params.arhitectPlatit == null) delete params.arhitectPlatit;
+    if (params.finalizat == null) delete params.finalizat;
+    this.comenziService.getAll(params).subscribe((response: HttpResponse<comenziDTO[]>)=>{
       this.comenzi = response.body??[];
       this.totalRecords = Number(response.headers.get("totalRecords"));
       this.loading$ = false;
@@ -326,7 +336,10 @@ export class ComenziListComponent implements OnInit {
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
+     this.cdr.markForCheck();
    }, error => {
+     this.loading$ = false;
+     this.cdr.markForCheck();
    });
  }
  genereazaPDF(element:any)
@@ -340,7 +353,10 @@ export class ComenziListComponent implements OnInit {
       const dt = new Date(element.data)
       saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
       //window.open(fileURL, "_blank");
+      this.cdr.markForCheck();
     }, error => {
+      this.loading$ = false;
+      this.cdr.markForCheck();
     });
   }
 

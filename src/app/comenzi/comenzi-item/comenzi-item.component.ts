@@ -56,6 +56,7 @@ export class ComenziItemComponent implements OnInit {
       observatii: ['', {validators:[RxwebValidators.maxLength({value:255 })]}],
       platit: null,
       arhitectPlatit: null,
+      finalizat: null,
       clientiAdresaId: [null, {validators:[RxwebValidators.required()]}],
       comenziProduses: '',
       utilizatorId: [null, {validators:[RxwebValidators.required()]}],

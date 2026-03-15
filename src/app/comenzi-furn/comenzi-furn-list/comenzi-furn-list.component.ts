@@ -219,7 +219,10 @@ selectFurnizor(furnizor: any){
      const dt = new Date(element.data)
      saveAs(blob, 'Comanda ' + element.furnizor + ' ' + dt.toLocaleDateString() + '.xlsx');
      this.loading$ = false;
+     this.cdr.markForCheck();
    }, error => {
+      this.loading$ = false;
+      this.cdr.markForCheck();
    });
  }
 
