@@ -36,33 +36,24 @@ export class ComenziEditComponent implements OnInit {
       this.selectedProdus = [];
       this.comenziService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(comanda => {
-        this.model = comanda.comanda;
-        this.selectedProdus = comanda.comenziProduses;        
+      .subscribe({
+        next: comanda => {
+          this.model = comanda.comanda;
+          this.selectedProdus = comanda.comenziProduses;        
 
-        if(this.model){
-          // forkJoin([
-          //   this.clientiService.getById(comanda.comanda.clientId),
-          //   this.arhitectService.getById(comanda.comanda.arhitectId)
-          // ]).subscribe(([client, arhitect]) => {
-          //   this.preselectClient = client;
-          //   this.preselectArhitect = arhitect;
-          // });
-          this.clientiService.getById(comanda.comanda.clientId)
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(client=>{
-            this.preselectClient = client;
-          });
-          if(comanda.comanda.arhitectId != null){
-            this.arhitectService.getById(comanda.comanda.arhitectId)
+          if(this.model){
+            this.clientiService.getById(comanda.comanda.clientId)
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(arhitect=>{
-              this.preselectArhitect = arhitect;
-            });
+            .subscribe({ next: client => this.preselectClient = client });
+            if(comanda.comanda.arhitectId != null){
+              this.arhitectService.getById(comanda.comanda.arhitectId)
+              .pipe(takeUntilDestroyed(this.destroyRef))
+              .subscribe({ next: arhitect => this.preselectArhitect = arhitect });
+            }
           }
-        }
-      },
-      error=> this.errors = parseWebAPIErrors(error))
+        },
+        error: error => this.errors = parseWebAPIErrors(error)
+      })
     });
   }
   // ngOnInit(): void {
@@ -85,20 +76,18 @@ export class ComenziEditComponent implements OnInit {
   saveChanges(comenziCreationDTO:comenziCreationDTO){
     this.comenziService.edit(this.model.id, comenziCreationDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.router.navigate(["/comenzi"]);
-    }, 
-    error => {      
-      this.errors = parseWebAPIErrors(error);
+    .subscribe({
+      next: () => this.router.navigate(["/comenzi"]),
+      error: error => this.errors = parseWebAPIErrors(error)
     });
   }
 
   cloneComanda(){
     this.comenziService.clone(this.model.id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((newId) => {
-      this.router.navigate(['/comenzi/edit', newId]);
-    }, 
-    error => this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: (newId) => this.router.navigate(['/comenzi/edit', newId]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 }

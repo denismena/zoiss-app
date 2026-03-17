@@ -31,9 +31,9 @@ export class ForgetPassComponent implements OnInit {
     this.success=false; this.errors = [];
     this.securityservice.forgetPassword(email)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(authenticatorResponse=>{      
-      this.success = true;
-    }, error=> {this.errors = parseWebAPIErrors(error);
+    .subscribe({
+      next: () => this.success = true,
+      error: error => this.errors = parseWebAPIErrors(error)
     })
   }
 

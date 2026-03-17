@@ -24,20 +24,21 @@ export class ClientiEditComponent implements OnInit {
       if(params.id == undefined) return;
       this.clientiService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(client => {
-        this.model = client.client;
-        this.adreseList = client.adrese;
-      }, error => {
-        this.errors = parseWebAPIErrors(error);      
+      .subscribe({
+        next: client => {
+          this.model = client.client;
+          this.adreseList = client.adrese;
+        },
+        error: error => this.errors = parseWebAPIErrors(error)
       })
     });
   }
   saveChanges(clientiCreationDTO:clientiCreationDTO){
     this.clientiService.edit(this.model.id, clientiCreationDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.router.navigate(["/clienti"]);
-    },
-    error => this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: () => this.router.navigate(["/clienti"]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 }

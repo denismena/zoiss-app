@@ -117,15 +117,18 @@ export class ComenziListComponent implements OnInit {
     if (params.platit == null) delete params.platit;
     if (params.arhitectPlatit == null) delete params.arhitectPlatit;
     if (params.finalizat == null) delete params.finalizat;
-    this.comenziService.getAll(params).subscribe((response: HttpResponse<comenziDTO[]>)=>{
-      this.comenzi = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false;
-      this.cdr.markForCheck();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-      this.cdr.markForCheck();
+    this.comenziService.getAll(params).subscribe({
+      next: (response: HttpResponse<comenziDTO[]>) => {
+        this.comenzi = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalRecords"));
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });    
   }
 
@@ -140,12 +143,13 @@ export class ComenziListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.comenziService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   } 
 
@@ -196,10 +200,10 @@ export class ComenziListComponent implements OnInit {
   genereazaComnada(selectedProd:any){
     this.comenziFurnizorService.fromComanda(selectedProd)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(id=>{
-      this.router.navigate(['/comenziFurnizor/edit/' + id])
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: id => this.router.navigate(['/comenziFurnizor/edit/' + id]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
   valideazaComandaFurnizor():[boolean, produseComandaDTO[], number] {
@@ -284,10 +288,10 @@ export class ComenziListComponent implements OnInit {
         if(selectedProd.length > 0){
           this.comenziFurnizorService.addToExisting(paramObject)
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(()=>{
-            this.router.navigate(['/comenziFurnizor/edit/' + comandaFurnizorId])
-          }, 
-          error=> this.errors = parseWebAPIErrors(error));
+          .subscribe({
+            next: () => this.router.navigate(['/comenziFurnizor/edit/' + comandaFurnizorId]),
+            error: error => this.errors = parseWebAPIErrors(error)
+          });
         }
         else this.errors.push("Nu ati selectat nici o comanda!");
       }      
@@ -332,14 +336,17 @@ export class ComenziListComponent implements OnInit {
    this.loading$ = true;
    this.exportService.comandaReport(element.id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-   .subscribe(blob => {
-     const dt = new Date(element.data)
-     saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
-     this.loading$ = false;
-     this.cdr.markForCheck();
-   }, error => {
-     this.loading$ = false;
-     this.cdr.markForCheck();
+   .subscribe({
+     next: blob => {
+       const dt = new Date(element.data)
+       saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString() + '.xlsx');
+       this.loading$ = false;
+       this.cdr.markForCheck();
+     },
+     error: () => {
+       this.loading$ = false;
+       this.cdr.markForCheck();
+     }
    });
  }
  genereazaPDF(element:any)
@@ -347,16 +354,17 @@ export class ComenziListComponent implements OnInit {
     this.loading$ = true;
     this.exportService.comandaReportPDF(element.id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(blob => {
-      //var fileURL = window.URL.createObjectURL(blob);
-      this.loading$ = false;
-      const dt = new Date(element.data)
-      saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
-      //window.open(fileURL, "_blank");
-      this.cdr.markForCheck();
-    }, error => {
-      this.loading$ = false;
-      this.cdr.markForCheck();
+    .subscribe({
+      next: blob => {
+        this.loading$ = false;
+        const dt = new Date(element.data)
+        saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 

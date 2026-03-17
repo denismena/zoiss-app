@@ -43,16 +43,12 @@ export class OferteEditComponent implements OnInit {
 
         this.clientiService.getById(oferta.oferta.clientId)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(client=>{
-          this.preselectClient = client;
-        });
+        .subscribe({ next: client => this.preselectClient = client });
 
         if(oferta.oferta.arhitectId != null){
           this.arhitectService.getById(oferta.oferta.arhitectId)
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(arhitect=>{
-            this.preselectArhitect = arhitect;
-          });
+          .subscribe({ next: arhitect => this.preselectArhitect = arhitect });
         }
       })
     });
@@ -61,18 +57,18 @@ export class OferteEditComponent implements OnInit {
   saveChanges(oferteCreationDTO:oferteCreationDTO){
     this.oferteService.edit(this.model.id, oferteCreationDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.router.navigate(["/oferte"]);
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: () => this.router.navigate(["/oferte"]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
   cloneOferta(){
     this.oferteService.clone(this.model.id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((newId) => {
-      this.router.navigate(['/oferte/edit', newId]);
-    }, 
-    error => this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: (newId) => this.router.navigate(['/oferte/edit', newId]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 }

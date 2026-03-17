@@ -23,10 +23,13 @@ export class LoginComponent implements OnInit {
   login(userCredentials: userCredentials){
     this.securityservice.login(userCredentials)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(authenticatorResponse=>{
-      this.securityservice.saveToken(authenticatorResponse);
-      this.router.navigate(['/home']);
-    }, error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: authenticatorResponse => {
+        this.securityservice.saveToken(authenticatorResponse);
+        this.router.navigate(['/home']);
+      },
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
 }

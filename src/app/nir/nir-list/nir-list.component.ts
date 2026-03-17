@@ -84,15 +84,18 @@ export class NirListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.nirService.getAll(values)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((response: HttpResponse<nirDTO[]>)=>{
-      this.nirList = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false;
-      this.cdr.markForCheck();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-      this.cdr.markForCheck();
+    .subscribe({
+      next: (response: HttpResponse<nirDTO[]>) => {
+        this.nirList = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalRecords"));
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });    
   }
 
@@ -107,12 +110,13 @@ export class NirListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.nirService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
 

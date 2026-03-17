@@ -54,13 +54,16 @@ export class FurnizoriListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.furnizoriService.getAll(values)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((response: HttpResponse<furnizoriDTO[]>)=>{
-      this.furnizori = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalrecords"));
-      this.loading$ = false;      
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
+    .subscribe({
+      next: (response: HttpResponse<furnizoriDTO[]>) => {
+        this.furnizori = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalrecords"));
+        this.loading$ = false;      
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+      }
     });    
   }
   
@@ -75,11 +78,12 @@ export class FurnizoriListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.furnizoriService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      }
     });
   }
 

@@ -34,14 +34,16 @@ export class UtilizatoriEditComponent implements OnInit {
       if(params.id == null) return;
       this.securityService.getById(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(util => {
-        this.model = util;
-        if(this.model !== undefined)
-        {
-          this.form.patchValue(this.model);
-        }
-      },
-      error => this.errors = parseWebAPIErrors(error))
+      .subscribe({
+        next: util => {
+          this.model = util;
+          if(this.model !== undefined)
+          {
+            this.form.patchValue(this.model);
+          }
+        },
+        error: error => this.errors = parseWebAPIErrors(error)
+      })
     });
 
     this.form = this.formBuilder.group({     
@@ -53,10 +55,10 @@ export class UtilizatoriEditComponent implements OnInit {
 
     this.sucursaleService.getAll()
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(sucursale=>{
-      this.sucursaleList=sucursale;      
-    },
-    error => this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: sucursale => this.sucursaleList = sucursale,
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
   edit(utilizatoriDTO: UtilizatoriDTO){
@@ -64,11 +66,14 @@ export class UtilizatoriEditComponent implements OnInit {
     if(utilizatoriDTO.sucursalaId == 0) utilizatoriDTO.sucursalaId = null;
     this.securityService.edit(this.model.id, utilizatoriDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(authenticationResponse=>{
-      if(this.model.email == this.securityService.getFieldFromJwt('email'))
-        this.securityService.saveToken(authenticationResponse);
-      this.router.navigate(['/utilizatori']);
-    }, error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: authenticationResponse => {
+        if(this.model.email == this.securityService.getFieldFromJwt('email'))
+          this.securityService.saveToken(authenticationResponse);
+        this.router.navigate(['/utilizatori']);
+      },
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
   selectParent(depozit: any){       

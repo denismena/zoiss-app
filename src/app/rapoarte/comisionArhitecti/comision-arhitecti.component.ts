@@ -109,10 +109,10 @@ export class ComisionArhitectiComponent implements OnInit {
     }
     this.reportService.plateste(selectedComenzi)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(id=>{      
-      this.loadList(this.form.value);
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));    
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });    
   }
 
   genereazaPDF(element:any)
@@ -128,10 +128,12 @@ export class ComisionArhitectiComponent implements OnInit {
     const dtTo = new Date(this.form.controls['toDate'].value);
     this.exportService.comisionArhitectPDF(selectedComenziId, dtfrom, dtTo)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(blob => {      
-      saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
-      this.loading$ = false;
-    }, error => {
+    .subscribe({
+      next: blob => {
+        saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
+        this.loading$ = false;
+      },
+      error: () => { this.loading$ = false; }
     });
   }
 

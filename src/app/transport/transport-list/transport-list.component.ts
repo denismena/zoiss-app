@@ -110,15 +110,18 @@ export class TransportListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.transporService.getAll(values)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((response: HttpResponse<transportDTO[]>)=>{
-      this.transport = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false;
-      this.cdr.markForCheck();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-      this.cdr.markForCheck();
+      .subscribe({
+      next: (response: HttpResponse<transportDTO[]>) => {
+        this.transport = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalRecords"));
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -133,12 +136,13 @@ export class TransportListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.transporService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -189,10 +193,10 @@ export class TransportListComponent implements OnInit {
         if(selectedProd.length > 0){
           this.livrariService.fromTransport(numar, selectedProd)
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(id=>{
-            this.router.navigate(['/livrari/edit/' + id])
-          }, 
-          error=> this.errors = parseWebAPIErrors(error));
+          .subscribe({
+            next: id => this.router.navigate(['/livrari/edit/' + id]),
+            error: error => this.errors = parseWebAPIErrors(error)
+          });
         }
         else this.errors.push("Nu ati selectat nici o comanda!");
       }      
