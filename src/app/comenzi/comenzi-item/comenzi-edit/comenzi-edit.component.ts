@@ -30,6 +30,10 @@ export class ComenziEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
+      this.model = undefined!;
+      this.preselectClient = undefined;
+      this.preselectArhitect = undefined;
+      this.selectedProdus = [];
       this.comenziService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(comanda => {

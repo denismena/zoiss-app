@@ -30,7 +30,11 @@ export class OferteEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      if(params.id == null) return;      
+      if(params.id == null) return;
+      this.model = undefined!;
+      this.preselectClient = undefined;
+      this.preselectArhitect = undefined;
+      this.selectedProdus = [];
       this.oferteService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(oferta => {

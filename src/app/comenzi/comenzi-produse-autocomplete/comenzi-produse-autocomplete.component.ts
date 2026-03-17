@@ -154,6 +154,9 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
       this.selectedProdus[index]=this.form.value;
     }
     else this.selectedProdus.push(this.form.value);
+
+    this.syncPriceForProduct(this.form.value.produsId, this.form.value.pretUm);
+
     if (this.table !== undefined){
       this.table.renderRows();
     }
@@ -240,6 +243,34 @@ export class ComenziProduseAutocompleteComponent implements OnInit {
     moveItemInArray(this.selectedProdus, previousIndex, event.currentIndex);
     this.table.renderRows();
   }
+  duplicate(produs: any){
+    if(produs.isStoc === true){
+      const totalExisting = this.selectedProdus
+        .filter(p => p.produsId === produs.produsId && p.isStoc === true)
+        .reduce((sum, p) => sum + Number(p.cantitate), 0);
+      const needed = totalExisting + Number(produs.cantitate);
+      if(needed > produs.produsStocValoare){
+        alert(`Stoc insuficient! Stoc disponibil: ${produs.produsStocValoare}, necesar: ${needed}`);
+        return;
+      }
+    }
+    const clone = { ...produs, id: null, oferteProdusId: null };
+    const index = this.selectedProdus.indexOf(produs);
+    this.selectedProdus.splice(index + 1, 0, clone);
+    this.table.renderRows();
+  }
+
+  private syncPriceForProduct(produsId: number, pretUm: number){
+    this.selectedProdus.forEach(p => {
+      if(p.produsId === produsId && p.isCategory !== true){
+        p.pretUm = pretUm;
+        const base = pretUm * p.cantitate;
+        const discount = p.discount ?? 0;
+        p.valoare = Math.round(((discount > 0 ? base - (base * discount / 100) : base) + Number.EPSILON) * 1000) / 1000;
+      }
+    });
+  }
+
   changeDiscountAll(discoutAll: HTMLInputElement){    
     this.selectedProdus.forEach(p=> {p.discount = Number(discoutAll.value), p.valoare = (p.pretUm * p.cantitate) - ((p.pretUm * p.cantitate) * Number(discoutAll.value) / 100)});    
   }
