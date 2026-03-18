@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SecurityService } from '../security.service';
 
 @Component({
@@ -10,11 +11,17 @@ import { SecurityService } from '../security.service';
 })
 export class AuthorizeViewComponent implements OnInit {
 
-  constructor(private securityService: SecurityService) { }
+  private destroyRef = inject(DestroyRef);
+  constructor(private securityService: SecurityService, private cdr: ChangeDetectorRef) { }
   @Input()
   role: string= '';
   
   ngOnInit(): void {
+    this.securityService.isLoggedIn$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   public isAuthorize(){

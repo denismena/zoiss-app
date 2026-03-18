@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { authentificationResponse, forgetPass, resetPass, tokenModel, userCredentials, UtilizatoriDTO } from './security.models';
 import { take } from 'rxjs/operators';
@@ -11,13 +11,24 @@ import { take } from 'rxjs/operators';
 })
 export class SecurityService {
 
-  constructor(private http: HttpClient, private router: Router) {}  
-
   private apiUrl = environment.apiUrl + "/utilizatori";
   private readonly tokenKey: string = 'token';
   private readonly expirationTokenKey: string = 'token-expiration';
   private readonly refreshToken = "refreshToken";
   private readonly roleField = "role";
+
+  private loggedIn$ = new BehaviorSubject<boolean>(this.hasValidToken());
+  isLoggedIn$ = this.loggedIn$.asObservable();
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  private hasValidToken(): boolean {
+    const token = localStorage.getItem(this.tokenKey);
+    if (!token) return false;
+    const expiration = localStorage.getItem(this.expirationTokenKey);
+    if (!expiration) return false;
+    return new Date(expiration) > new Date();
+  }
 
   /*
    * SECURITY NOTE: JWT and refresh tokens are stored in localStorage.
@@ -26,7 +37,7 @@ export class SecurityService {
    * If cookies are not feasible, ensure strict Content-Security-Policy and other XSS mitigations.
    */
 
-  async isAuthenticated(): Promise<boolean> {
+  isAuthenticated(): boolean {
     const token = localStorage.getItem(this.tokenKey);
     if (!token) return false;
     const expiration = localStorage.getItem(this.expirationTokenKey);
@@ -34,12 +45,8 @@ export class SecurityService {
     const expirationDate = new Date(expiration);
 
     if (expirationDate <= new Date()) {
-      const isRefreshSuccess = token ? await this.tryRefreshingTokens(token) : false;
-      if (!isRefreshSuccess) {
-        this.logout();
-        this.router.navigate(["/login"]);
-        return false;
-      }
+      this.logout();
+      return false;
     }
 
     return true;
@@ -98,6 +105,7 @@ export class SecurityService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.expirationTokenKey);
     localStorage.removeItem(this.refreshToken);
+    this.loggedIn$.next(false);
     this.router.navigate(['/login']);
   }
 
@@ -105,6 +113,7 @@ export class SecurityService {
     localStorage.setItem(this.tokenKey, authenticationResponse.token);
     localStorage.setItem(this.refreshToken, authenticationResponse.refreshToken);
     localStorage.setItem(this.expirationTokenKey, authenticationResponse.expiration.toString());
+    this.loggedIn$.next(true);
   }
 
   getToken(){
