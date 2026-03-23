@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { NotificationService } from 'src/app/utilities/notification.service';
 import { oferteDTO } from '../oferte-item/oferte.model';
 import { OferteService } from '../oferte.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -42,8 +43,6 @@ export class OferteListComponent implements OnInit {
   checked: any[] = [];
   @ViewChildren ('checkBox') 
   checkBox:QueryList<any> = new QueryList();
-  errors: string[] = [];
-
   public form!: FormGroup;
   totalRecords:number = 0;
   currentPage:number = 1;
@@ -59,7 +58,8 @@ export class OferteListComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   constructor(private oferteService: OferteService, private comenziService:ComenziService, private router:Router,
-      private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { 
+      private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog,
+      private notificationService: NotificationService) { 
     this.oferte = [];
     this.expandedElement = [];
   }
@@ -111,7 +111,7 @@ export class OferteListComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: error => {
-        this.errors = parseWebAPIErrors(error);      
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.loading$ = false;
         this.cdr.markForCheck();
       }
@@ -132,7 +132,7 @@ export class OferteListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
         this.cdr.markForCheck();
       }
@@ -173,17 +173,15 @@ export class OferteListComponent implements OnInit {
           }
       })
     });
-    this.errors = [];
-
     if(selectedProd.length > 0){
       this.comenziService.fromOferta(selectedProd)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: id => this.router.navigate(['/comenzi/edit/' + id]),
-        error: error => this.errors = parseWebAPIErrors(error)
+        error: error => this.notificationService.showErrors(parseWebAPIErrors(error))
       });
     }
-    else this.errors.push("Nu ati selectat nici o oferta!");
+    else this.notificationService.showErrors(["Nu ati selectat nici o oferta!"]);
   }
 
   updatePagination(event: PageEvent){

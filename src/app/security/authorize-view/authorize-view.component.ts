@@ -12,6 +12,8 @@ import { SecurityService } from '../security.service';
 export class AuthorizeViewComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
+  private loggedIn = false;
+
   constructor(private securityService: SecurityService, private cdr: ChangeDetectorRef) { }
   @Input()
   role: string= '';
@@ -19,7 +21,8 @@ export class AuthorizeViewComponent implements OnInit {
   ngOnInit(): void {
     this.securityService.isLoggedIn$.pipe(
       takeUntilDestroyed(this.destroyRef)
-    ).subscribe(() => {
+    ).subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
       this.cdr.markForCheck();
     });
   }
@@ -29,7 +32,7 @@ export class AuthorizeViewComponent implements OnInit {
       return this.securityService.getRole() == this.role;
     }
     else{
-       return this.securityService.isAuthenticated();
+       return this.loggedIn;
     }
   }
 

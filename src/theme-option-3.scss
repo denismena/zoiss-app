@@ -1,0 +1,374 @@
+// =============================================================================
+// THEME OPTION 3: "Warm Corporate" -- Refined and Elegant
+// Fonts: Source Sans 3 + Playfair Display | Primary: #D46A2E | Editorial feel
+// =============================================================================
+@use '@angular/material' as mat;
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700&display=swap');
+
+@include mat.all-component-typographies();
+@include mat.elevation-classes();
+@include mat.app-background();
+
+$md-warm-corp: (
+    50 : #faf0ea,
+    100 : #f2d9cb,
+    200 : #eabfa8,
+    300 : #e1a585,
+    400 : #da936b,
+    500 : #D46A2E,
+    600 : #c5612a,
+    700 : #b35524,
+    800 : #a14a1f,
+    900 : #823615,
+    A100 : #ffffff,
+    A200 : #e1a585,
+    A400 : #e1a585,
+    A700 : #e1a585,
+    contrast: (
+        50 : #2D2926,
+        100 : #2D2926,
+        200 : #2D2926,
+        300 : #2D2926,
+        400 : #2D2926,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #2D2926,
+        A200 : #2D2926,
+        A400 : #2D2926,
+        A700 : #2D2926,
+    )
+);
+
+$zoiss-app-primary: mat.m2-define-palette($md-warm-corp);
+$zoiss-app-accent: mat.m2-define-palette($md-warm-corp, A200, A100, A400);
+$zoiss-app-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$zoiss-app-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $zoiss-app-primary,
+    accent: $zoiss-app-accent,
+    warn: $zoiss-app-warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: '"Source Sans 3", sans-serif',
+  ),
+));
+
+@include mat.elevation-classes();
+@include mat.app-background();
+@include mat.all-component-themes($zoiss-app-theme);
+
+// ---------------------------------------------------------------------------
+// Body & base
+// ---------------------------------------------------------------------------
+body {
+  color: #2D2926;
+  background-color: #FAF8F5;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.navbar.bg-dark {
+  background-color: #2D2926 !important;
+  box-shadow: 0 2px 8px rgba(45,41,38,0.15);
+}
+.navbar .nav-link {
+  color: rgba(255,255,255,0.75) !important;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: color 0.2s ease;
+}
+.navbar .nav-link:hover {
+  color: #D46A2E !important;
+}
+.navbar .nav-link.active {
+  color: #D46A2E !important;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 700;
+}
+.navbar .dropdown-menu.bg-dark {
+  background-color: #2D2926 !important;
+  border: 1px solid rgba(212,106,46,0.2);
+  box-shadow: 0 8px 24px rgba(45,41,38,0.2);
+  border-radius: 4px;
+}
+.navbar .dropdown-menu .nav-link {
+  color: rgba(255,255,255,0.75) !important;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+.navbar .dropdown-menu .nav-link:hover {
+  color: #D46A2E !important;
+  background-color: rgba(212,106,46,0.08);
+}
+
+// ---------------------------------------------------------------------------
+// Material component overrides
+// ---------------------------------------------------------------------------
+mat-form-field {
+  width: 100%;
+  @include mat.form-field-density(-3);
+}
+.mat-mdc-option {
+  font-size: 14px !important;
+  min-height: 32px !important;
+}
+.mat-mdc-paginator {
+  background-color: #F0EDE8 !important;
+  font-size: 13px;
+}
+.mat-mdc-paginator .mat-paginator-page-size-select {
+  margin: 0px;
+}
+.mat-mdc-header-row {
+  background-color: #2D2926 !important;
+  height: 38px !important;
+}
+.mat-mdc-header-row th {
+  color: #D46A2E !important;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.mat-mdc-tooltip {
+  font-size: 14px;
+}
+.mat-mdc-unelevated-button {
+  min-width: 40px;
+  padding: 0px 14px;
+  border-radius: 4px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-size: 13px;
+}
+mat-icon {
+  cursor: pointer;
+}
+.mat-expansion-panel, .bordered {
+  border: none !important;
+  border-left: 3px solid #D46A2E !important;
+  border-radius: 0 8px 8px 0 !important;
+  box-shadow: 0 1px 4px rgba(45,41,38,0.06) !important;
+  background-color: #ffffff;
+}
+.bordered {
+  margin-bottom: 1rem;
+}
+.mat-expansion-panel-header {
+  margin-top: 10px;
+  cursor: default !important;
+}
+.form-footer {
+  text-align: center;
+}
+.mat-mdc-menu-panel {
+  background-color: #ffffff !important;
+  border: 1px solid #F0EDE8;
+  border-top: 2px solid #D46A2E;
+  box-shadow: 0 8px 24px rgba(45,41,38,0.1) !important;
+  border-radius: 0 0 4px 4px !important;
+  opacity: 1;
+  min-width: 550px !important;
+  max-width: 550px !important;
+}
+.mat-mdc-menu-item {
+  color: #2D2926 !important;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.mat-mdc-menu-item:hover {
+  background-color: rgba(212,106,46,0.06) !important;
+}
+.mat-expansion-panel-header:hover {
+  background-color: inherit !important;
+}
+.mat-mdc-unelevated-button.mat-primary {
+  color: #ffffff !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-suffix {
+  top: 0em !important;
+}
+.mat-form-field-suffix span {
+  padding-left: 5px;
+}
+td.mat-mdc-cell {
+  padding: 0.1rem 0.2rem !important;
+  font-size: 15px;
+}
+th.mat-mdc-header-cell {
+  padding: 0.1rem 0.2rem !important;
+}
+.mat-mdc-row:not(.example-detail-row) {
+  height: 36px !important;
+}
+tr.example-detail-row {
+  height: 0 !important;
+}
+.mat-form-field-infix {
+  padding: 7px 0px !important;
+}
+.mat-form-field-flex {
+  padding-top: 0px !important;
+}
+.mat-mdc-dialog-actions {
+  justify-content: center !important;
+}
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 8px !important;
+  border-top: 3px solid #D46A2E;
+}
+.mat-mdc-table {
+  border-radius: 0 8px 8px 0 !important;
+  overflow: hidden;
+  border-left: 3px solid #D46A2E;
+}
+.mat-mdc-row:hover {
+  background-color: rgba(212,106,46,0.04) !important;
+  transition: background-color 0.15s ease;
+}
+.mdc-button {
+  border-radius: 4px !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mdc-text-field--outlined .mdc-notched-outline__notch,
+.mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: #D5CFC7 !important;
+}
+.mdc-text-field--outlined:hover .mdc-notched-outline__leading,
+.mdc-text-field--outlined:hover .mdc-notched-outline__notch,
+.mdc-text-field--outlined:hover .mdc-notched-outline__trailing {
+  border-color: #D46A2E !important;
+}
+
+// ---------------------------------------------------------------------------
+// Utility classes
+// ---------------------------------------------------------------------------
+.w-50 {
+  min-width: 50px;
+}
+.w-100 {
+  width: 100px;
+}
+.mpanel {
+  min-width: 250px !important;
+  max-width: 450px !important;
+}
+.table-text-right {
+  text-align: right !important;
+}
+.table-text-center {
+  text-align: center !important;
+}
+.table-striped {
+  font-size: 15px;
+}
+.table-striped thead {
+  background-color: #2D2926;
+}
+.table-striped thead tr th {
+  border: none;
+  color: #D46A2E;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+  padding: 0.35rem 0.3rem !important;
+}
+.table-striped td {
+  padding: 0.25rem 0.3rem !important;
+}
+.customAddIcon {
+  color: #3D7A3F !important;
+  position: relative;
+  left: -37px;
+  top: -2px;
+  font-size: inherit;
+}
+mat-divider {
+  width: 40% !important;
+  margin-left: 30% !important;
+  margin-bottom: 1rem !important;
+}
+mat-panel-description h2 {
+  margin: 0px !important;
+}
+h2 {
+  width: 100%;
+  text-align: center;
+  margin: 0px !important;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #2D2926;
+  letter-spacing: -0.01em;
+}
+h4 {
+  color: #3D7A3F !important;
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 700 !important;
+  font-size: x-large !important;
+}
+.greenIcon {
+  color: #3D7A3F !important;
+}
+.redIcon {
+  color: #B91C1C !important;
+}
+.mat-column-expand .mat-icon {
+  color: #3D7A3F !important;
+}
+.container {
+  background-color: #ffffff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 0 8px 8px 0;
+  border-left: 3px solid #D46A2E;
+}
+.categoryProd {
+  background-color: #E8E4DE !important;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 600;
+}
+.stocProd {
+  background-color: #DCEFD8 !important;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 600;
+}
+.livratProd {
+  background-color: #F5EECE !important;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 600;
+}
+.tableFooter {
+  background-color: #F0EDE8 !important;
+}
+.spinner-container {
+  width: 200px;
+  margin: 0 auto;
+}
+.angular-editor-toolbar {
+  padding: 0.2em !important;
+}
+.highcharts-credits {
+  display: none !important;
+}
+.display-7 {
+  font-size: 2rem;
+}
+h2 button {
+  margin-left: 1rem;
+  font-family: 'Source Sans 3', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+}

@@ -132,6 +132,7 @@ import { NirProduseAutocompleteComponent } from './nir/nir-produse-autocomplete/
 import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
 import { RemoveDuplicatesComponent} from './rapoarte/remove-duplicates/remove-duplicates.component';
 import { ReadMoreComponent } from './utilities/read-more/read-more.component';
+import { SnackbarErrorComponent } from './utilities/snackbar-error/snackbar-error.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -242,7 +243,8 @@ import { ReadMoreComponent } from './utilities/read-more/read-more.component';
         NirListComponent,
         NirProduseAutocompleteComponent,
         RemoveDuplicatesComponent,
-        ReadMoreComponent
+        ReadMoreComponent,
+        SnackbarErrorComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

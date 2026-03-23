@@ -37,7 +37,7 @@ export class SecurityService {
    * If cookies are not feasible, ensure strict Content-Security-Policy and other XSS mitigations.
    */
 
-  isAuthenticated(): boolean {
+  async isAuthenticated(): Promise<boolean> {
     const token = localStorage.getItem(this.tokenKey);
     if (!token) return false;
     const expiration = localStorage.getItem(this.expirationTokenKey);
@@ -45,8 +45,11 @@ export class SecurityService {
     const expirationDate = new Date(expiration);
 
     if (expirationDate <= new Date()) {
-      this.logout();
-      return false;
+      const isRefreshSuccess = await this.tryRefreshingTokens(token);
+      if (!isRefreshSuccess) {
+        this.logout();
+        return false;
+      }
     }
 
     return true;

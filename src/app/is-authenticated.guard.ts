@@ -10,10 +10,10 @@ export class IsAuthenticatedGuard  {
   constructor(private securitySevice: SecurityService, private router: Router){
 
   }
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean | UrlTree {
-      if(this.securitySevice.isAuthenticated()) return true;
+    state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+      if(await this.securitySevice.isAuthenticated()) return true;
       else 
       {
         this.router.navigate(["/login"]);

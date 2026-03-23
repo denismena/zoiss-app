@@ -40,7 +40,7 @@
 						],
 						"styles": [
 							"./node_modules/bootstrap/dist/css/bootstrap.css",
-							"src/custom-theme.scss",
+							"src/theme-option-3.scss",
 							"src/styles.scss"
 						],
 						"scripts": [

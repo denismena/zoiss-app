@@ -1,0 +1,335 @@
+// =============================================================================
+// THEME OPTION 1: "Clean Minimal" -- Light, Airy, Geometric
+// Font: DM Sans | Primary: #E8793A | Light navbar, soft shadows, rounded corners
+// =============================================================================
+@use '@angular/material' as mat;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap');
+
+@include mat.all-component-typographies();
+@include mat.elevation-classes();
+@include mat.app-background();
+
+$md-clean-minimal: (
+    50 : #fdf0e9,
+    100 : #fad9c8,
+    200 : #f7c0a4,
+    300 : #f3a67f,
+    400 : #f09363,
+    500 : #E8793A,
+    600 : #e07134,
+    700 : #d7662c,
+    800 : #ce5c25,
+    900 : #c04918,
+    A100 : #ffffff,
+    A200 : #f3a67f,
+    A400 : #f3a67f,
+    A700 : #f3a67f,
+    contrast: (
+        50 : #1E293B,
+        100 : #1E293B,
+        200 : #1E293B,
+        300 : #1E293B,
+        400 : #1E293B,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #1E293B,
+        A200 : #1E293B,
+        A400 : #1E293B,
+        A700 : #1E293B,
+    )
+);
+
+$zoiss-app-primary: mat.m2-define-palette($md-clean-minimal);
+$zoiss-app-accent: mat.m2-define-palette($md-clean-minimal, A200, A100, A400);
+$zoiss-app-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$zoiss-app-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $zoiss-app-primary,
+    accent: $zoiss-app-accent,
+    warn: $zoiss-app-warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: '"DM Sans", sans-serif',
+  ),
+));
+
+@include mat.elevation-classes();
+@include mat.app-background();
+@include mat.all-component-themes($zoiss-app-theme);
+
+// ---------------------------------------------------------------------------
+// Body & base
+// ---------------------------------------------------------------------------
+body {
+  color: #1E293B;
+  background-color: #F5F6FA;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.navbar.bg-dark {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.navbar .nav-link {
+  color: #475569 !important;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+.navbar .nav-link:hover {
+  color: #E8793A !important;
+}
+.navbar .nav-link.active {
+  color: #E8793A !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  border-bottom: 2px solid #E8793A;
+  padding-bottom: calc(0.5rem - 2px);
+}
+.navbar .navbar-brand img {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(10%) saturate(500%) hue-rotate(180deg);
+}
+.navbar .dropdown-menu.bg-dark {
+  background-color: #ffffff !important;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border-radius: 8px;
+}
+.navbar .dropdown-menu .nav-link {
+  color: #475569 !important;
+}
+.navbar .dropdown-menu .nav-link:hover {
+  color: #E8793A !important;
+  background-color: rgba(232,121,58,0.06);
+}
+.navbar .navbar-toggler {
+  border-color: #CBD5E1;
+}
+.navbar .navbar-toggler-icon {
+  filter: invert(1) grayscale(100%) brightness(0.3);
+}
+a.text-light {
+  color: #475569 !important;
+}
+
+// ---------------------------------------------------------------------------
+// Material component overrides
+// ---------------------------------------------------------------------------
+mat-form-field {
+  width: 100%;
+  @include mat.form-field-density(-3);
+}
+.mat-mdc-option {
+  font-size: 14px !important;
+  min-height: 32px !important;
+}
+.mat-mdc-paginator {
+  background-color: #F1F5F9 !important;
+  font-size: 13px;
+  border-radius: 0 0 12px 12px;
+}
+.mat-mdc-paginator .mat-paginator-page-size-select {
+  margin: 0px;
+}
+.mat-mdc-header-row {
+  background-color: #E8793A !important;
+}
+.mat-mdc-header-row th {
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 500;
+}
+.mat-mdc-tooltip {
+  font-size: 14px;
+}
+.mat-mdc-unelevated-button {
+  min-width: 40px;
+  padding: 0px 10px;
+  border-radius: 8px !important;
+}
+mat-icon {
+  cursor: pointer;
+}
+.mat-expansion-panel, .bordered {
+  border: none;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+  overflow: hidden;
+}
+.bordered {
+  margin-bottom: 1rem;
+}
+.mat-expansion-panel-header {
+  margin-top: 10px;
+  cursor: default !important;
+}
+.form-footer {
+  text-align: center;
+}
+.mat-mdc-menu-panel {
+  background-color: #ffffff !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  border-radius: 8px !important;
+  border: 1px solid #E2E8F0;
+  opacity: 1;
+  min-width: 550px !important;
+  max-width: 550px !important;
+}
+.mat-expansion-panel-header:hover {
+  background-color: inherit !important;
+}
+.mat-mdc-unelevated-button.mat-primary {
+  color: #ffffff !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-suffix {
+  top: 0em !important;
+}
+.mat-form-field-suffix span {
+  padding-left: 5px;
+}
+td.mat-mdc-cell {
+  padding: 0.2rem !important;
+}
+th.mat-mdc-header-cell {
+  padding: 0.2rem !important;
+}
+.mat-form-field-infix {
+  padding: 7px 0px !important;
+}
+.mat-form-field-flex {
+  padding-top: 0px !important;
+}
+.mat-mdc-dialog-actions {
+  justify-content: center !important;
+}
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important;
+}
+.mat-mdc-table {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.mat-mdc-row:hover {
+  background-color: rgba(232,121,58,0.04) !important;
+  transition: background-color 0.15s ease;
+}
+.mdc-button {
+  border-radius: 8px !important;
+  text-transform: none;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+// ---------------------------------------------------------------------------
+// Utility classes
+// ---------------------------------------------------------------------------
+.w-50 {
+  min-width: 50px;
+}
+.w-100 {
+  width: 100px;
+}
+.mpanel {
+  min-width: 250px !important;
+  max-width: 450px !important;
+}
+.table-text-right {
+  text-align: right !important;
+}
+.table-text-center {
+  text-align: center !important;
+}
+.table-striped thead {
+  background-color: #FDE8D8;
+}
+.table-striped thead tr th {
+  border: none;
+}
+.customAddIcon {
+  color: #16A34A !important;
+  position: relative;
+  left: -37px;
+  top: -2px;
+  font-size: inherit;
+}
+mat-divider {
+  width: 40% !important;
+  margin-left: 30% !important;
+  margin-bottom: 1rem !important;
+}
+mat-panel-description h2 {
+  margin: 0px !important;
+}
+h2 {
+  width: 100%;
+  text-align: center;
+  margin: 0px !important;
+  font-weight: 500;
+}
+h4 {
+  color: #16A34A !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: x-large !important;
+}
+.greenIcon {
+  color: #16A34A !important;
+}
+.redIcon {
+  color: #DC2626 !important;
+}
+.mat-column-expand .mat-icon {
+  color: #16A34A !important;
+}
+.container {
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.categoryProd {
+  background-color: #E2E8F0 !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+.stocProd {
+  background-color: #DCFCE7 !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+.livratProd {
+  background-color: #FEF9C3 !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+.tableFooter {
+  background-color: #F1F5F9 !important;
+}
+.spinner-container {
+  width: 200px;
+  margin: 0 auto;
+}
+.angular-editor-toolbar {
+  padding: 0.2em !important;
+}
+.highcharts-credits {
+  display: none !important;
+}
+.display-7 {
+  font-size: 2rem;
+}
+h2 button {
+  margin-left: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+}
