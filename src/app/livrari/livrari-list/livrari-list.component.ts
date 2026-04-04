@@ -87,15 +87,18 @@ export class LivrariListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.livrariService.getAll(values)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((response: HttpResponse<LivrariDTO[]>)=>{
-      this.livrari = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false;
-      this.cdr.markForCheck();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-      this.cdr.markForCheck();
+    .subscribe({
+      next: (response: HttpResponse<LivrariDTO[]>) => {
+        this.livrari = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalRecords"));
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });    
   }
 
@@ -110,12 +113,13 @@ export class LivrariListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.livrariService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -147,11 +151,17 @@ export class LivrariListComponent implements OnInit {
     this.loading$ = true;
     this.exportService.aimPDF(element.id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(blob => {
-      this.loading$ = false;
-      const dt = new Date(element.data)
-      saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
-    }, error => {
+    .subscribe({
+      next: blob => {
+        this.loading$ = false;
+        const dt = new Date(element.data)
+        saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 

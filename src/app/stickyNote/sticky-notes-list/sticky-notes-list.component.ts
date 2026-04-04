@@ -49,12 +49,13 @@ export class StickyNotesListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.stickyNotesService.delete(id)
-    .subscribe(() => {
-      this.loadList();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -62,11 +63,11 @@ export class StickyNotesListComponent implements OnInit {
     const note: stickyNotesCreationDTO={descriere:stickyNotesDTO.target.innerHTML};    
     this.stickyNotesService.edit(id, note)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(()=>{    
-    }, 
-    error=> {
-      this.errors = parseWebAPIErrors(error);
-      this.cdr.markForCheck();
+    .subscribe({
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.cdr.markForCheck();
+      }
     });    
   }
 
@@ -74,12 +75,12 @@ export class StickyNotesListComponent implements OnInit {
     const note: stickyNotesCreationDTO={descriere:''};    
     this.stickyNotesService.create(note)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(()=>{      
-      this.loadList();
-    }, 
-    error=> {
-      this.errors = parseWebAPIErrors(error);
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.cdr.markForCheck();
+      }
     });
   }
   

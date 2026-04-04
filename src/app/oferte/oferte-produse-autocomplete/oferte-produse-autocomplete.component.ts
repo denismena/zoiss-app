@@ -178,6 +178,8 @@ export class OferteProduseAutocompleteComponent implements OnInit {
       this.selectedProdus.push(this.form.value);
     }    
 
+    this.syncPriceForProduct(this.form.value.produsId, this.form.value.pretUm);
+
     if (this.table !== undefined){
       this.table.renderRows();
     }
@@ -262,6 +264,28 @@ export class OferteProduseAutocompleteComponent implements OnInit {
 
     const previousIndex2 = this.selectedProdus.findIndex(produs => produs === event.item.data);
     moveItemInArray(this.selectedProdus, previousIndex2, event.currentIndex);
+  }
+
+  duplicate(produs: any){
+    const clone = { ...produs, id: null };
+    const index = this.selectedProdusFiltered.indexOf(produs);
+    this.selectedProdusFiltered.splice(index + 1, 0, clone);
+
+    const index2 = this.selectedProdus.indexOf(produs);
+    this.selectedProdus.splice(index2 + 1, 0, clone);
+
+    this.table.renderRows();
+  }
+
+  private syncPriceForProduct(produsId: number, pretUm: number){
+    this.selectedProdus.forEach(p => {
+      if(p.produsId === produsId && p.isCategory !== true){
+        p.pretUm = pretUm;
+        const base = pretUm * p.cantitate;
+        const discount = p.discount ?? 0;
+        p.valoare = Math.round(((discount > 0 ? base - (base * discount / 100) : base) + Number.EPSILON) * 1000) / 1000;
+      }
+    });
   }
 
   changeDiscountAll(discoutAll: HTMLInputElement){    

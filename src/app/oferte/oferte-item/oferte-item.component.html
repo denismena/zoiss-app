@@ -94,9 +94,14 @@
     </div>
   </div>
   <div class="container">
-    <div class="form-footer">
-      <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-      <a mat-stroke-button routerLink="/oferte" mat-flat-button color="primary">Renunta</a>
+    <div class="form-footer form-footer-with-clone">
+      <div class="form-footer-center">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/oferte" mat-flat-button color="primary">Renunta</a>
+      </div>
+      @if (model) {
+        <button type="button" mat-stroke-button mat-flat-button color="primary" class="form-footer-clone" (click)="onClone.emit()">Cloneaza</button>
+      }
     </div>
   </div>
 </form>

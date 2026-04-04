@@ -48,11 +48,12 @@ export class ArhitectiListComponent {
 
   private deleteComanda(id: number){
     this.arhitectiService.delete(id)
-    .subscribe(() => {
-      this.refresh$.next();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+    .subscribe({
+      next: () => this.refresh$.next(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      }
     });
   }
 }

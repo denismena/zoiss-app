@@ -48,11 +48,12 @@ export class TransportatorListComponent {
 
   private deleteComanda(id: number){
     this.transporatorService.delete(id)
-    .subscribe(() => {
-      this.refresh$.next();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+    .subscribe({
+      next: () => this.refresh$.next(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      }
     });
   }
 }

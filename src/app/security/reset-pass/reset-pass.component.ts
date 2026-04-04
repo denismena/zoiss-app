@@ -36,9 +36,10 @@ export class ResetPassComponent implements OnInit {
     this.errors=[];    
     this.securityService.resetPassword(userCredentials)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(authenticationResponse=>{
-      this.router.navigate(['/']);
-    }, error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: () => this.router.navigate(['/']),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
 }

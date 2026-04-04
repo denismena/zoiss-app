@@ -30,7 +30,11 @@ export class OferteEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      if(params.id == null) return;      
+      if(params.id == null) return;
+      this.model = undefined!;
+      this.preselectClient = undefined;
+      this.preselectArhitect = undefined;
+      this.selectedProdus = [];
       this.oferteService.putGet(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(oferta => {
@@ -39,16 +43,12 @@ export class OferteEditComponent implements OnInit {
 
         this.clientiService.getById(oferta.oferta.clientId)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(client=>{
-          this.preselectClient = client;
-        });
+        .subscribe({ next: client => this.preselectClient = client });
 
         if(oferta.oferta.arhitectId != null){
           this.arhitectService.getById(oferta.oferta.arhitectId)
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(arhitect=>{
-            this.preselectArhitect = arhitect;
-          });
+          .subscribe({ next: arhitect => this.preselectArhitect = arhitect });
         }
       })
     });
@@ -57,9 +57,18 @@ export class OferteEditComponent implements OnInit {
   saveChanges(oferteCreationDTO:oferteCreationDTO){
     this.oferteService.edit(this.model.id, oferteCreationDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.router.navigate(["/oferte"]);
-    }, 
-    error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: () => this.router.navigate(["/oferte"]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
+  }
+
+  cloneOferta(){
+    this.oferteService.clone(this.model.id)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe({
+      next: (newId) => this.router.navigate(['/oferte/edit', newId]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 }

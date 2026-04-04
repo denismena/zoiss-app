@@ -1,0 +1,11 @@
+<div class="snackbar-error">
+  <mat-icon class="snackbar-error-icon">error_outline</mat-icon>
+  <div class="snackbar-error-messages">
+    @for (error of data.errors; track error) {
+      <span>{{ error }}</span>
+    }
+  </div>
+  <button mat-icon-button (click)="dismiss()" class="snackbar-error-close">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

@@ -103,15 +103,18 @@ export class ComenziFurnListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.comenziFurnizorService.getAll(values)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((response: HttpResponse<comenziFurnizorDTO[]>)=>{
-      this.comenziFurnizor = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalRecords"));
-      this.loading$ = false;
-      this.cdr.markForCheck();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
-      this.cdr.markForCheck();
+    .subscribe({
+      next: (response: HttpResponse<comenziFurnizorDTO[]>) => {
+        this.comenziFurnizor = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalRecords"));
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+        this.cdr.markForCheck();
+      }
     });    
   }
   
@@ -126,12 +129,13 @@ export class ComenziFurnListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.comenziFurnizorService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -172,10 +176,10 @@ export class ComenziFurnListComponent implements OnInit {
     if(selectedProd.length > 0){
       this.transportService.fromComandaFurnizor(selectedProd)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(id=>{
-        this.router.navigate(['/transport/edit/' + id])
-      }, 
-      error=> this.errors = parseWebAPIErrors(error));
+      .subscribe({
+        next: id => this.router.navigate(['/transport/edit/' + id]),
+        error: error => this.errors = parseWebAPIErrors(error)
+      });
     }
     else this.errors.push("Nu ati selectat nici o comanda!");
   }
@@ -215,11 +219,17 @@ selectFurnizor(furnizor: any){
    this.loading$ = true;
    this.exportService.comandaFurnizorReport(element.id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-   .subscribe(blob => {
-     const dt = new Date(element.data)
-     saveAs(blob, 'Comanda ' + element.furnizor + ' ' + dt.toLocaleDateString() + '.xlsx');
-     this.loading$ = false;
-   }, error => {
+   .subscribe({
+     next: blob => {
+       const dt = new Date(element.data)
+       saveAs(blob, 'Comanda ' + element.furnizor + ' ' + dt.toLocaleDateString() + '.xlsx');
+       this.loading$ = false;
+       this.cdr.markForCheck();
+     },
+     error: () => {
+       this.loading$ = false;
+       this.cdr.markForCheck();
+     }
    });
  }
 

@@ -56,13 +56,16 @@ export class ClientiListComponent implements OnInit {
     values.recordsPerPage = this.pageSize;
     this.clientiService.getAll(values)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((response: HttpResponse<clientiDTO[]>)=>{
-      this.clienti = response.body??[];
-      this.totalRecords = Number(response.headers.get("totalrecords"));
-      this.loading$ = false;      
-    }, error => {
-      this.errors = parseWebAPIErrors(error);      
-      this.loading$ = false;
+    .subscribe({
+      next: (response: HttpResponse<clientiDTO[]>) => {
+        this.clienti = response.body??[];
+        this.totalRecords = Number(response.headers.get("totalrecords"));
+        this.loading$ = false;      
+      },
+      error: error => {
+        this.errors = parseWebAPIErrors(error);      
+        this.loading$ = false;
+      }
     });    
   }
   
@@ -77,11 +80,12 @@ export class ClientiListComponent implements OnInit {
 
   private deleteComanda(id: number){
     this.clientiService.delete(id)
-    .subscribe(() => {
-      this.loadList(this.form.value);
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+    .subscribe({
+      next: () => this.loadList(this.form.value),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+      }
     });
   }
 

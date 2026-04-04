@@ -6,6 +6,6 @@
     [selectedProdus] = "selectedProdus"
     [preselectClient] = "preselectClient"
     [preselectArhitect] = "preselectArhitect"
-  [model]="model" (onSaveChanges)="saveChanges($event)"></app-comenzi-item>
+  [model]="model" (onSaveChanges)="saveChanges($event)" (onClone)="cloneComanda()"></app-comenzi-item>
 }
 <app-display-errors [errors]="errors"></app-display-errors>

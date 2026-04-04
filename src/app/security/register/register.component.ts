@@ -35,11 +35,14 @@ export class RegisterComponent implements OnInit {
     this.success=false;
     this.securityService.register(userCredentials)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(authenticationResponse=>{      
-      if(authenticationResponse == null){
-        this.success=true;        
-      }
-    }, error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: authenticationResponse => {
+        if(authenticationResponse == null){
+          this.success=true;        
+        }
+      },
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
 }

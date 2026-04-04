@@ -32,11 +32,14 @@ export class ConfirmEmailComponent implements OnInit {
     this.success=false;
     this.securityService.confirmEmail(userCredentials)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(authenticationResponse=>{
-      if(authenticationResponse != null){
-        this.success=true;
-      }
-    }, error=> this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: authenticationResponse => {
+        if(authenticationResponse != null){
+          this.success=true;
+        }
+      },
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 
 }

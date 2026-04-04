@@ -35,6 +35,9 @@ export class OferteItemComponent implements OnInit {
   @Output()
   onSaveChanges: EventEmitter<oferteDTO> = new EventEmitter<oferteDTO>();
 
+  @Output()
+  onClone: EventEmitter<void> = new EventEmitter<void>();
+
   
 
   ngOnInit(): void {

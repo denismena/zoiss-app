@@ -23,17 +23,18 @@ export class FurnizoriEditComponent implements OnInit {
       if(params.id == null) return;
       this.furnizoriService.getById(params.id)
       .pipe(takeUntilDestroyed(this.destroyRef))            
-      .subscribe(furnizor => {
-        this.model = furnizor;
-      },error=> this.errors = parseWebAPIErrors(error))
+      .subscribe({
+        next: furnizor => this.model = furnizor,
+        error: error => this.errors = parseWebAPIErrors(error)
+      })
     });
   }
   saveChanges(furnizoriCreationDTO:furnizoriCreationDTO){
     this.furnizoriService.edit(this.model.id, furnizoriCreationDTO)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.router.navigate(["/furnizori"]);
-    },
-    error => this.errors = parseWebAPIErrors(error));
+    .subscribe({
+      next: () => this.router.navigate(["/furnizori"]),
+      error: error => this.errors = parseWebAPIErrors(error)
+    });
   }
 }

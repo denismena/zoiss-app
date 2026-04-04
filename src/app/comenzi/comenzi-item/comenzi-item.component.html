@@ -83,8 +83,9 @@
             <app-utilizatori-autocomplete (onOptionSelected)="selectUtilizator($event)" [preselectUtilizator] = "preselectUtilizator"></app-utilizatori-autocomplete>
             <input type="hidden" formControlName="utilizatorId" #utilizatorId>
           </div>
-          <div class="col-md-1">
-            <mat-slide-toggle formControlName="platit" matTooltip="Platit">Platit</mat-slide-toggle>
+          <div class="col-md-1 d-flex flex-column justify-content-between">
+            <mat-slide-toggle formControlName="platit" matTooltip="Platit">Platit</mat-slide-toggle>            
+            <mat-slide-toggle formControlName="finalizat" matTooltip="Finalizat" class="pb-3">Finalizat</mat-slide-toggle>
           </div>
           <div class="col-md-2">
             <mat-slide-toggle formControlName="arhitectPlatit" matTooltip="Arhitect platit">Arhitect platit</mat-slide-toggle>
@@ -112,9 +113,14 @@
     </div>
   </div>
   <div class="container">
-    <div class="form-footer">
-      <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
-      <a mat-stroke-button routerLink="/comenzi" mat-flat-button color="primary">Renunta</a>
+    <div class="form-footer form-footer-with-clone">
+      <div class="form-footer-center">
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Save</button>
+        <a mat-stroke-button routerLink="/comenzi" mat-flat-button color="primary">Renunta</a>
+      </div>
+      @if (model) {
+        <button type="button" mat-stroke-button mat-flat-button color="primary" class="form-footer-clone" (click)="onClone.emit()">Cloneaza</button>
+      }
     </div>
   </div>
 </form>

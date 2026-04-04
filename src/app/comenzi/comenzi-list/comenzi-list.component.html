@@ -47,20 +47,22 @@
               <input formControlName="numar" value=""  matInput class="table-text-right">
             </mat-form-field>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2 d-flex flex-column justify-content-between">
             <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>
+            <mat-slide-toggle formControlName="sucursala" class="pb-3">Doar sucursala mea</mat-slide-toggle>
           </div>
-          <div class="col-md-2">
-            <mat-slide-toggle formControlName="sucursala">Doar sucursala mea</mat-slide-toggle>
-          </div>
-          <div class="col-md-2">
+          <div class="col-md-2 d-flex flex-column justify-content-between">
             <mat-slide-toggle formControlName="allComandate">Doar necomandate</mat-slide-toggle>
-            <div style="float: right;">
-              <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
-            </div>
+            <mat-slide-toggle formControlName="finalizat" class="pb-3">Finalizat</mat-slide-toggle>            
+          </div>
+          <div class="col-md-1 d-flex flex-column justify-content-between">
+            <mat-slide-toggle formControlName="platit">Platit</mat-slide-toggle>
+            <mat-slide-toggle formControlName="arhitectPlatit" class="pb-3">Arhitect platit</mat-slide-toggle>
+          </div>
+          <div class="col-md-1">
+            <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-3">
             <app-clienti-autocomplete (onOptionSelected)="selectClient($event)" #clientFilter></app-clienti-autocomplete>
@@ -78,8 +80,7 @@
             <app-furnizori-autocomplete (onOptionSelected)="selectFurnizor($event)" #furnizorFilter></app-furnizori-autocomplete>
             <input type="hidden" formControlName="furnizorId" #furnizorId>
           </div>
-
-        </div>
+        </div>        
       </div>
     </form>
   </mat-expansion-panel>
@@ -140,12 +141,23 @@
       <th mat-header-cell *matHeaderCellDef class="text-center">Platit</th>
       <td *matCellDef="let element" class="text-center">
         @if (element.platit) {
-          <span class="material-icons greenIcon">paid</span>
+          <span class="material-icons greenIcon" matTooltip="Platit">paid</span>
         }
         @if (!element.platit) {
-          <span class="material-icons redIcon">paid</span>
+          <span class="material-icons redIcon" matTooltip="Ne-platit">paid</span>
         }
         <!-- {{element.platit|daNu}} -->
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="finalizat">
+      <th mat-header-cell *matHeaderCellDef class="text-center">Finalizat</th>
+      <td *matCellDef="let element" class="text-center">
+        @if (element.finalizat) {
+          <span class="material-icons greenIcon" matTooltip="Finalizat">lock</span>
+        }
+        @if (!element.finalizat) {
+          <span class="material-icons redIcon" matTooltip="Ne-finalizat">lock_open</span>
+        }
       </td>
     </ng-container>
     <ng-container matColumnDef="comandate">

@@ -1,17 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
-/* html, body { height: 100%; } */
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.table-index{
+body { margin: 0; }
+.table-index {
     width: 100%;
     margin-top: 1rem;
 }
 
-// .table-index a {
-//     margin-right: 1rem;
-// }
-
-.example-full-width{
+.example-full-width {
     width: 80%;
     margin-right: 1rem;
+}
+
+.error-snackbar {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #d32f2f;
+    --mdc-snackbar-supporting-text-color: #fff;
+    --mat-snack-bar-button-color: #ffcdd2;
+  }
+}
+
+.success-snackbar {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #2e7d32;
+    --mdc-snackbar-supporting-text-color: #fff;
+    --mat-snack-bar-button-color: #c8e6c9;
+  }
 }

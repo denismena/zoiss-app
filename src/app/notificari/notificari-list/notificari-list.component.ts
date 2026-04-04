@@ -69,10 +69,13 @@ export class NotificariListComponent implements OnInit, OnDestroy {
         if (data.clicked === 'submit') {
           this.notificariService.read(itemNot.id)
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(() => {this.loadList();}, error => {
-            this.errors = parseWebAPIErrors(error);
-            this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-            this.cdr.markForCheck();
+          .subscribe({
+            next: () => this.loadList(),
+            error: error => {
+              this.errors = parseWebAPIErrors(error);
+              this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+              this.cdr.markForCheck();
+            }
           });
         }
       });
@@ -87,43 +90,49 @@ export class NotificariListComponent implements OnInit, OnDestroy {
   delete(id: number){
     this.notificariService.delete(id)
     .pipe(takeUntilDestroyed(this.destroyRef))    
-    .subscribe(() => {
-      this.loadList();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
   deleteAll(){
     this.notificariService.deleteAll()
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.loadList();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
   read(id: number){
     this.notificariService.read(id)
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {this.loadList();}, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
   readAll(){
     this.notificariService.readAll()
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(() => {
-      this.loadList();
-    }, error => {
-      this.errors = parseWebAPIErrors(error);
-      this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
-      this.cdr.markForCheck();
+    .subscribe({
+      next: () => this.loadList(),
+      error: error => {
+        this.errors = parseWebAPIErrors(error);
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.cdr.markForCheck();
+      }
     });
   }
 
