@@ -3,7 +3,7 @@
 // Fonts: Source Sans 3 + Playfair Display | Primary: #D46A2E | Editorial feel
 // =============================================================================
 @use '@angular/material' as mat;
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700&display=swap');
 
 @include mat.all-component-typographies();
 @include mat.elevation-classes();
@@ -53,7 +53,7 @@ $zoiss-app-theme: mat.m2-define-light-theme((
     warn: $zoiss-app-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"Source Sans 3", sans-serif',
+    $font-family: '"Noto Serif", serif',
   ),
 ));
 
@@ -67,7 +67,7 @@ $zoiss-app-theme: mat.m2-define-light-theme((
 body {
   color: #2D2926;
   background-color: #FAF8F5;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
 }
 
 .navbar.bg-dark {
@@ -80,7 +80,7 @@ body {
   font-size: 14px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
   transition: color 0.2s ease;
 }
 .navbar .nav-link:hover {
@@ -88,7 +88,7 @@ body {
 }
 .navbar .nav-link.active {
   color: #D46A2E !important;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
   font-weight: 700;
 }
 .navbar .dropdown-menu.bg-dark {
@@ -135,7 +135,7 @@ mat-form-field {
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
 }
 .mat-mdc-tooltip {
   font-size: 14px;
@@ -181,7 +181,7 @@ mat-icon {
 }
 .mat-mdc-menu-item {
   color: #2D2926 !important;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
 }
 .mat-mdc-menu-item:hover {
   background-color: rgba(212,106,46,0.06) !important;
@@ -332,18 +332,22 @@ h4 {
   border-left: 3px solid #D46A2E;
 }
 .categoryProd {
-  background-color: #E8E4DE !important;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
   font-weight: 600;
+  td {
+    background-color: #E8E4DE !important;
+  }
 }
 .stocProd {
-  background-color: #DCEFD8 !important;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
   font-weight: 600;
+  td {
+    background-color: #DCEFD8 !important;
+  }
 }
 .livratProd {
-  background-color: #F5EECE !important;
-  font-family: 'Source Sans 3', sans-serif;
+  background-color: #F4D440 !important;
+  font-family: 'Noto Serif', serif;
   font-weight: 600;
 }
 .tableFooter {
@@ -364,7 +368,7 @@ h4 {
 }
 h2 button {
   margin-left: 1rem;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Noto Serif', serif;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 

@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Observable, Subscription, of} from 'rxjs';
+import {debounceTime, startWith, switchMap} from 'rxjs/operators';
 import { ProduseCreateDialogComponent } from '../produse-item/produse-create-dialog/produse-create-dialog.component';
 import { produseDTO, produseOfertaDTO } from '../produse-item/produse.model';
 import { ProduseService } from '../produse.service';
@@ -19,12 +19,9 @@ import { ProduseService } from '../produse.service';
 })
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
-  produse: produseDTO[];
   private destroyRef = inject(DestroyRef);
-  constructor(private produseService: ProduseService, public dialog: MatDialog) { 
-    this.produse = [];   
-
-    this.selectedProdus = new Observable<produseOfertaDTO[]>();    
+  constructor(private produseService: ProduseService, public dialog: MatDialog) {
+    this.selectedProdus = new Observable<produseDTO[]>();
   }
 
   @ViewChild(MatAutocompleteTrigger) 
@@ -32,7 +29,7 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   
   produsCtrl: FormControl = new FormControl();
 
-  selectedProdus: any;
+  selectedProdus: Observable<produseDTO[]>;
   @Input()
   preselectedProdus: produseDTO | undefined;
 
@@ -42,39 +39,27 @@ export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   subscription: Subscription | undefined;
   dataFromDialog : any;  
 
-  ngOnInit(): void {       
-    if(this.preselectedProdus!=undefined)
-      this.produsCtrl.setValue(this.preselectedProdus);    
+  ngOnInit(): void {
+    if (this.preselectedProdus != undefined)
+      this.produsCtrl.setValue(this.preselectedProdus);
+
+    this.selectedProdus = this.produsCtrl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200),
+      switchMap(value => {
+        if (typeof value !== 'string' || value.length < 2) return of([]);
+        return this.produseService.search(value);
+      })
+    );
   }
   ngOnChanges() {
-    if(this.preselectedProdus!=undefined)
-      this.produsCtrl.setValue(this.preselectedProdus);    
+    if (this.preselectedProdus != undefined)
+      this.produsCtrl.setValue(this.preselectedProdus);
   }
-  
-  search(event: any){
-    let searchTerm = '';
-    searchTerm += event;
-    if(searchTerm.length >= 2){    
-      this.produseService.search(searchTerm)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(produse=>{
-        this.produse = produse;
-        this.selectedProdus = this.produsCtrl.valueChanges
-          .pipe(
-            startWith(''),
-            map(c => c ? this._filterStates(c) : this.produse.slice())
-          );        
-      });
-    }
-  }
+
   optionSelected(event: MatAutocompleteSelectedEvent){    
     this.preselectedProdus = event.option.value;
     this.onOptionSelected.emit(event.option.value);
-  }
-
-  private _filterStates(value: string): produseDTO[] {
-    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
-    return this.produse.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(produs: produseDTO): string {

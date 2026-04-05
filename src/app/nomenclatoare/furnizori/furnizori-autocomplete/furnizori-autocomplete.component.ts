@@ -4,8 +4,8 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 import { MatDialog } from '@angular/material/dialog';
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Observable, Subscription, of} from 'rxjs';
+import {debounceTime, startWith, switchMap} from 'rxjs/operators';
 import { FurnizoriCreateDialogComponent } from '../furnizori-item/furnizori-create-dialog/furnizori-create-dialog.component';
 import { furnizoriDTO } from '../furnizori-item/furnizori.model';
 import { FurnizoriService } from '../furnizori.service';
@@ -18,18 +18,16 @@ import { FurnizoriService } from '../furnizori.service';
 })
 export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  furnizori: furnizoriDTO[];
   private destroyRef = inject(DestroyRef);
 
-  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog) { 
-    this.furnizori = [];
-    this.selectedFurnizor = new Observable<furnizoriDTO[]>();    
+  constructor(private furnizorService: FurnizoriService, public dialog: MatDialog) {
+    this.selectedFurnizor = new Observable<furnizoriDTO[]>();
   }
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
 
   furnizorCtrl: FormControl = new FormControl();
-  selectedFurnizor: any;
+  selectedFurnizor: Observable<furnizoriDTO[]>;
   
   @Input() preselectFurnizor: furnizoriDTO | undefined;
   @Output() onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
@@ -37,39 +35,26 @@ export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterV
   subscription: Subscription | undefined;
   dataFromDialog : any;
   ngOnInit(): void {
-  if(this.preselectFurnizor !=undefined)
-    this.furnizorCtrl.setValue(this.preselectFurnizor);
+    if (this.preselectFurnizor != undefined)
+      this.furnizorCtrl.setValue(this.preselectFurnizor);
+
+    this.selectedFurnizor = this.furnizorCtrl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200),
+      switchMap(value => {
+        if (typeof value !== 'string' || value.length <= 2) return of([]);
+        return this.furnizorService.search(value);
+      })
+    );
   }
   ngOnChanges() {
-    if(this.preselectFurnizor!=undefined)
-      this.furnizorCtrl.setValue(this.preselectFurnizor);    
-  }  
-
-  search(event: any){
-    let searchTerm = '';
-    searchTerm += event;
-    if(searchTerm.length > 2){    
-      this.furnizorService.search(searchTerm)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(furnizori=>{
-        this.furnizori = furnizori;
-        this.selectedFurnizor = this.furnizorCtrl.valueChanges
-          .pipe(
-            startWith(''),
-            map(c => c ? this._filterStates(c) : this.furnizori.slice())
-          );        
-      });
-    }
+    if (this.preselectFurnizor != undefined)
+      this.furnizorCtrl.setValue(this.preselectFurnizor);
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent){
     this.preselectFurnizor = event.option.value;  
     this.onOptionSelected.emit(event.option.value);
-  }
-
-  private _filterStates(value: string): furnizoriDTO[] {
-    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
-    return this.furnizori.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(furn: furnizoriDTO): string {

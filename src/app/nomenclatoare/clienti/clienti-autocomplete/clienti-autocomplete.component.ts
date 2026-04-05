@@ -4,8 +4,8 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 import { MatDialog } from '@angular/material/dialog';
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {Observable, Subscription} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Observable, Subscription, of} from 'rxjs';
+import {debounceTime, startWith, switchMap} from 'rxjs/operators';
 import { ClientiCreateDialogComponent } from '../clienti-item/clienti-create-dialog/clienti-create-dialog.component';
 import { clientiDTO } from '../clienti-item/clienti.model';
 import { ClientiService } from '../clienti.service';
@@ -18,18 +18,16 @@ import { ClientiService } from '../clienti.service';
 })
 export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  clienti: clientiDTO[];
   private destroyRef = inject(DestroyRef);
-  constructor(private clientiService: ClientiService, public dialog: MatDialog) { 
-    this.clienti = [];    
-    this.selectedClient = new Observable<clientiDTO[]>();    
+  constructor(private clientiService: ClientiService, public dialog: MatDialog) {
+    this.selectedClient = new Observable<clientiDTO[]>();
   }
 
   @ViewChild(MatAutocompleteTrigger) 
   trigger!: MatAutocompleteTrigger;
   
   clientCtrl: FormControl = new FormControl();
-  selectedClient: any;
+  selectedClient: Observable<clientiDTO[]>;
   @Output()
   onOptionSelected: EventEmitter<string> = new EventEmitter<string>();
   
@@ -39,34 +37,21 @@ export class ClientiAutocompleteComponent implements OnInit, AfterViewInit, OnDe
   dataFromDialog : any;
 
   ngOnInit(): void {
-    if(this.preselectClient !=undefined)
-      this.clientCtrl.setValue(this.preselectClient);    
-  }
+    if (this.preselectClient != undefined)
+      this.clientCtrl.setValue(this.preselectClient);
 
-  search(event: any){
-    let searchTerm = '';
-    searchTerm += event;
-    if(searchTerm.length > 2){    
-      this.clientiService.search(searchTerm)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(clienti=>{
-        this.clienti = clienti;
-        this.selectedClient = this.clientCtrl.valueChanges
-          .pipe(
-            startWith(''),
-            map(c => c ? this._filterStates(c) : this.clienti.slice())
-          );        
-      });
-    }    
+    this.selectedClient = this.clientCtrl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200),
+      switchMap(value => {
+        if (typeof value !== 'string' || value.length <= 2) return of([]);
+        return this.clientiService.search(value);
+      })
+    );
   }
   optionSelected(event: MatAutocompleteSelectedEvent){
     this.preselectClient = event.option.value;
     this.onOptionSelected.emit(event.option.value.id);
-  }
-
-  private _filterStates(value: string): clientiDTO[] {
-    const filterValue = (typeof value === 'string' ? value.toLowerCase() : value);
-    return this.clienti.filter(p => p.nume.toLowerCase().includes(filterValue));
   }
 
   displayFn(user: clientiDTO): string {

@@ -349,10 +349,10 @@ export class ComenziListComponent implements OnInit {
      }
    });
  }
- genereazaPDF(element:any)
+ genereazaPDF(element:any, showPrice: boolean = true)
   {    
     this.loading$ = true;
-    this.exportService.comandaReportPDF(element.id)
+    this.exportService.comandaReportPDF(element.id, showPrice)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: blob => {

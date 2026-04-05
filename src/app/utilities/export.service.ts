@@ -42,9 +42,12 @@ export class ExportService{
   comandaReport(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comanda/${id}`, { responseType: 'blob' as 'json' });
   }
-  comandaReportPDF(id:number): Observable<Blob>{
+  comandaReportPDF(id:number, showPrice: boolean = true): Observable<Blob>{
     const pdfComponentNou  = this.cookie.getCookie('pdfComponentNou') === 'true';
-    return this.http.get<Blob>(`${this.apiUrl}/comandaPDF${pdfComponentNou ? '/q' : ''}/${id}`, { responseType: 'blob' as 'json' });
+    const params = new HttpParams()
+    .set('id', id)
+    .set('afiseazaPret', showPrice);
+    return this.http.get<Blob>(`${this.apiUrl}/comandaPDF${pdfComponentNou ? '/q' : ''}`, { responseType: 'blob' as 'json', params });
   }
   comandaFurnizorReport(id:number): Observable<Blob>{
     return this.http.get<Blob>(`${this.apiUrl}/comandaFurnizor/${id}`, { responseType: 'blob' as 'json' });
