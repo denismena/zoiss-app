@@ -1,0 +1,162 @@
+// Shared auth-page layout — imported by login, register, reset-pass, forget-pass, confirm-email.
+// Change variables here to restyle all auth pages at once.
+
+$zoiss-charcoal: #2b2e34;
+$zoiss-charcoal-deep: #1e2026;
+$zoiss-copper: #c58c66;
+$zoiss-copper-dark: #a67452;
+$zoiss-bg: #ececec;
+$zoiss-sheet-max-width: 440px;
+
+.zoiss-auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $zoiss-bg;
+}
+
+.zoiss-hero-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.zoiss-hero {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 24vh;
+  padding: 48px 20px 76px;
+  background: linear-gradient(145deg, $zoiss-charcoal-deep 0%, $zoiss-charcoal 55%, #32353d 100%);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.zoiss-hero-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(
+      circle at 0% 45%,
+      transparent 0,
+      transparent 32px,
+      rgba($zoiss-copper, 0.07) 33px,
+      transparent 34px
+    ),
+    repeating-radial-gradient(
+      circle at 0% 45%,
+      transparent 0,
+      transparent 48px,
+      rgba($zoiss-copper, 0.05) 49px,
+      transparent 50px
+    );
+}
+
+.zoiss-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+}
+
+.zoiss-hero h1 {
+  margin: 0;
+  font-size: clamp(26px, 5.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-family: "Roboto Medium", Roboto, "Helvetica Neue", sans-serif;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.zoiss-sheet-wrap {
+  flex: 1;
+  margin-top: -56px;
+  padding: 0 16px 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.zoiss-sheet {
+  max-width: $zoiss-sheet-max-width;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 1px solid rgba(43, 46, 52, 0.08);
+  box-shadow:
+    0 24px 48px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  background: #ffffff;
+}
+
+.zoiss-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.zoiss-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.zoiss-auth-link-row {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.zoiss-link {
+  margin-left: 6px;
+  font-weight: 700;
+  color: $zoiss-copper-dark;
+  text-decoration: none;
+
+  &:hover {
+    color: $zoiss-copper;
+    text-decoration: underline;
+  }
+}
+
+.zoiss-success {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@mixin copper-button-overrides($sheet-selector: '.zoiss-sheet') {
+  :host ::ng-deep #{$sheet-selector} button.mat-mdc-unelevated-button.mat-primary {
+    background-color: $zoiss-copper !important;
+    color: #ffffff !important;
+  }
+
+  :host ::ng-deep #{$sheet-selector} button.mat-mdc-unelevated-button.mat-primary:hover {
+    background-color: $zoiss-copper-dark !important;
+  }
+
+  :host ::ng-deep #{$sheet-selector} button.mat-mdc-unelevated-button.mat-primary[disabled] {
+    background-color: rgba($zoiss-copper, 0.45) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .zoiss-hero {
+    min-height: 26vh;
+  }
+
+  .zoiss-sheet-wrap {
+    padding: 0 24px 40px;
+  }
+}

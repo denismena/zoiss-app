@@ -10,32 +10,56 @@
   <a routerLink="/register">Inregistreaza-te</a>
 </div></div>
 </div> -->
-<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
-  <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
-    <div class="col-lg-4 d-flex align-items-center">
-      <mat-card class="cardWithShadow boxed-auth">
-        <mat-card-content class="p-32">
-          <div class="text-center">
-            <img src="./assets/images/zoiss.png" class="align-middle m-2" alt="logo"/>
-          </div>
 
+<div class="zoiss-auth-page">
+  <div class="zoiss-hero-wrap">
+    <section class="zoiss-hero" aria-labelledby="zoiss-login-title">
+      <div class="zoiss-hero-pattern" aria-hidden="true"></div>
+      <div class="zoiss-hero-inner">
+        <h1 id="zoiss-login-title">Autentificare</h1>
+      </div>
+    </section>
+
+    <div class="zoiss-sheet-wrap">
+      <mat-card class="cardWithShadow zoiss-sheet">
+        <mat-card-content class="p-24 zoiss-card-inner">
           <app-authentication-form (onSaveChanges)="login($event)" [action]="'Autentificare'"></app-authentication-form>
-          <span class="d-block f-w-500 text-center m-2">
+
+          <p class="zoiss-register">
             Utilizator nou?
-            <a [routerLink]="['/register']" class="text-decoration-none text-primary f-w-500 f-s-14">
-            Inregistreaza-te</a>
-          </span>
-          <div class="mat-mdc-header-row p-2 text-center">
-            Scaneaza produs
-            <mat-icon class="greenIcon" (click)="scannerEnabled=true">camera_alt</mat-icon>
-            <mat-icon class="redIcon" (click)="scannerEnabled=false">stop</mat-icon>
+            <a [routerLink]="['/register']" class="zoiss-link">Inregistreaza-te</a>
+          </p>
+
+          <div class="zoiss-scan">
+            <div class="zoiss-scan-row">
+              <span class="zoiss-scan-title">Scaneaza produs</span>
+              <div class="zoiss-scan-actions">
+                <button
+                  type="button"
+                  class="zoiss-icon-btn zoiss-icon-btn--on"
+                  (click)="scannerEnabled = true"
+                  aria-label="Porneste scanner"
+                >
+                  <mat-icon>camera_alt</mat-icon>
+                </button>
+                <button
+                  type="button"
+                  class="zoiss-icon-btn zoiss-icon-btn--off"
+                  (click)="scannerEnabled = false"
+                  aria-label="Opreste scanner"
+                >
+                  <mat-icon>stop</mat-icon>
+                </button>
+              </div>
+            </div>
             @if (scannerEnabled) {
-              <app-scan-qr></app-scan-qr>
+              <div class="zoiss-scan-embed">
+                <app-scan-qr></app-scan-qr>
+              </div>
             }
           </div>
         </mat-card-content>
         <app-display-errors [errors]="errors"></app-display-errors>
-
       </mat-card>
     </div>
   </div>

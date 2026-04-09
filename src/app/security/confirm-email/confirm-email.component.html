@@ -1,18 +1,26 @@
-<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
-  <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
-    <div class="col-lg-4 d-flex align-items-center">
-      <mat-card class="cardWithShadow boxed-auth">
-        <mat-card-content class="p-32">
-          <div class="text-center">
-            <img src="./assets/images/zoiss.png" class="align-middle m-2" alt="logo"/>
-          </div>
+<div class="zoiss-auth-page">
+  <div class="zoiss-hero-wrap">
+    <section class="zoiss-hero" aria-labelledby="zoiss-confirm-title">
+      <div class="zoiss-hero-pattern" aria-hidden="true"></div>
+      <div class="zoiss-hero-inner">
+        <h1 id="zoiss-confirm-title">Confirmare cont</h1>
+      </div>
+    </section>
+
+    <div class="zoiss-sheet-wrap">
+      <mat-card class="cardWithShadow zoiss-sheet">
+        <mat-card-content class="p-24 zoiss-card-inner">
           <app-display-errors [errors]="errors"></app-display-errors>
-          <br /><br />
+
           @if (success) {
-            <div>
-              <div class="text-success">Contul a fost aprobat cu succes.</div>
+            <div class="zoiss-success">
+              Contul a fost aprobat cu succes.
             </div>
           }
+
+          <p class="zoiss-auth-link-row">
+            <a [routerLink]="['/login']" class="zoiss-link">Mergi la autentificare</a>
+          </p>
         </mat-card-content>
       </mat-card>
     </div>
