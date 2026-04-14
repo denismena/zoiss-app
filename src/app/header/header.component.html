@@ -24,6 +24,10 @@
             <li class="nav-item"><a class="nav-link" href="/rapoarte/comenziUtilizatori">Comenzi utilizatori</a></li>
             <li class="nav-item"><a class="nav-link" href="/rapoarte/comenziSucursale">Comenzi sucursale</a></li>
             <li class="nav-item"><a class="nav-link" href="/rapoarte/removeFurnizoriDuplicate">Sterge duplicate</a></li>
+            @if (securityService.getFieldFromJwt('email') === 'denis.menacai@gmail.com' ||
+                 securityService.getFieldFromJwt('email') === 'deni.menacai@gmail.com') {
+              <li class="nav-item"><a class="nav-link" routerLink="/rapoarte/logs" routerLinkActive="active">Logs</a></li>
+            }
           </ul>
         </li>
         <li class="nav-item dropdown">

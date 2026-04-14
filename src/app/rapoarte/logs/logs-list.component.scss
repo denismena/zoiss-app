@@ -1,0 +1,31 @@
+.col-date { white-space: nowrap; }
+.col-level { width: 80px; }
+.col-method { width: 70px; }
+
+.log-level-badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-error { background-color: #f44336; color: #fff; }
+.badge-warning { background-color: #ff9800; color: #fff; }
+.badge-info { background-color: #2196f3; color: #fff; }
+
+.show-more-link {
+  margin-left: 4px;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  &:hover { text-decoration: underline; }
+}
+
+.table-responsive { overflow-x: auto; }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}

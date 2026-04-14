@@ -1,0 +1,123 @@
+<div class="container-fluid mt-3">
+  <div class="mb-3">
+    <a mat-stroked-button routerLink="/rapoarte/logs">
+      <mat-icon>arrow_back</mat-icon> Inapoi la lista
+    </a>
+  </div>
+
+  @if (loading) {
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+
+  @if (notFound) {
+    <p class="text-danger">Logul nu a fost gasit.</p>
+  }
+
+  @if (log) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Log #{{ log.id }}</mat-card-title>
+        <mat-card-subtitle>{{ log.createdUtc | date:'dd.MM.yyyy HH:mm:ss' }} UTC</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row detail-grid">
+
+          <div class="col-md-6">
+            <div class="detail-field">
+              <span class="detail-label">Nivel</span>
+              <span class="detail-value">{{ log.logLevel }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="detail-field">
+              <span class="detail-label">Categorie</span>
+              <span class="detail-value">{{ log.category }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="detail-field">
+              <span class="detail-label">Utilizator</span>
+              <span class="detail-value">{{ log.userName || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="detail-field">
+              <span class="detail-label">User ID</span>
+              <span class="detail-value">{{ log.userId || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="detail-field">
+              <span class="detail-label">Metoda HTTP</span>
+              <span class="detail-value">{{ log.httpMethod || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-9">
+            <div class="detail-field">
+              <span class="detail-label">Cale request</span>
+              <span class="detail-value">{{ log.requestPath || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Trace ID</span>
+              <span class="detail-value">{{ log.traceId || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Tip exceptie</span>
+              <span class="detail-value">{{ log.exceptionType || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Mesaj</span>
+              <span class="detail-value">{{ log.message || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Mesaj exceptie</span>
+              <span class="detail-value">{{ log.exceptionMessage || '-' }}</span>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Stack Trace</span>
+              @if (log.stackTrace) {
+                <pre class="detail-pre">{{ log.stackTrace }}</pre>
+              } @else {
+                <span class="detail-value text-muted">-</span>
+              }
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Inner Exception</span>
+              @if (log.innerException) {
+                <pre class="detail-pre">{{ log.innerException }}</pre>
+              } @else {
+                <span class="detail-value text-muted">-</span>
+              }
+            </div>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

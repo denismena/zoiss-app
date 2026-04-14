@@ -61,8 +61,12 @@ import { NirCreateComponent } from './nir/nir-item/nir-create/nir-create.compone
 import { NirEditComponent } from './nir/nir-item/nir-edit/nir-edit.component';
 import { TimelineStockComponent } from './rapoarte/timeline-stock/timeline-stock.component';
 import { RemoveDuplicatesComponent } from './rapoarte/remove-duplicates/remove-duplicates.component';
+import { LogsListComponent } from './rapoarte/logs/logs-list.component';
+import { LogsDetailComponent } from './rapoarte/logs/logs-detail/logs-detail.component';
+import { IsLogsAdminGuard } from './is-logs-admin.guard';
 
 const isAuthenticatedGuard = IsAuthenticatedGuard;
+const isLogsAdminGuard = IsLogsAdminGuard;
 const routes: Routes = [
   {path:  "", pathMatch:  "full",redirectTo:  "home"},
   {path: "home", component: HomeComponent, canActivate:[isAuthenticatedGuard]},
@@ -132,6 +136,8 @@ const routes: Routes = [
   {path: "rapoarte/comenziSucursale", component: ComenziDepoziteComponent, canActivate:[isAuthenticatedGuard]},
   {path: "rapoarte/timelineStoc/:id", component: TimelineStockComponent, canActivate:[isAuthenticatedGuard]},
   {path: "rapoarte/removeFurnizoriDuplicate", component: RemoveDuplicatesComponent, canActivate:[isAuthenticatedGuard]},
+  {path: "rapoarte/logs", component: LogsListComponent, canActivate:[isAuthenticatedGuard, isLogsAdminGuard]},
+  {path: "rapoarte/logs/:id", component: LogsDetailComponent, canActivate:[isAuthenticatedGuard, isLogsAdminGuard]},
 
   {path: "nir", component: NirListComponent, canActivate:[isAuthenticatedGuard]},
   {path: "nir/create", component: NirCreateComponent, canActivate:[isAuthenticatedGuard]} ,  
