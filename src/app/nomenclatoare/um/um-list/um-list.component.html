@@ -3,10 +3,13 @@
     <mat-expansion-panel hideToggle class="mat-elevation-z0">
       <mat-expansion-panel-header>
         <mat-panel-description (click)="$event.stopPropagation();">
-          <h2>Lista UM
-            <button type="button" routerLink="/um/create" mat-flat-button color="primary">
-              <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
-            </button>
+          <h2 class="list-toolbar">
+            <span class="list-toolbar-title">Lista UM</span>
+            <span class="list-toolbar-actions">
+              <button type="button" routerLink="/um/create" mat-flat-button color="primary">
+                <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
+              </button>
+            </span>
           </h2>
         </mat-panel-description>
       </mat-expansion-panel-header>

@@ -5,6 +5,53 @@ body { margin: 0; }
     margin-top: 1rem;
 }
 
+.list-toolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.list-toolbar-title {
+  flex: 0 0 auto;
+  font-size: 20px;
+  line-height: 1.2;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.list-toolbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.list-toolbar button {
+  margin-left: 0 !important;
+}
+
+.mobile-filter-section .row {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+.mobile-filter-section .row > [class*="col-"] {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.mobile-clear-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .example-full-width {
     width: 80%;
     margin-right: 1rem;
@@ -23,5 +70,79 @@ body { margin: 0; }
     --mdc-snackbar-container-color: #2e7d32;
     --mdc-snackbar-supporting-text-color: #fff;
     --mat-snack-bar-button-color: #c8e6c9;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .navbar .container-fluid {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .navbar-brand img {
+    max-height: 36px;
+    width: auto;
+  }
+
+  .list-toolbar {
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-start;
+    text-align: left;
+    flex-wrap: nowrap;
+  }
+
+  .list-toolbar-title {
+    font-size: 20px;
+  }
+
+  .list-toolbar-actions {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    padding: 2px 0;
+  }
+
+  .list-toolbar-actions > * {
+    flex: 0 0 auto;
+  }
+
+  .list-toolbar-actions .mat-mdc-unelevated-button {
+    min-width: 36px;
+    padding: 0 8px !important;
+  }
+
+  .mobile-filter-section .mat-mdc-form-field,
+  .mobile-filter-section .mat-mdc-slide-toggle {
+    margin-bottom: 6px;
+  }
+
+  table[mat-table] {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  th.mat-mdc-header-cell,
+  td.mat-mdc-cell {
+    padding: 0.12rem !important;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 991.98px) and (orientation: landscape) {
+  .mat-expansion-panel-header {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .mobile-filter-section {
+    width: 100%;
   }
 }

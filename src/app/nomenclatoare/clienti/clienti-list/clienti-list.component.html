@@ -7,15 +7,18 @@
             {{ panelOpenState ? 'expand_less' : 'expand_more' }}
           </mat-icon>
         </div>
-        <h2>Lista Clienti
-          <button type="button" routerLink="/clienti/create" mat-flat-button color="primary" matTooltip="Adauga">
-            <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
-          </button>
+        <h2 class="list-toolbar">
+          <span class="list-toolbar-title">Lista Clienti</span>
+          <span class="list-toolbar-actions">
+            <button type="button" routerLink="/clienti/create" mat-flat-button color="primary" matTooltip="Adauga">
+              <img src="assets/img/icons/material-design-icons/two-tone/add_circle.svg" alt="Adauga" height="30" width="30">
+            </button>
+          </span>
         </h2>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <form [formGroup]="form">
-      <div class="">
+      <div class="mobile-filter-section">
         <div class="row">
           <div class="col-md-4">
             <mat-form-field appearance="outline">
@@ -59,7 +62,7 @@
           </div>
           <div class="col-md-4">
             <mat-slide-toggle formControlName="faraAdresa">Fara adresa</mat-slide-toggle>
-            <div style="float: right;">
+            <div class="mobile-clear-wrap">
               <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
             </div>
           </div>

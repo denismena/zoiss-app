@@ -7,15 +7,18 @@
             {{ panelOpenState ? 'expand_less' : 'expand_more' }}
           </mat-icon>
         </div>
-        <h2>Lista Transporturi
-          <button mat-flat-button color="primary" (click)="genereazaLivrare()" matTooltip="Genereaza livrare">
-            <img src="assets/img/icons/material-design-icons/two-tone/delivery_dining.svg" alt="Genereaza livrare" height="30" width="30" class="greenIcon">
-          </button>
+        <h2 class="list-toolbar">
+          <span class="list-toolbar-title">Lista Transporturi</span>
+          <span class="list-toolbar-actions">
+            <button mat-flat-button color="primary" (click)="genereazaLivrare()" matTooltip="Genereaza livrare">
+              <img src="assets/img/icons/material-design-icons/two-tone/delivery_dining.svg" alt="Genereaza livrare" height="30" width="30" class="greenIcon">
+            </button>
+          </span>
         </h2>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <form [formGroup]="form">
-      <div class="">
+      <div class="mobile-filter-section">
         <div class="row">
           <div class="col-md-3">
             <mat-form-field appearance="outline">
@@ -44,7 +47,7 @@
           <div class="col-md-3">
             <mat-slide-toggle formControlName="mine">Doar comenzile mele</mat-slide-toggle>    <br/>
             <mat-slide-toggle formControlName="allSpreLivrare">Doar netransportate</mat-slide-toggle>
-            <div style="float: right;">
+            <div class="mobile-clear-wrap">
               <button mat-flat-button (click)="clearForm()" color="warn">Clear</button>
             </div>
           </div>
