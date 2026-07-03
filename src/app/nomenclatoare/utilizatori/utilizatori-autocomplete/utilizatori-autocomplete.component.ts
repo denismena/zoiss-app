@@ -18,7 +18,7 @@ export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, 
 
   utilizatori: UtilizatoriDTO[];
   utilizatorCtrl: FormControl = new FormControl();
-  selectedUtilizator: any;
+  selectedUtilizator: Observable<UtilizatoriDTO[]>;
   @Input()
   preselectUtilizator: UtilizatoriDTO | undefined;
 

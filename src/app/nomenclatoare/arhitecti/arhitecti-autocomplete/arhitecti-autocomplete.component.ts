@@ -35,7 +35,7 @@ export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, On
   trigger!: MatAutocompleteTrigger;
 
   arhitectCtrl: FormControl = new FormControl();
-  selectedArhitect: any;
+  selectedArhitect: Observable<arhitectiDTO[]>;
 
   @Input()
   preselectArhitect: arhitectiDTO | undefined;
