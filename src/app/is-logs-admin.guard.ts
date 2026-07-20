@@ -7,14 +7,13 @@ import { SecurityService } from './security/security.service';
   providedIn: 'root'
 })
 export class IsLogsAdminGuard implements CanActivate {
-  private allowedEmails = ['denis.menacai@gmail.com', 'deni.menacai@gmail.com'];
-
   constructor(private securityService: SecurityService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.allowedEmails.includes(this.securityService.getFieldFromJwt('email'))) return true;
+    // The API enforces the admin role on the logs endpoints; this guard only hides the UI
+    if (this.securityService.getRole() == 'admin') return true;
     this.router.navigate(['/home']);
     return false;
   }

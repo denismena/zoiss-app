@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { NotificationService } from '../utilities/notification.service';
 import { SecurityService } from './security.service';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
@@ -19,8 +20,10 @@ export class JwtInterceptorService implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Only attach credentials to our own API; never leak the token to third-party hosts
+    const isApiRequest = req.url.startsWith(environment.rootUrl) || req.url.startsWith(environment.apiUrl);
     const token = this.securityService.getToken();
-    if (token) {
+    if (token && isApiRequest) {
       req = req.clone({
         setHeaders: { Authorization: `Bearer ${token}` }
       });
