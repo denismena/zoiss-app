@@ -17,6 +17,6 @@ export class ReadMoreComponent implements OnInit{
 
   toggle() {
     this.expand = !this.expand;
-    this.anchor = this.expand ? 'mai mult' : 'mai putin';
+    this.anchor = this.expand ? 'mai putin' : 'mai mult';
   }
 }

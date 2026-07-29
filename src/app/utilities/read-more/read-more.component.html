@@ -2,7 +2,7 @@
   <p #textbox [class.show-less]="expand === false">
     <ng-content></ng-content>
   </p>
-  @if (textbox.offsetHeight < textbox.scrollHeight || (expand === true && textbox.offsetHeight > 40)) {
+  @if (textbox.scrollHeight - textbox.offsetHeight > 2 || (expand === true && textbox.offsetHeight > 40)) {
     <a (click)="toggle()">{{ anchor }}</a>
   }
 </div>
