@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArhitectiService } from '../../arhitecti.service';
@@ -9,6 +9,7 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     selector: 'app-arhitecti-edit',
     templateUrl: './arhitecti-edit.component.html',
     styleUrls: ['./arhitecti-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ArhitectiEditComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
@@ -15,6 +15,7 @@ import { ClientiAutocompleteComponent } from 'src/app/nomenclatoare/clienti/clie
     selector: 'app-remove-duplicates',
     templateUrl: './remove-duplicates.component.html',
     styleUrls: ['./remove-duplicates.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RemoveDuplicatesComponent implements OnInit {

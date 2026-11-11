@@ -55,7 +55,7 @@
           </div>
         }
         <br />
-        @for (fileName of this.model?.fileNames|keyvalue; track fileName) {
+        @for (fileName of $safeNavigationMigration(this.model?.fileNames)|keyvalue; track fileName) {
           <div>
             <span style="margin-right: 10px;">{{fileName.value}}</span>
             <mat-icon color="primary" (click)="viewFileFromServer($event, fileName.key, fileName.value)">pageview</mat-icon>

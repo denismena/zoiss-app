@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DepoziteService } from '../../depozite.service';
@@ -9,6 +9,7 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     selector: 'app-depozite-edit',
     templateUrl: './depozite-edit.component.html',
     styleUrls: ['./depozite-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DepoziteEditComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EmptySlotDirective } from './empty-slot.directive';
 import { LoadingSlotDirective } from './loading-slot.directive';
 
@@ -6,6 +6,7 @@ import { LoadingSlotDirective } from './loading-slot.directive';
     selector: 'app-generic-list',
     templateUrl: './generic-list.component.html',
     styles: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GenericListComponent implements OnInit {

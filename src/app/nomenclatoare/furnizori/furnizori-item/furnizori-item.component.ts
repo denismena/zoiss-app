@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -9,6 +9,7 @@ import { furnizoriCreationDTO, furnizoriDTO } from './furnizori.model';
     selector: 'app-furnizori-item',
     templateUrl: './furnizori-item.component.html',
     styleUrls: ['./furnizori-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FurnizoriItemComponent implements OnInit {

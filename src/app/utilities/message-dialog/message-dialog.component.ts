@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
   selector: 'app-message-dialog',
   imports: [MatDialogActions, MatDialogContent, MatButton, MatIcon],
   templateUrl: './message-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './message-dialog.component.scss'
 })
 export class MessageDialogComponent {

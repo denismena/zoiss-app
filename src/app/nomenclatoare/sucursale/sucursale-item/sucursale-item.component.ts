@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -8,6 +8,7 @@ import { sucursalaCreationDTO } from './sucursala.model';
     selector: 'app-sucursale-item',
     templateUrl: './sucursale-item.component.html',
     styleUrls: ['./sucursale-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SucursaleItemComponent implements OnInit {

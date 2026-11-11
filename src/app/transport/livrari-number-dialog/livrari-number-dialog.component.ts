@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { LivrariService } from 'src/app/livrari/livrari.service';
     selector: 'app-livrari-number-dialog',
     templateUrl: './livrari-number-dialog.component.html',
     styleUrls: ['./livrari-number-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LivrariNumberDialogComponent implements OnInit {

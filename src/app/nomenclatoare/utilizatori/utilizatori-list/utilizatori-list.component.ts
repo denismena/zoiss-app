@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UtilizatoriDTO } from 'src/app/security/security.models';
@@ -14,6 +14,7 @@ import { of } from 'rxjs';
     selector: 'app-utilizatori-list',
     templateUrl: './utilizatori-list.component.html',
     styleUrls: ['./utilizatori-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UtilizatoriListComponent {

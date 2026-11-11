@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { notificariDTO } from '../notificari.model';
 
@@ -6,6 +6,7 @@ import { notificariDTO } from '../notificari.model';
     selector: 'app-notificari-item',
     templateUrl: './notificari-item.component.html',
     styleUrls: ['./notificari-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NotificariItemComponent implements OnInit {

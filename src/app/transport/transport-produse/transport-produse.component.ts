@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
@@ -12,6 +12,7 @@ import { TransportService } from '../transport.service';
     selector: 'app-transport-produse',
     templateUrl: './transport-produse.component.html',
     styleUrls: ['./transport-produse.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TransportProduseComponent implements OnInit {

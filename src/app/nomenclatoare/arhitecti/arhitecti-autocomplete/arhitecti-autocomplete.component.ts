@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { ArhitectiService } from '../arhitecti.service';
     selector: 'app-arhitecti-autocomplete',
     templateUrl: './arhitecti-autocomplete.component.html',
     styleUrls: ['./arhitecti-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ArhitectiAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {

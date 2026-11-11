@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
     templateUrl: './comenzi-utilizatori.component.html',
     styleUrls: ['./comenzi-utilizatori.component.scss'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MaterialModule, HighchartsChartDirective],
 })
 export class ComenziUtilizatoriComponent implements OnInit {

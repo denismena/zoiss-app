@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -14,6 +14,7 @@ import { of } from 'rxjs';
     selector: 'app-sucursale-list',
     templateUrl: './sucursale-list.component.html',
     styleUrls: ['./sucursale-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SucursaleListComponent {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { transportatorDTO } from '../transportator-item/transportator.model';
@@ -14,6 +14,7 @@ import { of } from 'rxjs';
     selector: 'app-transportator-list',
     templateUrl: './transportator-list.component.html',
     styleUrls: ['./transportator-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TransportatorListComponent {

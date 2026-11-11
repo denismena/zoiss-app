@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -9,6 +9,7 @@ import { produseCreationDTO } from '../produse.model';
     selector: 'app-produse-create',
     templateUrl: './produse-create.component.html',
     styleUrls: ['./produse-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProduseCreateComponent implements OnInit {

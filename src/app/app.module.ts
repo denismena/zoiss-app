@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'; 
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http'; 
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
@@ -266,5 +266,5 @@ import { SnackbarErrorComponent } from './utilities/snackbar-error/snackbar-erro
             //useValue: IconsService
         },
         IconsService,
-        CookieService, provideHttpClient(withInterceptorsFromDi())] })
+        CookieService, provideHttpClient(withXhr(), withInterceptorsFromDi())] })
 export class AppModule { }

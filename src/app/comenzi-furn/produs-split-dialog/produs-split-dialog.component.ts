@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NumericValueType, RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -8,6 +8,7 @@ import { produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.mod
     selector: 'app-produs-split-dialog',
     templateUrl: './produs-split-dialog.component.html',
     styleUrls: ['./produs-split-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProdusSplitDialogComponent implements OnInit {

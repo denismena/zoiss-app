@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { ProduseCreateDialogComponent } from '../nomenclatoare/produse/produse-item/produse-create-dialog/produse-create-dialog.component';
@@ -9,6 +9,7 @@ import { ProduseService } from '../nomenclatoare/produse/produse.service';
     selector: 'app-scan-qr',
     templateUrl: './scan-qr.component.html',
     styleUrls: ['./scan-qr.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ScanQRComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { ComenziService } from 'src/app/comenzi/comenzi.service';
     selector: 'app-produs-stoc-dialog',
     templateUrl: './produs-stoc-dialog.component.html',
     styleUrls: ['./produs-stoc-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProdusStocDialogComponent implements OnInit {

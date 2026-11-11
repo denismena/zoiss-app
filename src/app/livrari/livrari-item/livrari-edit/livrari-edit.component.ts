@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { clientiDTO } from 'src/app/nomenclatoare/clienti/clienti-item/clienti.model';
@@ -11,6 +11,7 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     selector: 'app-livrari-edit',
     templateUrl: './livrari-edit.component.html',
     styleUrls: ['./livrari-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LivrariEditComponent implements OnInit {

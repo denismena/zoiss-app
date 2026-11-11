@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { toBase64 } from '../utils';
 
@@ -6,6 +6,7 @@ import { toBase64 } from '../utils';
     selector: 'app-input-img',
     templateUrl: './input-img.component.html',
     styleUrls: ['./input-img.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class InputImgComponent implements OnInit {
