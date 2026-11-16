@@ -11,7 +11,8 @@ import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/prod
 import { TransportService } from 'src/app/transport/transport.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
-import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { formatDateFormData, getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { NotificationService } from 'src/app/utilities/notification.service';
 import { comenziFurnizorDTO, produseComandaFurnizorDTO } from '../comenzi-furn-item/comenzi-furn.model';
 import { ComenziFurnizorService } from '../comenzi-furn.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -55,6 +56,8 @@ export class ComenziFurnListComponent implements OnInit {
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   
   private destroyRef = inject(DestroyRef);
+  
+  private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
   constructor(private comenziFurnizorService: ComenziFurnizorService, private transportService: TransportService,
     private router:Router, private formBuilder:FormBuilder, public cookie: CookieService, private exportService: ExportService, public dialog: MatDialog) { 
@@ -133,8 +136,7 @@ export class ComenziFurnListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -227,7 +229,8 @@ selectFurnizor(furnizor: any){
        this.loading$ = false;
        this.cdr.markForCheck();
      },
-     error: () => {
+     error: error => {
+       this.notificationService.showErrors(parseWebAPIErrors(error));
        this.loading$ = false;
        this.cdr.markForCheck();
      }

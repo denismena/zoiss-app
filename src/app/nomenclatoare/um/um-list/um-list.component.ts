@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { umDTO } from '../um-item/um.model';
 import { UMService } from '../um.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -51,8 +51,7 @@ export class UmListComponent {
     .subscribe({
       next: () => this.refresh$.next(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
       }
     });
   }

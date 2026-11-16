@@ -5,7 +5,7 @@ import { UtilizatoriDTO } from 'src/app/security/security.models';
 import { SecurityService } from 'src/app/security/security.service';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { Subject } from 'rxjs';
 import { catchError, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -52,8 +52,7 @@ export class UtilizatoriListComponent {
     .subscribe({
       next: () => this.refresh$.next(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
       }
     });
   }

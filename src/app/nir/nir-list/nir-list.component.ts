@@ -8,7 +8,7 @@ import { ExportService } from 'src/app/utilities/export.service';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/furnizori-autocomplete/furnizori-autocomplete.component';
-import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { formatDateFormData, getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { NIRService } from '../nir.service';
 import { HttpResponse } from '@angular/common/http';
 import { PageEvent } from '@angular/material/paginator';
@@ -113,8 +113,7 @@ export class NirListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });

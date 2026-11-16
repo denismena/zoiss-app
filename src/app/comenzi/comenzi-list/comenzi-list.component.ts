@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inje
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Router } from '@angular/router';
-import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { formatDateFormData, getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { NotificationService } from 'src/app/utilities/notification.service';
 import { comenziDTO, produseComandaDTO } from '../comenzi-item/comenzi.model';
 import { ComenziService } from '../comenzi.service';
 import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.service';
@@ -61,6 +62,8 @@ export class ComenziListComponent implements OnInit {
   furnizorFilter!: FurnizoriAutocompleteComponent;
 
   private destroyRef = inject(DestroyRef);
+
+  private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
 
   constructor(private comenziService: ComenziService, private comenziFurnizorService: ComenziFurnizorService,
@@ -146,8 +149,7 @@ export class ComenziListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -343,7 +345,8 @@ export class ComenziListComponent implements OnInit {
        this.loading$ = false;
        this.cdr.markForCheck();
      },
-     error: () => {
+     error: error => {
+       this.notificationService.showErrors(parseWebAPIErrors(error));
        this.loading$ = false;
        this.cdr.markForCheck();
      }
@@ -361,7 +364,8 @@ export class ComenziListComponent implements OnInit {
         saveAs(blob, 'Comanda ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: error => {
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.loading$ = false;
         this.cdr.markForCheck();
       }

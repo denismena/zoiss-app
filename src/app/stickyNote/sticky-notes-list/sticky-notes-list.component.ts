@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inje
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
+import { NotificationService } from 'src/app/utilities/notification.service';
 import { stickyNotesCreationDTO, stickyNotesDTO } from '../sticky-notes.model';
 import { StickyNotesService } from '../sticky-notes.service';
 
@@ -21,7 +22,8 @@ export class StickyNotesListComponent implements OnInit {
   errors: string[] = [];
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
-  constructor(private stickyNotesService: StickyNotesService, private dialog: MatDialog) { 
+  constructor(private stickyNotesService: StickyNotesService, private dialog: MatDialog,
+      private notificationService: NotificationService) {
     this.notes=[];
   }
 
@@ -52,8 +54,7 @@ export class StickyNotesListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -64,11 +65,8 @@ export class StickyNotesListComponent implements OnInit {
     this.stickyNotesService.edit(id, note)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
-      error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.cdr.markForCheck();
-      }
-    });    
+      error: error => this.notificationService.showErrors(parseWebAPIErrors(error))
+    });
   }
 
   addNotes(){
@@ -77,13 +75,10 @@ export class StickyNotesListComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: () => this.loadList(),
-      error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.cdr.markForCheck();
-      }
+      error: error => this.notificationService.showErrors(parseWebAPIErrors(error))
     });
   }
-  
+
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,

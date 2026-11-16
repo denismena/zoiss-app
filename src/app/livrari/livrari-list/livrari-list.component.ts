@@ -10,7 +10,8 @@ import { FurnizoriAutocompleteComponent } from 'src/app/nomenclatoare/furnizori/
 import { ProduseAutocompleteComponent } from 'src/app/nomenclatoare/produse/produse-autocomplete/produse-autocomplete.component';
 import { CookieService } from 'src/app/utilities/cookie.service';
 import { ExportService } from 'src/app/utilities/export.service';
-import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { formatDateFormData, getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { NotificationService } from 'src/app/utilities/notification.service';
 import { LivrariDTO } from '../livrari-item/livrari.model';
 import { LivrariService } from '../livrari.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -48,6 +49,7 @@ export class LivrariListComponent implements OnInit {
   @ViewChild(ProduseAutocompleteComponent) produsFilter!: ProduseAutocompleteComponent;
   @ViewChild(FurnizoriAutocompleteComponent) furnizorFilter!: FurnizoriAutocompleteComponent;
   private destroyRef = inject(DestroyRef);
+  private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
   constructor(private livrariService: LivrariService,
     private formBuilder:FormBuilder, private exportService: ExportService, public cookie: CookieService, private dialog: MatDialog) { }
@@ -116,8 +118,7 @@ export class LivrariListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -158,7 +159,8 @@ export class LivrariListComponent implements OnInit {
         saveAs(blob, 'AIM ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: error => {
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.loading$ = false;
         this.cdr.markForCheck();
       }

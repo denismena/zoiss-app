@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { transportatorDTO } from '../transportator-item/transportator.model';
 import { TransporatorService } from '../transportator.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -52,8 +52,7 @@ export class TransportatorListComponent {
     .subscribe({
       next: () => this.refresh$.next(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
       }
     });
   }
