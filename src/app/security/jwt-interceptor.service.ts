@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NotificationService } from '../utilities/notification.service';
 import { SecurityService } from './security.service';
@@ -42,7 +42,31 @@ export class JwtInterceptorService implements HttpInterceptor {
         if (error.status === 401 && !req.url.includes('refresh-token')) {
           return this.handle401Error(req, next);
         }
+        if (error.error instanceof Blob) {
+          return this.unwrapBlobError(error);
+        }
         return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * File downloads (responseType 'blob') receive their error body as a Blob, so the ProblemDetails message is
+   * unreadable to callers. Read it back into JSON/text so parseWebAPIErrors works for downloads too.
+   */
+  private unwrapBlobError(error: HttpErrorResponse): Observable<never> {
+    return from((error.error as Blob).text()).pipe(
+      catchError(() => of('')),
+      switchMap(text => {
+        let body: any = text;
+        try { body = JSON.parse(text); } catch { /* plain text body */ }
+        return throwError(() => new HttpErrorResponse({
+          error: body,
+          headers: error.headers,
+          status: error.status,
+          statusText: error.statusText,
+          url: error.url ?? undefined
+        }));
       })
     );
   }

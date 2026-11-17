@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { umDTO } from '../../um/um-item/um.model';
 import { UMService } from '../../um/um.service';
 import { produseDTO } from '../produse-item/produse.model';
@@ -101,8 +101,7 @@ export class ProduseListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });

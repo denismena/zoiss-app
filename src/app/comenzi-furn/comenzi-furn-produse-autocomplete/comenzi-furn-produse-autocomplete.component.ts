@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -19,6 +19,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     selector: 'app-comenzi-furn-produse-autocomplete',
     templateUrl: './comenzi-furn-produse-autocomplete.component.html',
     styleUrls: ['./comenzi-furn-produse-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComenziFurnProduseAutocompleteComponent implements OnInit {

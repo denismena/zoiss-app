@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { ComenziFurnizorService } from 'src/app/comenzi-furn/comenzi-furn.servic
     selector: 'app-comenzi-furn-select-dialog',
     templateUrl: './comenzi-furn-select-dialog.component.html',
     styleUrls: ['./comenzi-furn-select-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComenziFurnSelectDialogComponent implements OnInit {

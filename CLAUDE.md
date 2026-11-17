@@ -8,7 +8,7 @@ Zoiss is a supply chain management app for the furniture and interior design ind
 - Goods reception documents (`NIR` - Nota Interna de Receptie)
 - Master data: products, clients, suppliers, architects, warehouses, branches, transporters
 
-Frontend: Angular 21 (SPA, module-based, no standalone components)  
+Frontend: Angular 22 (SPA, module-based, no standalone components), TypeScript 6.0, `@angular/build` builders  
 Backend: ASP.NET Core C# REST API  
 Dev API: `https://localhost:44384/api`  
 Prod API: `https://api.zoiss.ro/api`

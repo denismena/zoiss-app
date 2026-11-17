@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -9,6 +9,7 @@ import { comenziDTO } from '../comenzi.model';
     selector: 'app-comenzi-create',
     templateUrl: './comenzi-create.component.html',
     styleUrls: ['./comenzi-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComenziCreateComponent implements OnInit {

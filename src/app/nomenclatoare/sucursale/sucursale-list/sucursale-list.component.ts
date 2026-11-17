@@ -1,7 +1,7 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { OkCancelDialogComponent } from 'src/app/utilities/ok-cancel-dialog/ok-cancel-dialog.component';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 import { SucursaleService } from '../sucursala.service';
@@ -14,6 +14,7 @@ import { of } from 'rxjs';
     selector: 'app-sucursale-list',
     templateUrl: './sucursale-list.component.html',
     styleUrls: ['./sucursale-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SucursaleListComponent {
@@ -50,8 +51,7 @@ export class SucursaleListComponent {
     .subscribe({
       next: () => this.refresh$.next(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
       }
     });
   }

@@ -1,10 +1,11 @@
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-read-more',
     templateUrl: './read-more.component.html',
     styleUrls: ['./read-more.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ReadMoreComponent implements OnInit{

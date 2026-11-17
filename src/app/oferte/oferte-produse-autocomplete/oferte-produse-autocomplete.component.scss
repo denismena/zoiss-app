@@ -14,3 +14,9 @@ table {
 .container {
     border-left: none !important;
 }
+/* product lines with value 0 — an order cannot be generated from them */
+td.zeroValueCell {
+    background-color: #fde2e2 !important;
+    color: #b91c1c !important;
+    font-weight: 600;
+}

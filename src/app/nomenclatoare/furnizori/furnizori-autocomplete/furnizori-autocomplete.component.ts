@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { FurnizoriService } from '../furnizori.service';
     selector: 'app-furnizori-autocomplete',
     templateUrl: './furnizori-autocomplete.component.html',
     styleUrls: ['./furnizori-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FurnizoriAutocompleteComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {

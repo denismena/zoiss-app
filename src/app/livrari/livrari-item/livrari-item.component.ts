@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -11,6 +11,7 @@ import { LivrariDTO, livrariProduseDTO } from './livrari.model';
     selector: 'app-livrari-item',
     templateUrl: './livrari-item.component.html',
     styleUrls: ['./livrari-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LivrariItemComponent implements OnInit {

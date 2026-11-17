@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { SecurityService } from 'src/app/security/security.service';
-import { parseWebAPIErrors } from 'src/app/utilities/utils';
+import { getWebAPIErrorMessage } from 'src/app/utilities/utils';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
 import { NotificariItemComponent } from '../notificari-item/notificari-item.component';
 import { notificariDTO } from '../notificari.model';
@@ -72,8 +72,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => this.loadList(),
             error: error => {
-              this.errors = parseWebAPIErrors(error);
-              this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+              this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
               this.cdr.markForCheck();
             }
           });
@@ -93,8 +92,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     .subscribe({
       next: () => this.loadList(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -105,8 +103,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     .subscribe({
       next: () => this.loadList(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -117,8 +114,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     .subscribe({
       next: () => this.loadList(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -129,8 +125,7 @@ export class NotificariListComponent implements OnInit, OnDestroy {
     .subscribe({
       next: () => this.loadList(),
       error: error => {
-        this.errors = parseWebAPIErrors(error);
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });

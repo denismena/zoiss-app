@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { nirDTO, produseNirDTO } from './nir.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +9,7 @@ import { NIRService } from '../nir.service';
     selector: 'app-nir-item',
     templateUrl: './nir-item.component.html',
     styleUrls: ['./nir-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NirItemComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { DestroyRef, inject } from '@angular/core';
@@ -12,6 +12,7 @@ import { SecurityService } from 'src/app/security/security.service';
     selector: 'app-utilizatori-autocomplete',
     templateUrl: './utilizatori-autocomplete.component.html',
     styleUrls: ['./utilizatori-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UtilizatoriAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {

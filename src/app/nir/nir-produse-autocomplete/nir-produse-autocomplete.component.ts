@@ -1,4 +1,4 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -19,6 +19,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     selector: 'app-nir-produse-autocomplete',
     templateUrl: './nir-produse-autocomplete.component.html',
     styleUrls: ['./nir-produse-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NirProduseAutocompleteComponent implements OnInit {

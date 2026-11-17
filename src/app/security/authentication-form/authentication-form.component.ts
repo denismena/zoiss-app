@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { userCredentials } from '../security.models';
@@ -7,6 +7,7 @@ import { userCredentials } from '../security.models';
     selector: 'app-authentication-form',
     templateUrl: './authentication-form.component.html',
     styleUrls: ['./authentication-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AuthenticationFormComponent implements OnInit {

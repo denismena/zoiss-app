@@ -1,10 +1,11 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpResponse } from '@angular/common/http';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import saveAs from 'file-saver';
 import { ExportService } from 'src/app/utilities/export.service';
+import { NotificationService } from 'src/app/utilities/notification.service';
 import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message-dialog.component';
@@ -22,6 +23,7 @@ import { arhitectiComisionDTO, comandaArhitectiDTO } from './comision-arhitecti.
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ]),
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ComisionArhitectiComponent implements OnInit {
@@ -36,7 +38,7 @@ export class ComisionArhitectiComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
   constructor(private reportService: RapoarteService, private formBuilder:FormBuilder, 
-      private exportService: ExportService, private dialog: MatDialog) { 
+      private exportService: ExportService, private dialog: MatDialog, private notificationService: NotificationService) {
     this.comisioaneArhitecti = [];
     this.expandedElement = [];    
   }
@@ -111,8 +113,8 @@ export class ComisionArhitectiComponent implements OnInit {
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: () => this.loadList(this.form.value),
-      error: error => this.errors = parseWebAPIErrors(error)
-    });    
+      error: error => this.notificationService.showErrors(parseWebAPIErrors(error))
+    });
   }
 
   genereazaPDF(element:any)
@@ -133,7 +135,10 @@ export class ComisionArhitectiComponent implements OnInit {
         saveAs(blob, 'Comision Arhitect ' + element.arhitect + ' ' + dtfrom.toLocaleDateString()+ '-' + dtTo.toLocaleDateString() + '.pdf');
         this.loading$ = false;
       },
-      error: () => { this.loading$ = false; }
+      error: error => {
+        this.loading$ = false;
+        this.notificationService.showErrors(parseWebAPIErrors(error));
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -10,6 +10,7 @@ import { MessageDialogComponent } from 'src/app/utilities/message-dialog/message
     selector: 'app-clienti-item',
     templateUrl: './clienti-item.component.html',
     styleUrls: ['./clienti-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ClientiItemComponent implements OnInit {

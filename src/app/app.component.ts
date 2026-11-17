@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 //import { MatIconRegistry } from '@angular/material/icon';
 import { ReactiveFormConfig } from '@rxweb/reactive-form-validators';
 
@@ -6,6 +6,7 @@ import { ReactiveFormConfig } from '@rxweb/reactive-form-validators';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

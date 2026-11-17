@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inje
 import { Router } from '@angular/router';
 import { ComenziService } from 'src/app/comenzi/comenzi.service';
 import { produseOfertaDTO } from 'src/app/nomenclatoare/produse/produse-item/produse.model';
-import { formatDateFormData, parseWebAPIErrors } from 'src/app/utilities/utils';
+import { formatDateFormData, getWebAPIErrorMessage, parseWebAPIErrors } from 'src/app/utilities/utils';
 import { NotificationService } from 'src/app/utilities/notification.service';
 import { oferteDTO } from '../oferte-item/oferte.model';
 import { OferteService } from '../oferte.service';
@@ -132,8 +132,7 @@ export class OferteListComponent implements OnInit {
     .subscribe({
       next: () => this.loadList(this.form.value),
       error: error => {
-        this.notificationService.showErrors(parseWebAPIErrors(error));
-        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: error.error}});
+        this.dialog.open(MessageDialogComponent, {data:{title: "A aparut o eroare!", message: getWebAPIErrorMessage(error)}});
         this.cdr.markForCheck();
       }
     });
@@ -162,6 +161,16 @@ export class OferteListComponent implements OnInit {
     this.panelOpenState = !this.panelOpenState;
   }
 
+  /** A real product line (not a category header) whose value is 0 — it cannot go into an order. */
+  isZeroValue(prod: produseOfertaDTO): boolean {
+    return !prod.isCategory && !(Number(prod.valoare) > 0);
+  }
+
+  /** The offer still has un-ordered product lines with value 0. */
+  hasZeroValue(element: oferteDTO): boolean {
+    return element.produse?.some(p => !p.isInComanda && this.isZeroValue(p)) ?? false;
+  }
+
   genereazaComanda()
   {
     var selectedProd: produseOfertaDTO[] = [];
@@ -173,15 +182,40 @@ export class OferteListComponent implements OnInit {
           }
       })
     });
-    if(selectedProd.length > 0){
-      this.comenziService.fromOferta(selectedProd)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: id => this.router.navigate(['/comenzi/edit/' + id]),
-        error: error => this.notificationService.showErrors(parseWebAPIErrors(error))
-      });
+    if(selectedProd.length == 0){
+      this.notificationService.showErrors(["Nu ati selectat nici o oferta!"]);
+      return;
     }
-    else this.notificationService.showErrors(["Nu ati selectat nici o oferta!"]);
+
+    const zeroValue = selectedProd.filter(p => this.isZeroValue(p));
+    if(zeroValue.length > 0){
+      // expand the offers that contain them, so the red lines are visible
+      this.oferte
+        .filter(o => o.produse.some(p => zeroValue.includes(p)) && !this.expandedElement.some(e => e.id == o.id))
+        .forEach(o => this.expandedElement.push(o));
+      this.cdr.markForCheck();
+
+      const lista = zeroValue
+        .map(p => '• ' + p.produsNume + (p.codProdus ? ' (' + p.codProdus + ')' : ''))
+        .join('\n');
+      this.dialog.open(MessageDialogComponent, {data:{
+        title: "Comanda nu poate fi generata",
+        message: "Urmatoarele produse selectate au valoarea 0 (marcate cu rosu in oferta):\n\n" + lista +
+          "\n\nCompletati pretul acestor produse in oferta sau deselectati-le, apoi generati din nou comanda.",
+        okButtonText: "Am inteles"
+      }});
+      return;
+    }
+
+    this.comenziService.fromOferta(selectedProd)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe({
+      next: id => this.router.navigate(['/comenzi/edit/' + id]),
+      error: error => {
+        this.dialog.open(MessageDialogComponent, {data:{title: "Comanda nu poate fi generata", message: getWebAPIErrorMessage(error), okButtonText: "Am inteles"}});
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   updatePagination(event: PageEvent){
@@ -236,7 +270,8 @@ export class OferteListComponent implements OnInit {
         this.loading$ = false;
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: error => {
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.loading$ = false;
         this.cdr.markForCheck();
       }
@@ -256,7 +291,8 @@ export class OferteListComponent implements OnInit {
         saveAs(blob, 'Oferta ' + element.client + ' ' + dt.toLocaleDateString()+'.pdf');
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: error => {
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.loading$ = false;
         this.cdr.markForCheck();
       }
@@ -278,7 +314,8 @@ export class OferteListComponent implements OnInit {
         window.open(fileURL, "_blank");
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: error => {
+        this.notificationService.showErrors(parseWebAPIErrors(error));
         this.loading$ = false;
         this.cdr.markForCheck();
       }

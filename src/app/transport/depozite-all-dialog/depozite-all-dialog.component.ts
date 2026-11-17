@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
@@ -7,6 +7,7 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators';
     selector: 'app-depozite-all-dialog',
     templateUrl: './depozite-all-dialog.component.html',
     styleUrls: ['./depozite-all-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DepoziteAllDialogComponent implements OnInit {

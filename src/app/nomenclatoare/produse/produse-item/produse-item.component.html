@@ -2,10 +2,10 @@
   <div class="container bordered">
     <div class="row">
       <div class="col-md-4">
-        <app-input-img [urlCurrentImage]="model?.pozaPath" [containerName]="'produse'"
+        <app-input-img [urlCurrentImage]="$safeNavigationMigration(model?.pozaPath)" [containerName]="'produse'"
         (onImageSelected)="onImageSelected($event)" (onImageDeleted)="onImageDeleted()"></app-input-img>
         <qrcode
-          [qrdata]="form.get('cod')?.value"
+          [qrdata]="$safeNavigationMigration(form.get('cod')?.value)"
           [allowEmptyString]="true"
           [ariaLabel]="'QR Code image with the following content...'"
           [cssClass]="'center'"

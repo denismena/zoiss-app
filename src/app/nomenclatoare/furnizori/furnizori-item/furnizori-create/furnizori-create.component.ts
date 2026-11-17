@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { FurnizoriService } from '../../furnizori.service';
@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     selector: 'app-furnizori-create',
     templateUrl: './furnizori-create.component.html',
     styleUrls: ['./furnizori-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FurnizoriCreateComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
@@ -9,6 +9,7 @@ import { livrariCreationDTO } from '../livrari.model';
     selector: 'app-livrari-create',
     templateUrl: './livrari-create.component.html',
     styleUrls: ['./livrari-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LivrariCreateComponent implements OnInit {

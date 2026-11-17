@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { transportatorDTO } from './transportator.model';
@@ -7,6 +7,7 @@ import { transportatorDTO } from './transportator.model';
     selector: 'app-transportator-item',
     templateUrl: './transportator-item.component.html',
     styleUrls: ['./transportator-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TransportatorItemComponent implements OnInit {

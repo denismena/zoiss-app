@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { ApplicationErrorLogsService } from '../application-error-logs.service';
   templateUrl: './logs-detail.component.html',
   styleUrls: ['./logs-detail.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, MaterialModule, RouterModule],
 })
 export class LogsDetailComponent implements OnInit {

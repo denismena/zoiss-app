@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { parseWebAPIErrors } from 'src/app/utilities/utils';
 import { FurnizoriService } from '../../furnizori.service';
@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     selector: 'app-furnizori-create-dialog',
     templateUrl: './furnizori-create-dialog.component.html',
     styleUrls: ['./furnizori-create-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FurnizoriCreateDialogComponent implements OnInit {

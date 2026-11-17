@@ -18,6 +18,13 @@ table {
     border-bottom-width: 0;
   }
 
+/* offers / offer lines with value 0 — an order cannot be generated from them */
+td.zeroValueCell {
+  background-color: #fde2e2 !important;
+  color: #b91c1c !important;
+  font-weight: 600;
+}
+
 .mpanel{
   min-width: 250px !important;
   max-width: 450px !important;

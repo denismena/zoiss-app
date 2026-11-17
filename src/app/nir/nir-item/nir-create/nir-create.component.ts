@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { NIRService } from '../../nir.service';
@@ -9,6 +9,7 @@ import { parseWebAPIErrors } from 'src/app/utilities/utils';
     selector: 'app-nir-create',
     templateUrl: './nir-create.component.html',
     styleUrls: ['./nir-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NirCreateComponent implements OnInit {

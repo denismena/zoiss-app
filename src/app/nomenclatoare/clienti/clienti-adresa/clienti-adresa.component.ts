@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     selector: 'app-clienti-adresa',
     templateUrl: './clienti-adresa.component.html',
     styleUrls: ['./clienti-adresa.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ClientiAdresaComponent implements OnInit {

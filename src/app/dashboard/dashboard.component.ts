@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HighchartsChartDirective } from 'highcharts-angular';
 import { RapoarteService } from '../rapoarte/rapoarte.service';
@@ -10,6 +10,7 @@ import { HttpResponse } from '@angular/common/http';
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [HighchartsChartDirective],
 })
 export class DashboardComponent implements OnInit {

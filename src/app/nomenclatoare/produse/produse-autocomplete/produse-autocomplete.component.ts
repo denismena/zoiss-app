@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, Validators  } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { ProduseService } from '../produse.service';
     selector: 'app-produse-autocomplete',
     templateUrl: './produse-autocomplete.component.html',
     styleUrls: ['./produse-autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProduseAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
